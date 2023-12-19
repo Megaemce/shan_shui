@@ -1,0 +1,82 @@
+div#SETTING {
+  position: fixed;
+  z-index: 1000;
+  left: 40px;
+  top: 3px;
+}
+
+div#BTN_ROW {
+  top: 3px;
+  height: 32px;
+  user-select: none;
+  vertical-align: middle;
+  font-size: 18px;
+}
+
+div#BTN_ROW > div {
+  float: left;
+  margin-right: 3px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  text-align: center;
+  display: table;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+div#SET_BTN > div,
+div#SOURCE_BTN > div {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+div#MENU {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  text-align: start;
+}
+
+div#MENU td > * {
+  margin-top: 0;
+  margin-bottom: 0;
+  user-select: none;
+}
+
+table#SCROLLABLE_CANVAS {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#SCROLLABLE_CANVAS div#L,
+#SCROLLABLE_CANVAS div#R {
+  position: fixed;
+  z-index: 1000;
+  width: 32px;
+  text-align: center;
+  top: 3px;
+  color: rgba(0, 0, 0, 0.4);
+  display: table;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  user-select: none;
+}
+
+.ROWITEM {
+  display: inline;
+}
+
+#SCROLLABLE_CANVAS div#L {
+  left: 3px;
+}
+
+#SCROLLABLE_CANVAS div#R {
+  right: 3px;
+}
+
+#SCROLLABLE_CANVAS div#L\.t,
+#SCROLLABLE_CANVAS div#R\.t {
+  vertical-align: middle;
+  display: table-cell;
+  font-size: 32px;
+}
