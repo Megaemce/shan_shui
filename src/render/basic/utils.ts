@@ -120,7 +120,7 @@ export function bezmh(controlArray: Point[], curveWeight: number = 1): Point[] {
         ];
     }
 
-    const pointArray = [];
+    const pointArray: Point[] = [];
 
     for (let j = 0; j < controlArray.length - 2; j++) {
         const p0 =
