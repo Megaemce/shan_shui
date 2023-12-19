@@ -16,7 +16,7 @@ export class ChunkCache {
     /** Range representing the visible area. */
     visibleRange: Range = new Range();
     /** Array storing information about mountain coverage in each chunk. */
-    mountainsArray: number[] = [];
+    mountainArray: number[] = [];
 
     /** Width of each chunk. */
     private static readonly CHUNK_WIDTH: number = 512;
@@ -44,12 +44,7 @@ export class ChunkCache {
                           this.visibleRange.left,
                       ];
 
-            const plan: IChunk[] = design(
-                prng,
-                this.mountainsArray,
-                start,
-                end
-            );
+            const plan: IChunk[] = design(prng, this.mountainArray, start, end);
             this.processChunk(plan, prng);
         }
 

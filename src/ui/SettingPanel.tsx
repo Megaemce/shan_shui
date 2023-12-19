@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import { PRNG } from "../render/basic/PRNG";
 import { Range } from "../render/basic/range";
 import { ChunkCache } from "../render/chunkCache";

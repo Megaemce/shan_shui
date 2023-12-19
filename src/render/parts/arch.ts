@@ -23,9 +23,9 @@ function flip(ptlist: Point[], axis: number = 0): Point[] {
 
 function hut(
     prng: PRNG,
-    xoff: number,
-    yoff: number,
-    hei: number = 40,
+    xOffset: number,
+    yOffset: number,
+    height: number = 40,
     strokeWidth: number = 180,
     tex: number = 300
 ): SvgPolyline[] {
@@ -34,7 +34,7 @@ function hut(
 
     for (let i = 0; i < reso[0]; i++) {
         ptlist.push([]);
-        const heir = hei * prng.random(1, 1.2);
+        const heir = height * prng.random(1, 1.2);
         for (let j = 0; j < reso[1]; j++) {
             const nx =
                 strokeWidth *
@@ -52,20 +52,20 @@ function hut(
             ptlist[0]
                 .slice(0, -1)
                 .concat(ptlist[ptlist.length - 1].slice(0, -1).reverse()),
-            xoff,
-            yoff,
+            xOffset,
+            yOffset,
             "white",
             "none"
         )
     );
     polylines.push(
-        poly(ptlist[0], xoff, yoff, "none", "rgba(100,100,100,0.3)", 2)
+        poly(ptlist[0], xOffset, yOffset, "none", "rgba(100,100,100,0.3)", 2)
     );
     polylines.push(
         poly(
             ptlist[ptlist.length - 1],
-            xoff,
-            yoff,
+            xOffset,
+            yOffset,
             "none",
             "rgba(100,100,100,0.3)",
             2
@@ -75,8 +75,8 @@ function hut(
     const texures = texture(
         prng,
         ptlist,
-        xoff,
-        yoff,
+        xOffset,
+        yOffset,
         tex,
         1,
         () => weightedRandom(prng, (a) => a * a),
@@ -89,9 +89,9 @@ function hut(
 
 function box(
     prng: PRNG,
-    xoff: number,
-    yoff: number,
-    hei: number = 20,
+    xOffset: number,
+    yOffset: number,
+    height: number = 20,
     strokeWidth: number = 120,
     rot: number = 0.7,
     per: number = 4,
@@ -111,7 +111,7 @@ function box(
     _ptlist.push(
         div(
             [
-                new Point(-strokeWidth * 0.5, -hei),
+                new Point(-strokeWidth * 0.5, -height),
                 new Point(-strokeWidth * 0.5, 0),
             ],
             5
@@ -120,7 +120,7 @@ function box(
     _ptlist.push(
         div(
             [
-                new Point(strokeWidth * 0.5, -hei),
+                new Point(strokeWidth * 0.5, -height),
                 new Point(strokeWidth * 0.5, 0),
             ],
             5
@@ -134,7 +134,7 @@ function box(
             div([new Point(strokeWidth * 0.5, 0), new Point(mid, per)], 5)
         );
     }
-    _ptlist.push(div([new Point(mid, -hei), new Point(mid, per)], 5));
+    _ptlist.push(div([new Point(mid, -height), new Point(mid, per)], 5));
     if (tra) {
         if (bot) {
             _ptlist.push(
@@ -147,22 +147,22 @@ function box(
                 div([new Point(strokeWidth * 0.5, 0), new Point(bmid, -per)], 5)
             );
         }
-        _ptlist.push(div([new Point(bmid, -hei), new Point(bmid, -per)], 5));
+        _ptlist.push(div([new Point(bmid, -height), new Point(bmid, -per)], 5));
     }
 
     const surf = (rot < 0.5 ? 1 : 0) * 2 - 1;
     const ptlist = _ptlist.concat(
         dec(
-            new Point(surf * strokeWidth * 0.5, -hei),
-            new Point(mid, -hei + per),
+            new Point(surf * strokeWidth * 0.5, -height),
+            new Point(mid, -height + per),
             new Point(surf * strokeWidth * 0.5, 0),
             new Point(mid, per)
         )
     );
 
     const polist = [
-        new Point(strokeWidth * 0.5, -hei),
-        new Point(strokeWidth * 0.5, -hei),
+        new Point(strokeWidth * 0.5, -height),
+        new Point(strokeWidth * 0.5, -height),
         new Point(strokeWidth * 0.5, 0),
         new Point(mid, per),
         new Point(-strokeWidth * 0.5, 0),
@@ -170,7 +170,7 @@ function box(
 
     const polylines: SvgPolyline[] = [];
     if (!tra) {
-        polylines.push(poly(polist, xoff, yoff, "white", "none"));
+        polylines.push(poly(polist, xOffset, yOffset, "white", "none"));
     }
 
     for (let i = 0; i < ptlist.length; i++) {
@@ -178,7 +178,7 @@ function box(
             stroke(
                 prng,
                 ptlist[i].map(function (p) {
-                    return new Point(p.x + xoff, p.y + yoff);
+                    return new Point(p.x + xOffset, p.y + yOffset);
                 }),
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",
@@ -258,11 +258,11 @@ function deco(
 
 function rail(
     prng: PRNG,
-    xoff: number,
-    yoff: number,
+    xOffset: number,
+    yOffset: number,
     seed: number = 0,
     tra: boolean = true,
-    hei: number = 20,
+    height: number = 20,
     strokeWidth: number = 180,
     per: number = 4,
     seg: number = 4,
@@ -294,8 +294,8 @@ function rail(
         ptlist.push(
             div(
                 [
-                    new Point(-strokeWidth * 0.5, -hei),
-                    new Point(mid, -hei + per),
+                    new Point(-strokeWidth * 0.5, -height),
+                    new Point(mid, -height + per),
                 ],
                 seg
             )
@@ -303,8 +303,8 @@ function rail(
         ptlist.push(
             div(
                 [
-                    new Point(mid, -hei + per),
-                    new Point(strokeWidth * 0.5, -hei),
+                    new Point(mid, -height + per),
+                    new Point(strokeWidth * 0.5, -height),
                 ],
                 seg
             )
@@ -314,8 +314,8 @@ function rail(
         ptlist.push(
             div(
                 [
-                    new Point(-strokeWidth * 0.5, -hei),
-                    new Point(bmid, -hei - per),
+                    new Point(-strokeWidth * 0.5, -height),
+                    new Point(bmid, -height - per),
                 ],
                 seg
             )
@@ -323,8 +323,8 @@ function rail(
         ptlist.push(
             div(
                 [
-                    new Point(bmid, -hei - per),
-                    new Point(strokeWidth * 0.5, -hei),
+                    new Point(bmid, -height - per),
+                    new Point(strokeWidth * 0.5, -height),
                 ],
                 seg
             )
@@ -343,10 +343,11 @@ function rail(
     for (let i = 0; i < ptlist.length / 2; i++) {
         for (let j = 0; j < ptlist[i].length; j++) {
             //ptlist.push(div([ptlist[i][j],ptlist[4+i][j]],2))
-            ptlist[i][j].y += (Noise.noise(prng, i, j * 0.5, seed) - 0.5) * hei;
+            ptlist[i][j].y +=
+                (Noise.noise(prng, i, j * 0.5, seed) - 0.5) * height;
             ptlist[(ptlist.length / 2 + i) % ptlist.length][
                 j % ptlist[(ptlist.length / 2 + i) % ptlist.length].length
-            ].y += (Noise.noise(prng, i + 0.5, j * 0.5, seed) - 0.5) * hei;
+            ].y += (Noise.noise(prng, i + 0.5, j * 0.5, seed) - 0.5) * height;
             const ln = div(
                 [
                     ptlist[i][j],
@@ -358,9 +359,9 @@ function rail(
                 ],
                 2
             );
-            ln[0].x += prng.random(-0.25, 0.25) * hei;
+            ln[0].x += prng.random(-0.25, 0.25) * height;
             polylines.push(
-                poly(ln, xoff, yoff, "none", "rgba(100,100,100,0.5)", 2)
+                poly(ln, xOffset, yOffset, "none", "rgba(100,100,100,0.5)", 2)
             );
         }
     }
@@ -370,7 +371,7 @@ function rail(
             stroke(
                 prng,
                 ptlist[i].map(function (p) {
-                    return new Point(p.x + xoff, p.y + yoff);
+                    return new Point(p.x + xOffset, p.y + yOffset);
                 }),
                 "rgba(100,100,100,0.5)",
                 "rgba(100,100,100,0.5)",
@@ -386,9 +387,9 @@ function rail(
 
 function roof(
     prng: PRNG,
-    xoff: number,
-    yoff: number,
-    hei = 20,
+    xOffset: number,
+    yOffset: number,
+    height = 20,
     strokeWidth = 120,
     rot = 0.7,
     wei = 3,
@@ -413,8 +414,11 @@ function roof(
     ptlist.push(
         div(
             opf([
-                new Point(-strokeWidth * 0.5 + quat, -hei - per / 2),
-                new Point(-strokeWidth * 0.5 + quat * 0.5, -hei / 2 - per / 4),
+                new Point(-strokeWidth * 0.5 + quat, -height - per / 2),
+                new Point(
+                    -strokeWidth * 0.5 + quat * 0.5,
+                    -height / 2 - per / 4
+                ),
                 new Point(-strokeWidth * 0.5 - cor, 0),
             ]),
             5
@@ -423,8 +427,8 @@ function roof(
     ptlist.push(
         div(
             opf([
-                new Point(mid + quat, -hei),
-                new Point((mid + quat + strokeWidth * 0.5) / 2, -hei / 2),
+                new Point(mid + quat, -height),
+                new Point((mid + quat + strokeWidth * 0.5) / 2, -height / 2),
                 new Point(strokeWidth * 0.5 + cor, 0),
             ]),
             5
@@ -433,8 +437,8 @@ function roof(
     ptlist.push(
         div(
             opf([
-                new Point(mid + quat, -hei),
-                new Point(mid + quat / 2, -hei / 2 + per / 2),
+                new Point(mid + quat, -height),
+                new Point(mid + quat / 2, -height / 2 + per / 2),
                 new Point(mid + cor, per),
             ]),
             5
@@ -463,8 +467,8 @@ function roof(
     ptlist.push(
         div(
             opf([
-                new Point(-strokeWidth * 0.5 + quat, -hei - per / 2),
-                new Point(mid + quat, -hei),
+                new Point(-strokeWidth * 0.5 + quat, -height - per / 2),
+                new Point(mid + quat, -height),
             ]),
             5
         )
@@ -474,19 +478,19 @@ function roof(
 
     const polist = opf([
         new Point(-strokeWidth * 0.5, 0),
-        new Point(-strokeWidth * 0.5 + quat, -hei - per / 2),
-        new Point(mid + quat, -hei),
+        new Point(-strokeWidth * 0.5 + quat, -height - per / 2),
+        new Point(mid + quat, -height),
         new Point(strokeWidth * 0.5, 0),
         new Point(mid, per),
     ]);
-    polylines.push(poly(polist, xoff, yoff, "white", "none"));
+    polylines.push(poly(polist, xOffset, yOffset, "white", "none"));
 
     for (let i = 0; i < ptlist.length; i++) {
         polylines.push(
             stroke(
                 prng,
                 ptlist[i].map(function (p) {
-                    return new Point(p.x + xoff, p.y + yoff);
+                    return new Point(p.x + xOffset, p.y + yOffset);
                 }),
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",
@@ -500,8 +504,8 @@ function roof(
 
     if (pla[0] === 1) {
         let pp = opf([
-            new Point(mid + quat / 2, -hei / 2 + per / 2),
-            new Point(-strokeWidth * 0.5 + quat * 0.5, -hei / 2 - per / 4),
+            new Point(mid + quat / 2, -height / 2 + per / 2),
+            new Point(-strokeWidth * 0.5 + quat * 0.5, -height / 2 - per / 4),
         ]);
         if (pp[0].x > pp[1].x) {
             pp = [pp[1], pp[0]];
@@ -511,11 +515,11 @@ function roof(
         const adeg = (a * 180) / Math.PI;
 
         const text = new SvgText(pla[1], {
-            fontSize: hei * 0.6,
+            fontSize: height * 0.6,
             fontFamily: "Verdana",
             textAnchor: "middle",
-            transform: `translate(${mp.x + xoff},${
-                mp.y + yoff
+            transform: `translate(${mp.x + xOffset},${
+                mp.y + yOffset
             }) rotate(${adeg})`,
             style: {
                 fill: "rgba(100, 100, 100, 0.9)",
@@ -529,9 +533,9 @@ function roof(
 
 function pagroof(
     prng: PRNG,
-    xoff: number,
-    yoff: number,
-    hei = 20,
+    xOffset: number,
+    yOffset: number,
+    height = 20,
     strokeWidth = 120,
     wei = 3,
     per = 4
@@ -539,7 +543,7 @@ function pagroof(
     const cor = 10,
         sid = 4;
     const ptlist: Point[][] = [];
-    const polist: Point[] = [new Point(0, -hei)];
+    const polist: Point[] = [new Point(0, -height)];
     const polylines: SvgPolyline[] = [];
 
     for (let i = 0; i < sid; i++) {
@@ -550,21 +554,21 @@ function pagroof(
             ptlist.push([ptlist[ptlist.length - 1][2], new Point(fxx, fy)]);
         }
         ptlist.push([
-            new Point(0, -hei),
-            new Point(fx * 0.5, (-hei + fy) * 0.5),
+            new Point(0, -height),
+            new Point(fx * 0.5, (-height + fy) * 0.5),
             new Point(fxx, fy),
         ]);
         polist.push(new Point(fxx, fy));
     }
 
-    polylines.push(poly(polist, xoff, yoff, "white", "none"));
+    polylines.push(poly(polist, xOffset, yOffset, "white", "none"));
 
     for (let i = 0; i < ptlist.length; i++) {
         polylines.push(
             stroke(
                 prng,
                 div(ptlist[i], 5).map(function (p) {
-                    return new Point(p.x + xoff, p.y + yoff);
+                    return new Point(p.x + xOffset, p.y + yOffset);
                 }),
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",
@@ -581,28 +585,38 @@ function pagroof(
 
 export function arch01(
     prng: PRNG,
-    xoff: number,
-    yoff: number,
+    xOffset: number,
+    yOffset: number,
     seed: number = 0,
-    hei = 70,
+    height = 70,
     strokeWidth = 180,
     per = 5
 ): SvgPolyline[] {
     const p = prng.random(0.4, 0.6);
-    const h0 = hei * p;
-    const h1 = hei * (1 - p);
+    const h0 = height * p;
+    const h1 = height * (1 - p);
 
     const polylinelists: SvgPolyline[][] = [];
-    polylinelists.push(hut(prng, xoff, yoff - hei, h0, strokeWidth));
+    polylinelists.push(hut(prng, xOffset, yOffset - height, h0, strokeWidth));
     polylinelists.push(
-        box(prng, xoff, yoff, h1, (strokeWidth * 2) / 3, 0.7, per, true, false)
+        box(
+            prng,
+            xOffset,
+            yOffset,
+            h1,
+            (strokeWidth * 2) / 3,
+            0.7,
+            per,
+            true,
+            false
+        )
     );
 
     polylinelists.push(
         rail(
             prng,
-            xoff,
-            yoff,
+            xOffset,
+            yOffset,
             seed,
             true,
             10,
@@ -618,9 +632,9 @@ export function arch01(
         polylinelists.push(
             man(
                 prng,
-                xoff +
+                xOffset +
                     normalizedRandom(prng, -strokeWidth / 3, strokeWidth / 3),
-                yoff,
+                yOffset,
                 randomChoice(prng, [true, false]),
                 0.42
             )
@@ -629,9 +643,9 @@ export function arch01(
         polylinelists.push(
             man(
                 prng,
-                xoff +
+                xOffset +
                     normalizedRandom(prng, -strokeWidth / 4, -strokeWidth / 5),
-                yoff,
+                yOffset,
                 false,
                 0.42
             )
@@ -639,8 +653,9 @@ export function arch01(
         polylinelists.push(
             man(
                 prng,
-                xoff + normalizedRandom(prng, strokeWidth / 5, strokeWidth / 4),
-                yoff,
+                xOffset +
+                    normalizedRandom(prng, strokeWidth / 5, strokeWidth / 4),
+                yOffset,
                 true,
                 0.42
             )
@@ -649,8 +664,8 @@ export function arch01(
     polylinelists.push(
         rail(
             prng,
-            xoff,
-            yoff,
+            xOffset,
+            yOffset,
             seed,
             false,
             10,
@@ -666,14 +681,14 @@ export function arch01(
 
 export function arch02(
     prng: PRNG,
-    xoff: number,
-    yoff: number,
+    xOffset: number,
+    yOffset: number,
     strokeWidth = 50,
     sto = 3,
     rot = 0.3,
     sty = 1
 ): ISvgElement[] {
-    const hei = 10,
+    const height = 10,
         per = 5,
         rai = false;
 
@@ -694,9 +709,9 @@ export function arch02(
         elementlists.push(
             box(
                 prng,
-                xoff,
-                yoff - hoff,
-                hei,
+                xOffset,
+                yOffset - hoff,
+                height,
                 strokeWidth * Math.pow(0.85, i),
                 rot,
                 per,
@@ -710,11 +725,11 @@ export function arch02(
             rai
                 ? rail(
                       prng,
-                      xoff,
-                      yoff - hoff,
+                      xOffset,
+                      yOffset - hoff,
                       i * 0.2,
                       false,
-                      hei / 2,
+                      height / 2,
                       strokeWidth * Math.pow(0.85, i) * 1.1,
                       per,
                       4,
@@ -730,9 +745,9 @@ export function arch02(
         elementlists.push(
             roof(
                 prng,
-                xoff,
-                yoff - hoff - hei,
-                hei,
+                xOffset,
+                yOffset - hoff - height,
+                height,
                 strokeWidth * Math.pow(0.9, i),
                 rot,
                 1.5,
@@ -741,19 +756,19 @@ export function arch02(
             )
         );
 
-        hoff += hei * 1.5;
+        hoff += height * 1.5;
     }
     return elementlists.flat();
 }
 
 export function arch03(
     prng: PRNG,
-    xoff: number,
-    yoff: number,
+    xOffset: number,
+    yOffset: number,
     strokeWidth = 50,
     sto = 7
 ): SvgPolyline[] {
-    const hei = 10,
+    const height = 10,
         rot = 0.7,
         per = 5;
 
@@ -766,9 +781,9 @@ export function arch03(
         polylinelists.push(
             box(
                 prng,
-                xoff,
-                yoff - hoff,
-                hei,
+                xOffset,
+                yOffset - hoff,
+                height,
                 strokeWidth * Math.pow(0.85, i),
                 rot,
                 per / 2,
@@ -781,11 +796,11 @@ export function arch03(
         polylinelists.push(
             rail(
                 prng,
-                xoff,
-                yoff - hoff,
+                xOffset,
+                yOffset - hoff,
                 i * 0.2,
                 false,
-                hei / 2,
+                height / 2,
                 strokeWidth * Math.pow(0.85, i) * 1.1,
                 per / 2,
                 5,
@@ -797,26 +812,26 @@ export function arch03(
         polylinelists.push(
             pagroof(
                 prng,
-                xoff,
-                yoff - hoff - hei,
-                hei * 1.5,
+                xOffset,
+                yOffset - hoff - height,
+                height * 1.5,
                 strokeWidth * Math.pow(0.9, i),
                 1.5,
                 per
             )
         );
-        hoff += hei * 1.5;
+        hoff += height * 1.5;
     }
     return polylinelists.flat();
 }
 
 export function arch04(
     prng: PRNG,
-    xoff: number,
-    yoff: number,
+    xOffset: number,
+    yOffset: number,
     sto = 2
 ): SvgPolyline[] {
-    const hei = 15,
+    const height = 15,
         strokeWidth = 30,
         rot = 0.7,
         per = 5;
@@ -829,9 +844,9 @@ export function arch04(
         polylinelists.push(
             box(
                 prng,
-                xoff,
-                yoff - hoff,
-                hei,
+                xOffset,
+                yOffset - hoff,
+                height,
                 strokeWidth * Math.pow(0.85, i),
                 rot,
                 per / 2,
@@ -844,11 +859,11 @@ export function arch04(
         polylinelists.push(
             rail(
                 prng,
-                xoff,
-                yoff - hoff,
+                xOffset,
+                yOffset - hoff,
                 i * 0.2,
                 true,
-                hei / 3,
+                height / 3,
                 strokeWidth * Math.pow(0.85, i) * 1.2,
                 per / 2,
                 3,
@@ -860,23 +875,23 @@ export function arch04(
         polylinelists.push(
             pagroof(
                 prng,
-                xoff,
-                yoff - hoff - hei,
-                hei * 1,
+                xOffset,
+                yOffset - hoff - height,
+                height * 1,
                 strokeWidth * Math.pow(0.9, i),
                 1.5,
                 per
             )
         );
-        hoff += hei * 1.2;
+        hoff += height * 1.2;
     }
     return polylinelists.flat();
 }
 
 export function boat01(
     prng: PRNG,
-    xoff: number,
-    yoff: number,
+    xOffset: number,
+    yOffset: number,
     sca = 1,
     fli = false
 ): Chunk {
@@ -887,8 +902,8 @@ export function boat01(
     polylinelists.push(
         man(
             prng,
-            xoff + 20 * sca * dir,
-            yoff,
+            xOffset + 20 * sca * dir,
+            yOffset,
             !fli,
             0.5 * sca,
             [0, 30, 20, 30, 10, 30, 30, 30, 30],
@@ -907,11 +922,11 @@ export function boat01(
         plist2.push(new Point(i * dir, fun2(i / len)));
     }
     const plist: Point[] = plist1.concat(plist2.reverse());
-    polylinelists.push([poly(plist, xoff, yoff, "white")]);
+    polylinelists.push([poly(plist, xOffset, yOffset, "white")]);
     polylinelists.push([
         stroke(
             prng,
-            plist.map((v) => new Point(xoff + v.x, yoff + v.y)),
+            plist.map((v) => new Point(xOffset + v.x, yOffset + v.y)),
             "rgba(100,100,100,0.4)",
             "rgba(100,100,100,0.4)",
             1,
@@ -921,21 +936,26 @@ export function boat01(
         ),
     ]);
 
-    const chunk: Chunk = new Chunk("boat", xoff, yoff, polylinelists.flat());
+    const chunk: Chunk = new Chunk(
+        "boat",
+        xOffset,
+        yOffset,
+        polylinelists.flat()
+    );
     return chunk;
 }
 
 export function transmissionTower01(
     prng: PRNG,
-    xoff: number,
-    yoff: number
+    xOffset: number,
+    yOffset: number
 ): SvgPolyline[] {
-    const hei = 100,
+    const height = 100,
         strokeWidth = 20;
 
     const polylines: SvgPolyline[] = [];
 
-    const toGlobal = (v: Point) => new Point(v.x + xoff, v.y + yoff);
+    const toGlobal = (v: Point) => new Point(v.x + xOffset, v.y + yOffset);
 
     const quickstroke = function (pl: Point[]) {
         return stroke(
@@ -950,14 +970,14 @@ export function transmissionTower01(
         );
     };
 
-    const p00 = new Point(-strokeWidth * 0.05, -hei);
-    const p01 = new Point(strokeWidth * 0.05, -hei);
+    const p00 = new Point(-strokeWidth * 0.05, -height);
+    const p01 = new Point(strokeWidth * 0.05, -height);
 
-    const p10 = new Point(-strokeWidth * 0.1, -hei * 0.9);
-    const p11 = new Point(strokeWidth * 0.1, -hei * 0.9);
+    const p10 = new Point(-strokeWidth * 0.1, -height * 0.9);
+    const p11 = new Point(strokeWidth * 0.1, -height * 0.9);
 
-    const p20 = new Point(-strokeWidth * 0.2, -hei * 0.5);
-    const p21 = new Point(strokeWidth * 0.2, -hei * 0.5);
+    const p20 = new Point(-strokeWidth * 0.2, -height * 0.5);
+    const p21 = new Point(strokeWidth * 0.2, -height * 0.5);
 
     const p30 = new Point(-strokeWidth * 0.5, 0);
     const p31 = new Point(strokeWidth * 0.5, 0);
@@ -971,33 +991,33 @@ export function transmissionTower01(
     bch.forEach((i) => {
         polylines.push(
             quickstroke([
-                new Point(-i.x * strokeWidth, i.y * hei),
-                new Point(i.x * strokeWidth, i.y * hei),
+                new Point(-i.x * strokeWidth, i.y * height),
+                new Point(i.x * strokeWidth, i.y * height),
             ])
         );
         polylines.push(
             quickstroke([
-                new Point(-i.x * strokeWidth, i.y * hei),
-                new Point(0, (i.y - 0.05) * hei),
+                new Point(-i.x * strokeWidth, i.y * height),
+                new Point(0, (i.y - 0.05) * height),
             ])
         );
         polylines.push(
             quickstroke([
-                new Point(i.x * strokeWidth, i.y * hei),
-                new Point(0, (i.y - 0.05) * hei),
+                new Point(i.x * strokeWidth, i.y * height),
+                new Point(0, (i.y - 0.05) * height),
             ])
         );
 
         polylines.push(
             quickstroke([
-                new Point(-i.x * strokeWidth, i.y * hei),
-                new Point(-i.x * strokeWidth, (i.y + 0.1) * hei),
+                new Point(-i.x * strokeWidth, i.y * height),
+                new Point(-i.x * strokeWidth, (i.y + 0.1) * height),
             ])
         );
         polylines.push(
             quickstroke([
-                new Point(i.x * strokeWidth, i.y * hei),
-                new Point(i.x * strokeWidth, (i.y + 0.1) * hei),
+                new Point(i.x * strokeWidth, i.y * height),
+                new Point(i.x * strokeWidth, (i.y + 0.1) * height),
             ])
         );
     });
