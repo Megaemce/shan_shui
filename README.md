@@ -1,70 +1,110 @@
-# Getting Started with Create React App
+# {Shan, Shui}\*
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Procedurally-understandably-generated vector-format infinitely-scrolling Chinese landscape for the browser.
+This is a newer version of [RedContritio's](https://github.com/RedContritio) [app](https://github.com/RedContritio/shan_shui_inf) based on original code from [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf/blob/master/README.md#shan-shui) coded by [Lingdong Huang](https://github.com/LingDong-). This version is build on React 18 with less dependecies.
 
-## Available Scripts
+## Render Components
 
-In the project directory, you can run:
+### man
 
-### `npm start`
+![man](doc/img/man.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### water
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![water](doc/img/water.png)
 
-### `npm test`
+### architecture
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### arch01
 
-### `npm run build`
+![arch01](doc/img/arch/arch01.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+green - `hut`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+red - `box`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+pink - `rail`
 
-### `npm run eject`
+#### arch02
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![arch02](doc/img/arch/arch02.png)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+black - `deco`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+red - `box`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### arch03
 
-## Learn More
+![arch03](doc/img/arch/arch03.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+blue - `pagroof`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+red - `box`
 
-### Code Splitting
+pink - `rail`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### arch04
 
-### Analyzing the Bundle Size
+![arch04](doc/img/arch/arch04.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+blue - `pagroot`
 
-### Making a Progressive Web App
+red - `box`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+pink - `rail`
 
-### Advanced Configuration
+#### boat01
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+![boat01](doc/img/arch/boat01.png)
 
-### Deployment
+#### transmissionTower01
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+![tower01](doc/img/arch/tower01.png)
 
-### `npm run build` fails to minify
+### tree
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### tree01
+
+![tree01](doc/img/tree/tree01.png)
+
+#### tree02
+
+![tree02](doc/img/tree/tree02.png)
+
+#### tree03
+
+![tree03](doc/img/tree/tree03.png)
+
+#### tree04
+
+![tree04](doc/img/tree/tree04.png)
+
+#### tree05
+
+![tree05](doc/img/tree/tree05.png)
+
+#### tree06
+
+![tree06](doc/img/tree/tree06.png)
+
+#### tree07
+
+![tree07](doc/img/tree/tree07.png)
+
+#### tree08
+
+![tree08](doc/img/tree/tree08.png)
+
+### mountain
+
+#### mountain
+
+![mountain](doc/img/mountain.png)
+
+#### flatmountain
+
+![flatmountain](doc/img/flatmountain.png)
+
+#### distmountain
+
+![distmountain](doc/img/distmountain.png)
