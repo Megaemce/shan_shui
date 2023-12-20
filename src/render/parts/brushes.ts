@@ -11,9 +11,9 @@ import { SvgPolyline } from "../svg";
  * @param pointArray - List of points defining the stroke.
  * @param fillColor - Fill fillColor for the stroke.
  * @param strokeColor - Stroke fillColor.
- * @param strokeWidth - Width of the stroke.
+ * @param width - Width of the stroke.
  * @param noise - Amount of noise applied to the stroke.
- * @param outerStrokeWidth - Outer width of the stroke.
+ * @param strokWidth - Outer width of the stroke.
  * @param strokeWidthFunction - Function to modulate stroke width (default is sin function).
  * @returns SvgPolyline representing the stylized stroke.
  */
@@ -22,9 +22,9 @@ export function stroke(
     pointArray: Point[],
     fillColor: string = "rgba(200,200,200,0.9)",
     strokeColor: string = "rgba(200,200,200,0.9)",
-    strokeWidth: number = 2,
+    width: number = 2,
     noise: number = 0.5,
-    outerStrokeWidth: number = 1,
+    strokWidth: number = 1,
     strokeWidthFunction: (x: number) => number = (x: number) =>
         Math.sin(x * Math.PI)
 ): SvgPolyline {
@@ -35,10 +35,10 @@ export function stroke(
     const n0 = prng.random(0, 10);
 
     for (let i = 1; i < pointArray.length - 1; i++) {
-        let width = strokeWidth * strokeWidthFunction(i / pointArray.length);
-        width =
-            width * (1 - noise) +
-            width * noise * Noise.noise(prng, i * 0.5, n0);
+        let newWidth = width * strokeWidthFunction(i / pointArray.length);
+        newWidth =
+            newWidth * (1 - noise) +
+            newWidth * noise * Noise.noise(prng, i * 0.5, n0);
 
         const a1 = Math.atan2(
             pointArray[i].y - pointArray[i - 1].y,
@@ -56,14 +56,14 @@ export function stroke(
 
         vtxlist0.push(
             new Point(
-                pointArray[i].x + width * Math.cos(a),
-                pointArray[i].y + width * Math.sin(a)
+                pointArray[i].x + newWidth * Math.cos(a),
+                pointArray[i].y + newWidth * Math.sin(a)
             )
         );
         vtxlist1.push(
             new Point(
-                pointArray[i].x - width * Math.cos(a),
-                pointArray[i].y - width * Math.sin(a)
+                pointArray[i].x - newWidth * Math.cos(a),
+                pointArray[i].y - newWidth * Math.sin(a)
             )
         );
     }
@@ -76,14 +76,7 @@ export function stroke(
         )
         .concat([pointArray[0]]);
 
-    return createPolyline(
-        vtxlist,
-        0,
-        0,
-        fillColor,
-        strokeColor,
-        outerStrokeWidth
-    );
+    return createPolyline(vtxlist, 0, 0, fillColor, strokeColor, strokWidth);
 }
 
 /**

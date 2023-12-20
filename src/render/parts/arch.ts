@@ -94,12 +94,12 @@ function box(
     xOffset: number,
     yOffset: number,
     height: number = 20,
-    strokeWidth: number = 120,
+    width: number = 120,
     rot: number = 0.7,
     per: number = 4,
     tra: boolean = true,
     bot: boolean = true,
-    wei: number = 3,
+    strokeWidth: number = 3,
     dec: (pul: Point, pur: Point, pdl: Point, pdr: Point) => Point[][] = (
         _1,
         _2,
@@ -107,46 +107,27 @@ function box(
         _4
     ) => []
 ): SvgPolyline[] {
-    const mid = -strokeWidth * 0.5 + strokeWidth * rot;
-    const bmid = -strokeWidth * 0.5 + strokeWidth * (1 - rot);
+    const mid = -width * 0.5 + width * rot;
+    const bmid = -width * 0.5 + width * (1 - rot);
     const _ptlist: Point[][] = [];
     _ptlist.push(
-        div(
-            [
-                new Point(-strokeWidth * 0.5, -height),
-                new Point(-strokeWidth * 0.5, 0),
-            ],
-            5
-        )
+        div([new Point(-width * 0.5, -height), new Point(-width * 0.5, 0)], 5)
     );
     _ptlist.push(
-        div(
-            [
-                new Point(strokeWidth * 0.5, -height),
-                new Point(strokeWidth * 0.5, 0),
-            ],
-            5
-        )
+        div([new Point(width * 0.5, -height), new Point(width * 0.5, 0)], 5)
     );
     if (bot) {
-        _ptlist.push(
-            div([new Point(-strokeWidth * 0.5, 0), new Point(mid, per)], 5)
-        );
-        _ptlist.push(
-            div([new Point(strokeWidth * 0.5, 0), new Point(mid, per)], 5)
-        );
+        _ptlist.push(div([new Point(-width * 0.5, 0), new Point(mid, per)], 5));
+        _ptlist.push(div([new Point(width * 0.5, 0), new Point(mid, per)], 5));
     }
     _ptlist.push(div([new Point(mid, -height), new Point(mid, per)], 5));
     if (tra) {
         if (bot) {
             _ptlist.push(
-                div(
-                    [new Point(-strokeWidth * 0.5, 0), new Point(bmid, -per)],
-                    5
-                )
+                div([new Point(-width * 0.5, 0), new Point(bmid, -per)], 5)
             );
             _ptlist.push(
-                div([new Point(strokeWidth * 0.5, 0), new Point(bmid, -per)], 5)
+                div([new Point(width * 0.5, 0), new Point(bmid, -per)], 5)
             );
         }
         _ptlist.push(div([new Point(bmid, -height), new Point(bmid, -per)], 5));
@@ -155,19 +136,19 @@ function box(
     const surf = (rot < 0.5 ? 1 : 0) * 2 - 1;
     const ptlist = _ptlist.concat(
         dec(
-            new Point(surf * strokeWidth * 0.5, -height),
+            new Point(surf * width * 0.5, -height),
             new Point(mid, -height + per),
-            new Point(surf * strokeWidth * 0.5, 0),
+            new Point(surf * width * 0.5, 0),
             new Point(mid, per)
         )
     );
 
     const polist = [
-        new Point(strokeWidth * 0.5, -height),
-        new Point(strokeWidth * 0.5, -height),
-        new Point(strokeWidth * 0.5, 0),
+        new Point(width * 0.5, -height),
+        new Point(width * 0.5, -height),
+        new Point(width * 0.5, 0),
         new Point(mid, per),
-        new Point(-strokeWidth * 0.5, 0),
+        new Point(-width * 0.5, 0),
     ];
 
     const polylines: SvgPolyline[] = [];
@@ -186,7 +167,7 @@ function box(
                 }),
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",
-                wei,
+                strokeWidth,
                 1,
                 1,
                 (x) => 1
@@ -267,38 +248,36 @@ function rail(
     seed: number = 0,
     tra: boolean = true,
     height: number = 20,
-    strokeWidth: number = 180,
+    width: number = 180,
     per: number = 4,
     seg: number = 4,
     fro: boolean = true,
     rot: number = 0.7,
-    wei: number = 1
+    strokeWidth: number = 1
 ): SvgPolyline[] {
-    const mid = -strokeWidth * 0.5 + strokeWidth * rot;
-    const bmid = -strokeWidth * 0.5 + strokeWidth * (1 - rot);
+    const mid = -width * 0.5 + width * rot;
+    const bmid = -width * 0.5 + width * (1 - rot);
     const ptlist = [];
 
     if (fro) {
         ptlist.push(
-            div([new Point(-strokeWidth * 0.5, 0), new Point(mid, per)], seg)
+            div([new Point(-width * 0.5, 0), new Point(mid, per)], seg)
         );
-        ptlist.push(
-            div([new Point(mid, per), new Point(strokeWidth * 0.5, 0)], seg)
-        );
+        ptlist.push(div([new Point(mid, per), new Point(width * 0.5, 0)], seg));
     }
     if (tra) {
         ptlist.push(
-            div([new Point(-strokeWidth * 0.5, 0), new Point(bmid, -per)], seg)
+            div([new Point(-width * 0.5, 0), new Point(bmid, -per)], seg)
         );
         ptlist.push(
-            div([new Point(bmid, -per), new Point(strokeWidth * 0.5, 0)], seg)
+            div([new Point(bmid, -per), new Point(width * 0.5, 0)], seg)
         );
     }
     if (fro) {
         ptlist.push(
             div(
                 [
-                    new Point(-strokeWidth * 0.5, -height),
+                    new Point(-width * 0.5, -height),
                     new Point(mid, -height + per),
                 ],
                 seg
@@ -308,7 +287,7 @@ function rail(
             div(
                 [
                     new Point(mid, -height + per),
-                    new Point(strokeWidth * 0.5, -height),
+                    new Point(width * 0.5, -height),
                 ],
                 seg
             )
@@ -318,7 +297,7 @@ function rail(
         ptlist.push(
             div(
                 [
-                    new Point(-strokeWidth * 0.5, -height),
+                    new Point(-width * 0.5, -height),
                     new Point(bmid, -height - per),
                 ],
                 seg
@@ -328,7 +307,7 @@ function rail(
             div(
                 [
                     new Point(bmid, -height - per),
-                    new Point(strokeWidth * 0.5, -height),
+                    new Point(width * 0.5, -height),
                 ],
                 seg
             )
@@ -386,7 +365,7 @@ function rail(
                 }),
                 "rgba(100,100,100,0.5)",
                 "rgba(100,100,100,0.5)",
-                wei,
+                strokeWidth,
                 0.5,
                 1,
                 (_) => 1
@@ -401,9 +380,9 @@ function roof(
     xOffset: number,
     yOffset: number,
     height = 20,
-    strokeWidth = 120,
+    width = 120,
     rot = 0.7,
-    wei = 3,
+    strokeWidth = 3,
     per = 4,
     pla: [number, string] = [0, ""],
     cor = 5
@@ -417,20 +396,17 @@ function roof(
     };
     const rrot = rot < 0.5 ? 1 - rot : rot;
 
-    const mid = -strokeWidth * 0.5 + strokeWidth * rrot;
-    // const bmid = -strokeWidth * 0.5 + strokeWidth * (1 - rrot);
-    const quat = (mid + strokeWidth * 0.5) * 0.5 - mid;
+    const mid = -width * 0.5 + width * rrot;
+    // const bmid = -width * 0.5 + width * (1 - rrot);
+    const quat = (mid + width * 0.5) * 0.5 - mid;
 
     const ptlist = [];
     ptlist.push(
         div(
             opf([
-                new Point(-strokeWidth * 0.5 + quat, -height - per / 2),
-                new Point(
-                    -strokeWidth * 0.5 + quat * 0.5,
-                    -height / 2 - per / 4
-                ),
-                new Point(-strokeWidth * 0.5 - cor, 0),
+                new Point(-width * 0.5 + quat, -height - per / 2),
+                new Point(-width * 0.5 + quat * 0.5, -height / 2 - per / 4),
+                new Point(-width * 0.5 - cor, 0),
             ]),
             5
         )
@@ -439,8 +415,8 @@ function roof(
         div(
             opf([
                 new Point(mid + quat, -height),
-                new Point((mid + quat + strokeWidth * 0.5) / 2, -height / 2),
-                new Point(strokeWidth * 0.5 + cor, 0),
+                new Point((mid + quat + width * 0.5) / 2, -height / 2),
+                new Point(width * 0.5 + cor, 0),
             ]),
             5
         )
@@ -458,19 +434,13 @@ function roof(
 
     ptlist.push(
         div(
-            opf([
-                new Point(-strokeWidth * 0.5 - cor, 0),
-                new Point(mid + cor, per),
-            ]),
+            opf([new Point(-width * 0.5 - cor, 0), new Point(mid + cor, per)]),
             5
         )
     );
     ptlist.push(
         div(
-            opf([
-                new Point(strokeWidth * 0.5 + cor, 0),
-                new Point(mid + cor, per),
-            ]),
+            opf([new Point(width * 0.5 + cor, 0), new Point(mid + cor, per)]),
             5
         )
     );
@@ -478,7 +448,7 @@ function roof(
     ptlist.push(
         div(
             opf([
-                new Point(-strokeWidth * 0.5 + quat, -height - per / 2),
+                new Point(-width * 0.5 + quat, -height - per / 2),
                 new Point(mid + quat, -height),
             ]),
             5
@@ -488,10 +458,10 @@ function roof(
     const polylines: ISvgElement[] = [];
 
     const polist = opf([
-        new Point(-strokeWidth * 0.5, 0),
-        new Point(-strokeWidth * 0.5 + quat, -height - per / 2),
+        new Point(-width * 0.5, 0),
+        new Point(-width * 0.5 + quat, -height - per / 2),
         new Point(mid + quat, -height),
-        new Point(strokeWidth * 0.5, 0),
+        new Point(width * 0.5, 0),
         new Point(mid, per),
     ]);
     polylines.push(createPolyline(polist, xOffset, yOffset, "white", "none"));
@@ -505,7 +475,7 @@ function roof(
                 }),
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",
-                wei,
+                strokeWidth,
                 1,
                 1,
                 (_) => 1
@@ -547,8 +517,8 @@ function pagroof(
     xOffset: number,
     yOffset: number,
     height = 20,
-    strokeWidth = 120,
-    wei = 3,
+    width = 120,
+    strokeWidth = 3,
     per = 4
 ): SvgPolyline[] {
     const cor = 10,
@@ -558,9 +528,9 @@ function pagroof(
     const polylines: SvgPolyline[] = [];
 
     for (let i = 0; i < sid; i++) {
-        const fx = strokeWidth * ((i * 1.0) / (sid - 1) - 0.5);
+        const fx = width * ((i * 1.0) / (sid - 1) - 0.5);
         const fy = per * (1 - Math.abs((i * 1.0) / (sid - 1) - 0.5) * 2);
-        const fxx = (strokeWidth + cor) * ((i * 1.0) / (sid - 1) - 0.5);
+        const fxx = (width + cor) * ((i * 1.0) / (sid - 1) - 0.5);
         if (i > 0) {
             ptlist.push([ptlist[ptlist.length - 1][2], new Point(fxx, fy)]);
         }
@@ -583,7 +553,7 @@ function pagroof(
                 }),
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",
-                wei,
+                strokeWidth,
                 1,
                 1,
                 (_) => 1
