@@ -49,7 +49,7 @@ export class ChunkCache {
                       ];
 
             const plan: IChunk[] = design(prng, this.mountainArray, start, end);
-            this.processChunk(plan, prng);
+            this.processChunk(prng, plan);
         }
 
         this.chunks.sort((a, b) => a.y - b.y);
@@ -60,7 +60,7 @@ export class ChunkCache {
      * @param plan - The generated chunk plan.
      * @param prng - The pseudo-random number generator.
      */
-    private processChunk(plan: IChunk[], prng: PRNG): void {
+    private processChunk(prng: PRNG, plan: IChunk[]): void {
         for (let i = 0; i < plan.length; i++) {
             const { tag, x, y } = plan[i];
 
