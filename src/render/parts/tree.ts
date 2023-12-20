@@ -1,7 +1,8 @@
 import { Noise } from "../basic/perlinNoise";
 import { distance, Point, Vector } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
-import { loopNoise, poly } from "../basic/utils";
+import { loopNoise } from "../basic/utils";
+import { createPolyline } from "../svg/createPolyline";
 import { midPoint, triangulate } from "../basic/polytools";
 import { SvgPolyline } from "../svg/types";
 import { blob_points, blob, div, stroke } from "./brushes";
@@ -69,8 +70,8 @@ export function tree01(
         );
     }
 
-    polylines.push(poly(line1, 0, 0, "none", col, 1.5));
-    polylines.push(poly(line2, 0, 0, "none", col, 1.5));
+    polylines.push(createPolyline(line1, 0, 0, "none", col, 1.5));
+    polylines.push(createPolyline(line2, 0, 0, "none", col, 1.5));
     return polylines;
 }
 
@@ -180,7 +181,7 @@ export function tree03(
         );
     }
     const lc = line1.concat(line2.reverse());
-    polylines.push(poly(lc, 0, 0, "white", col, 1.5));
+    polylines.push(createPolyline(lc, 0, 0, "white", col, 1.5));
 
     return polylines.concat(blobs);
 }
@@ -586,7 +587,7 @@ export function tree04(prng: PRNG, x: number, y: number): SvgPolyline[] {
             trmlist.push(trlist[i]);
         }
     }
-    polylineArray.push([poly(trmlist, x, y, "white", col)]);
+    polylineArray.push([createPolyline(trmlist, x, y, "white", col)]);
 
     trmlist.splice(0, 1);
     trmlist.splice(trmlist.length - 1, 1);
@@ -694,7 +695,7 @@ export function tree05(
         }
     }
 
-    polylineArray.push([poly(trmlist, x, y, "white", col)]);
+    polylineArray.push([createPolyline(trmlist, x, y, "white", col)]);
 
     trmlist.splice(0, 1);
     trmlist.splice(trmlist.length - 1, 1);
@@ -824,7 +825,7 @@ export function tree06(
         0
     );
 
-    polylineArray.push([poly(trmlist, x, y, "white", col, 0)]);
+    polylineArray.push([createPolyline(trmlist, x, y, "white", col, 0)]);
 
     trmlist.splice(0, 1);
     trmlist.splice(trmlist.length - 1, 1);
@@ -898,7 +899,7 @@ export function tree07(
                     bfunc
                 );
 
-                //canv+=poly(bpl,{fill:col,strokeWidth:0})
+                //canv+=createPolyline(bpl,{fill:col,strokeWidth:0})
                 T = T.concat(triangulate(bpl as Point[], 50, true, false));
             }
         }
@@ -916,14 +917,14 @@ export function tree07(
         );
     }
 
-    //canv += poly(line1.concat(line2.reverse()),{fill:col,strokeWidth:0})
+    //canv += createPolyline(line1.concat(line2.reverse()),{fill:col,strokeWidth:0})
     T = triangulate(line1.concat(line2.reverse()), 50, true, true).concat(T);
 
     for (let k = 0; k < T.length; k++) {
         const m = midPoint(T[k]);
         const c = (Noise.noise(prng, m.x * 0.02, m.y * 0.02) * 200 + 50) | 0;
         const co = `rgba(${c},${c},${c},0.8)`;
-        polylines.push(poly(T[k], 0, 0, co, co));
+        polylines.push(createPolyline(T[k], 0, 0, co, co));
     }
     return polylines;
 }
@@ -1085,7 +1086,7 @@ export function tree08(
         }
     }
 
-    polylineArray.push([poly(trlist, x, y, "white", col)]);
+    polylineArray.push([createPolyline(trlist, x, y, "white", col)]);
 
     const color = `rgba(100,100,100,${prng.random(0.6, 0.7).toFixed(3)})`;
     polylineArray.push([

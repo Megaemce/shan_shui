@@ -1,7 +1,8 @@
 import { Noise } from "../basic/perlinNoise";
 import { Point, Vector } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
-import { loopNoise, poly } from "../basic/utils";
+import { loopNoise } from "../basic/utils";
+import { createPolyline } from "../svg/createPolyline";
 import { SvgPolyline } from "../svg";
 
 /**
@@ -75,7 +76,14 @@ export function stroke(
         )
         .concat([pointArray[0]]);
 
-    return poly(vtxlist, 0, 0, fillColor, strokeColor, outerStrokeWidth);
+    return createPolyline(
+        vtxlist,
+        0,
+        0,
+        fillColor,
+        strokeColor,
+        outerStrokeWidth
+    );
 }
 
 /**
@@ -115,7 +123,7 @@ export function blob(
         noise,
         strokeWidthFunction
     );
-    return poly(pointArray, 0, 0, fillColor, fillColor);
+    return createPolyline(pointArray, 0, 0, fillColor, fillColor);
 }
 
 /**

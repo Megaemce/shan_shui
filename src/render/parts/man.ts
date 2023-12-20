@@ -1,7 +1,8 @@
 import { Noise } from "../basic/perlinNoise";
 import { distance, IPoint, Point, Vector } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
-import { generateBezierCurve, poly } from "../basic/utils";
+import { generateBezierCurve } from "../basic/utils";
+import { createPolyline } from "../svg/createPolyline";
 import { SvgPolyline } from "../svg/types";
 import { stroke } from "./brushes";
 
@@ -112,7 +113,7 @@ export function hat01(
     const f: (pl: Point[]) => Point[] = horizontalFlip ? flipper : (x) => x;
     //const pointArray = [[-0.5,0.5],[0.5,0.5],[0.5,1],[-0.5,2]]
     polylines.push(
-        poly(
+        createPolyline(
             tranpoly(
                 p0,
                 p1,
@@ -142,7 +143,7 @@ export function hat01(
         );
     }
     polylines.push(
-        poly(
+        createPolyline(
             tranpoly(p0, p1, f(qlist1)),
             0,
             0,
@@ -165,7 +166,7 @@ export function hat02(
     const f: (pl: Point[]) => Point[] = horizontalFlip ? flipper : (x) => x;
 
     polylines.push(
-        poly(
+        createPolyline(
             tranpoly(
                 p0,
                 p1,
@@ -215,7 +216,7 @@ export function stick01(
         );
     }
     polylines.push(
-        poly(
+        createPolyline(
             tranpoly(p0, p1, f(qlist1)),
             0,
             0,
@@ -238,7 +239,12 @@ function cloth(
     const tlist = generateBezierCurve(pointArray);
     const [tlist1, tlist2] = expand(tlist, fun);
     polylines.push(
-        poly(tlist1.concat(tlist2.reverse()).map(toGlobal), 0, 0, "white")
+        createPolyline(
+            tlist1.concat(tlist2.reverse()).map(toGlobal),
+            0,
+            0,
+            "white"
+        )
     );
     polylines.push(
         stroke(
@@ -420,7 +426,7 @@ export function man(
     hlist1.splice(0, Math.floor(hlist1.length * 0.1));
     hlist2.splice(0, Math.floor(hlist2.length * 0.95));
     polylineArray.push([
-        poly(
+        createPolyline(
             hlist1.concat(hlist2.reverse()).map(toGlobal),
             0,
             0,

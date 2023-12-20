@@ -1,5 +1,6 @@
 import { distance, Point } from "../basic/point";
-import { loopNoise, poly } from "../basic/utils";
+import { loopNoise } from "../basic/utils";
+import { createPolyline } from "../svg/createPolyline";
 import { Noise } from "../basic/perlinNoise";
 import { div, stroke, texture } from "./brushes";
 import {
@@ -88,7 +89,9 @@ export function foot(
     const polylines: SvgPolyline[] = [];
 
     for (let i = 0; i < footArray.length; i++) {
-        polylines.push(poly(footArray[i], xOffset, yOffset, "white", "none"));
+        polylines.push(
+            createPolyline(footArray[i], xOffset, yOffset, "white", "none")
+        );
     }
 
     for (let j = 0; j < footArray.length; j++) {
@@ -219,7 +222,7 @@ export function mountain(
 
     // WHITE BG
     elementLists.push([
-        poly(
+        createPolyline(
             pointArray[0].concat([new Point(0, reso[0] * 4)]),
             xOffset,
             yOffset,
@@ -571,7 +574,7 @@ export function generateFlatMountain(
 
     // WHITE BG
     polylineArray.push([
-        poly(
+        createPolyline(
             pointArray[0].concat([new Point(0, reso[0] * 4)]),
             xOffset,
             yOffset,
@@ -659,7 +662,9 @@ export function generateFlatMountain(
         grlist[i].x *= 1 - v + Noise.noise(prng, grlist[i].y * 0.5) * v;
     }
 
-    polylineArray.push([poly(grlist, xOffset, yOffset, "white", "none", 2)]);
+    polylineArray.push([
+        createPolyline(grlist, xOffset, yOffset, "white", "none", 2),
+    ]);
     polylineArray.push([
         stroke(
             prng,
@@ -955,14 +960,14 @@ export function generateDistantMountain(
         };
         const pe = pointArray[i][pointArray[i].length - 1];
         polylines.push(
-            poly(pointArray[i], 0, 0, getCol(pe.x, pe.y), "none", 1)
+            createPolyline(pointArray[i], 0, 0, getCol(pe.x, pe.y), "none", 1)
         );
 
         const T = triangulate(pointArray[i], 100, true, false);
         for (let k = 0; k < T.length; k++) {
             const m = midPoint(T[k]);
             const co = getCol(m.x, m.y);
-            polylines.push(poly(T[k], 0, 0, co, co, 1));
+            polylines.push(createPolyline(T[k], 0, 0, co, co, 1));
         }
     }
 
@@ -1035,7 +1040,7 @@ export function generateRock(
 
     //WHITE BG
     polylineArray.push([
-        poly(
+        createPolyline(
             pointArray[0].concat([new Point(0, 0)]),
             xOffset,
             yOffset,

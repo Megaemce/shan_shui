@@ -2,7 +2,7 @@ import { Chunk } from "../basic/chunk";
 import { Noise } from "../basic/perlinNoise";
 import { Point } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
-import { poly } from "../basic/utils";
+import { createPolyline } from "../svg/createPolyline";
 import { midPoint } from "../basic/polytools";
 import { ISvgElement } from "../svg";
 import { SvgPolyline, SvgText } from "../svg/types";
@@ -43,7 +43,7 @@ function hut(
     const polylines: SvgPolyline[] = [];
 
     polylines.push(
-        poly(
+        createPolyline(
             ptlist[0]
                 .slice(0, -1)
                 .concat(ptlist[ptlist.length - 1].slice(0, -1).reverse()),
@@ -54,10 +54,17 @@ function hut(
         )
     );
     polylines.push(
-        poly(ptlist[0], xOffset, yOffset, "none", "rgba(100,100,100,0.3)", 2)
+        createPolyline(
+            ptlist[0],
+            xOffset,
+            yOffset,
+            "none",
+            "rgba(100,100,100,0.3)",
+            2
+        )
     );
     polylines.push(
-        poly(
+        createPolyline(
             ptlist[ptlist.length - 1],
             xOffset,
             yOffset,
@@ -165,7 +172,9 @@ function box(
 
     const polylines: SvgPolyline[] = [];
     if (!tra) {
-        polylines.push(poly(polist, xOffset, yOffset, "white", "none"));
+        polylines.push(
+            createPolyline(polist, xOffset, yOffset, "white", "none")
+        );
     }
 
     for (let i = 0; i < ptlist.length; i++) {
@@ -356,7 +365,14 @@ function rail(
             );
             ln[0].x += prng.random(-0.25, 0.25) * height;
             polylines.push(
-                poly(ln, xOffset, yOffset, "none", "rgba(100,100,100,0.5)", 2)
+                createPolyline(
+                    ln,
+                    xOffset,
+                    yOffset,
+                    "none",
+                    "rgba(100,100,100,0.5)",
+                    2
+                )
             );
         }
     }
@@ -478,7 +494,7 @@ function roof(
         new Point(strokeWidth * 0.5, 0),
         new Point(mid, per),
     ]);
-    polylines.push(poly(polist, xOffset, yOffset, "white", "none"));
+    polylines.push(createPolyline(polist, xOffset, yOffset, "white", "none"));
 
     for (let i = 0; i < ptlist.length; i++) {
         polylines.push(
@@ -517,7 +533,7 @@ function roof(
                 mp.y + yOffset
             }) rotate(${adeg})`,
             style: {
-                fillColor: "rgba(100, 100, 100, 0.9)",
+                fill: "rgba(100, 100, 100, 0.9)",
             },
         });
 
@@ -556,7 +572,7 @@ function pagroof(
         polist.push(new Point(fxx, fy));
     }
 
-    polylines.push(poly(polist, xOffset, yOffset, "white", "none"));
+    polylines.push(createPolyline(polist, xOffset, yOffset, "white", "none"));
 
     for (let i = 0; i < ptlist.length; i++) {
         polylines.push(
@@ -917,7 +933,7 @@ export function boat01(
         plist2.push(new Point(i * dir, fun2(i / len)));
     }
     const plist: Point[] = plist1.concat(plist2.reverse());
-    polylineArray.push([poly(plist, xOffset, yOffset, "white")]);
+    polylineArray.push([createPolyline(plist, xOffset, yOffset, "white")]);
     polylineArray.push([
         stroke(
             prng,
