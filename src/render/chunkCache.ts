@@ -65,7 +65,7 @@ export class ChunkCache {
 
             if (tag === "mount") {
                 this.chunks.push(mountain(prng, x, y, prng.random(0, 2 * i)));
-                this.chunks.push(water(prng, x, y, i * 2));
+                this.chunks.push(water(prng, x, y));
             } else if (tag === "flatmount") {
                 this.chunks.push(
                     generateFlatMountain(
