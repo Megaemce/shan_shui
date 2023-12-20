@@ -5,7 +5,7 @@ export interface ISvgStyles {
     /** Fill color of the SVG element. */
     fill: string;
     /** Stroke color of the SVG element. */
-    strokeColor: string;
+    stroke: string;
     /** Stroke width of the SVG element. */
     strokeWidth: number;
 }
