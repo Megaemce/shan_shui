@@ -22,7 +22,6 @@ const App: React.FC = () => {
         new Range(0, window.innerWidth)
     );
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
-    const [updateFlag, setUpdateFlag] = useState<boolean>(false);
     const [backgroundImage, setBackgroundImage] = useState<string | undefined>(
         undefined
     );
@@ -59,13 +58,12 @@ const App: React.FC = () => {
         (v: number) => {
             const nextX = cursX + v;
             setCursX(nextX);
-            setUpdateFlag(!updateFlag);
 
             if (autoLoad) {
                 setSaveRange(new Range(nextX, nextX + windX));
             }
         },
-        [autoLoad, cursX, updateFlag, windX]
+        [autoLoad, cursX, windX]
     );
 
     const autoXScroll = useCallback(
@@ -131,7 +129,6 @@ const App: React.FC = () => {
                     seed={seed}
                     cursx={cursX}
                     windx={windX}
-                    updateflag={updateFlag}
                     prng={prngRef.current}
                     chunkCache={chunkCacheRef.current}
                 />

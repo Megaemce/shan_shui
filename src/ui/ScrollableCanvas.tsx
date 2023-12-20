@@ -39,7 +39,6 @@ interface IProps {
     seed: string;
     cursx: number;
     windx: number;
-    updateflag: boolean;
     prng: PRNG;
     chunkCache: ChunkCache;
 }
@@ -51,7 +50,6 @@ const ScrollableCanvas: React.FC<IProps> = ({
     seed,
     cursx,
     windx,
-    updateflag,
     prng,
     chunkCache,
 }) => {
