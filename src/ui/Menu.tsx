@@ -44,8 +44,8 @@ const Menu: React.FC<MenuProps> = ({
     const changeStep = (event: ChangeEvent<HTMLInputElement>) =>
         setStep(event.target.valueAsNumber);
 
-    const xscrollLeft = () => horizontalScroll(-1 * step);
-    const xscrollRight = () => horizontalScroll(step);
+    const horizonalScrollLeft = () => horizontalScroll(-1 * step);
+    const horizonalScrollRight = () => horizontalScroll(step);
 
     const toggleAutoScrollHandler = (event: ChangeEvent<HTMLInputElement>) =>
         toggleAutoScroll(event.target.checked, step);
@@ -112,7 +112,10 @@ const Menu: React.FC<MenuProps> = ({
                     </tr>
                     <tr>
                         <td>
-                            <button title="view left" onClick={xscrollLeft}>
+                            <button
+                                title="view left"
+                                onClick={horizonalScrollLeft}
+                            >
                                 &lt;
                             </button>
                             <input
@@ -125,7 +128,10 @@ const Menu: React.FC<MenuProps> = ({
                                 step={20}
                                 onChange={changeStep}
                             />
-                            <button title="view right" onClick={xscrollRight}>
+                            <button
+                                title="view right"
+                                onClick={horizonalScrollRight}
+                            >
                                 &gt;
                             </button>
                         </td>
