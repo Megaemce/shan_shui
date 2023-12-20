@@ -5,7 +5,7 @@ This is a newer version of [RedContritio's](https://github.com/RedContritio) [ap
 
 ## Render Components
 
-### man
+### generateMan
 
 ![man](doc/img/man.png)
 
@@ -15,96 +15,96 @@ This is a newer version of [RedContritio's](https://github.com/RedContritio) [ap
 
 ### architecture
 
-#### arch01
+#### GenerateArch01
 
 ![arch01](doc/img/arch/arch01.png)
 
-green - `hut`
+green - `generateHut`
 
-red - `box`
+red - `generateBox`
 
-pink - `rail`
+pink - `generateRail`
 
-#### arch02
+#### GenerateArch02
 
 ![arch02](doc/img/arch/arch02.png)
 
-black - `deco`
+black - `generateDeco`
 
-red - `box`
+red - `generateBox`
 
-#### arch03
+#### generateArch03
 
 ![arch03](doc/img/arch/arch03.png)
 
-blue - `pagroof`
+blue - `generatePagodaRoof`
 
-red - `box`
+red - `generateBox`
 
-pink - `rail`
+pink - `generateRail`
 
-#### arch04
+#### generateArch04
 
 ![arch04](doc/img/arch/arch04.png)
 
-blue - `pagroot`
+blue - `generatePagodaRoof`
 
-red - `box`
+red - `generateBox`
 
-pink - `rail`
+pink - `generateRail`
 
-#### boat01
+#### generateBoat
 
 ![boat01](doc/img/arch/boat01.png)
 
-#### transmissionTower01
+#### generateTransmissionTower
 
 ![tower01](doc/img/arch/tower01.png)
 
 ### tree
 
-#### tree01
+#### generateTree01
 
 ![tree01](doc/img/tree/tree01.png)
 
-#### tree02
+#### generateTree02
 
 ![tree02](doc/img/tree/tree02.png)
 
-#### tree03
+#### generateTree03
 
 ![tree03](doc/img/tree/tree03.png)
 
-#### tree04
+#### generateTree04
 
 ![tree04](doc/img/tree/tree04.png)
 
-#### tree05
+#### generateTree05
 
 ![tree05](doc/img/tree/tree05.png)
 
-#### tree06
+#### generateTree06
 
 ![tree06](doc/img/tree/tree06.png)
 
-#### tree07
+#### generateTree07
 
 ![tree07](doc/img/tree/tree07.png)
 
-#### tree08
+#### generateTree08
 
 ![tree08](doc/img/tree/tree08.png)
 
 ### mountain
 
-#### mountain
+#### generateMountain
 
 ![mountain](doc/img/mountain.png)
 
-#### flatmountain
+#### generateFlatMountain
 
 ![flatmountain](doc/img/flatmountain.png)
 
-#### distmountain
+#### generateDistantMountain
 
 ![distmountain](doc/img/distmountain.png)

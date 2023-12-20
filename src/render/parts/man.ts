@@ -6,6 +6,13 @@ import { createPolyline } from "../svg/createPolyline";
 import { SvgPolyline } from "../svg/types";
 import { stroke } from "./brushes";
 
+/**
+ * Expands a given array of points using a width function.
+ *
+ * @param {Point[]} pointArray - The array of points to be expanded.
+ * @param {(v: number) => number} wfun - The width function.
+ * @returns {Point[][]} An array containing two sets of expanded points.
+ */
 function expand(pointArray: Point[], wfun: (v: number) => number): Point[][] {
     const vtxlist0: Point[] = [];
     const vtxlist1: Point[] = [];
@@ -79,6 +86,14 @@ function expand(pointArray: Point[], wfun: (v: number) => number): Point[][] {
     return [vtxlist0, vtxlist1];
 }
 
+/**
+ * Transforms a polygon defined by a point array using a line segment.
+ *
+ * @param {Point} p0 - The starting point of the line segment.
+ * @param {Point} p1 - The ending point of the line segment.
+ * @param {Point[]} pointArray - The array of points defining the polygon.
+ * @returns {Point[]} The transformed polygon.
+ */
 function tranpoly(p0: Point, p1: Point, pointArray: Point[]): Point[] {
     const array = pointArray.map(function (v) {
         return new Point(-v.x, v.y);
@@ -96,36 +111,50 @@ function tranpoly(p0: Point, p1: Point, pointArray: Point[]): Point[] {
     return qlist;
 }
 
-const flipper = function (pointArray: Point[]): Point[] {
+/**
+ * Flips a polygon horizontally if the horizontalFlip is true. Otherwise return original array.
+ *
+ * @param {Point[]} pointArray - The array of points defining the polygon.
+ * @param {boolean} horizontalFlip - Whether to perform a horizontal flip.
+ * @returns {Point[]} The flipped polygon.
+ */
+const flipPolygon = function (
+    pointArray: Point[],
+    horizontalFlip: boolean
+): Point[] {
     return pointArray.map(function (v) {
-        return new Point(-v.x, v.y);
+        return horizontalFlip ? new Point(-v.x, v.y) : v;
     });
 };
-
-export function hat01(
+/**
+ * Generates a hat (version 01) using procedural generation.
+ *
+ * @param {PRNG} prng - The pseudorandom number generator.
+ * @param {Point} p0 - The starting point of the line segment.
+ * @param {Point} p1 - The ending point of the line segment.
+ * @param {boolean} [horizontalFlip=false] - Indicates whether to horizontally flip the hat.
+ * @returns {SvgPolyline[]} An array of SvgPolyline representing the hat.
+ */
+export function generateHat01(
     prng: PRNG,
     p0: Point,
     p1: Point,
-    horizontalFlip = false
+    horizontalFlip: boolean = false
 ): SvgPolyline[] {
     const polylines: SvgPolyline[] = [];
-    const f: (pl: Point[]) => Point[] = horizontalFlip ? flipper : (x) => x;
-    //const pointArray = [[-0.5,0.5],[0.5,0.5],[0.5,1],[-0.5,2]]
+    const shapePoint = [
+        new Point(-0.3, 0.5),
+        new Point(0.3, 0.8),
+        new Point(0.2, 1),
+        new Point(0, 1.1),
+        new Point(-0.3, 1.15),
+        new Point(-0.55, 1),
+        new Point(-0.65, 0.5),
+    ];
+
     polylines.push(
         createPolyline(
-            tranpoly(
-                p0,
-                p1,
-                f([
-                    new Point(-0.3, 0.5),
-                    new Point(0.3, 0.8),
-                    new Point(0.2, 1),
-                    new Point(0, 1.1),
-                    new Point(-0.3, 1.15),
-                    new Point(-0.55, 1),
-                    new Point(-0.65, 0.5),
-                ])
-            ),
+            tranpoly(p0, p1, flipPolygon(shapePoint, horizontalFlip)),
             0,
             0,
             "rgba(100,100,100,0.8)"
@@ -143,7 +172,7 @@ export function hat01(
     }
     polylines.push(
         createPolyline(
-            tranpoly(p0, p1, f(qlist1)),
+            tranpoly(p0, p1, flipPolygon(qlist1, horizontalFlip)),
             0,
             0,
             "rgba(0, 0, 0, 0)",
@@ -155,33 +184,37 @@ export function hat01(
     return polylines;
 }
 
-export function hat02(
+/**
+ * Generates a hat (version 02) using procedural generation.
+ *
+ * @param {PRNG} prng - The pseudorandom number generator.
+ * @param {Point} p0 - The starting point of the line segment.
+ * @param {Point} p1 - The ending point of the line segment.
+ * @param {boolean} [horizontalFlip=false] - Indicates whether to horizontally flip the hat.
+ * @returns {SvgPolyline[]} An array of SvgPolyline representing the hat.
+ */
+export function generateHat02(
     prng: PRNG,
     p0: Point,
     p1: Point,
     horizontalFlip = false
 ): SvgPolyline[] {
     const polylines: SvgPolyline[] = [];
-    const f: (pl: Point[]) => Point[] = horizontalFlip ? flipper : (x) => x;
-
+    const shapePoint = [
+        new Point(-0.3, 0.5),
+        new Point(-1.1, 0.5),
+        new Point(-1.2, 0.6),
+        new Point(-1.1, 0.7),
+        new Point(-0.3, 0.8),
+        new Point(0.3, 0.8),
+        new Point(1.0, 0.7),
+        new Point(1.3, 0.6),
+        new Point(1.2, 0.5),
+        new Point(0.3, 0.5),
+    ];
     polylines.push(
         createPolyline(
-            tranpoly(
-                p0,
-                p1,
-                f([
-                    new Point(-0.3, 0.5),
-                    new Point(-1.1, 0.5),
-                    new Point(-1.2, 0.6),
-                    new Point(-1.1, 0.7),
-                    new Point(-0.3, 0.8),
-                    new Point(0.3, 0.8),
-                    new Point(1.0, 0.7),
-                    new Point(1.3, 0.6),
-                    new Point(1.2, 0.5),
-                    new Point(0.3, 0.5),
-                ])
-            ),
+            tranpoly(p0, p1, flipPolygon(shapePoint, horizontalFlip)),
             0,
             0,
             "rgba(100,100,100,0.8)"
@@ -190,7 +223,16 @@ export function hat02(
     return polylines;
 }
 
-export function stick01(
+/**
+ * Generates a stick SVG polyline.
+ *
+ * @param {PRNG} prng - The pseudo-random number generator.
+ * @param {Point} p0 - The start point.
+ * @param {Point} p1 - The end point.
+ * @param {boolean} [horizontalFlip=false] - Whether to horizontally flip the stick.
+ * @returns {SvgPolyline[]} An array of SVG polylines representing the stick.
+ */
+export function generateStick(
     prng: PRNG,
     p0: Point,
     p1: Point,
@@ -198,8 +240,6 @@ export function stick01(
 ): SvgPolyline[] {
     const polylines: SvgPolyline[] = [];
     const seed = prng.random();
-
-    const f: (pl: Point[]) => Point[] = horizontalFlip ? flipper : (x) => x;
 
     const qlist1 = [];
     const l = 12;
@@ -216,7 +256,7 @@ export function stick01(
     }
     polylines.push(
         createPolyline(
-            tranpoly(p0, p1, f(qlist1)),
+            tranpoly(p0, p1, flipPolygon(qlist1, horizontalFlip)),
             0,
             0,
             "rgba(0,0,0,0)",
@@ -228,7 +268,16 @@ export function stick01(
     return polylines;
 }
 
-function cloth(
+/**
+ * Generates cloth SVG polylines.
+ *
+ * @param {PRNG} prng - The pseudo-random number generator.
+ * @param {(p: Point) => Point} toGlobal - Function to convert local points to global points.
+ * @param {Point[]} pointArray - Array of points defining the cloth shape.
+ * @param {(v: number) => number} fun - The scaling function.
+ * @returns {SvgPolyline[]} An array of SVG polylines representing the cloth.
+ */
+function generateCloth(
     prng: PRNG,
     toGlobal: (p: Point) => Point,
     pointArray: Point[],
@@ -267,24 +316,49 @@ function cloth(
     return polylines;
 }
 
-function fsleeve(scalling: number, x: number) {
+/**
+ * Scaling function for sleeve.
+ *
+ * @param {number} scaling - The scaling factor.
+ * @param {number} x - The input value.
+ * @returns {number} The scaled output value.
+ */
+function fsleeve(scaling: number, value: number): number {
     return (
-        scalling *
+        scaling *
         8 *
-        (Math.sin(0.5 * x * Math.PI) * Math.pow(Math.sin(x * Math.PI), 0.1) +
-            (1 - x) * 0.4)
+        (Math.sin(0.5 * value * Math.PI) *
+            Math.pow(Math.sin(value * Math.PI), 0.1) +
+            (1 - value) * 0.4)
     );
 }
-function fbody(scalling: number, x: number) {
+
+/**
+ * Scaling function for body.
+ *
+ * @param {number} scaling - The scaling factor.
+ * @param {number} value - The input value.
+ * @returns {number} The scaled output value.
+ */
+function fbody(scaling: number, value: number): number {
     return (
-        scalling *
+        scaling *
         11 *
-        (Math.sin(0.5 * x * Math.PI) * Math.pow(Math.sin(x * Math.PI), 0.1) +
-            (1 - x) * 0.5)
+        (Math.sin(0.5 * value * Math.PI) *
+            Math.pow(Math.sin(value * Math.PI), 0.1) +
+            (1 - value) * 0.5)
     );
 }
-function fhead(scalling: number, x: number) {
-    return scalling * 7 * Math.pow(0.25 - Math.pow(x - 0.5, 2), 0.3);
+
+/**
+ * Scaling function for head.
+ *
+ * @param {number} scaling - The scaling factor.
+ * @param {number} value - The input value.
+ * @returns {number} The scaled output value.
+ */
+function fhead(scaling: number, value: number): number {
+    return scaling * 7 * Math.pow(0.25 - Math.pow(value - 0.5, 2), 0.3);
 }
 
 //      2
@@ -298,16 +372,16 @@ function fhead(scalling: number, x: number) {
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} xOffset - X-coordinate offset for the man.
  * @param {number} yOffset - Y-coordinate offset for the man.
- * @param {boolean} horizontalFlip - Indicates whether the man is flipped horizontally.
- * @param {number} scalling - Scaling factor for the man.
- * @param {number[]} lengthArray - Array representing the lengths of different body parts.
+ * @param {boolean} [horizontalFlip=true] - Indicates whether the man is flipped horizontally.
+ * @param {number} [scalling=0.5] - Scaling factor for the man.
+ * @param {number[]} [lengthArray=[0, 30, 20, 30, 30, 30, 30, 30, 30]] - Array representing the lengths of different body parts.
  * @param {(prng: PRNG, p1: Point, p2: Point, horizontalFlip: boolean) => SvgPolyline[]} ite
  *   - Iteration function for generating specific body parts.
  * @param {(prng: PRNG, p1: Point, p2: Point, horizontalFlip: boolean) => SvgPolyline[]} hat
  *   - Hat styling function.
  * @returns {SvgPolyline[]} An array of SvgPolyline representing the man.
  */
-export function man(
+export function generateMan(
     prng: PRNG,
     xOffset: number,
     yOffset: number,
@@ -325,7 +399,7 @@ export function man(
         p1: Point,
         p2: Point,
         horizontalFlip: boolean
-    ) => SvgPolyline[] = hat01
+    ) => SvgPolyline[] = generateHat01
 ): SvgPolyline[] {
     const ang: number[] = [
         0,
@@ -356,16 +430,16 @@ export function man(
         [0, 1, 7, 8],
     ];
 
-    const toGlobal = function (v: IPoint) {
+    const toGlobal = function (point: IPoint) {
         return new Point(
-            (horizontalFlip ? -1 : 1) * v.x + xOffset,
-            v.y + yOffset
+            (horizontalFlip ? -1 : 1) * point.x + xOffset,
+            point.y + yOffset
         );
     };
 
-    const vecs: Vector[] = [];
+    const vectorArray: Vector[] = [];
     for (let i = 0; i < ang.length; i++) {
-        vecs.push(
+        vectorArray.push(
             struct[i].reduce<Vector>((pos: Vector, par: number) => {
                 // rotate angle of part[i]
                 const rot = struct[par].reduce((s, j) => s + ang[j], 0);
@@ -373,53 +447,69 @@ export function man(
             }, new Vector(0, 0))
         );
     }
-    yOffset -= vecs[4].y;
+    yOffset -= vectorArray[4].y;
 
-    const _fsleeve = (v: number) => fsleeve(scalling, v);
-    const _fbody = (v: number) => fbody(scalling, v);
-    const _fhead = (v: number) => fhead(scalling, v);
+    const _fsleeve = (value: number) => fsleeve(scalling, value);
+    const _fbody = (value: number) => fbody(scalling, value);
+    const _fhead = (value: number) => fhead(scalling, value);
 
     polylineArray.push(
-        ite(prng, toGlobal(vecs[8]), toGlobal(vecs[6]), horizontalFlip)
+        ite(
+            prng,
+            toGlobal(vectorArray[8]),
+            toGlobal(vectorArray[6]),
+            horizontalFlip
+        )
     );
 
     polylineArray.push(
-        cloth(
+        generateCloth(
             prng,
             toGlobal,
-            [vecs[1], vecs[7], vecs[8]].map((v) => v.movefrom(Point.O)),
+            [vectorArray[1], vectorArray[7], vectorArray[8]].map((v) =>
+                v.moveFrom(Point.O)
+            ),
             _fsleeve
         )
     );
     polylineArray.push(
-        cloth(
+        generateCloth(
             prng,
             toGlobal,
-            [vecs[1], vecs[0], vecs[3], vecs[4]].map((v) =>
-                v.movefrom(Point.O)
-            ),
+            [
+                vectorArray[1],
+                vectorArray[0],
+                vectorArray[3],
+                vectorArray[4],
+            ].map((vector) => vector.moveFrom(Point.O)),
             _fbody
         )
     );
     polylineArray.push(
-        cloth(
+        generateCloth(
             prng,
             toGlobal,
-            [vecs[1], vecs[5], vecs[6]].map((v) => v.movefrom(Point.O)),
+            [vectorArray[1], vectorArray[5], vectorArray[6]].map((vector) =>
+                vector.moveFrom(Point.O)
+            ),
             _fsleeve
         )
     );
     polylineArray.push(
-        cloth(
+        generateCloth(
             prng,
             toGlobal,
-            [vecs[1], vecs[2]].map((v) => v.movefrom(Point.O)),
+            [vectorArray[1], vectorArray[2]].map((vector) =>
+                vector.moveFrom(Point.O)
+            ),
             _fhead
         )
     );
 
     const hlist = generateBezierCurve(
-        [vecs[1], vecs[2]].map((v) => v.movefrom(Point.O))
+        [vectorArray[1], vectorArray[2]].map((vector) =>
+            vector.moveFrom(Point.O)
+        )
     );
     const [hlist1, hlist2] = expand(hlist, _fhead);
     hlist1.splice(0, Math.floor(hlist1.length * 0.1));
@@ -434,7 +524,12 @@ export function man(
     ]);
 
     polylineArray.push(
-        hat(prng, toGlobal(vecs[1]), toGlobal(vecs[2]), horizontalFlip)
+        hat(
+            prng,
+            toGlobal(vectorArray[1]),
+            toGlobal(vectorArray[2]),
+            horizontalFlip
+        )
     );
 
     return polylineArray.flat();

@@ -16,7 +16,7 @@ export function unNan(pointArray: Point[]): Point[] {
  * @param {number[]} noiseArray - The noise list.
  * @returns {number[]} The normalized noise list.
  */
-export function loopNoise(noiseArray: number[]): number[] {
+export function normalizeNoise(noiseArray: number[]): number[] {
     const dif = noiseArray[noiseArray.length - 1] - noiseArray[0];
     const boundaries: [number, number] = [100, -100];
 

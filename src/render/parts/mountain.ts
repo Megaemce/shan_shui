@@ -1,19 +1,25 @@
 import { distance, Point } from "../basic/point";
-import { loopNoise } from "../basic/utils";
+import { normalizeNoise } from "../basic/utils";
 import { createPolyline } from "../svg/createPolyline";
 import { Noise } from "../basic/perlinNoise";
-import { div, stroke, texture } from "./brushes";
+import { div, stroke, generateTexture } from "./brushes";
 import {
-    tree01,
-    tree02,
-    tree03,
-    tree04,
-    tree05,
-    tree06,
-    tree07,
-    tree08,
+    generateTree01,
+    generateTree02,
+    generateTree03,
+    generateTree04,
+    generateTree05,
+    generateTree06,
+    generateTree07,
+    generateTree08,
 } from "./tree";
-import { arch01, arch02, arch03, arch04, transmissionTower01 } from "./arch";
+import {
+    generateArch01,
+    generateArch02,
+    generateArch03,
+    generateArch04,
+    generateTransmissionTower,
+} from "./arch";
 import { midPoint, triangulate } from "../basic/polytools";
 import { Bound } from "../basic/range";
 import { PRNG } from "../basic/PRNG";
@@ -28,7 +34,7 @@ import { Chunk } from "../basic/chunk";
  * @param {number} yOffset - Y-coordinate offset for the foot.
  * @returns {SvgPolyline[]} An array of SvgPolyline representing the foot.
  */
-export function foot(
+export function generateFoot(
     prng: PRNG,
     pointArray: Point[][],
     xOffset: number = 0,
@@ -120,7 +126,7 @@ export function foot(
  * @param {(pl: Point[], i: number) => boolean} proofRule - Rule providing additional conditions for vegetation growth.
  * @returns {ISvgElement[]} List of SVG elements representing vegetation.
  */
-function vegetate(
+function generateVegetate(
     pointArray: Point[][],
     treeFunc: (x: number, y: number) => ISvgElement[],
     growthRule: (i: number, j: number) => boolean,
@@ -157,7 +163,7 @@ function vegetate(
  * @param {number} [seed=0] - The seed for noise functions.
  * @returns {Chunk} The generated mountain chunk.
  */
-export function mountain(
+export function generateMountain(
     prng: PRNG,
     xOffset: number,
     yOffset: number,
@@ -194,13 +200,13 @@ export function mountain(
 
     // RIM
     elementLists.push(
-        vegetate(
+        generateVegetate(
             pointArray,
             function (x, y) {
                 const noise =
                     Noise.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5;
 
-                return tree02(
+                return generateTree02(
                     prng,
                     x + xOffset,
                     y + yOffset - 5,
@@ -245,10 +251,10 @@ export function mountain(
         ),
     ]);
 
-    elementLists.push(foot(prng, pointArray, xOffset, yOffset));
+    elementLists.push(generateFoot(prng, pointArray, xOffset, yOffset));
 
     elementLists.push(
-        texture(
+        generateTexture(
             prng,
             pointArray,
             xOffset,
@@ -260,13 +266,13 @@ export function mountain(
 
     // TOP
     elementLists.push(
-        vegetate(
+        generateVegetate(
             pointArray,
             function (x, y) {
                 const noise =
                     Noise.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5;
 
-                return tree02(
+                return generateTree02(
                     prng,
                     x + xOffset,
                     y + yOffset,
@@ -287,7 +293,7 @@ export function mountain(
     if (vegetation) {
         // MIDDLE
         elementLists.push(
-            vegetate(
+            generateVegetate(
                 pointArray,
                 function (x, y) {
                     const treeHeight =
@@ -295,7 +301,7 @@ export function mountain(
                     const noise =
                         Noise.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.3;
 
-                    return tree01(
+                    return generateTree01(
                         prng,
                         x + xOffset,
                         y + yOffset,
@@ -326,7 +332,7 @@ export function mountain(
 
         // BOTTOM
         elementLists.push(
-            vegetate(
+            generateVegetate(
                 pointArray,
                 function (x, y) {
                     const treeHeight =
@@ -336,7 +342,7 @@ export function mountain(
                     const noise =
                         Noise.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.3;
 
-                    return tree03(
+                    return generateTree03(
                         prng,
                         x + xOffset,
                         y + yOffset,
@@ -359,13 +365,13 @@ export function mountain(
 
     // BOTTOM ARCH
     elementLists.push(
-        vegetate(
+        generateVegetate(
             pointArray,
             function (x, y): ISvgElement[] {
                 const treeType = prng.randomChoice([0, 0, 1, 1, 1, 2]);
 
                 if (treeType === 1) {
-                    return arch02(
+                    return generateArch02(
                         prng,
                         x + xOffset,
                         y + yOffset,
@@ -375,7 +381,7 @@ export function mountain(
                         prng.randomChoice([1, 2, 3])
                     );
                 } else if (treeType === 2) {
-                    return arch04(
+                    return generateArch04(
                         prng,
                         x + xOffset,
                         y + yOffset,
@@ -399,10 +405,10 @@ export function mountain(
 
     // TOP ARCH
     elementLists.push(
-        vegetate(
+        generateVegetate(
             pointArray,
             function (x, y) {
-                return arch03(
+                return generateArch03(
                     prng,
                     x + xOffset,
                     y + yOffset,
@@ -423,10 +429,14 @@ export function mountain(
 
     // TRANSMISSION TOWER
     elementLists.push(
-        vegetate(
+        generateVegetate(
             pointArray,
             function (x, y) {
-                return transmissionTower01(prng, x + xOffset, y + yOffset);
+                return generateTransmissionTower(
+                    prng,
+                    x + xOffset,
+                    y + yOffset
+                );
             },
             function (i, j) {
                 const noise = Noise.noise(
@@ -447,7 +457,7 @@ export function mountain(
 
     // BOTTOM ROCK
     elementLists.push(
-        vegetate(
+        generateVegetate(
             pointArray,
             function (x, y) {
                 return generateRock(
@@ -597,7 +607,7 @@ export function generateFlatMountain(
 
     // TEXTURE
     polylineArray.push(
-        texture(
+        generateTexture(
             prng,
             pointArray,
             xOffset,
@@ -740,7 +750,7 @@ export function generateFlatDecorations(
 
         for (let k = 0; k < prng.random(2, 5); k++) {
             polylineArray.push(
-                tree08(
+                generateTree08(
                     prng,
                     xr +
                         Math.min(
@@ -784,7 +794,7 @@ export function generateFlatDecorations(
 
         for (let i = xMin; i < xMax; i += 30) {
             polylineArray.push(
-                tree05(
+                generateTree05(
                     prng,
                     xOffset + i + 20 * prng.normalizedRandom(-1, 1),
                     yOffset + (bounding.yMin + bounding.yMax) / 2 + 20,
@@ -814,7 +824,9 @@ export function generateFlatDecorations(
         for (let i = 0; i < prng.randomChoice([1, 1, 1, 1, 2, 2, 3]); i++) {
             const xr = prng.normalizedRandom(bounding.xMin, bounding.xMax);
             const yr = (bounding.yMin + bounding.yMax) / 2;
-            polylineArray.push(tree04(prng, xOffset + xr, yOffset + yr + 20));
+            polylineArray.push(
+                generateTree04(prng, xOffset + xr, yOffset + yr + 20)
+            );
 
             for (let j = 0; j < prng.random(0, 2); j++) {
                 polylineArray.push(
@@ -840,7 +852,7 @@ export function generateFlatDecorations(
     } else if (tt === 3) {
         for (let i = 0; i < prng.randomChoice([1, 1, 1, 1, 2, 2, 3]); i++) {
             polylineArray.push(
-                tree06(
+                generateTree06(
                     prng,
                     xOffset +
                         prng.normalizedRandom(bounding.xMin, bounding.xMax),
@@ -856,7 +868,7 @@ export function generateFlatDecorations(
 
         for (let i = xMin; i < xMax; i += 20) {
             polylineArray.push(
-                tree07(
+                generateTree07(
                     prng,
                     xOffset + i + 20 * prng.normalizedRandom(-1, 1),
                     yOffset +
@@ -871,7 +883,7 @@ export function generateFlatDecorations(
 
     for (let i = 0; i < prng.random(0, 50); i++) {
         polylineArray.push(
-            tree02(
+            generateTree02(
                 prng,
                 xOffset + prng.normalizedRandom(bounding.xMin, bounding.xMax),
                 yOffset + prng.normalizedRandom(bounding.yMin, bounding.yMax)
@@ -882,7 +894,7 @@ export function generateFlatDecorations(
     const ts = prng.randomChoice([0, 0, 0, 0, 1]);
     if (ts === 1 && tt !== 4) {
         polylineArray.push(
-            arch01(
+            generateArch01(
                 prng,
                 xOffset + prng.normalizedRandom(bounding.xMin, bounding.xMax),
                 yOffset + (bounding.yMin + bounding.yMax) / 2 + 20,
@@ -1010,7 +1022,7 @@ export function generateRock(
         for (let j = 0; j < reso[1]; j++) {
             nslist.push(Noise.noise(prng, i, j * 0.2, seed));
         }
-        loopNoise(nslist);
+        normalizeNoise(nslist);
 
         for (let j = 0; j < reso[1]; j++) {
             const a = (j / reso[1]) * Math.PI * 2 - Math.PI / 2;
@@ -1062,7 +1074,7 @@ export function generateRock(
         ),
     ]);
     polylineArray.push(
-        texture(
+        generateTexture(
             prng,
             pointArray,
             xOffset,

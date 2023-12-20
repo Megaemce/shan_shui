@@ -2,13 +2,13 @@ import { Chunk, IChunk } from "../render/basic/chunk";
 import { design } from "../render/basic/designer";
 import { PRNG } from "../render/basic/PRNG";
 import { Range } from "../render/basic/range";
-import { boat01 } from "../render/parts/arch";
+import { generateBoat } from "../render/parts/arch";
 import {
     generateDistantMountain,
     generateFlatMountain,
-    mountain,
+    generateMountain,
 } from "../render/parts/mountain";
-import { water } from "../render/parts/water";
+import { generateWater } from "../render/parts/water";
 
 /**
  * Class representing a ChunkCache used for generating and managing chunks of terrain.
@@ -64,8 +64,10 @@ export class ChunkCache {
             const { tag, x, y } = plan[i];
 
             if (tag === "mount") {
-                this.chunks.push(mountain(prng, x, y, prng.random(0, 2 * i)));
-                this.chunks.push(water(prng, x, y));
+                this.chunks.push(
+                    generateMountain(prng, x, y, prng.random(0, 2 * i))
+                );
+                this.chunks.push(generateWater(prng, x, y));
             } else if (tag === "flatmount") {
                 this.chunks.push(
                     generateFlatMountain(
@@ -91,7 +93,7 @@ export class ChunkCache {
                 );
             } else if (tag === "boat") {
                 this.chunks.push(
-                    boat01(
+                    generateBoat(
                         prng,
                         x,
                         y,

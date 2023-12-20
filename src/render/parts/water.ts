@@ -7,15 +7,17 @@ import { stroke } from "./brushes";
 
 /**
  * Generates a water chunk with undulating waves.
+ *
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} xOffset - X-coordinate offset for the chunk.
  * @param {number} yOffset - Y-coordinate offset for the chunk.
- * @param {number} waveHeight - Height of the waves.
- * @param {number} waveLength - Length of the waves.
- * @param {number} waveClusters - Number of clusters of waves.
+ * @param {number} [waveHeight=2] - Height of the waves.
+ * @param {number} [waveLength=800] - Length of the waves.
+ * @param {number} [waveClusters=10] - Number of clusters of waves.
+ *
  * @returns {Chunk} The generated water chunk.
  */
-export function water(
+export function generateWater(
     prng: PRNG,
     xOffset: number,
     yOffset: number,

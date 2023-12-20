@@ -123,7 +123,7 @@ export class Vector implements IPoint {
      * @param source - The source point to move from.
      * @returns A new point after the move operation.
      */
-    movefrom(source: Point): Point {
+    moveFrom(source: Point): Point {
         return source.move(this);
     }
 
