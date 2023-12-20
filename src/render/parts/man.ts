@@ -109,7 +109,6 @@ export function hat01(
     horizontalFlip = false
 ): SvgPolyline[] {
     const polylines: SvgPolyline[] = [];
-    const seed = prng.random();
     const f: (pl: Point[]) => Point[] = horizontalFlip ? flipper : (x) => x;
     //const pointArray = [[-0.5,0.5],[0.5,0.5],[0.5,1],[-0.5,2]]
     polylines.push(
@@ -137,7 +136,7 @@ export function hat01(
     for (let i = 0; i < 10; i++) {
         qlist1.push(
             new Point(
-                -0.3 - Noise.noise(prng, i * 0.2, seed) * i * 0.1,
+                -0.3 - Noise.noise(prng, i * 0.2, prng.random()) * i * 0.1,
                 0.5 - i * 0.3
             )
         );

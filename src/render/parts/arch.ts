@@ -21,7 +21,7 @@ function hut(
     xOffset: number,
     yOffset: number,
     height: number = 40,
-    strokeWidth: number = 180,
+    width: number = 180,
     textureCount: number = 300
 ): SvgPolyline[] {
     const reso = [10, 10];
@@ -32,7 +32,7 @@ function hut(
         const heir = height * prng.random(1, 1.2);
         for (let j = 0; j < reso[1]; j++) {
             const newX =
-                strokeWidth *
+                width *
                 (i / (reso[0] - 1) - 0.5) *
                 Math.pow(j / (reso[1] - 1), 0.7);
             const newY = heir * (j / (reso[1] - 1));
@@ -80,9 +80,9 @@ function hut(
         xOffset,
         yOffset,
         textureCount,
-        1,
+        2,
         () => prng.weightedRandom((a) => a * a),
-        (_) => 5,
+        (x) => 5,
         0.25
     );
 
