@@ -54,7 +54,7 @@ const App: React.FC = () => {
         };
     }, [prngRef, noiseRef, seed]);
 
-    const xScroll = useCallback(
+    const horizontalScroll = useCallback(
         (v: number) => {
             const nextX = cursX + v;
             setCursX(nextX);
@@ -69,12 +69,12 @@ const App: React.FC = () => {
     const autoXScroll = useCallback(
         (v: number) => {
             if (autoScroll) {
-                xScroll(v / FPS);
+                horizontalScroll(v / FPS);
                 const autoXScrollCallback = (v: number) => autoXScroll(v);
                 setTimeout(() => autoXScrollCallback(v), 1000 / FPS);
             }
         },
-        [autoScroll, FPS, xScroll]
+        [autoScroll, FPS, horizontalScroll]
     );
 
     useEffect(() => {
@@ -111,7 +111,7 @@ const App: React.FC = () => {
                     seed={seed}
                     changeSeed={changeSeed}
                     reloadWSeed={reloadWithSeed}
-                    xscroll={xScroll}
+                    horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}
                     cursx={cursX}
                     chunkCache={chunkCacheRef.current}
@@ -123,7 +123,7 @@ const App: React.FC = () => {
                     toggleAutoLoad={toggleAutoLoad}
                 />
                 <ScrollableCanvas
-                    xscroll={xScroll}
+                    horizontalScroll={horizontalScroll}
                     windy={windY}
                     background={backgroundImage}
                     seed={seed}

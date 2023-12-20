@@ -11,7 +11,7 @@ interface MenuProps {
     seed: string;
     changeSeed: (seed: string) => void;
     reloadWSeed: () => void;
-    xscroll: (v: number) => void;
+    horizontalScroll: (v: number) => void;
     toggleAutoScroll: (s: boolean, v: number) => void;
     cursx: number;
     windx: number;
@@ -28,7 +28,7 @@ const Menu: React.FC<MenuProps> = ({
     seed,
     changeSeed,
     reloadWSeed,
-    xscroll,
+    horizontalScroll,
     toggleAutoScroll,
     cursx,
     windx,
@@ -44,8 +44,8 @@ const Menu: React.FC<MenuProps> = ({
     const changeStep = (event: ChangeEvent<HTMLInputElement>) =>
         setStep(event.target.valueAsNumber);
 
-    const xscrollLeft = () => xscroll(-1 * step);
-    const xscrollRight = () => xscroll(step);
+    const xscrollLeft = () => horizontalScroll(-1 * step);
+    const xscrollRight = () => horizontalScroll(step);
 
     const toggleAutoScrollHandler = (event: ChangeEvent<HTMLInputElement>) =>
         toggleAutoScroll(event.target.checked, step);

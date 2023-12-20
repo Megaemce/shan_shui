@@ -4,21 +4,41 @@ import { Range } from "../render/basic/range";
 import { ChunkCache } from "../render/chunkCache";
 import "./styles.css";
 
+/**
+ * Represents the properties for the ScrollBar component.
+ */
 interface IBarProps {
+    /** The unique identifier for the ScrollBar. */
     id: string;
+    /** The height of the ScrollBar. */
     height: number;
+    /** The function to be executed when the ScrollBar is clicked. */
     onClick: () => void;
+    /** The icon to be displayed in the ScrollBar. */
     icon: string;
 }
 
+/**
+ * ScrollBar component for navigation within the ScrollableCanvas.
+ */
 const ScrollBar: React.FC<IBarProps> = ({ id, height, onClick, icon }) => {
     const [isHover, setIsHover] = useState(false);
+
+    /**
+     * Handles mouseover event to set the hover state to true.
+     */
+    const onMouseOver = () => setIsHover(true);
+
+    /**
+     * Handles mouseout event to set the hover state to false.
+     */
+    const onMouseOut = () => setIsHover(false);
 
     return (
         <div
             id={id}
-            onMouseOver={() => setIsHover(true)}
-            onMouseOut={() => setIsHover(false)}
+            onMouseOver={onMouseOver}
+            onMouseOut={onMouseOut}
             onClick={onClick}
             style={{
                 backgroundColor: `rgba(0, 0, 0, ${isHover ? 0.1 : 0})`,
@@ -32,19 +52,33 @@ const ScrollBar: React.FC<IBarProps> = ({ id, height, onClick, icon }) => {
     );
 };
 
+/**
+ * Represents the properties for the ScrollableCanvas component.
+ */
 interface IProps {
-    xscroll: (v: number) => void;
+    /** Function to scroll the canvas by a specified value. */
+    horizontalScroll: (value: number) => void;
+    /** The height of the canvas. */
     windy: number;
+    /** The background image URL for the canvas. */
     background: string | undefined;
+    /** The seed value for random number generation. */
     seed: string;
+    /** The current x-coordinate of the canvas. */
     cursx: number;
+    /** The width of the canvas. */
     windx: number;
+    /** PRNG (Pseudo-Random Number Generator) instance. */
     prng: PRNG;
+    /** ChunkCache instance for caching and managing chunks. */
     chunkCache: ChunkCache;
 }
 
+/**
+ * ScrollableCanvas component for rendering a scrollable canvas with ScrollBars.
+ */
 const ScrollableCanvas: React.FC<IProps> = ({
-    xscroll,
+    horizontalScroll,
     windy,
     background,
     seed,
@@ -53,23 +87,27 @@ const ScrollableCanvas: React.FC<IProps> = ({
     prng,
     chunkCache,
 }) => {
-    const cwid = 512;
-    const zoom = 1.142;
+    /** The width of the canvas. */
+    const CWID = 512;
+    /** The zoom factor for the canvas. */
+    const ZOOM = 1.142;
 
-    const viewbox = `${cursx} 0 ${windx / zoom} ${windy / zoom}`;
+    /** The viewbox string for the SVG element. */
+    const viewbox = `${cursx} 0 ${windx / ZOOM} ${windy / ZOOM}`;
+    /** Range instance for representing a range of x-coordinates. */
     const nr = new Range(cursx, cursx + windx);
-    chunkCache.update(prng, nr, cwid);
 
-    const tableId = "SCROLLABLE_CANVAS"; // Unique id for the table
+    // Update the chunk cache based on the current view
+    chunkCache.update(prng, nr, CWID);
 
     return (
-        <table id={tableId}>
+        <table id="SCROLLABLE_CANVAS">
             <tbody>
                 <tr>
                     <td>
                         <ScrollBar
                             id="L"
-                            onClick={() => xscroll(-200)}
+                            onClick={() => horizontalScroll(-200)}
                             height={windy - 8}
                             icon="&#x3008;"
                         />
@@ -94,12 +132,12 @@ const ScrollableCanvas: React.FC<IProps> = ({
                                 style={{ mixBlendMode: "multiply" }}
                                 viewBox={viewbox}
                             >
-                                {chunkCache.chunks.map((c) => (
+                                {chunkCache.chunks.map((chunk) => (
                                     <g
-                                        key={`${c.tag} ${c.x} ${c.y}`}
+                                        key={`${chunk.tag} ${chunk.x} ${chunk.y}`}
                                         transform="translate(0, 0)"
                                         dangerouslySetInnerHTML={{
-                                            __html: c.render(),
+                                            __html: chunk.render(),
                                         }}
                                     ></g>
                                 ))}
@@ -109,7 +147,7 @@ const ScrollableCanvas: React.FC<IProps> = ({
                     <td>
                         <ScrollBar
                             id="R"
-                            onClick={() => xscroll(200)}
+                            onClick={() => horizontalScroll(200)}
                             height={windy - 8}
                             icon="&#x3009;"
                         />

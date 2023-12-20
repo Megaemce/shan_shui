@@ -12,8 +12,8 @@ interface SettingPanelProps {
     seed: string;
     changeSeed: (seed: string) => void;
     reloadWSeed: () => void;
-    xscroll: (v: number) => void;
-    toggleAutoScroll: (s: boolean, v: number) => void;
+    horizontalScroll: (value: number) => void;
+    toggleAutoScroll: (status: boolean, value: number) => void;
     cursx: number;
     chunkCache: ChunkCache;
     windx: number;
@@ -21,14 +21,14 @@ interface SettingPanelProps {
     prng: PRNG;
     saveRange: Range;
     onChangeSaveRange: (r: Range) => void;
-    toggleAutoLoad: (s: boolean) => void;
+    toggleAutoLoad: (status: boolean) => void;
 }
 
 const SettingPanel: React.FC<SettingPanelProps> = ({
     seed,
     changeSeed,
     reloadWSeed,
-    xscroll,
+    horizontalScroll,
     toggleAutoScroll,
     cursx,
     chunkCache,
@@ -62,7 +62,7 @@ const SettingPanel: React.FC<SettingPanelProps> = ({
                     seed={seed}
                     changeSeed={changeSeed}
                     reloadWSeed={reloadWSeed}
-                    xscroll={xscroll}
+                    horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}
                     cursx={cursx}
                     chunkCache={chunkCache}
