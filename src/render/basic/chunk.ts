@@ -26,7 +26,7 @@ export class Chunk implements IChunk {
     /** The SVG elements that make up the chunk. */
     elements: ISvgElement[] = [];
     /** The rendered SVG content of the chunk. */
-    canv: string;
+    canvas: string;
 
     /**
      * Creates an instance of Chunk.
@@ -45,7 +45,7 @@ export class Chunk implements IChunk {
         this.x = x;
         this.y = y;
         this.elements = elements;
-        this.canv = this.elements.map((p) => p.render()).join("\n");
+        this.canvas = this.elements.map((p) => p.render()).join("\n");
     }
 
     /**
@@ -53,7 +53,7 @@ export class Chunk implements IChunk {
      * @returns The SVG content of the chunk.
      */
     render(): string {
-        return this.canv;
+        return this.canvas;
     }
 }
 
@@ -68,19 +68,19 @@ export class DesignChunk implements IChunk {
     /** The y-coordinate of the design chunk. */
     y: number = 0;
     /** The height information of the design chunk. */
-    h: number = 0;
+    height: number = 0;
 
     /**
      * Creates an instance of DesignChunk.
      * @param tag - The tag associated with the design chunk.
      * @param x - The x-coordinate of the design chunk.
      * @param y - The y-coordinate of the design chunk.
-     * @param h - The height information of the design chunk.
+     * @param height - The height information of the design chunk.
      */
-    constructor(tag: ChunkTag, x: number, y: number, h: number = 0) {
+    constructor(tag: ChunkTag, x: number, y: number, height: number = 0) {
         this.tag = tag;
         this.x = x;
         this.y = y;
-        this.h = h;
+        this.height = height;
     }
 }
