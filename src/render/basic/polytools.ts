@@ -121,35 +121,50 @@ function isLineInPolygon(line: Point[], polygon: Point[]): boolean {
 
 /**
  * Calculates the lengths of sides in a polygon.
- * @param plist - An array of points representing the polygon.
+ * @param pointArray - An array of points representing the polygon.
  * @returns An array of side lengths.
  */
-function calculateSideLengths(plist: Point[]): number[] {
-    return plist.map((pt, i) => {
-        const np = plist[i !== plist.length - 1 ? i + 1 : 0];
-        return distance(pt, np);
+function calculateSideLengths(pointArray: Point[]): number[] {
+    return pointArray.map((point, i) => {
+        const nextPoint = pointArray[i !== pointArray.length - 1 ? i + 1 : 0];
+        return distance(point, nextPoint);
     });
 }
 
 /**
  * Calculates the area of a triangle using its side lengths.
- * @param sideLengths - An array of side lengths [a, b, c].
- * @returns The area of the triangle.
+ * @param {Point[]} pointArray - An array of points representing the vertices of the triangle.
+ * @returns {number} The area of the triangle.
+ * @throws {Error} Thrown if pointArray is not a valid array of minimum 3 points.
  */
-function calculateTriangleArea(sideLengths: number[]): number {
-    const [a, b, c] = sideLengths;
-    const s = (a + b + c) / 2;
-    return Math.sqrt(s * (s - a) * (s - b) * (s - c));
+function calculatePolygonArea(pointArray: Point[]): number {
+    // Input validation
+    if (!Array.isArray(pointArray) || pointArray.length < 3) {
+        throw new Error(
+            "Invalid input: pointArray must be an array with at least three points."
+        );
+    }
+
+    let area = 0;
+    // Use the shoelace formula to calculate the area
+    for (let i = 0; i < pointArray.length; i++) {
+        const currentPoint = pointArray[i];
+        const nextPoint = pointArray[(i + 1) % pointArray.length];
+
+        area += currentPoint.x * nextPoint.y - nextPoint.x * currentPoint.y;
+    }
+
+    return Math.abs(area) / 2;
 }
 
 /**
  * Calculates the sliver ratio of a polygon.
- * @param plist - An array of points representing the polygon.
+ * @param pointArray - An array of points representing the polygon.
  * @returns The sliver ratio of the polygon.
  */
-function calculateSliverRatio(plist: Point[]): number {
-    const area = calculateTriangleArea(calculateSideLengths(plist));
-    const perimeter = calculateSideLengths(plist).reduce(
+function calculateSliverRatio(pointArray: Point[]): number {
+    const area = calculatePolygonArea(pointArray);
+    const perimeter = calculateSideLengths(pointArray).reduce(
         (acc, side) => acc + side,
         0
     );
@@ -157,66 +172,95 @@ function calculateSliverRatio(plist: Point[]): number {
 }
 
 /**
- * Finds the best ear in the polygon and returns the ear and the remaining vertices.
- * @param plist The list of polygon vertices.
- * @param convex Indicates whether the polygon is convex.
- * @param optimize Indicates whether to optimize the ear finding.
- * @returns A tuple containing the ear and the remaining vertices.
+ * Finds the best ear in the polygon and returns it along with the remaining vertices.
+ * @param {Point[]} pointArray - The list of polygon vertices.
+ * @param {boolean} isConvex - Indicates whether the polygon is convex.
+ * @param {boolean} optimize - Indicates whether to optimize the ear finding.
+ * @returns {Point[][]} A tuple containing the optimal ear and the remaining vertices.
  */
-function findBestEar(plist: Point[], convex: boolean, optimize: boolean) {
-    const cuts = [];
-    for (let i = 0; i < plist.length; i++) {
-        const pt = plist[i];
-        const lp = plist[i !== 0 ? i - 1 : plist.length - 1];
-        const np = plist[i !== plist.length - 1 ? i + 1 : 0];
-        const qlist = plist.slice();
-        qlist.splice(i, 1);
-        if (convex || isLineInPolygon([lp, np], plist)) {
-            const c = [[lp, pt, np], qlist];
-            if (!optimize) return c;
-            cuts.push(c);
+function findBestEar(
+    pointArray: Point[],
+    isConvex: boolean,
+    optimize: boolean
+): Point[][] {
+    const potentialEars = [];
+
+    // go throu all the possible pointArray permutation
+    for (let i = 0; i < pointArray.length; i++) {
+        const point = pointArray[i];
+        const lastPoint = pointArray[i !== 0 ? i - 1 : pointArray.length - 1];
+        const nextPoint = pointArray[i !== pointArray.length - 1 ? i + 1 : 0];
+        const remainingVertices = pointArray.filter((_, index) => index !== i);
+
+        if (isConvex || isLineInPolygon([lastPoint, nextPoint], pointArray)) {
+            const potentialEar = [
+                [lastPoint, point, nextPoint],
+                remainingVertices,
+            ];
+
+            if (!optimize) {
+                return potentialEar;
+            }
+
+            potentialEars.push(potentialEar);
         }
     }
-    let best = [plist, []];
+
+    let bestEar = [pointArray, []];
     let bestRatio = 0;
-    cuts.forEach((i) => {
-        const r = calculateSliverRatio(i[0]);
-        if (r >= bestRatio) {
-            best = i;
-            bestRatio = r;
+
+    potentialEars.forEach((ear) => {
+        const ratio = calculateSliverRatio(ear[0]);
+
+        if (ratio >= bestRatio) {
+            bestEar = ear;
+            bestRatio = ratio;
         }
     });
-    return best;
+
+    return bestEar;
 }
 
 /**
- * Break a triangle into a series of triangles with an area not exceeding a.
- * @param plist The triangle to be broken.
- * @param a Maximum area for each resulting triangle.
- * @returns An array of triangles.
+ * Divides a triangle into a series of triangles with areas not exceeding a.
+ * @param {Point[]} pointArray - The triangle to be divided.
+ * @param {number} limitArea - The upper limit for triangle areas.
+ * @returns {Point[][]} A series of triangles.
  */
-function shatterTriangle(plist: Point[], a: number): Point[][] {
-    if (plist.length === 0 || a === 0) {
+function shatterTriangle(pointArray: Point[], limitArea: number): Point[][] {
+    if (pointArray.length === 0 || limitArea === 0) {
         return [];
     }
 
-    if (calculateTriangleArea(calculateSideLengths(plist)) < a) {
-        return [plist];
+    if (calculatePolygonArea(pointArray) < limitArea) {
+        return [pointArray];
     } else {
         try {
-            const sideLengths = calculateSideLengths(plist);
-            const ind = sideLengths.reduce(
+            const sideLengths = calculateSideLengths(pointArray);
+            const indexOfLongestSide = sideLengths.reduce(
                 (iMax, x, i, arr) => (x > arr[iMax] ? i : iMax),
                 0
             );
-            const nind = (ind + 1) % plist.length;
-            const lind = (ind + 2) % plist.length;
-            const mid = midPoint([plist[ind], plist[nind]]);
-            return shatterTriangle([plist[ind], mid, plist[lind]], a).concat(
-                shatterTriangle([plist[lind], plist[nind], mid], a)
+            const nextIndex = (indexOfLongestSide + 1) % pointArray.length;
+            const lastIndex = (indexOfLongestSide + 2) % pointArray.length;
+            const mid = midPoint([
+                pointArray[indexOfLongestSide],
+                pointArray[nextIndex],
+            ]);
+
+            const firstTriangle = shatterTriangle(
+                [pointArray[indexOfLongestSide], mid, pointArray[lastIndex]],
+                limitArea
             );
+
+            const secondTriangle = shatterTriangle(
+                [pointArray[lastIndex], pointArray[nextIndex], mid],
+                limitArea
+            );
+
+            return [...firstTriangle, ...secondTriangle];
         } catch (err) {
-            console.log(plist);
+            console.log(pointArray);
             console.log(err);
             return [];
         }
@@ -225,26 +269,26 @@ function shatterTriangle(plist: Point[], a: number): Point[][] {
 
 /**
  * Triangulates a polygon and returns a list of triangles.
- * @param plist The list of polygon vertices.
+ * @param pointArray The list of polygon vertices.
  * @param area Maximum area for each resulting triangle.
- * @param convex Indicates whether the polygon is convex.
+ * @param isConvex Indicates whether the polygon is isConvex.
  * @param optimize Indicates whether to optimize the triangulation.
  * @returns An array of triangles.
  */
 export function triangulate(
-    plist: Point[],
+    pointArray: Point[],
     area: number = 100,
-    convex: boolean = false,
+    isConvex: boolean = false,
     optimize: boolean = false
 ): Point[][] {
-    if (plist.length <= 3) {
-        return shatterTriangle(plist, area);
+    if (pointArray.length <= 3) {
+        return shatterTriangle(pointArray, area);
     }
 
-    const [ear, remainder] = findBestEar(plist, convex, optimize);
+    const [ear, remainder] = findBestEar(pointArray, isConvex, optimize);
 
     return [
         ...shatterTriangle(ear, area),
-        ...triangulate(remainder, area, convex, optimize),
+        ...triangulate(remainder, area, isConvex, optimize),
     ];
 }
