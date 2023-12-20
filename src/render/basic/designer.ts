@@ -225,15 +225,15 @@ function generateBoatChunks(
  * Generates terrain design chunks based on Perlin noise.
  * @param prng - The pseudorandom number generator.
  * @param mountainCover - The array to track mountain coverage.
- * @param xmin - The minimum x-coordinate for generation.
- * @param xmax - The maximum x-coordinate for generation.
+ * @param xMin - The minimum x-coordinate for generation.
+ * @param xMax - The maximum x-coordinate for generation.
  * @returns An array of generated design chunks.
  */
 export function design(
     prng: PRNG,
     mountainCover: number[],
-    xmin: number,
-    xmax: number
+    xMin: number,
+    xMax: number
 ): IChunk[] {
     const region: IChunk[] = [];
     const samp = 0.03;
@@ -244,9 +244,9 @@ export function design(
     const xStep = 5;
     const width = 200;
 
-    const iMin = Math.floor(xmin / xStep);
-    const iMax = Math.floor(xmax / xStep);
-    const xOffset = (xmin % xStep) + (xmin < 0 ? 1 : 0) * xStep;
+    const iMin = Math.floor(xMin / xStep);
+    const iMax = Math.floor(xMax / xStep);
+    const xOffset = (xMin % xStep) + (xMin < 0 ? 1 : 0) * xStep;
 
     for (let i = iMin; i < iMax; i++) {
         if (isNaN(mountainCover[i])) mountainCover[i] = 0;

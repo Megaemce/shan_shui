@@ -27,7 +27,7 @@ function hut(
     yOffset: number,
     height: number = 40,
     strokeWidth: number = 180,
-    tex: number = 300
+    textureCount: number = 300
 ): SvgPolyline[] {
     const reso = [10, 10];
     const ptlist: Point[][] = [];
@@ -36,12 +36,12 @@ function hut(
         ptlist.push([]);
         const heir = height * prng.random(1, 1.2);
         for (let j = 0; j < reso[1]; j++) {
-            const nx =
+            const newX =
                 strokeWidth *
                 (i / (reso[0] - 1) - 0.5) *
                 Math.pow(j / (reso[1] - 1), 0.7);
-            const ny = heir * (j / (reso[1] - 1));
-            ptlist[ptlist.length - 1].push(new Point(nx, ny));
+            const newY = heir * (j / (reso[1] - 1));
+            ptlist[ptlist.length - 1].push(new Point(newX, newY));
         }
     }
 
@@ -77,7 +77,7 @@ function hut(
         ptlist,
         xOffset,
         yOffset,
-        tex,
+        textureCount,
         1,
         () => weightedRandom(prng, (a) => a * a),
         (_) => 5,
