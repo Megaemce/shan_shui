@@ -59,15 +59,15 @@ interface IProps {
     /** Function to scroll the canvas by a specified value. */
     horizontalScroll: (value: number) => void;
     /** The height of the canvas. */
-    windy: number;
+    windowHeight: number;
     /** The background image URL for the canvas. */
     background: string | undefined;
     /** The seed value for random number generation. */
     seed: string;
     /** The current x-coordinate of the canvas. */
-    cursx: number;
+    currentPosition: number;
     /** The width of the canvas. */
-    windx: number;
+    windowWidth: number;
     /** PRNG (Pseudo-Random Number Generator) instance. */
     prng: PRNG;
     /** ChunkCache instance for caching and managing chunks. */
@@ -79,11 +79,11 @@ interface IProps {
  */
 const ScrollableCanvas: React.FC<IProps> = ({
     horizontalScroll,
-    windy,
+    windowHeight,
     background,
     seed,
-    cursx,
-    windx,
+    currentPosition,
+    windowWidth,
     prng,
     chunkCache,
 }) => {
@@ -93,9 +93,11 @@ const ScrollableCanvas: React.FC<IProps> = ({
     const ZOOM = 1.142;
 
     /** The viewbox string for the SVG element. */
-    const viewbox = `${cursx} 0 ${windx / ZOOM} ${windy / ZOOM}`;
+    const viewbox = `${currentPosition} 0 ${windowWidth / ZOOM} ${
+        windowHeight / ZOOM
+    }`;
     /** Range instance for representing a range of x-coordinates. */
-    const nr = new Range(cursx, cursx + windx);
+    const nr = new Range(currentPosition, currentPosition + windowWidth);
 
     // Update the chunk cache based on the current view
     chunkCache.update(prng, nr, CWID);
@@ -108,7 +110,7 @@ const ScrollableCanvas: React.FC<IProps> = ({
                         <ScrollBar
                             id="L"
                             onClick={() => horizontalScroll(-200)}
-                            height={windy - 8}
+                            height={windowHeight - 8}
                             icon="&#x3008;"
                         />
                     </td>
@@ -117,8 +119,8 @@ const ScrollableCanvas: React.FC<IProps> = ({
                             id="BG"
                             style={{
                                 backgroundImage: `url(${background})`,
-                                width: windx,
-                                height: windy,
+                                width: windowWidth,
+                                height: windowHeight,
                                 left: 0,
                                 position: "fixed",
                                 top: 0,
@@ -127,8 +129,8 @@ const ScrollableCanvas: React.FC<IProps> = ({
                             <svg
                                 id="SVG"
                                 xmlns="http://www.w3.org/2000/svg"
-                                width={windx}
-                                height={windy}
+                                width={windowWidth}
+                                height={windowHeight}
                                 style={{ mixBlendMode: "multiply" }}
                                 viewBox={viewbox}
                             >
@@ -148,7 +150,7 @@ const ScrollableCanvas: React.FC<IProps> = ({
                         <ScrollBar
                             id="R"
                             onClick={() => horizontalScroll(200)}
-                            height={windy - 8}
+                            height={windowHeight - 8}
                             icon="&#x3009;"
                         />
                     </td>

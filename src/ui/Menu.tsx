@@ -13,9 +13,9 @@ interface MenuProps {
     reloadWSeed: () => void;
     horizontalScroll: (v: number) => void;
     toggleAutoScroll: (s: boolean, v: number) => void;
-    cursx: number;
-    windx: number;
-    windy: number;
+    currentPosition: number;
+    windowWidth: number;
+    windowHeight: number;
     chunkCache: ChunkCache;
     prng: PRNG;
     saveRange: Range;
@@ -30,9 +30,9 @@ const Menu: React.FC<MenuProps> = ({
     reloadWSeed,
     horizontalScroll,
     toggleAutoScroll,
-    cursx,
-    windx,
-    windy,
+    currentPosition,
+    windowWidth,
+    windowHeight,
     chunkCache,
     prng,
     saveRange,
@@ -55,14 +55,16 @@ const Menu: React.FC<MenuProps> = ({
 
     const downloadSvg = () => {
         if (saveRange.length > 0) {
-            chunkCache.download(prng, seed, saveRange, windy);
+            chunkCache.download(prng, seed, saveRange, windowHeight);
         } else {
             alert("Range length must be above zero");
         }
     };
 
     const loadCurrentRange = () => {
-        onChangeSaveRange(new Range(cursx, cursx + windx));
+        onChangeSaveRange(
+            new Range(currentPosition, currentPosition + windowWidth)
+        );
     };
 
     const onChangeSaveRangeL = (event: ChangeEvent<HTMLInputElement>) =>
@@ -106,7 +108,8 @@ const Menu: React.FC<MenuProps> = ({
                     <tr>
                         <td>
                             <pre>
-                                VIEW [{cursx}, {cursx + windx}]
+                                VIEW [{currentPosition},{" "}
+                                {currentPosition + windowWidth}]
                             </pre>
                         </td>
                     </tr>

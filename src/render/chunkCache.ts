@@ -139,9 +139,9 @@ export class ChunkCache {
         chunkWidth: number = ChunkCache.CHUNK_WIDTH
     ): void {
         const filename: string = `${seed}-[${range.left}, ${range.right}].svg`;
-        const windx: number = range.right - range.left;
+        const windowWidth: number = range.right - range.left;
         const zoom: number = 1.142;
-        const viewbox = `${range.left} 0 ${windx / zoom} ${
+        const viewbox = `${range.left} 0 ${windowWidth / zoom} ${
             windowHeight / zoom
         }`;
 
