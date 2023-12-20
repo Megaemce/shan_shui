@@ -5,7 +5,6 @@ import {
     loopNoise,
     normalizedRandom,
     poly,
-    randomChoice,
     gaussianRandom,
 } from "../basic/utils";
 import { midPoint, triangulate } from "../basic/polytools";
@@ -156,7 +155,7 @@ export function tree03(
                 blobs.push(
                     blob(
                         prng,
-                        newX + ox * randomChoice(prng, [-1, 1]),
+                        newX + ox * prng.randomChoice([-1, 1]),
                         newY + prng.random(-1, 1) * strokeWidth,
                         (prng.random(-0.5, 0.5) * Math.PI) / 6,
                         lcol,
@@ -285,7 +284,7 @@ export function twig(
     // const fun1 = (x: number) => Math.sqrt(x);
     const fun2 = (x: number) => -1 / Math.pow(x / tl + 1, 5) + 1;
 
-    const tfun = randomChoice(prng, [fun2]);
+    const tfun = prng.randomChoice([fun2]);
     const a0 = ((prng.random() * Math.PI) / 6) * dir + ang;
 
     for (let i = 0; i < tl; i++) {
@@ -308,7 +307,7 @@ export function twig(
                     dep - 1,
                     ang,
                     sca * 0.8,
-                    dir * randomChoice(prng, [-1, 1]),
+                    dir * prng.randomChoice([-1, 1]),
                     strokeWidth,
                     lea
                 )
@@ -464,7 +463,7 @@ export function barkify(
 
         if (prng.random() < 0.05) {
             const jl = prng.random(2, 4);
-            const xya = randomChoice(prng, [
+            const xya = prng.randomChoice([
                 [trlist[0][i].x, trlist[0][i].y, a0],
                 [trlist[1][i].x, trlist[1][i].y, a1],
             ]);
@@ -952,7 +951,7 @@ function fracTree08(
 
     const _trmlist = [new Point(xoff, yoff), new Point(xoff + len, yoff)];
 
-    const bfun = randomChoice(prng, [
+    const bfun = prng.randomChoice([
         (x: number) => Math.sin(x * Math.PI),
         (x: number) => -Math.sin(x * Math.PI),
     ]);
@@ -986,7 +985,7 @@ function fracTree08(
 
     if (dep !== 0) {
         const nben =
-            ben + randomChoice(prng, [-1, 1]) * Math.PI * 0.001 * dep * dep;
+            ben + prng.randomChoice([-1, 1]) * Math.PI * 0.001 * dep * dep;
         if (prng.random() < 0.5) {
             polylineArray.push(
                 fracTree08(
@@ -997,7 +996,7 @@ function fracTree08(
                     ang +
                         ben +
                         Math.PI *
-                            randomChoice(prng, [
+                            prng.randomChoice([
                                 normalizedRandom(prng, -1, 0.5),
                                 normalizedRandom(prng, 0.5, 1),
                             ]) *
@@ -1015,7 +1014,7 @@ function fracTree08(
                     ang +
                         ben +
                         Math.PI *
-                            randomChoice(prng, [
+                            prng.randomChoice([
                                 normalizedRandom(prng, -1, -0.5),
                                 normalizedRandom(prng, 0.5, 1),
                             ]) *

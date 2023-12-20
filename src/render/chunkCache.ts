@@ -2,7 +2,6 @@ import { Chunk, IChunk } from "../render/basic/chunk";
 import { design } from "../render/basic/designer";
 import { PRNG } from "../render/basic/PRNG";
 import { Range } from "../render/basic/range";
-import { randomChoice } from "../render/basic/utils";
 import { boat01 } from "../render/parts/arch";
 import {
     generateDistantMountain,
@@ -87,7 +86,7 @@ export class ChunkCache {
                         y,
                         prng.random(0, 100),
                         150,
-                        randomChoice(prng, [500, 1000, 1500])
+                        prng.randomChoice([500, 1000, 1500])
                     )
                 );
             } else if (tag === "boat") {
@@ -97,7 +96,7 @@ export class ChunkCache {
                         x,
                         y,
                         y / 800,
-                        randomChoice(prng, [true, false])
+                        prng.randomChoice([true, false])
                     )
                 );
             }
@@ -139,9 +138,9 @@ export class ChunkCache {
         chunkWidth: number = ChunkCache.CHUNK_WIDTH
     ): void {
         const filename: string = `${seed}-[${range.left}, ${range.right}].svg`;
-        const windowWidth: number = range.right - range.left;
+        const windx: number = range.right - range.left;
         const zoom: number = 1.142;
-        const viewbox = `${range.left} 0 ${windowWidth / zoom} ${
+        const viewbox = `${range.left} 0 ${windx / zoom} ${
             windowHeight / zoom
         }`;
 

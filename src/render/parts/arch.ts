@@ -2,12 +2,7 @@ import { Chunk } from "../basic/chunk";
 import { Noise } from "../basic/perlinNoise";
 import { Point } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
-import {
-    normalizedRandom,
-    poly,
-    randomChoice,
-    weightedRandom,
-} from "../basic/utils";
+import { normalizedRandom, poly, weightedRandom } from "../basic/utils";
 import { midPoint } from "../basic/polytools";
 import { ISvgElement } from "../svg";
 import { SvgPolyline, SvgText } from "../svg/types";
@@ -627,7 +622,7 @@ export function arch01(
         )
     );
 
-    const mcnt = randomChoice(prng, [0, 1, 1, 2]);
+    const mcnt = prng.randomChoice([0, 1, 1, 2]);
     if (mcnt === 1) {
         polylineArray.push(
             man(
@@ -635,7 +630,7 @@ export function arch01(
                 xOffset +
                     normalizedRandom(prng, -strokeWidth / 3, strokeWidth / 3),
                 yOffset,
-                randomChoice(prng, [true, false]),
+                prng.randomChoice([true, false]),
                 0.42
             )
         );

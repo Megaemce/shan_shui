@@ -51,17 +51,6 @@ export function loopNoise(noiseArray: number[]): number[] {
 }
 
 /**
- * Randomly choose an element from an array.
- * @param {PRNG} prng - The pseudo-random number generator.
- * @param {T[]} elementArray - The array with elements to choose from.
- * @returns {T} A randomly chosen element from the array.
- */
-export function randomChoice<T>(prng: PRNG, elementArray: T[]): T {
-    const p = Math.floor(prng.random(0, elementArray.length));
-    return elementArray[p];
-}
-
-/**
  * Generate a normalized random number within a range.
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} minValue - The minimum value.

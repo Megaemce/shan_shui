@@ -85,4 +85,14 @@ export class PRNG {
     randomSign(): number {
         return this.random(0, 1) > 0.5 ? -1 : 1;
     }
+
+    /**
+     * Randomly choose an element from an array.
+     * @param {T[]} array - The array with elements to choose from.
+     * @returns {T} A randomly chosen element from the array.
+     */
+    randomChoice<T>(array: T[]): T {
+        const number = Math.floor(this.random(0, array.length));
+        return array[number];
+    }
 }

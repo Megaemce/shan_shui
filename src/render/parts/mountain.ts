@@ -1,10 +1,5 @@
 import { distance, Point } from "../basic/point";
-import {
-    loopNoise,
-    normalizedRandom,
-    poly,
-    randomChoice,
-} from "../basic/utils";
+import { loopNoise, normalizedRandom, poly } from "../basic/utils";
 import { Noise } from "../basic/perlinNoise";
 import { div, stroke, texture } from "./brushes";
 import {
@@ -45,7 +40,7 @@ export function foot(
     for (let i = 0; i < pointArray.length - 2; i += 1) {
         if (i !== ni) continue;
 
-        ni = Math.min(ni + randomChoice(prng, [1, 2]), pointArray.length - 1);
+        ni = Math.min(ni + prng.randomChoice([1, 2]), pointArray.length - 1);
 
         footArray.push([]);
         footArray.push([]);
@@ -256,7 +251,7 @@ export function mountain(
             xOffset,
             yOffset,
             textureSize,
-            randomChoice(prng, [0, 0, 0, 0, 5])
+            prng.randomChoice([0, 0, 0, 0, 5])
         )
     );
 
@@ -364,7 +359,7 @@ export function mountain(
         vegetate(
             pointArray,
             function (x, y): ISvgElement[] {
-                const treeType = randomChoice(prng, [0, 0, 1, 1, 1, 2]);
+                const treeType = prng.randomChoice([0, 0, 1, 1, 1, 2]);
 
                 if (treeType === 1) {
                     return arch02(
@@ -372,16 +367,16 @@ export function mountain(
                         x + xOffset,
                         y + yOffset,
                         normalizedRandom(prng, 40, 70),
-                        randomChoice(prng, [1, 2, 2, 3]),
+                        prng.randomChoice([1, 2, 2, 3]),
                         prng.random(),
-                        randomChoice(prng, [1, 2, 3])
+                        prng.randomChoice([1, 2, 3])
                     );
                 } else if (treeType === 2) {
                     return arch04(
                         prng,
                         x + xOffset,
                         y + yOffset,
-                        randomChoice(prng, [1, 1, 1, 2, 2])
+                        prng.randomChoice([1, 1, 1, 2, 2])
                     );
                 } else {
                     return [];
@@ -409,7 +404,7 @@ export function mountain(
                     x + xOffset,
                     y + yOffset,
                     prng.random(40, 20),
-                    randomChoice(prng, [5, 7])
+                    prng.randomChoice([5, 7])
                 );
             },
             function (i, j) {
@@ -710,7 +705,7 @@ export function generateFlatDecorations(
 ): SvgPolyline[] {
     const polylineArray: SvgPolyline[][] = [];
 
-    const tt = randomChoice(prng, [0, 0, 1, 2, 3, 4]);
+    const tt = prng.randomChoice([0, 0, 1, 2, 3, 4]);
 
     for (let j = 0; j < prng.random(0, 5); j++) {
         polylineArray.push(
@@ -729,7 +724,7 @@ export function generateFlatDecorations(
         );
     }
 
-    for (let j = 0; j < randomChoice(prng, [0, 0, 1, 2]); j++) {
+    for (let j = 0; j < prng.randomChoice([0, 0, 1, 2]); j++) {
         const xr =
             xOffset + normalizedRandom(prng, bounding.xMin, bounding.xMax);
         const yr =
@@ -811,7 +806,7 @@ export function generateFlatDecorations(
             );
         }
     } else if (tt === 2) {
-        for (let i = 0; i < randomChoice(prng, [1, 1, 1, 1, 2, 2, 3]); i++) {
+        for (let i = 0; i < prng.randomChoice([1, 1, 1, 1, 2, 2, 3]); i++) {
             const xr = normalizedRandom(prng, bounding.xMin, bounding.xMax);
             const yr = (bounding.yMin + bounding.yMax) / 2;
             polylineArray.push(tree04(prng, xOffset + xr, yOffset + yr + 20));
@@ -838,7 +833,7 @@ export function generateFlatDecorations(
             }
         }
     } else if (tt === 3) {
-        for (let i = 0; i < randomChoice(prng, [1, 1, 1, 1, 2, 2, 3]); i++) {
+        for (let i = 0; i < prng.randomChoice([1, 1, 1, 1, 2, 2, 3]); i++) {
             polylineArray.push(
                 tree06(
                     prng,
@@ -879,7 +874,7 @@ export function generateFlatDecorations(
         );
     }
 
-    const ts = randomChoice(prng, [0, 0, 0, 0, 1]);
+    const ts = prng.randomChoice([0, 0, 0, 0, 1]);
     if (ts === 1 && tt !== 4) {
         polylineArray.push(
             arch01(
