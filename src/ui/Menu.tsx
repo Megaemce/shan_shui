@@ -10,7 +10,7 @@ interface MenuProps {
     display: string;
     seed: string;
     changeSeed: (seed: string) => void;
-    reloadWSeed: () => void;
+    reloadWindowSeed: () => void;
     horizontalScroll: (v: number) => void;
     toggleAutoScroll: (s: boolean, v: number) => void;
     currentPosition: number;
@@ -27,7 +27,7 @@ const Menu: React.FC<MenuProps> = ({
     display,
     seed,
     changeSeed,
-    reloadWSeed,
+    reloadWindowSeed,
     horizontalScroll,
     toggleAutoScroll,
     currentPosition,
@@ -97,7 +97,7 @@ const Menu: React.FC<MenuProps> = ({
                                 onChange={(e) => changeSeed(e.target.value)}
                                 style={{ width: 120 }}
                             />
-                            <button onClick={reloadWSeed}>Generate</button>
+                            <button onClick={reloadWindowSeed}>Generate</button>
                         </td>
                     </tr>
                     <tr>

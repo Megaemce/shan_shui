@@ -11,7 +11,7 @@ import "./styles.css";
 interface SettingPanelProps {
     seed: string;
     changeSeed: (seed: string) => void;
-    reloadWSeed: () => void;
+    reloadWindowSeed: () => void;
     horizontalScroll: (value: number) => void;
     toggleAutoScroll: (status: boolean, value: number) => void;
     currentPosition: number;
@@ -27,7 +27,7 @@ interface SettingPanelProps {
 const SettingPanel: React.FC<SettingPanelProps> = ({
     seed,
     changeSeed,
-    reloadWSeed,
+    reloadWindowSeed,
     horizontalScroll,
     toggleAutoScroll,
     currentPosition,
@@ -61,7 +61,7 @@ const SettingPanel: React.FC<SettingPanelProps> = ({
                     display="block"
                     seed={seed}
                     changeSeed={changeSeed}
-                    reloadWSeed={reloadWSeed}
+                    reloadWindowSeed={reloadWindowSeed}
                     horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}
                     currentPosition={currentPosition}
