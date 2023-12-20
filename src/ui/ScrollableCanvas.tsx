@@ -59,9 +59,7 @@ interface IProps {
     chunkCache: ChunkCache;
 }
 
-interface IState {}
-
-class ScrollableCanvas extends React.Component<IProps, IState> {
+class ScrollableCanvas extends React.Component<IProps> {
     static id = "SCROLLABLE_CANVAS";
     cwid: number = 512;
     canv: string = "";
