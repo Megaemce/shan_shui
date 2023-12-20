@@ -1,7 +1,7 @@
 import { Noise } from "../basic/perlinNoise";
 import { distance, IPoint, Point, Vector } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
-import { bezmh, normalizedRandom, poly } from "../basic/utils";
+import { generateBezierCurve, normalizedRandom, poly } from "../basic/utils";
 import { SvgPolyline } from "../svg/types";
 import { stroke } from "./brushes";
 
@@ -105,11 +105,11 @@ export function hat01(
     prng: PRNG,
     p0: Point,
     p1: Point,
-    fli = false
+    horizontalFlip = false
 ): SvgPolyline[] {
     const polylines: SvgPolyline[] = [];
     const seed = prng.random();
-    const f: (pl: Point[]) => Point[] = fli ? flipper : (x) => x;
+    const f: (pl: Point[]) => Point[] = horizontalFlip ? flipper : (x) => x;
     //const pointArray = [[-0.5,0.5],[0.5,0.5],[0.5,1],[-0.5,2]]
     polylines.push(
         poly(
@@ -159,10 +159,10 @@ export function hat02(
     prng: PRNG,
     p0: Point,
     p1: Point,
-    fli = false
+    horizontalFlip = false
 ): SvgPolyline[] {
     const polylines: SvgPolyline[] = [];
-    const f: (pl: Point[]) => Point[] = fli ? flipper : (x) => x;
+    const f: (pl: Point[]) => Point[] = horizontalFlip ? flipper : (x) => x;
 
     polylines.push(
         poly(
@@ -194,12 +194,12 @@ export function stick01(
     prng: PRNG,
     p0: Point,
     p1: Point,
-    fli = false
+    horizontalFlip = false
 ): SvgPolyline[] {
     const polylines: SvgPolyline[] = [];
     const seed = prng.random();
 
-    const f: (pl: Point[]) => Point[] = fli ? flipper : (x) => x;
+    const f: (pl: Point[]) => Point[] = horizontalFlip ? flipper : (x) => x;
 
     const qlist1 = [];
     const l = 12;
@@ -235,7 +235,7 @@ function cloth(
     fun: (v: number) => number
 ): SvgPolyline[] {
     const polylines: SvgPolyline[] = [];
-    const tlist = bezmh(pointArray, 2);
+    const tlist = generateBezierCurve(pointArray);
     const [tlist1, tlist2] = expand(tlist, fun);
     polylines.push(
         poly(tlist1.concat(tlist2.reverse()).map(toGlobal), 0, 0, "white")
@@ -262,24 +262,24 @@ function cloth(
     return polylines;
 }
 
-function fsleeve(sca: number, x: number) {
+function fsleeve(scalling: number, x: number) {
     return (
-        sca *
+        scalling *
         8 *
         (Math.sin(0.5 * x * Math.PI) * Math.pow(Math.sin(x * Math.PI), 0.1) +
             (1 - x) * 0.4)
     );
 }
-function fbody(sca: number, x: number) {
+function fbody(scalling: number, x: number) {
     return (
-        sca *
+        scalling *
         11 *
         (Math.sin(0.5 * x * Math.PI) * Math.pow(Math.sin(x * Math.PI), 0.1) +
             (1 - x) * 0.5)
     );
 }
-function fhead(sca: number, x: number) {
-    return sca * 7 * Math.pow(0.25 - Math.pow(x - 0.5, 2), 0.3);
+function fhead(scalling: number, x: number) {
+    return scalling * 7 * Math.pow(0.25 - Math.pow(x - 0.5, 2), 0.3);
 }
 
 //      2
@@ -293,12 +293,12 @@ function fhead(sca: number, x: number) {
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} xOffset - X-coordinate offset for the man.
  * @param {number} yOffset - Y-coordinate offset for the man.
- * @param {boolean} fli - Indicates whether the man is flipped horizontally.
- * @param {number} sca - Scaling factor for the man.
- * @param {number[]} _len - Array representing the lengths of different body parts.
- * @param {(prng: PRNG, p1: Point, p2: Point, fli: boolean) => SvgPolyline[]} ite
+ * @param {boolean} horizontalFlip - Indicates whether the man is flipped horizontally.
+ * @param {number} scalling - Scaling factor for the man.
+ * @param {number[]} lengthArray - Array representing the lengths of different body parts.
+ * @param {(prng: PRNG, p1: Point, p2: Point, horizontalFlip: boolean) => SvgPolyline[]} ite
  *   - Iteration function for generating specific body parts.
- * @param {(prng: PRNG, p1: Point, p2: Point, fli: boolean) => SvgPolyline[]} hat
+ * @param {(prng: PRNG, p1: Point, p2: Point, horizontalFlip: boolean) => SvgPolyline[]} hat
  *   - Hat styling function.
  * @returns {SvgPolyline[]} An array of SvgPolyline representing the man.
  */
@@ -306,20 +306,20 @@ export function man(
     prng: PRNG,
     xOffset: number,
     yOffset: number,
-    fli: boolean = true,
-    sca: number = 0.5,
-    _len: number[] = [0, 30, 20, 30, 30, 30, 30, 30, 30],
-    ite: (prng: PRNG, p1: Point, p2: Point, fli: boolean) => SvgPolyline[] = (
-        _1: PRNG,
-        _2: Point,
-        _3: Point,
-        _4: boolean
-    ) => [],
+    horizontalFlip: boolean = true,
+    scalling: number = 0.5,
+    lengthArray: number[] = [0, 30, 20, 30, 30, 30, 30, 30, 30],
+    ite: (
+        prng: PRNG,
+        p1: Point,
+        p2: Point,
+        horizontalFlip: boolean
+    ) => SvgPolyline[] = (_1: PRNG, _2: Point, _3: Point, _4: boolean) => [],
     hat: (
         prng: PRNG,
         p1: Point,
         p2: Point,
-        fli: boolean
+        horizontalFlip: boolean
     ) => SvgPolyline[] = hat01
 ): SvgPolyline[] {
     const ang: number[] = [
@@ -333,11 +333,11 @@ export function man(
         -Math.PI * prng.random(3 / 4, 1),
         -Math.PI / 4,
     ];
-    const len = _len.map(function (v) {
-        return v * sca;
+    const len = lengthArray.map(function (v) {
+        return v * scalling;
     });
 
-    const polylinelists: SvgPolyline[][] = [];
+    const polylineArray: SvgPolyline[][] = [];
 
     const struct = [
         [0],
@@ -352,7 +352,10 @@ export function man(
     ];
 
     const toGlobal = function (v: IPoint) {
-        return new Point((fli ? -1 : 1) * v.x + xOffset, v.y + yOffset);
+        return new Point(
+            (horizontalFlip ? -1 : 1) * v.x + xOffset,
+            v.y + yOffset
+        );
     };
 
     const vecs: Vector[] = [];
@@ -367,13 +370,15 @@ export function man(
     }
     yOffset -= vecs[4].y;
 
-    const _fsleeve = (v: number) => fsleeve(sca, v);
-    const _fbody = (v: number) => fbody(sca, v);
-    const _fhead = (v: number) => fhead(sca, v);
+    const _fsleeve = (v: number) => fsleeve(scalling, v);
+    const _fbody = (v: number) => fbody(scalling, v);
+    const _fhead = (v: number) => fhead(scalling, v);
 
-    polylinelists.push(ite(prng, toGlobal(vecs[8]), toGlobal(vecs[6]), fli));
+    polylineArray.push(
+        ite(prng, toGlobal(vecs[8]), toGlobal(vecs[6]), horizontalFlip)
+    );
 
-    polylinelists.push(
+    polylineArray.push(
         cloth(
             prng,
             toGlobal,
@@ -381,7 +386,7 @@ export function man(
             _fsleeve
         )
     );
-    polylinelists.push(
+    polylineArray.push(
         cloth(
             prng,
             toGlobal,
@@ -391,7 +396,7 @@ export function man(
             _fbody
         )
     );
-    polylinelists.push(
+    polylineArray.push(
         cloth(
             prng,
             toGlobal,
@@ -399,7 +404,7 @@ export function man(
             _fsleeve
         )
     );
-    polylinelists.push(
+    polylineArray.push(
         cloth(
             prng,
             toGlobal,
@@ -408,14 +413,13 @@ export function man(
         )
     );
 
-    const hlist = bezmh(
-        [vecs[1], vecs[2]].map((v) => v.movefrom(Point.O)),
-        2
+    const hlist = generateBezierCurve(
+        [vecs[1], vecs[2]].map((v) => v.movefrom(Point.O))
     );
     const [hlist1, hlist2] = expand(hlist, _fhead);
     hlist1.splice(0, Math.floor(hlist1.length * 0.1));
     hlist2.splice(0, Math.floor(hlist2.length * 0.95));
-    polylinelists.push([
+    polylineArray.push([
         poly(
             hlist1.concat(hlist2.reverse()).map(toGlobal),
             0,
@@ -424,7 +428,9 @@ export function man(
         ),
     ]);
 
-    polylinelists.push(hat(prng, toGlobal(vecs[1]), toGlobal(vecs[2]), fli));
+    polylineArray.push(
+        hat(prng, toGlobal(vecs[1]), toGlobal(vecs[2]), horizontalFlip)
+    );
 
-    return polylinelists.flat();
+    return polylineArray.flat();
 }

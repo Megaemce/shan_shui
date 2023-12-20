@@ -6,7 +6,7 @@ import {
     normalizedRandom,
     poly,
     randomChoice,
-    randGaussian,
+    gaussianRandom,
 } from "../basic/utils";
 import { midPoint, triangulate } from "../basic/polytools";
 import { SvgPolyline } from "../svg/types";
@@ -98,8 +98,8 @@ export function tree02(
         polylines.push(
             blob(
                 prng,
-                x + randGaussian(prng) * clu * 4,
-                y + randGaussian(prng) * clu * 4,
+                x + gaussianRandom(prng) * clu * 4,
+                y + gaussianRandom(prng) * clu * 4,
                 Math.PI / 2,
                 col,
                 prng.random(0.5, 1.25) * hei,
@@ -277,7 +277,7 @@ export function twig(
     strokeWidth: number = 1,
     lea: [boolean, number] = [true, 12]
 ): SvgPolyline[] {
-    const polylinelists: SvgPolyline[][] = [];
+    const polylineArray: SvgPolyline[][] = [];
     const twlist: Point[] = [];
     const tl = 10;
     const hs = prng.random(0.5, 1);
@@ -299,7 +299,7 @@ export function twig(
 
         twlist.push(new Point(nx + tx, ny + ty));
         if ((i === ((tl / 3) | 0) || i === (((tl * 2) / 3) | 0)) && dep > 0) {
-            polylinelists.push(
+            polylineArray.push(
                 twig(
                     prng,
                     nx + tx,
@@ -321,7 +321,7 @@ export function twig(
                         ? Math.pow(Math.sin(x * Math.PI) * x, 0.5)
                         : -Math.pow(Math.sin((x - 2) * Math.PI * (x - 2)), 0.5);
                 };
-                polylinelists.push([
+                polylineArray.push([
                     blob(
                         prng,
                         nx + tx + Math.cos(ang) * dj * strokeWidth,
@@ -342,7 +342,7 @@ export function twig(
             }
         }
     }
-    polylinelists.push([
+    polylineArray.push([
         stroke(
             prng,
             twlist,
@@ -355,7 +355,7 @@ export function twig(
         ),
     ]);
 
-    return polylinelists.flat();
+    return polylineArray.flat();
 }
 
 function bark(
@@ -422,7 +422,7 @@ export function barkify(
     y: number,
     trlist: Point[][]
 ): SvgPolyline[] {
-    const polylinelists: SvgPolyline[][] = [];
+    const polylineArray: SvgPolyline[][] = [];
 
     for (let i = 2; i < trlist[0].length - 1; i++) {
         const a0 = Math.atan2(
@@ -437,7 +437,7 @@ export function barkify(
         const nx = trlist[0][i].x * (1 - p) + trlist[1][i].x * p;
         const ny = trlist[0][i].y * (1 - p) + trlist[1][i].y * p;
         if (prng.random() < 0.2) {
-            polylinelists.push([
+            polylineArray.push([
                 blob(
                     prng,
                     nx + x,
@@ -450,7 +450,7 @@ export function barkify(
                 ),
             ]);
         } else {
-            polylinelists.push(
+            polylineArray.push(
                 bark(
                     prng,
                     nx + x,
@@ -468,7 +468,7 @@ export function barkify(
                 [trlist[1][i].x, trlist[1][i].y, a1],
             ]);
             for (let j = 0; j < jl; j++) {
-                polylinelists.push([
+                polylineArray.push([
                     blob(
                         prng,
                         xya[0] + x + Math.cos(xya[2]) * (j - jl / 2) * 4,
@@ -497,13 +497,13 @@ export function barkify(
         for (let j = 0; j < rglist[i].length; j++) {
             rglist[i][j].x +=
                 (Noise.noise(prng, i, j * 0.1, 1) - 0.5) *
-                (15 + 5 * randGaussian(prng));
+                (15 + 5 * gaussianRandom(prng));
             rglist[i][j].y +=
                 (Noise.noise(prng, i, j * 0.1, 2) - 0.5) *
-                (15 + 5 * randGaussian(prng));
+                (15 + 5 * gaussianRandom(prng));
         }
         if (rglist[i].length > 0) {
-            polylinelists.push([
+            polylineArray.push([
                 stroke(
                     prng,
                     rglist[i].map(function (p: Point) {
@@ -518,7 +518,7 @@ export function barkify(
             ]);
         }
     }
-    return polylinelists.flat();
+    return polylineArray.flat();
 }
 
 export function tree04(prng: PRNG, x: number, y: number): SvgPolyline[] {
@@ -526,7 +526,7 @@ export function tree04(prng: PRNG, x: number, y: number): SvgPolyline[] {
     const strokeWidth: number = 6;
     const col: string = "rgba(100,100,100,0.5)";
 
-    const polylinelists: SvgPolyline[][] = [];
+    const polylineArray: SvgPolyline[][] = [];
     const txpolylinelists: SvgPolyline[][] = [];
     const twpolylinelists: SvgPolyline[][] = [];
 
@@ -591,13 +591,13 @@ export function tree04(prng: PRNG, x: number, y: number): SvgPolyline[] {
             trmlist.push(trlist[i]);
         }
     }
-    polylinelists.push([poly(trmlist, x, y, "white", col)]);
+    polylineArray.push([poly(trmlist, x, y, "white", col)]);
 
     trmlist.splice(0, 1);
     trmlist.splice(trmlist.length - 1, 1);
     const color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
 
-    polylinelists.push([
+    polylineArray.push([
         stroke(
             prng,
             trmlist.map(function (p: Point) {
@@ -612,9 +612,9 @@ export function tree04(prng: PRNG, x: number, y: number): SvgPolyline[] {
         ),
     ]);
 
-    polylinelists.push(txpolylinelists.flat());
-    polylinelists.push(twpolylinelists.flat());
-    return polylinelists.flat();
+    polylineArray.push(txpolylinelists.flat());
+    polylineArray.push(twpolylinelists.flat());
+    return polylineArray.flat();
 }
 
 /**
@@ -633,7 +633,7 @@ export function tree05(
     const strokeWidth: number = 5;
     const col: string = "rgba(100,100,100,0.5)";
 
-    const polylinelists: SvgPolyline[][] = [];
+    const polylineArray: SvgPolyline[][] = [];
     const txpolylinelists: SvgPolyline[][] = [];
     const twpolylinelists: SvgPolyline[][] = [];
 
@@ -699,14 +699,14 @@ export function tree05(
         }
     }
 
-    polylinelists.push([poly(trmlist, x, y, "white", col)]);
+    polylineArray.push([poly(trmlist, x, y, "white", col)]);
 
     trmlist.splice(0, 1);
     trmlist.splice(trmlist.length - 1, 1);
     const color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
 
     // 树干
-    polylinelists.push([
+    polylineArray.push([
         stroke(
             prng,
             trmlist.map(function (p: Point) {
@@ -721,9 +721,9 @@ export function tree05(
         ),
     ]);
 
-    polylinelists.push(txpolylinelists.flat());
-    polylinelists.push(twpolylinelists.flat());
-    return polylinelists.flat();
+    polylineArray.push(txpolylinelists.flat());
+    polylineArray.push(twpolylinelists.flat());
+    return polylineArray.flat();
 }
 
 function fracTree06(
@@ -812,7 +812,7 @@ export function tree06(
 ): SvgPolyline[] {
     const strokeWidth: number = 6;
     const col: string = "rgba(100,100,100,0.5)";
-    const polylinelists: SvgPolyline[][] = [];
+    const polylineArray: SvgPolyline[][] = [];
     const txpolylinelists: SvgPolyline[][] = [];
     const twpolylinelists: SvgPolyline[][] = [];
 
@@ -829,12 +829,12 @@ export function tree06(
         0
     );
 
-    polylinelists.push([poly(trmlist, x, y, "white", col, 0)]);
+    polylineArray.push([poly(trmlist, x, y, "white", col, 0)]);
 
     trmlist.splice(0, 1);
     trmlist.splice(trmlist.length - 1, 1);
     const color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
-    polylinelists.push([
+    polylineArray.push([
         stroke(
             prng,
             trmlist.map(function (v) {
@@ -849,9 +849,9 @@ export function tree06(
         ),
     ]);
 
-    polylinelists.push(txpolylinelists.flat());
-    polylinelists.push(twpolylinelists.flat());
-    return polylinelists.flat();
+    polylineArray.push(txpolylinelists.flat());
+    polylineArray.push(twpolylinelists.flat());
+    return polylineArray.flat();
 }
 
 export function tree07(
@@ -969,8 +969,8 @@ function fracTree08(
         trmlist[i].y = spt.y + d * Math.sin(a + ang);
     }
 
-    const polylinelists: SvgPolyline[][] = [];
-    polylinelists.push([
+    const polylineArray: SvgPolyline[][] = [];
+    polylineArray.push([
         stroke(
             prng,
             trmlist,
@@ -987,7 +987,7 @@ function fracTree08(
         const nben =
             ben + randomChoice(prng, [-1, 1]) * Math.PI * 0.001 * dep * dep;
         if (prng.random() < 0.5) {
-            polylinelists.push(
+            polylineArray.push(
                 fracTree08(
                     prng,
                     ept.x,
@@ -1005,7 +1005,7 @@ function fracTree08(
                     nben
                 )
             );
-            polylinelists.push(
+            polylineArray.push(
                 fracTree08(
                     prng,
                     ept.x,
@@ -1024,7 +1024,7 @@ function fracTree08(
                 )
             );
         } else {
-            polylinelists.push(
+            polylineArray.push(
                 fracTree08(
                     prng,
                     ept.x,
@@ -1037,7 +1037,7 @@ function fracTree08(
             );
         }
     }
-    return polylinelists.flat();
+    return polylineArray.flat();
 }
 
 export function tree08(
@@ -1049,7 +1049,7 @@ export function tree08(
     const strokeWidth: number = 1;
     const col: string = "rgba(100,100,100,0.5)";
 
-    const polylinelists: SvgPolyline[][] = [];
+    const polylineArray: SvgPolyline[][] = [];
     const twpolylinelists: SvgPolyline[][] = [];
 
     const ang = normalizedRandom(prng, -1, 1) * Math.PI * 0.2;
@@ -1090,10 +1090,10 @@ export function tree08(
         }
     }
 
-    polylinelists.push([poly(trlist, x, y, "white", col)]);
+    polylineArray.push([poly(trlist, x, y, "white", col)]);
 
     const color = `rgba(100,100,100,${prng.random(0.6, 0.7).toFixed(3)})`;
-    polylinelists.push([
+    polylineArray.push([
         stroke(
             prng,
             trlist.map(function (v) {
@@ -1108,7 +1108,7 @@ export function tree08(
         ),
     ]);
 
-    polylinelists.push(twpolylinelists.flat());
+    polylineArray.push(twpolylinelists.flat());
 
-    return polylinelists.flat();
+    return polylineArray.flat();
 }

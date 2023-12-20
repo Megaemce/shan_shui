@@ -596,9 +596,9 @@ export function arch01(
     const h0 = height * p;
     const h1 = height * (1 - p);
 
-    const polylinelists: SvgPolyline[][] = [];
-    polylinelists.push(hut(prng, xOffset, yOffset - height, h0, strokeWidth));
-    polylinelists.push(
+    const polylineArray: SvgPolyline[][] = [];
+    polylineArray.push(hut(prng, xOffset, yOffset - height, h0, strokeWidth));
+    polylineArray.push(
         box(
             prng,
             xOffset,
@@ -612,7 +612,7 @@ export function arch01(
         )
     );
 
-    polylinelists.push(
+    polylineArray.push(
         rail(
             prng,
             xOffset,
@@ -629,7 +629,7 @@ export function arch01(
 
     const mcnt = randomChoice(prng, [0, 1, 1, 2]);
     if (mcnt === 1) {
-        polylinelists.push(
+        polylineArray.push(
             man(
                 prng,
                 xOffset +
@@ -640,7 +640,7 @@ export function arch01(
             )
         );
     } else if (mcnt === 2) {
-        polylinelists.push(
+        polylineArray.push(
             man(
                 prng,
                 xOffset +
@@ -650,7 +650,7 @@ export function arch01(
                 0.42
             )
         );
-        polylinelists.push(
+        polylineArray.push(
             man(
                 prng,
                 xOffset +
@@ -661,7 +661,7 @@ export function arch01(
             )
         );
     }
-    polylinelists.push(
+    polylineArray.push(
         rail(
             prng,
             xOffset,
@@ -676,7 +676,7 @@ export function arch01(
         )
     );
 
-    return polylinelists.flat();
+    return polylineArray.flat();
 }
 
 export function arch02(
@@ -772,13 +772,13 @@ export function arch03(
         rot = 0.7,
         per = 5;
 
-    const polylinelists: SvgPolyline[][] = [];
+    const polylineArray: SvgPolyline[][] = [];
 
     let hoff = 0;
     const dec = (pul: Point, pur: Point, pdl: Point, pdr: Point) =>
         deco(1, pul, pur, pdl, pdr, [1, 4], [1, 2]);
     for (let i = 0; i < sto; i++) {
-        polylinelists.push(
+        polylineArray.push(
             box(
                 prng,
                 xOffset,
@@ -793,7 +793,7 @@ export function arch03(
                 dec
             )
         );
-        polylinelists.push(
+        polylineArray.push(
             rail(
                 prng,
                 xOffset,
@@ -809,7 +809,7 @@ export function arch03(
                 0.5
             )
         );
-        polylinelists.push(
+        polylineArray.push(
             pagroof(
                 prng,
                 xOffset,
@@ -822,7 +822,7 @@ export function arch03(
         );
         hoff += height * 1.5;
     }
-    return polylinelists.flat();
+    return polylineArray.flat();
 }
 
 export function arch04(
@@ -836,12 +836,12 @@ export function arch04(
         rot = 0.7,
         per = 5;
 
-    const polylinelists: SvgPolyline[][] = [];
+    const polylineArray: SvgPolyline[][] = [];
 
     let hoff = 0;
     const dec = (_1: Point, _2: Point, _3: Point, _4: Point) => [];
     for (let i = 0; i < sto; i++) {
-        polylinelists.push(
+        polylineArray.push(
             box(
                 prng,
                 xOffset,
@@ -856,7 +856,7 @@ export function arch04(
                 dec
             )
         );
-        polylinelists.push(
+        polylineArray.push(
             rail(
                 prng,
                 xOffset,
@@ -872,7 +872,7 @@ export function arch04(
                 0.5
             )
         );
-        polylinelists.push(
+        polylineArray.push(
             pagroof(
                 prng,
                 xOffset,
@@ -885,7 +885,7 @@ export function arch04(
         );
         hoff += height * 1.2;
     }
-    return polylinelists.flat();
+    return polylineArray.flat();
 }
 
 export function boat01(
@@ -896,10 +896,10 @@ export function boat01(
     fli = false
 ): Chunk {
     const len = 120;
-    const polylinelists: SvgPolyline[][] = [];
+    const polylineArray: SvgPolyline[][] = [];
 
     const dir = fli ? -1 : 1;
-    polylinelists.push(
+    polylineArray.push(
         man(
             prng,
             xOffset + 20 * sca * dir,
@@ -922,8 +922,8 @@ export function boat01(
         plist2.push(new Point(i * dir, fun2(i / len)));
     }
     const plist: Point[] = plist1.concat(plist2.reverse());
-    polylinelists.push([poly(plist, xOffset, yOffset, "white")]);
-    polylinelists.push([
+    polylineArray.push([poly(plist, xOffset, yOffset, "white")]);
+    polylineArray.push([
         stroke(
             prng,
             plist.map((v) => new Point(xOffset + v.x, yOffset + v.y)),
@@ -940,7 +940,7 @@ export function boat01(
         "boat",
         xOffset,
         yOffset,
-        polylinelists.flat()
+        polylineArray.flat()
     );
     return chunk;
 }

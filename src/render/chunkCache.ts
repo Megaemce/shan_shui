@@ -4,7 +4,11 @@ import { PRNG } from "../render/basic/PRNG";
 import { Range } from "../render/basic/range";
 import { randomChoice } from "../render/basic/utils";
 import { boat01 } from "../render/parts/arch";
-import { distMount, flatMount, mountain } from "../render/parts/mountain";
+import {
+    generateDistantMountain,
+    generateFlatMountain,
+    mountain,
+} from "../render/parts/mountain";
 import { water } from "../render/parts/water";
 
 /**
@@ -65,7 +69,7 @@ export class ChunkCache {
                 this.chunks.push(water(prng, x, y, i * 2));
             } else if (tag === "flatmount") {
                 this.chunks.push(
-                    flatMount(
+                    generateFlatMountain(
                         prng,
                         x,
                         y,
@@ -77,7 +81,7 @@ export class ChunkCache {
                 );
             } else if (tag === "distmount") {
                 this.chunks.push(
-                    distMount(
+                    generateDistantMountain(
                         prng,
                         x,
                         y,
