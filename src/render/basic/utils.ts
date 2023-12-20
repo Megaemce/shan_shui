@@ -35,16 +35,16 @@ export function mapValue(
  */
 export function loopNoise(noiseArray: number[]): number[] {
     const dif = noiseArray[noiseArray.length - 1] - noiseArray[0];
-    const bds = [100, -100];
+    const boundaries: [number, number] = [100, -100];
 
     noiseArray.forEach((value, i) => {
         noiseArray[i] +=
             (dif * (noiseArray.length - 1 - i)) / (noiseArray.length - 1);
-        bds[0] = Math.min(bds[0], value);
-        bds[1] = Math.max(bds[1], value);
+        boundaries[0] = Math.min(boundaries[0], value);
+        boundaries[1] = Math.max(boundaries[1], value);
     });
 
-    const inputRange = Range.fromArray(bds);
+    const inputRange = Range.fromArray(boundaries);
     const outputRange = new Range(0, 1);
 
     return noiseArray.map((value) => mapValue(value, inputRange, outputRange));

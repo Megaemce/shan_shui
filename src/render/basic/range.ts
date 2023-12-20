@@ -9,7 +9,7 @@ export interface IRange {
 /**
  * Class representing a numeric range.
  */
-export class Range {
+export class Range implements IRange {
     /**
      * Creates a new Range.
      * @param left - The left boundary of the range.
@@ -64,7 +64,7 @@ export class Range {
      * @param array - An array containing left and right boundaries.
      * @returns A new Range instance.
      */
-    static fromArray(array: number[]): Range {
+    static fromArray(array: [number, number]): Range {
         return new Range(array[0], array[1]);
     }
 }
