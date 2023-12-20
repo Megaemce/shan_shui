@@ -3,7 +3,9 @@
 Procedurally-understandably-generated vector-format infinitely-scrolling Chinese landscape for the browser.
 This is a newer version of [RedContritio's](https://github.com/RedContritio) [app](https://github.com/RedContritio/shan_shui_inf) based on original code from [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf/blob/master/README.md#shan-shui) coded by [Lingdong Huang](https://github.com/LingDong-). This version is build on React 18 with less dependecies.
 
-## Render Components
+Documentation can be seen [here](https://htmlpreview.github.io/?https://github.com/Megaemce/shan_shui/blob/main/docs/index.html)
+
+## Components
 
 ### generateMan
 
