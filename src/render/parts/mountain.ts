@@ -532,7 +532,7 @@ export function generateFlatMountain(
     flatness: number = 0.5,
     strokeWidth: number = prng.random(400, 600)
 ): Chunk {
-    const tex: number = 80;
+    const textureCount: number = 80;
     const polylineArray: SvgPolyline[][] = [];
     const pointArray: Point[][] = [];
     const reso = [5, 50];
@@ -551,14 +551,14 @@ export function generateFlatMountain(
                 (Math.cos(x * 2) + 1) *
                 Noise.noise(prng, x + 10, j * 0.1, seed);
             const p = 1 - (j / reso[0]) * 0.6;
-            const nx = (x / Math.PI) * strokeWidth * p;
-            let ny = -y * height * p + heightOffset;
+            const newX = (x / Math.PI) * strokeWidth * p;
+            let newY = -y * height * p + heightOffset;
             const h = 100;
 
-            if (ny < -h * flatness + heightOffset) {
-                ny = -h * flatness + heightOffset;
+            if (newY < -h * flatness + heightOffset) {
+                newY = -h * flatness + heightOffset;
                 if (flat[flat.length - 1].length % 2 === 0) {
-                    flat[flat.length - 1].push(new Point(nx, ny));
+                    flat[flat.length - 1].push(new Point(newX, newY));
                 }
             } else {
                 if (flat[flat.length - 1].length % 2 === 1) {
@@ -570,7 +570,7 @@ export function generateFlatMountain(
                 }
             }
 
-            pointArray[pointArray.length - 1].push(new Point(nx, ny));
+            pointArray[pointArray.length - 1].push(new Point(newX, newY));
         }
     }
 
@@ -604,7 +604,7 @@ export function generateFlatMountain(
             pointArray,
             xOffset,
             yOffset,
-            tex,
+            textureCount,
             0,
             () => 0.5 + prng.randomSign() * prng.random(0, 0.4)
         )
@@ -778,11 +778,11 @@ export function generateFlatDecorations(
     }
 
     if (tt === 1) {
-        const xmid = (bounding.xMin + bounding.xMax) / 2;
-        const xmin = prng.random(bounding.xMin, xmid);
-        const xmax = prng.random(xmid, bounding.xMax);
+        const xMid = (bounding.xMin + bounding.xMax) / 2;
+        const xMin = prng.random(bounding.xMin, xMid);
+        const xMax = prng.random(xMid, bounding.xMax);
 
-        for (let i = xmin; i < xmax; i += 30) {
+        for (let i = xMin; i < xMax; i += 30) {
             polylineArray.push(
                 tree05(
                     prng,
@@ -850,11 +850,11 @@ export function generateFlatDecorations(
             );
         }
     } else if (tt === 4) {
-        const xmid = (bounding.xMin + bounding.xMax) / 2;
-        const xmin = prng.random(bounding.xMin, xmid);
-        const xmax = prng.random(xmid, bounding.xMax);
+        const xMid = (bounding.xMin + bounding.xMax) / 2;
+        const xMin = prng.random(bounding.xMin, xMid);
+        const xMax = prng.random(xMid, bounding.xMax);
 
-        for (let i = xmin; i < xmax; i += 20) {
+        for (let i = xMin; i < xMax; i += 20) {
             polylineArray.push(
                 tree07(
                     prng,
@@ -983,7 +983,7 @@ export function generateDistantMountain(
  * @param {number} yOffset - The y-axis offset.
  * @param {number} [seed=0] - The seed for the noise function. Default is 0.
  * @param {number} [height=80] - The overall height of the generateRock. Default is 80.
- * @param {number} [sha=10] - The shape parameter affecting texture. Default is 10.
+ * @param {number} [shadow=10] - The shape parameter affecting texture. Default is 10.
  * @param {number} [strokeWidth=100] - The width of the generateRock. Default is 100.
  * @returns {SvgPolyline[]} An array of polylines representing the generateRock.
  */
@@ -993,10 +993,10 @@ export function generateRock(
     yOffset: number,
     seed: number = 0,
     height: number = 80,
-    sha: number = 10,
+    shadow: number = 10,
     strokeWidth: number = 100
 ): SvgPolyline[] {
-    const tex = 40;
+    const textureCount = 40;
 
     const polylineArray: SvgPolyline[][] = [];
 
@@ -1025,16 +1025,16 @@ export function generateRock(
 
             const p = 1 - i / reso[0];
 
-            const nx = Math.cos(a) * l * p;
-            let ny = -Math.sin(a) * l * p;
+            const newX = Math.cos(a) * l * p;
+            let newY = -Math.sin(a) * l * p;
 
             if (Math.PI < a || a < 0) {
-                ny *= 0.2;
+                newY *= 0.2;
             }
 
-            ny += height * (i / reso[0]) * 0.2;
+            newY += height * (i / reso[0]) * 0.2;
 
-            pointArray[pointArray.length - 1].push(new Point(nx, ny));
+            pointArray[pointArray.length - 1].push(new Point(newX, newY));
         }
     }
 
@@ -1067,8 +1067,8 @@ export function generateRock(
             pointArray,
             xOffset,
             yOffset,
-            tex,
-            sha,
+            textureCount,
+            shadow,
             () => 0.5 + prng.randomSign() * prng.random(0.2, 0.35)
         )
     );

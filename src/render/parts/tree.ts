@@ -40,8 +40,8 @@ export function tree01(
     const line1 = [];
     const line2 = [];
     for (let i = 0; i < reso; i++) {
-        const nx = x;
-        const ny = y - (i * hei) / reso;
+        const newX = x;
+        const newY = y - (i * hei) / reso;
         if (i >= reso / 4) {
             for (let j = 0; j < (reso - i) / 5; j++) {
                 const lcol = `rgba(${leafcol[0]},${leafcol[1]},${leafcol[2]},${(
@@ -50,8 +50,9 @@ export function tree01(
                 polylines.push(
                     blob(
                         prng,
-                        nx + strokeWidth * prng.random(-0.6, 0.6) * (reso - i),
-                        ny + prng.random(-0.5, 0.5) * strokeWidth,
+                        newX +
+                            strokeWidth * prng.random(-0.6, 0.6) * (reso - i),
+                        newY + prng.random(-0.5, 0.5) * strokeWidth,
                         (Math.PI / 6) * prng.random(-0.5, 0.5),
                         lcol,
                         prng.random(10, 10 + 4 * (reso - i)),
@@ -62,14 +63,14 @@ export function tree01(
         }
         line1.push(
             new Point(
-                nx + (nslist[i][0] - 0.5) * strokeWidth - strokeWidth / 2,
-                ny
+                newX + (nslist[i][0] - 0.5) * strokeWidth - strokeWidth / 2,
+                newY
             )
         );
         line2.push(
             new Point(
-                nx + (nslist[i][1] - 0.5) * strokeWidth + strokeWidth / 2,
-                ny
+                newX + (nslist[i][1] - 0.5) * strokeWidth + strokeWidth / 2,
+                newY
             )
         );
     }
@@ -142,8 +143,8 @@ export function tree03(
     const line1: Point[] = [];
     const line2: Point[] = [];
     for (let i = 0; i < reso; i++) {
-        const nx = x + ben(i / reso) * 100;
-        const ny = y - (i * hei) / reso;
+        const newX = x + ben(i / reso) * 100;
+        const newY = y - (i * hei) / reso;
         if (i >= reso / 5) {
             for (let j = 0; j < (reso - i) * 2; j++) {
                 const shape = (x: number) => Math.log(50 * x + 1) / 3.95;
@@ -155,8 +156,8 @@ export function tree03(
                 blobs.push(
                     blob(
                         prng,
-                        nx + ox * randomChoice(prng, [-1, 1]),
-                        ny + prng.random(-1, 1) * strokeWidth,
+                        newX + ox * randomChoice(prng, [-1, 1]),
+                        newY + prng.random(-1, 1) * strokeWidth,
                         (prng.random(-0.5, 0.5) * Math.PI) / 6,
                         lcol,
                         ox * 2,
@@ -167,20 +168,20 @@ export function tree03(
         }
         line1.push(
             new Point(
-                nx +
+                newX +
                     (((nslist[i][0] - 0.5) * strokeWidth - strokeWidth / 2) *
                         (reso - i)) /
                         reso,
-                ny
+                newY
             )
         );
         line2.push(
             new Point(
-                nx +
+                newX +
                     (((nslist[i][1] - 0.5) * strokeWidth + strokeWidth / 2) *
                         (reso - i)) /
                         reso,
-                ny
+                newY
             )
         );
     }
@@ -198,16 +199,16 @@ export function branch(
     ben: number = 0.2 * Math.PI,
     det: number = 10
 ): Point[][] {
-    let nx = 0;
-    let ny = 0;
-    const tlist = [[nx, ny]];
+    let newX = 0;
+    let newY = 0;
+    const tlist = [[newX, newY]];
     let a0 = 0;
     const g = 3;
     for (let i = 0; i < g; i++) {
         a0 += ((prng.random(1, 2) * ben) / 2) * prng.randomSign();
-        nx += (Math.cos(a0) * hei) / g;
-        ny -= (Math.sin(a0) * hei) / g;
-        tlist.push([nx, ny]);
+        newX += (Math.cos(a0) * hei) / g;
+        newY -= (Math.sin(a0) * hei) / g;
+        tlist.push([newX, newY]);
     }
     const ta = Math.atan2(
         tlist[tlist.length - 1][1],
@@ -231,13 +232,13 @@ export function branch(
     let ly = 0;
 
     for (let i = 0; i < tl; i += 1) {
-        const lastp = tlist[Math.floor(i / span)];
-        const nextp = tlist[Math.ceil(i / span)];
+        const lastPoint = tlist[Math.floor(i / span)];
+        const nextPoint = tlist[Math.ceil(i / span)];
         const p = (i % span) / span;
-        const nx = lastp[0] * (1 - p) + nextp[0] * p;
-        const ny = lastp[1] * (1 - p) + nextp[1] * p;
+        const newX = lastPoint[0] * (1 - p) + nextPoint[0] * p;
+        const newY = lastPoint[1] * (1 - p) + nextPoint[1] * p;
 
-        const angle = Math.atan2(ny - ly, nx - lx);
+        const angle = Math.atan2(newY - ly, newX - lx);
         const woff =
             ((Noise.noise(prng, i * 0.3) - 0.5) * strokeWidth * hei) / 80;
 
@@ -249,18 +250,18 @@ export function branch(
         const nw = strokeWidth * (((tl - i) / tl) * 0.5 + 0.5);
         trlist1.push(
             new Point(
-                nx + Math.cos(angle + Math.PI / 2) * (nw + woff + b),
-                ny + Math.sin(angle + Math.PI / 2) * (nw + woff + b)
+                newX + Math.cos(angle + Math.PI / 2) * (nw + woff + b),
+                newY + Math.sin(angle + Math.PI / 2) * (nw + woff + b)
             )
         );
         trlist2.push(
             new Point(
-                nx + Math.cos(angle - Math.PI / 2) * (nw - woff + b),
-                ny + Math.sin(angle - Math.PI / 2) * (nw - woff + b)
+                newX + Math.cos(angle - Math.PI / 2) * (nw - woff + b),
+                newY + Math.sin(angle - Math.PI / 2) * (nw - woff + b)
             )
         );
-        lx = nx;
-        ly = ny;
+        lx = newX;
+        ly = newY;
     }
 
     return [trlist1, trlist2];
@@ -294,16 +295,16 @@ export function twig(
         const a = Math.atan2(my, mx);
         const d = Math.pow(mx * mx + my * my, 0.5);
 
-        const nx = Math.cos(a + a0) * d;
-        const ny = Math.sin(a + a0) * d;
+        const newX = Math.cos(a + a0) * d;
+        const newY = Math.sin(a + a0) * d;
 
-        twlist.push(new Point(nx + tx, ny + ty));
+        twlist.push(new Point(newX + tx, newY + ty));
         if ((i === ((tl / 3) | 0) || i === (((tl * 2) / 3) | 0)) && dep > 0) {
             polylineArray.push(
                 twig(
                     prng,
-                    nx + tx,
-                    ny + ty,
+                    newX + tx,
+                    newY + ty,
                     dep - 1,
                     ang,
                     sca * 0.8,
@@ -324,8 +325,8 @@ export function twig(
                 polylineArray.push([
                     blob(
                         prng,
-                        nx + tx + Math.cos(ang) * dj * strokeWidth,
-                        ny +
+                        newX + tx + Math.cos(ang) * dj * strokeWidth,
+                        newY +
                             ty +
                             (Math.sin(ang) * dj - lea[1] / (dep + 1)) *
                                 strokeWidth,
@@ -394,9 +395,9 @@ function bark(
     const brklist: Point[] = [];
     for (let i = 0; i < lalist.length; i++) {
         const ns = nslist[i] * noi + (1 - noi);
-        const nx = x + Math.cos(lalist[i][1] + ang) * lalist[i][0] * ns;
-        const ny = y + Math.sin(lalist[i][1] + ang) * lalist[i][0] * ns;
-        brklist.push(new Point(nx, ny));
+        const newX = x + Math.cos(lalist[i][1] + ang) * lalist[i][0] * ns;
+        const newY = y + Math.sin(lalist[i][1] + ang) * lalist[i][0] * ns;
+        brklist.push(new Point(newX, newY));
     }
 
     const fr = prng.random();
@@ -434,14 +435,14 @@ export function barkify(
             trlist[1][i].x - trlist[1][i - 1].x
         );
         const p = prng.random();
-        const nx = trlist[0][i].x * (1 - p) + trlist[1][i].x * p;
-        const ny = trlist[0][i].y * (1 - p) + trlist[1][i].y * p;
+        const newX = trlist[0][i].x * (1 - p) + trlist[1][i].x * p;
+        const newY = trlist[0][i].y * (1 - p) + trlist[1][i].y * p;
         if (prng.random() < 0.2) {
             polylineArray.push([
                 blob(
                     prng,
-                    nx + x,
-                    ny + y,
+                    newX + x,
+                    newY + y,
                     (a0 + a1) / 2,
                     "rgba(100,100,100,0.6)",
                     15,
@@ -453,8 +454,8 @@ export function barkify(
             polylineArray.push(
                 bark(
                     prng,
-                    nx + x,
-                    ny + y,
+                    newX + x,
+                    newY + y,
                     5 - Math.abs(p - 0.5) * 10,
                     (a0 + a1) / 2
                 )
@@ -883,8 +884,8 @@ export function tree07(
     const line2: Point[] = [];
     let T: Point[][] = [];
     for (let i = 0; i < reso; i++) {
-        const nx = x + ben(i / reso) * 100;
-        const ny = y - (i * hei) / reso;
+        const newX = x + ben(i / reso) * 100;
+        const newY = y - (i * hei) / reso;
         if (i >= reso / 4) {
             for (let j = 0; j < 1; j++) {
                 const bfunc = function (x: number) {
@@ -894,8 +895,8 @@ export function tree07(
                 };
                 const bpl = blob_points(
                     prng,
-                    nx + prng.random(-0.3, 0.3) * strokeWidth * (reso - i),
-                    ny + prng.random(-0.25, 0.25) * strokeWidth,
+                    newX + prng.random(-0.3, 0.3) * strokeWidth * (reso - i),
+                    newY + prng.random(-0.25, 0.25) * strokeWidth,
                     prng.random(0, -Math.PI / 6),
                     prng.random(20, 70),
                     prng.random(12, 24),
@@ -909,14 +910,14 @@ export function tree07(
         }
         line1.push(
             new Point(
-                nx + (nslist[i][0] - 0.5) * strokeWidth - strokeWidth / 2,
-                ny
+                newX + (nslist[i][0] - 0.5) * strokeWidth - strokeWidth / 2,
+                newY
             )
         );
         line2.push(
             new Point(
-                nx + (nslist[i][1] - 0.5) * strokeWidth + strokeWidth / 2,
-                ny
+                newX + (nslist[i][1] - 0.5) * strokeWidth + strokeWidth / 2,
+                newY
             )
         );
     }
