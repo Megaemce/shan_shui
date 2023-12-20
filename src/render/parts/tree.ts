@@ -1,12 +1,7 @@
 import { Noise } from "../basic/perlinNoise";
 import { distance, Point, Vector } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
-import {
-    loopNoise,
-    normalizedRandom,
-    poly,
-    gaussianRandom,
-} from "../basic/utils";
+import { loopNoise, poly } from "../basic/utils";
 import { midPoint, triangulate } from "../basic/polytools";
 import { SvgPolyline } from "../svg/types";
 import { blob_points, blob, div, stroke } from "./brushes";
@@ -98,8 +93,8 @@ export function tree02(
         polylines.push(
             blob(
                 prng,
-                x + gaussianRandom(prng) * clu * 4,
-                y + gaussianRandom(prng) * clu * 4,
+                x + prng.gaussianRandom() * clu * 4,
+                y + prng.gaussianRandom() * clu * 4,
                 Math.PI / 2,
                 col,
                 prng.random(0.5, 1.25) * hei,
@@ -497,10 +492,10 @@ export function barkify(
         for (let j = 0; j < rglist[i].length; j++) {
             rglist[i][j].x +=
                 (Noise.noise(prng, i, j * 0.1, 1) - 0.5) *
-                (15 + 5 * gaussianRandom(prng));
+                (15 + 5 * prng.gaussianRandom());
             rglist[i][j].y +=
                 (Noise.noise(prng, i, j * 0.1, 2) - 0.5) *
-                (15 + 5 * gaussianRandom(prng));
+                (15 + 5 * prng.gaussianRandom());
         }
         if (rglist[i].length > 0) {
             polylineArray.push([
@@ -997,11 +992,11 @@ function fracTree08(
                         ben +
                         Math.PI *
                             prng.randomChoice([
-                                normalizedRandom(prng, -1, 0.5),
-                                normalizedRandom(prng, 0.5, 1),
+                                prng.normalizedRandom(-1, 0.5),
+                                prng.normalizedRandom(0.5, 1),
                             ]) *
                             0.2,
-                    len * normalizedRandom(prng, 0.8, 0.9),
+                    len * prng.normalizedRandom(0.8, 0.9),
                     nben
                 )
             );
@@ -1015,11 +1010,11 @@ function fracTree08(
                         ben +
                         Math.PI *
                             prng.randomChoice([
-                                normalizedRandom(prng, -1, -0.5),
-                                normalizedRandom(prng, 0.5, 1),
+                                prng.normalizedRandom(-1, -0.5),
+                                prng.normalizedRandom(0.5, 1),
                             ]) *
                             0.2,
-                    len * normalizedRandom(prng, 0.8, 0.9),
+                    len * prng.normalizedRandom(0.8, 0.9),
                     nben
                 )
             );
@@ -1031,7 +1026,7 @@ function fracTree08(
                     ept.y,
                     dep - 1,
                     ang + ben,
-                    len * normalizedRandom(prng, 0.8, 0.9),
+                    len * prng.normalizedRandom(0.8, 0.9),
                     nben
                 )
             );
@@ -1052,7 +1047,7 @@ export function tree08(
     const polylineArray: SvgPolyline[][] = [];
     const twpolylinelists: SvgPolyline[][] = [];
 
-    const ang = normalizedRandom(prng, -1, 1) * Math.PI * 0.2;
+    const ang = prng.normalizedRandom(-1, 1) * Math.PI * 0.2;
 
     const _trlist = branch(
         prng,

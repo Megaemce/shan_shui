@@ -1,5 +1,5 @@
 import { distance, Point } from "../basic/point";
-import { loopNoise, normalizedRandom, poly } from "../basic/utils";
+import { loopNoise, poly } from "../basic/utils";
 import { Noise } from "../basic/perlinNoise";
 import { div, stroke, texture } from "./brushes";
 import {
@@ -366,7 +366,7 @@ export function mountain(
                         prng,
                         x + xOffset,
                         y + yOffset,
-                        normalizedRandom(prng, 40, 70),
+                        prng.normalizedRandom(40, 70),
                         prng.randomChoice([1, 2, 2, 3]),
                         prng.random(),
                         prng.randomChoice([1, 2, 3])
@@ -711,10 +711,10 @@ export function generateFlatDecorations(
         polylineArray.push(
             generateRock(
                 prng,
-                xOffset + normalizedRandom(prng, bounding.xMin, bounding.xMax),
+                xOffset + prng.normalizedRandom(bounding.xMin, bounding.xMax),
                 yOffset +
                     (bounding.yMin + bounding.yMax) / 2 +
-                    normalizedRandom(prng, -10, 10) +
+                    prng.normalizedRandom(-10, 10) +
                     10,
                 prng.random(0, 100),
                 prng.random(10, 30),
@@ -726,11 +726,11 @@ export function generateFlatDecorations(
 
     for (let j = 0; j < prng.randomChoice([0, 0, 1, 2]); j++) {
         const xr =
-            xOffset + normalizedRandom(prng, bounding.xMin, bounding.xMax);
+            xOffset + prng.normalizedRandom(bounding.xMin, bounding.xMax);
         const yr =
             yOffset +
             (bounding.yMin + bounding.yMax) / 2 +
-            normalizedRandom(prng, -5, 5) +
+            prng.normalizedRandom(-5, 5) +
             20;
 
         for (let k = 0; k < prng.random(2, 5); k++) {
@@ -740,7 +740,7 @@ export function generateFlatDecorations(
                     xr +
                         Math.min(
                             Math.max(
-                                normalizedRandom(prng, -30, 30),
+                                prng.normalizedRandom(-30, 30),
                                 bounding.xMin
                             ),
                             bounding.xMax
@@ -758,10 +758,10 @@ export function generateFlatDecorations(
                 generateRock(
                     prng,
                     xOffset +
-                        normalizedRandom(prng, bounding.xMin, bounding.xMax),
+                        prng.normalizedRandom(bounding.xMin, bounding.xMax),
                     yOffset +
                         (bounding.yMin + bounding.yMax) / 2 +
-                        normalizedRandom(prng, -5, 5) +
+                        prng.normalizedRandom(-5, 5) +
                         20,
                     prng.random(0, 100),
                     prng.random(40, 60),
@@ -781,7 +781,7 @@ export function generateFlatDecorations(
             polylineArray.push(
                 tree05(
                     prng,
-                    xOffset + i + 20 * normalizedRandom(prng, -1, 1),
+                    xOffset + i + 20 * prng.normalizedRandom(-1, 1),
                     yOffset + (bounding.yMin + bounding.yMax) / 2 + 20,
                     prng.random(100, 300)
                 )
@@ -793,10 +793,10 @@ export function generateFlatDecorations(
                 generateRock(
                     prng,
                     xOffset +
-                        normalizedRandom(prng, bounding.xMin, bounding.xMax),
+                        prng.normalizedRandom(bounding.xMin, bounding.xMax),
                     yOffset +
                         (bounding.yMin + bounding.yMax) / 2 +
-                        normalizedRandom(prng, -5, 5) +
+                        prng.normalizedRandom(-5, 5) +
                         20,
                     prng.random(0, 100),
                     prng.random(40, 60),
@@ -807,7 +807,7 @@ export function generateFlatDecorations(
         }
     } else if (tt === 2) {
         for (let i = 0; i < prng.randomChoice([1, 1, 1, 1, 2, 2, 3]); i++) {
-            const xr = normalizedRandom(prng, bounding.xMin, bounding.xMax);
+            const xr = prng.normalizedRandom(bounding.xMin, bounding.xMax);
             const yr = (bounding.yMin + bounding.yMax) / 2;
             polylineArray.push(tree04(prng, xOffset + xr, yOffset + yr + 20));
 
@@ -820,10 +820,10 @@ export function generateFlatDecorations(
                                 bounding.xMin,
                                 Math.min(
                                     bounding.xMax,
-                                    xr + normalizedRandom(prng, -50, 50)
+                                    xr + prng.normalizedRandom(-50, 50)
                                 )
                             ),
-                        yOffset + yr + normalizedRandom(prng, -5, 5) + 20,
+                        yOffset + yr + prng.normalizedRandom(-5, 5) + 20,
                         prng.random(100 * i * j),
                         prng.random(40, 60),
                         5,
@@ -838,7 +838,7 @@ export function generateFlatDecorations(
                 tree06(
                     prng,
                     xOffset +
-                        normalizedRandom(prng, bounding.xMin, bounding.xMax),
+                        prng.normalizedRandom(bounding.xMin, bounding.xMax),
                     yOffset + (bounding.yMin + bounding.yMax) / 2,
                     prng.random(60, 120)
                 )
@@ -853,12 +853,12 @@ export function generateFlatDecorations(
             polylineArray.push(
                 tree07(
                     prng,
-                    xOffset + i + 20 * normalizedRandom(prng, -1, 1),
+                    xOffset + i + 20 * prng.normalizedRandom(-1, 1),
                     yOffset +
                         (bounding.yMin + bounding.yMax) / 2 +
-                        normalizedRandom(prng, -1, 1) +
+                        prng.normalizedRandom(-1, 1) +
                         0,
-                    normalizedRandom(prng, 40, 80)
+                    prng.normalizedRandom(40, 80)
                 )
             );
         }
@@ -868,8 +868,8 @@ export function generateFlatDecorations(
         polylineArray.push(
             tree02(
                 prng,
-                xOffset + normalizedRandom(prng, bounding.xMin, bounding.xMax),
-                yOffset + normalizedRandom(prng, bounding.yMin, bounding.yMax)
+                xOffset + prng.normalizedRandom(bounding.xMin, bounding.xMax),
+                yOffset + prng.normalizedRandom(bounding.yMin, bounding.yMax)
             )
         );
     }
@@ -879,11 +879,11 @@ export function generateFlatDecorations(
         polylineArray.push(
             arch01(
                 prng,
-                xOffset + normalizedRandom(prng, bounding.xMin, bounding.xMax),
+                xOffset + prng.normalizedRandom(bounding.xMin, bounding.xMax),
                 yOffset + (bounding.yMin + bounding.yMax) / 2 + 20,
                 prng.random(),
-                normalizedRandom(prng, 80, 100),
-                normalizedRandom(prng, 160, 200),
+                prng.normalizedRandom(80, 100),
+                prng.normalizedRandom(160, 200),
                 prng.random()
             )
         );

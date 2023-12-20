@@ -1,6 +1,5 @@
 import { midPoint } from "./polytools";
 import { Point, Vector } from "./point";
-import { PRNG } from "./PRNG";
 import { Range } from "./range";
 import { SvgPoint, SvgPolyline } from "../svg";
 
@@ -48,50 +47,6 @@ export function loopNoise(noiseArray: number[]): number[] {
     const outputRange = new Range(0, 1);
 
     return noiseArray.map((value) => mapValue(value, inputRange, outputRange));
-}
-
-/**
- * Generate a normalized random number within a range.
- * @param {PRNG} prng - The pseudo-random number generator.
- * @param {number} minValue - The minimum value.
- * @param {number} maxValue - The maximum value.
- * @returns {number} A normalized random number within the specified range.
- */
-export function normalizedRandom(
-    prng: PRNG,
-    minValue: number,
-    maxValue: number
-): number {
-    const inputRange = new Range(0, 1);
-    const outputRange = new Range(minValue, maxValue);
-    return mapValue(prng.random(), inputRange, outputRange);
-}
-
-/**
- * Generate a weighted random number based on a function.
- * @param {PRNG} prng - The pseudo-random number generator.
- * @param {(value: number) => number} func - The weighting function.
- * @returns {number} A weighted random number.
- */
-export function weightedRandom(
-    prng: PRNG,
-    func: (value: number) => number
-): number {
-    const x = prng.random();
-    const y = prng.random();
-    return y < func(x) ? x : weightedRandom(prng, func);
-}
-
-/**
- * Generate a random number with a Gaussian distribution.
- * @param {PRNG} prng - The pseudo-random number generator.
- * @returns {number} A random number with a Gaussian distribution.
- */
-export function gaussianRandom(prng: PRNG): number {
-    const value = weightedRandom(prng, (x) =>
-        Math.exp(-24 * Math.pow(x - 0.5, 2))
-    );
-    return value * 2 - 1;
 }
 
 /**

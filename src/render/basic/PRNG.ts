@@ -1,3 +1,6 @@
+import { mapValue } from "./utils";
+import { Range } from "./range";
+
 /**
  * Pseudo-Random Number Generator (PRNG) class.
  */
@@ -94,5 +97,39 @@ export class PRNG {
     randomChoice<T>(array: T[]): T {
         const number = Math.floor(this.random(0, array.length));
         return array[number];
+    }
+
+    /**
+     * Generate a normalized random number within a range.
+     * @param {number} minValue - The minimum value.
+     * @param {number} maxValue - The maximum value.
+     * @returns {number} A normalized random number within the specified range.
+     */
+    normalizedRandom(minValue: number, maxValue: number): number {
+        const inputRange = new Range(0, 1);
+        const outputRange = new Range(minValue, maxValue);
+        return mapValue(this.random(), inputRange, outputRange);
+    }
+
+    /**
+     * Generate a weighted random number based on a function.
+     * @param {(value: number) => number} func - The weighting function.
+     * @returns {number} A weighted random number.
+     */
+    weightedRandom(func: (value: number) => number): number {
+        const x = this.random();
+        const y = this.random();
+        return y < func(x) ? x : this.weightedRandom(func);
+    }
+
+    /**
+     * Generate a random number with a Gaussian distribution.
+     * @returns {number} A random number with a Gaussian distribution.
+     */
+    gaussianRandom(): number {
+        const value = this.weightedRandom((x) =>
+            Math.exp(-24 * Math.pow(x - 0.5, 2))
+        );
+        return value * 2 - 1;
     }
 }

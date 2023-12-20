@@ -1,7 +1,7 @@
 import { Noise } from "../basic/perlinNoise";
 import { distance, IPoint, Point, Vector } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
-import { generateBezierCurve, normalizedRandom, poly } from "../basic/utils";
+import { generateBezierCurve, poly } from "../basic/utils";
 import { SvgPolyline } from "../svg/types";
 import { stroke } from "./brushes";
 
@@ -325,7 +325,7 @@ export function man(
     const ang: number[] = [
         0,
         -Math.PI / 2,
-        normalizedRandom(prng, 0, 0),
+        prng.normalizedRandom(0, 0),
         prng.random(0, Math.PI / 4),
         prng.random(0, (Math.PI * 3) / 4),
         (Math.PI * 3) / 4,

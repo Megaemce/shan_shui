@@ -2,7 +2,7 @@ import { Chunk } from "../basic/chunk";
 import { Noise } from "../basic/perlinNoise";
 import { Point } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
-import { normalizedRandom, poly, weightedRandom } from "../basic/utils";
+import { poly } from "../basic/utils";
 import { midPoint } from "../basic/polytools";
 import { ISvgElement } from "../svg";
 import { SvgPolyline, SvgText } from "../svg/types";
@@ -74,7 +74,7 @@ function hut(
         yOffset,
         textureCount,
         1,
-        () => weightedRandom(prng, (a) => a * a),
+        () => prng.weightedRandom((a) => a * a),
         (_) => 5,
         0.25
     );
@@ -628,7 +628,7 @@ export function arch01(
             man(
                 prng,
                 xOffset +
-                    normalizedRandom(prng, -strokeWidth / 3, strokeWidth / 3),
+                    prng.normalizedRandom(-strokeWidth / 3, strokeWidth / 3),
                 yOffset,
                 prng.randomChoice([true, false]),
                 0.42
@@ -639,7 +639,7 @@ export function arch01(
             man(
                 prng,
                 xOffset +
-                    normalizedRandom(prng, -strokeWidth / 4, -strokeWidth / 5),
+                    prng.normalizedRandom(-strokeWidth / 4, -strokeWidth / 5),
                 yOffset,
                 false,
                 0.42
@@ -649,7 +649,7 @@ export function arch01(
             man(
                 prng,
                 xOffset +
-                    normalizedRandom(prng, strokeWidth / 5, strokeWidth / 4),
+                    prng.normalizedRandom(strokeWidth / 5, strokeWidth / 4),
                 yOffset,
                 true,
                 0.42
