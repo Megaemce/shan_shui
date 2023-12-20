@@ -517,7 +517,7 @@ function roof(
                 mp.y + yOffset
             }) rotate(${adeg})`,
             style: {
-                fill: "rgba(100, 100, 100, 0.9)",
+                fillColor: "rgba(100, 100, 100, 0.9)",
             },
         });
 

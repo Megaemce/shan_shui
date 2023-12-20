@@ -95,8 +95,8 @@ export function generateBezierCurve(controlPoints: Point[]): Point[] {
  * @param {Point[]} pointArray - The list of points.
  * @param {number} [xOffset=0] - The x-axis offset.
  * @param {number} [yOffset=0] - The y-axis offset.
- * @param {string} [fill="rgba(0,0,0,0)"] - The fill color.
- * @param {string} [stroke="rgba(0,0,0,0)"] - The stroke color.
+ * @param {string} [fillColor="rgba(0,0,0,0)"] - The fill color.
+ * @param {string} [strokeColor="rgba(0,0,0,0)"] - The stroke color.
  * @param {number} [strokeWidth=0] - The stroke width.
  * @returns {SvgPolyline} An SVG polyline.
  */
@@ -104,15 +104,15 @@ export function poly(
     pointArray: Point[],
     xOffset: number = 0,
     yOffset: number = 0,
-    fill: string = "rgba(0,0,0,0)",
-    stroke: string = "rgba(0,0,0,0)",
+    fillColor: string = "rgba(0,0,0,0)",
+    strokeColor: string = "rgba(0,0,0,0)",
     strokeWidth: number = 0
 ): SvgPolyline {
     const off = new Vector(xOffset, yOffset);
 
     const polyline = new SvgPolyline(
         pointArray.map((p) => SvgPoint.from(p.move(off))),
-        { fill, stroke, strokeWidth }
+        { fillColor, strokeColor, strokeWidth }
     );
 
     return polyline;
