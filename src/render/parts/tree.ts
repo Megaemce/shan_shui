@@ -5,7 +5,12 @@ import { normalizeNoise } from "../basic/utils";
 import { createPolyline } from "../svg/createPolyline";
 import { midPoint, triangulate } from "../basic/polytools";
 import { SvgPolyline } from "../svg/types";
-import { generateBlobPoints, generateBlob, div, stroke } from "./brushes";
+import {
+    generateBlobPoints,
+    generateBlob,
+    div,
+    generateStroke,
+} from "./brushes";
 
 /**
  * Generates a list of points representing a branch structure.
@@ -185,7 +190,7 @@ export function generateTwig(
         }
     }
     polylineArray.push([
-        stroke(
+        generateStroke(
             prng,
             twlist,
             "rgba(100,100,100,0.5)",
@@ -253,7 +258,7 @@ function generateBark(
 
     const fr = prng.random();
     polylines.push(
-        stroke(
+        generateStroke(
             prng,
             brklist,
             "rgba(100,100,100,0.4)",
@@ -371,7 +376,7 @@ export function generateBarkify(
 
         if (rglist[i].length > 0) {
             polylineArray.push([
-                stroke(
+                generateStroke(
                     prng,
                     rglist[i].map(function (p: Point) {
                         return new Point(p.x + x, p.y + y);
@@ -690,7 +695,7 @@ export function generateTree04(
     const color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
 
     polylineArray.push([
-        stroke(
+        generateStroke(
             prng,
             trmlist.map(function (p: Point) {
                 return new Point(p.x + x, p.y + y);
@@ -797,7 +802,7 @@ export function generateTree05(
 
     // Tree trunk
     polylineArray.push([
-        stroke(
+        generateStroke(
             prng,
             trmlist.map(function (p: Point) {
                 return new Point(p.x + x, p.y + y);
@@ -955,7 +960,7 @@ export function generateTree06(
     trmlist.splice(trmlist.length - 1, 1);
     const color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
     polylineArray.push([
-        stroke(
+        generateStroke(
             prng,
             trmlist.map(function (v) {
                 return new Point(v.x + x, v.y + y);
@@ -1116,7 +1121,7 @@ function generateFractalTree08(
 
     const polylineArray: SvgPolyline[][] = [];
     polylineArray.push([
-        stroke(
+        generateStroke(
             prng,
             trmlist,
             "rgba(100,100,100,0.5)",
@@ -1254,7 +1259,7 @@ export function generateTree08(
     // Add a colored stroke to the main trunk
     const color = `rgba(100,100,100,${prng.random(0.6, 0.7).toFixed(3)})`;
     polylineArray.push([
-        stroke(
+        generateStroke(
             prng,
             trlist.map(function (v) {
                 return new Point(v.x + x, v.y + y);

@@ -2,7 +2,7 @@ import { distance, Point } from "../basic/point";
 import { normalizeNoise } from "../basic/utils";
 import { createPolyline } from "../svg/createPolyline";
 import { Noise } from "../basic/perlinNoise";
-import { div, stroke, generateTexture } from "./brushes";
+import { div, generateStroke, generateTexture } from "./brushes";
 import {
     generateTree01,
     generateTree02,
@@ -103,7 +103,7 @@ export function generateFoot(
     for (let j = 0; j < footArray.length; j++) {
         const color = `rgba(100,100,100,${prng.random(0.1, 0.2).toFixed(3)})`;
         polylines.push(
-            stroke(
+            generateStroke(
                 prng,
                 footArray[j].map(
                     (p) => new Point(p.x + xOffset, p.y + yOffset)
@@ -239,7 +239,7 @@ export function generateMountain(
 
     // OUTLINE
     elementLists.push([
-        stroke(
+        generateStroke(
             prng,
             pointArray[0].map(function (p) {
                 return new Point(p.x + xOffset, p.y + yOffset);
@@ -595,7 +595,7 @@ export function generateFlatMountain(
 
     // OUTLINE
     polylineArray.push([
-        stroke(
+        generateStroke(
             prng,
             pointArray[0].map((p) => new Point(p.x + xOffset, p.y + yOffset)),
             "rgba(100,100,100,0.3)",
@@ -676,7 +676,7 @@ export function generateFlatMountain(
         createPolyline(grlist, xOffset, yOffset, "white", "none", 2),
     ]);
     polylineArray.push([
-        stroke(
+        generateStroke(
             prng,
             grlist.map((p) => new Point(p.x + xOffset, p.y + yOffset)),
             "rgba(100,100,100,0.2)",
@@ -1062,7 +1062,7 @@ export function generateRock(
     ]);
     //OUTLINE
     polylineArray.push([
-        stroke(
+        generateStroke(
             prng,
             pointArray[0].map(function (p) {
                 return new Point(p.x + xOffset, p.y + yOffset);

@@ -4,7 +4,7 @@ import { PRNG } from "../basic/PRNG";
 import { generateBezierCurve } from "../basic/utils";
 import { createPolyline } from "../svg/createPolyline";
 import { SvgPolyline } from "../svg/types";
-import { stroke } from "./brushes";
+import { generateStroke } from "./brushes";
 
 /**
  * Expands a given array of points using a width function.
@@ -94,7 +94,7 @@ function expand(pointArray: Point[], wfun: (v: number) => number): Point[][] {
  * @param {Point[]} pointArray - The array of points defining the polygon.
  * @returns {Point[]} The transformed polygon.
  */
-function tranpoly(p0: Point, p1: Point, pointArray: Point[]): Point[] {
+function transformPolyline(p0: Point, p1: Point, pointArray: Point[]): Point[] {
     const array = pointArray.map(function (v) {
         return new Point(-v.x, v.y);
     });
@@ -118,7 +118,7 @@ function tranpoly(p0: Point, p1: Point, pointArray: Point[]): Point[] {
  * @param {boolean} horizontalFlip - Whether to perform a horizontal flip.
  * @returns {Point[]} The flipped polygon.
  */
-const flipPolygon = function (
+const flipPolyline = function (
     pointArray: Point[],
     horizontalFlip: boolean
 ): Point[] {
@@ -154,7 +154,7 @@ export function generateHat01(
 
     polylines.push(
         createPolyline(
-            tranpoly(p0, p1, flipPolygon(shapePoint, horizontalFlip)),
+            transformPolyline(p0, p1, flipPolyline(shapePoint, horizontalFlip)),
             0,
             0,
             "rgba(100,100,100,0.8)"
@@ -172,7 +172,7 @@ export function generateHat01(
     }
     polylines.push(
         createPolyline(
-            tranpoly(p0, p1, flipPolygon(qlist1, horizontalFlip)),
+            transformPolyline(p0, p1, flipPolyline(qlist1, horizontalFlip)),
             0,
             0,
             "rgba(0, 0, 0, 0)",
@@ -214,7 +214,7 @@ export function generateHat02(
     ];
     polylines.push(
         createPolyline(
-            tranpoly(p0, p1, flipPolygon(shapePoint, horizontalFlip)),
+            transformPolyline(p0, p1, flipPolyline(shapePoint, horizontalFlip)),
             0,
             0,
             "rgba(100,100,100,0.8)"
@@ -256,7 +256,7 @@ export function generateStick(
     }
     polylines.push(
         createPolyline(
-            tranpoly(p0, p1, flipPolygon(qlist1, horizontalFlip)),
+            transformPolyline(p0, p1, flipPolyline(qlist1, horizontalFlip)),
             0,
             0,
             "rgba(0,0,0,0)",
@@ -295,7 +295,7 @@ function generateCloth(
         )
     );
     polylines.push(
-        stroke(
+        generateStroke(
             prng,
             tlist1.map(toGlobal),
             "rgba(100,100,100,0.5)",
@@ -304,7 +304,7 @@ function generateCloth(
         )
     );
     polylines.push(
-        stroke(
+        generateStroke(
             prng,
             tlist2.map(toGlobal),
             "rgba(100,100,100,0.6)",

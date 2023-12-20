@@ -6,7 +6,7 @@ import { createPolyline } from "../svg/createPolyline";
 import { midPoint } from "../basic/polytools";
 import { ISvgElement } from "../svg";
 import { SvgPolyline, SvgText } from "../svg/types";
-import { div, stroke, generateTexture } from "./brushes";
+import { div, generateStroke, generateTexture } from "./brushes";
 import { generateHat02, generateMan, generateStick } from "./man";
 
 function flip(ptlist: Point[], axis: number = 0): Point[] {
@@ -208,7 +208,7 @@ function generateBox(
 
     for (let i = 0; i < extendedPointList.length; i++) {
         polylineList.push(
-            stroke(
+            generateStroke(
                 prng,
                 extendedPointList[i].map(function (p) {
                     return new Point(p.x + xOffset, p.y + yOffset);
@@ -449,7 +449,7 @@ function generateRail(
 
     for (let i = 0; i < ptlist.length; i++) {
         polylines.push(
-            stroke(
+            generateStroke(
                 prng,
                 ptlist[i].map((p) => new Point(p.x + xOffset, p.y + yOffset)),
                 "rgba(100,100,100,0.5)",
@@ -581,7 +581,7 @@ function generateRoof(
 
     for (let i = 0; i < ptlist.length; i++) {
         polylines.push(
-            stroke(
+            generateStroke(
                 prng,
                 ptlist[i].map((p) => new Point(p.x + xOffset, p.y + yOffset)),
                 "rgba(100,100,100,0.4)",
@@ -674,7 +674,7 @@ function generatePagodaRoof(
 
     for (let i = 0; i < ptlist.length; i++) {
         polylines.push(
-            stroke(
+            generateStroke(
                 prng,
                 div(ptlist[i], 5).map(
                     (p) => new Point(p.x + xOffset, p.y + yOffset)
@@ -1134,7 +1134,7 @@ export function generateBoat(
     const pointList: Point[] = pointList1.concat(pointList2.reverse());
     polylineArray.push([createPolyline(pointList, xOffset, yOffset, "white")]);
     polylineArray.push([
-        stroke(
+        generateStroke(
             prng,
             pointList.map((v) => new Point(xOffset + v.x, yOffset + v.y)),
             "rgba(100,100,100,0.4)",
@@ -1175,7 +1175,7 @@ export function generateTransmissionTower(
     const toGlobal = (v: Point) => new Point(v.x + xOffset, v.y + yOffset);
 
     const quickStroke = function (points: Point[]) {
-        return stroke(
+        return generateStroke(
             prng,
             div(points, 5).map(toGlobal),
             "rgba(100,100,100,0.4)",

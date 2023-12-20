@@ -17,7 +17,7 @@ import { SvgPolyline } from "../svg";
  * @param strokeWidthFunction - Function to modulate stroke width (default is sin function).
  * @returns SvgPolyline representing the stylized stroke.
  */
-export function stroke(
+export function generateStroke(
     prng: PRNG,
     pointArray: Point[],
     fillColor: string = "rgba(200,200,200,0.9)",
@@ -273,7 +273,7 @@ export function generateTexture(
         for (let j = 0; j < texlist.length; j += step) {
             if (texlist[j].length > 0) {
                 polylines.push(
-                    stroke(
+                    generateStroke(
                         prng,
                         texlist[j].map((p) => p.move(offset)),
                         "rgba(100,100,100,0.1)",
