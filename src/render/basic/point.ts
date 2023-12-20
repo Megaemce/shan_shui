@@ -27,29 +27,29 @@ export class Point implements IPoint {
 
     /**
      * Creates a vector from this point to the specified destination point.
-     * @param dst - The destination point.
+     * @param destination - The destination point.
      * @returns The vector from this point to the destination point.
      */
-    to(dst: Point): Vector {
-        return new Vector(dst.x - this.x, dst.y - this.y);
+    to(destination: Point): Vector {
+        return new Vector(destination.x - this.x, destination.y - this.y);
     }
 
     /**
      * Creates a vector from the specified source point to this point.
-     * @param src - The source point.
+     * @param source - The source point.
      * @returns The vector from the source point to this point.
      */
-    from(src: Point): Vector {
-        return src.to(this);
+    from(source: Point): Vector {
+        return source.to(this);
     }
 
     /**
      * Moves the point by a given vector.
-     * @param vec - The vector to move the point by.
+     * @param vector - The vector to move the point by.
      * @returns A new point after the move operation.
      */
-    move(vec: Vector): Point {
-        return new Point(this.x + vec.x, this.y + vec.y);
+    move(vector: Vector): Point {
+        return new Point(this.x + vector.x, this.y + vector.y);
     }
 
     /**
@@ -70,11 +70,11 @@ export class Point implements IPoint {
 
     /**
      * Creates a Point instance from an array of numbers [x, y].
-     * @param a - The array containing x and y values.
+     * @param array - The array containing x and y values.
      * @returns A new Point instance.
      */
-    static fromArray(a: number[]): Point {
-        return new Point(a[0], a[1]);
+    static fromArray(array: [number, number]): Point {
+        return new Point(array[0], array[1]);
     }
 
     /**
@@ -120,20 +120,20 @@ export class Vector implements IPoint {
 
     /**
      * Moves a specified point by this vector.
-     * @param src - The source point to move from.
+     * @param source - The source point to move from.
      * @returns A new point after the move operation.
      */
-    movefrom(src: Point): Point {
-        return src.move(this);
+    movefrom(source: Point): Point {
+        return source.move(this);
     }
 
     /**
      * Moves the vector by another vector.
-     * @param v - The vector to move by.
+     * @param vector - The vector to move by.
      * @returns A new vector after the move operation.
      */
-    move(v: Vector): Vector {
-        return new Vector(this.x + v.x, this.y + v.y);
+    move(vector: Vector): Vector {
+        return new Vector(this.x + vector.x, this.y + vector.y);
     }
 
     /**
@@ -156,11 +156,11 @@ export class Vector implements IPoint {
 
     /**
      * Creates a Vector instance from an array of numbers [x, y].
-     * @param a - The array containing x and y values.
+     * @param array - The array containing x and y values.
      * @returns A new Vector instance.
      */
-    static fromArray(a: number[]): Vector {
-        return new Vector(a[0], a[1]);
+    static fromArray(array: [number, number]): Vector {
+        return new Vector(array[0], array[1]);
     }
 }
 
