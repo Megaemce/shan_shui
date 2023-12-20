@@ -60,12 +60,14 @@ function localMax(
  * @param radius - The threshold radius for considering chunks to be the same.
  * @returns True if the chunk needs to be added, false otherwise.
  */
-function needAdd(
+function needsAdding(
     region: IChunk[],
     chunk: IChunk,
     radius: number = 10
 ): boolean {
-    return !region.some((chunk) => Math.abs(chunk.x - chunk.x) < radius);
+    return region.every(
+        (existingChunk) => Math.abs(existingChunk.x - chunk.x) >= radius
+    );
 }
 
 /**
@@ -112,7 +114,7 @@ function generateMountainChunks(
                     noiseFunction(new Point(x, j))
                 );
 
-                if (needAdd(region, mountainChunk)) {
+                if (needsAdding(region, mountainChunk)) {
                     region.push(mountainChunk);
 
                     for (
@@ -136,7 +138,7 @@ function generateMountainChunks(
                 noiseFunction(new Point(x, yRange(x) * 480))
             );
 
-            if (needAdd(region, distMountainChunk)) {
+            if (needsAdding(region, distMountainChunk)) {
                 region.push(distMountainChunk);
             }
         }
@@ -177,7 +179,7 @@ function generateFlatMountainChunks(
                     noiseFunction(new Point(x, j))
                 );
 
-                if (needAdd(region, flatMountainChunk)) {
+                if (needsAdding(region, flatMountainChunk)) {
                     region.push(flatMountainChunk);
                 }
             }
@@ -210,7 +212,7 @@ function generateBoatChunks(
             const x = i * xStep + xOffset;
             const boatChunk = new DesignChunk("boat", x, prng.random(300, 690));
 
-            if (needAdd(region, boatChunk, 400)) {
+            if (needsAdding(region, boatChunk, 400)) {
                 region.push(boatChunk);
             }
         }
