@@ -80,7 +80,7 @@ function needsAdding(
  * @param iMin - The minimum index for generation.
  * @param iMax - The maximum index for generation.
  * @param xOffset - The offset along the x-axis.
- * @param mWidth - The width of the mountains.
+ * @param width - The width of the mountains.
  * @returns An array of generated chunks.
  */
 function generateMountainChunks(
@@ -92,7 +92,7 @@ function generateMountainChunks(
     iMin: number,
     iMax: number,
     xOffset: number,
-    mWidth: number
+    width: number
 ): IChunk[] {
     const region: IChunk[] = [];
 
@@ -118,8 +118,8 @@ function generateMountainChunks(
                     region.push(mountainChunk);
 
                     for (
-                        let k = Math.floor((xOf - mWidth) / xStep);
-                        k < (xOf + mWidth) / xStep;
+                        let k = Math.floor((xOf - width) / xStep);
+                        k < (xOf + width) / xStep;
                         k++
                     ) {
                         mountainCover[k] = isNaN(mountainCover[k])
@@ -242,7 +242,7 @@ export function design(
     const yRange = (x: number) => Noise.noise(prng, x * 0.01, Math.PI);
 
     const xStep = 5;
-    const mWidth = 200;
+    const width = 200;
 
     const iMin = Math.floor(xmin / xStep);
     const iMax = Math.floor(xmax / xStep);
@@ -262,7 +262,7 @@ export function design(
             iMin,
             iMax,
             xOffset,
-            mWidth
+            width
         )
     );
     region.push(
