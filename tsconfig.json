@@ -12,7 +12,12 @@
     "sourceMap": true,
     "target": "esnext",
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*.tsx", "src/**/*.ts"],
+  "exclude": ["node_modules"],
+  "typedocOptions": {
+     "entryPoints": ["src/**/*.ts"],
+     "out": "docs",
+     "name": "{Shan Shui}*",
+     "readme": "none"
+  }
 }

@@ -7,17 +7,17 @@ This is a newer version of [RedContritio's](https://github.com/RedContritio) [ap
 
 ### generateMan
 
-![man](doc/img/man.png)
+![man](public/img/man.png)
 
 ### water
 
-![water](doc/img/water.png)
+![water](public/img/water.png)
 
 ### architecture
 
 #### GenerateArch01
 
-![arch01](doc/img/arch/arch01.png)
+![arch01](public/img/arch/arch01.png)
 
 green - `generateHut`
 
@@ -27,7 +27,7 @@ pink - `generateRail`
 
 #### GenerateArch02
 
-![arch02](doc/img/arch/arch02.png)
+![arch02](public/img/arch/arch02.png)
 
 black - `generateDeco`
 
@@ -35,7 +35,7 @@ red - `generateBox`
 
 #### generateArch03
 
-![arch03](doc/img/arch/arch03.png)
+![arch03](public/img/arch/arch03.png)
 
 blue - `generatePagodaRoof`
 
@@ -45,7 +45,7 @@ pink - `generateRail`
 
 #### generateArch04
 
-![arch04](doc/img/arch/arch04.png)
+![arch04](public/img/arch/arch04.png)
 
 blue - `generatePagodaRoof`
 
@@ -55,56 +55,56 @@ pink - `generateRail`
 
 #### generateBoat
 
-![boat01](doc/img/arch/boat01.png)
+![boat01](public/img/arch/boat01.png)
 
 #### generateTransmissionTower
 
-![tower01](doc/img/arch/tower01.png)
+![tower01](public/img/arch/tower01.png)
 
 ### tree
 
 #### generateTree01
 
-![tree01](doc/img/tree/tree01.png)
+![tree01](public/img/tree/tree01.png)
 
 #### generateTree02
 
-![tree02](doc/img/tree/tree02.png)
+![tree02](public/img/tree/tree02.png)
 
 #### generateTree03
 
-![tree03](doc/img/tree/tree03.png)
+![tree03](public/img/tree/tree03.png)
 
 #### generateTree04
 
-![tree04](doc/img/tree/tree04.png)
+![tree04](public/img/tree/tree04.png)
 
 #### generateTree05
 
-![tree05](doc/img/tree/tree05.png)
+![tree05](public/img/tree/tree05.png)
 
 #### generateTree06
 
-![tree06](doc/img/tree/tree06.png)
+![tree06](public/img/tree/tree06.png)
 
 #### generateTree07
 
-![tree07](doc/img/tree/tree07.png)
+![tree07](public/img/tree/tree07.png)
 
 #### generateTree08
 
-![tree08](doc/img/tree/tree08.png)
+![tree08](public/img/tree/tree08.png)
 
 ### mountain
 
 #### generateMountain
 
-![mountain](doc/img/mountain.png)
+![mountain](public/img/mountain.png)
 
 #### generateFlatMountain
 
-![flatmountain](doc/img/flatmountain.png)
+![flatmountain](public/img/flatmountain.png)
 
 #### generateDistantMountain
 
-![distmountain](doc/img/distmountain.png)
+![distmountain](public/img/distmountain.png)
