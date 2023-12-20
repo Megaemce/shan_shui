@@ -73,12 +73,8 @@ export class PRNG {
      * @param lowerBound - The lower calculateBoundingBox of the range.
      * @param upperBound - The upper calculateBoundingBox of the range.
      * @returns A pseudo-random number within the specified range.
-     * @throws Error if bounds are not provided.
      */
     random(lowerBound: number = 0, upperBound: number = 1): number {
-        if (lowerBound === undefined || upperBound === undefined) {
-            throw new Error("Bounds are required for random function.");
-        }
         return this.next() * (upperBound - lowerBound) + lowerBound;
     }
 
