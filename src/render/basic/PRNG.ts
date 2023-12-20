@@ -1,4 +1,3 @@
-import { mapValue } from "./utils";
 import { Range } from "./range";
 
 /**
@@ -108,7 +107,7 @@ export class PRNG {
     normalizedRandom(minValue: number, maxValue: number): number {
         const inputRange = new Range(0, 1);
         const outputRange = new Range(minValue, maxValue);
-        return mapValue(this.random(), inputRange, outputRange);
+        return inputRange.mapValue(this.random(), outputRange);
     }
 
     /**

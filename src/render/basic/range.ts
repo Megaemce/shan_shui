@@ -60,6 +60,16 @@ export class Range implements IRange {
     }
 
     /**
+     * Map a value from one range to another.
+     * @param {number} value - The value to map.
+     * @param {Range} outputRange - The output range.
+     * @returns {number} The mapped value.
+     */
+    mapValue(value: number, outputRange: Range): number {
+        return outputRange.mapFromRatio(this.mapToRatio(value));
+    }
+
+    /**
      * Creates a new Range instance from an array.
      * @param array - An array containing left and right boundaries.
      * @returns A new Range instance.

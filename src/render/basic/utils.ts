@@ -12,21 +12,6 @@ export function unNan(pointArray: Point[]): Point[] {
 }
 
 /**
- * Map a value from one range to another.
- * @param {number} value - The value to map.
- * @param {Range} inputRange - The input range.
- * @param {Range} outputRange - The output range.
- * @returns {number} The mapped value.
- */
-export function mapValue(
-    value: number,
-    inputRange: Range,
-    outputRange: Range
-): number {
-    return outputRange.mapFromRatio(inputRange.mapToRatio(value));
-}
-
-/**
  * Loop through a noise list, adjusting values and normalizing them.
  * @param {number[]} noiseArray - The noise list.
  * @returns {number[]} The normalized noise list.
@@ -45,7 +30,7 @@ export function loopNoise(noiseArray: number[]): number[] {
     const inputRange = Range.fromArray(boundaries);
     const outputRange = new Range(0, 1);
 
-    return noiseArray.map((value) => mapValue(value, inputRange, outputRange));
+    return noiseArray.map((value) => inputRange.mapValue(value, outputRange));
 }
 
 /**
