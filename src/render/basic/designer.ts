@@ -5,6 +5,7 @@ import { PRNG } from "./PRNG";
 
 /**
  * Threshold value for determining mountain coverage in the design.
+ * @notExported
  */
 const MOUNTAIN_COVER_THRESHOLD = 0.3;
 
@@ -45,6 +46,7 @@ const NOISE_SAMPLE = 0.03;
 
 /**
  * Checks if a point is a local maximum within a circular area.
+ * @notExported
  * @param {Point} center - The center point to check.
  * @param {Function} getValue - The function to get the value at a given point.
  * @param {number} radius - The radius of the circular area.
@@ -72,6 +74,7 @@ function isLocalMaximum(
 
 /**
  * Checks if a chunk needs to be added to the region.
+ * @notExported
  * @param {IChunk[]} region - The region of existing chunks.
  * @param {IChunk} chunk - The chunk to check.
  * @param {number} radius - The threshold radius for considering chunks to be the same.
@@ -89,6 +92,7 @@ function needsAdding(
 
 /**
  * Generates mountain chunks based on Perlin noise.
+ * @notExported
  * @param {PRNG} prng - The pseudorandom number generator.
  * @param {Function} noiseFunction - The noise function.
  * @param {Function} yRange - The y range function.
@@ -162,6 +166,7 @@ function generateMountainChunks(
 
 /**
  * Generates flat mountain chunks based on Perlin noise.
+ * @notExported
  * @param {PRNG} prng - The pseudorandom number generator.
  * @param {Function} noiseFunction - The noise function.
  * @param {number} iMin - The minimum index for generation.
@@ -202,6 +207,7 @@ function generateFlatMountainChunks(
 
 /**
  * Generates boat chunks based on Perlin noise.
+ * @notExported
  * @param {PRNG} prng - The pseudorandom number generator.
  * @param {number} iMin - The minimum index for generation.
  * @param {number} iMax - The maximum index for generation.

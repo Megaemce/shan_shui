@@ -207,7 +207,7 @@ export function generateTwig(
 
 /**
  * Generates a bark-like structure.
- *
+ * @notExported
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} x - X-coordinate of the bark.
  * @param {number} y - Y-coordinate of the bark.
@@ -823,7 +823,7 @@ export function generateTree05(
 
 /**
  * Recursive function to generate a fractal tree-like structure.
- *
+ * @notExported
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {SvgPolyline[][]} txpolylinelists - Lists to store trunk and bark polylines.
  * @param {SvgPolyline[][]} twpolylinelists - Lists to store twig polylines.
@@ -1070,7 +1070,7 @@ export function generateTree07(
 
 /**
  * Recursive function to generate a fractal tree-like structure.
- *
+ * @notExported
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} xOffset - X-coordinate offset.
  * @param {number} yOffset - Y-coordinate offset.

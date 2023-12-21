@@ -18,7 +18,7 @@ function flip(ptlist: Point[], axis: number = 0): Point[] {
 
 /**
  * Generates a hut using procedural generation.
- *
+ * @notExported
  * @param {PRNG} prng - The pseudorandom number generator.
  * @param {number} xOffset - The x-coordinate offset for the hut.
  * @param {number} yOffset - The y-coordinate offset for the hut.
@@ -102,7 +102,7 @@ function generateHut(
 
 /**
  * Generates a box using procedural generation.
- *
+ * @notExported
  * @param {PRNG} prng - The pseudorandom number generator.
  * @param {number} xOffset - The x-coordinate offset for the box.
  * @param {number} yOffset - The y-coordinate offset for the box.
@@ -227,7 +227,7 @@ function generateBox(
 
 /**
  * Generates decorative elements based on the specified style.
- *
+ * @notExported
  * @param {number} style - The style of decoration to generate.
  * @param {Point} [upperLeftPoint=Point.O] - The upper-left point of the bounding box.
  * @param {Point} [upperRightPoint=new Point(0, 100)] - The upper-right point of the bounding box.
@@ -300,7 +300,7 @@ function generateDeco(
 
 /**
  * Generates Rail SVG elements.
- *
+ * @notExported
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} xOffset - The x-coordinate offset.
  * @param {number} yOffset - The y-coordinate offset.
@@ -467,7 +467,7 @@ function generateRail(
 
 /**
  * Generates Roof SVG elements.
- *
+ * @notExported
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} xOffset - The x-coordinate offset.
  * @param {number} yOffset - The y-coordinate offset.
@@ -629,7 +629,7 @@ function generateRoof(
 
 /**
  * Generates Pagoda Roof SVG elements.
- *
+ * @notExported
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} xOffset - The x-coordinate offset.
  * @param {number} yOffset - The y-coordinate offset.

@@ -120,6 +120,7 @@ export function generateFoot(
 
 /**
  * Generate vegetation elements based on specified growth and proof rules.
+ * @notExported
  * @param {Point[][]} pointArray - 2D array of points representing the terrain.
  * @param {(x: number, y: number) => ISvgElement[]} treeFunc - Function to generate vegetation elements at a given location.
  * @param {(i: number, j: number) => boolean} growthRule - Rule determining whether vegetation should grow at a specific point.

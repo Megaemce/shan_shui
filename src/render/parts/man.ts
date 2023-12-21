@@ -8,7 +8,7 @@ import { generateStroke } from "./brushes";
 
 /**
  * Expands a given array of points using a width function.
- *
+ * @notExported
  * @param {Point[]} pointArray - The array of points to be expanded.
  * @param {(v: number) => number} wfun - The width function.
  * @returns {Point[][]} An array containing two sets of expanded points.
@@ -88,7 +88,7 @@ function expand(pointArray: Point[], wfun: (v: number) => number): Point[][] {
 
 /**
  * Transforms a polygon defined by a point array using a line segment.
- *
+ * @notExported
  * @param {Point} p0 - The starting point of the line segment.
  * @param {Point} p1 - The ending point of the line segment.
  * @param {Point[]} pointArray - The array of points defining the polygon.
@@ -236,7 +236,7 @@ export function generateStick(
     prng: PRNG,
     p0: Point,
     p1: Point,
-    horizontalFlip = false
+    horizontalFlip: boolean = false
 ): SvgPolyline[] {
     const polylines: SvgPolyline[] = [];
     const seed = prng.random();
@@ -270,7 +270,7 @@ export function generateStick(
 
 /**
  * Generates cloth SVG polylines.
- *
+ * @notExported
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {(p: Point) => Point} toGlobal - Function to convert local points to global points.
  * @param {Point[]} pointArray - Array of points defining the cloth shape.
@@ -318,9 +318,9 @@ function generateCloth(
 
 /**
  * Scaling function for sleeve.
- *
+ * @notExported
  * @param {number} scaling - The scaling factor.
- * @param {number} x - The input value.
+ * @param {number} value - The input value.
  * @returns {number} The scaled output value.
  */
 function fsleeve(scaling: number, value: number): number {
@@ -335,7 +335,7 @@ function fsleeve(scaling: number, value: number): number {
 
 /**
  * Scaling function for body.
- *
+ * @notExported
  * @param {number} scaling - The scaling factor.
  * @param {number} value - The input value.
  * @returns {number} The scaled output value.
@@ -352,7 +352,7 @@ function fbody(scaling: number, value: number): number {
 
 /**
  * Scaling function for head.
- *
+ * @notExported
  * @param {number} scaling - The scaling factor.
  * @param {number} value - The input value.
  * @returns {number} The scaled output value.

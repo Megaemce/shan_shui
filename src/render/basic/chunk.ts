@@ -3,6 +3,7 @@ import { IPoint } from "./point";
 
 /**
  * Represents a tag associated with a Chunk.
+ * @notExported
  */
 type ChunkTag = "mount" | "flatmount" | "distmount" | "boat" | "water" | "?";
 

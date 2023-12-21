@@ -15,6 +15,7 @@ export function midPoint(points: Point[]): Point {
 
 /**
  * Calculates the slope and y-intercept of a line passing through two points.
+ * @notExported
  * @param point0 - The first point.
  * @param point1 - The second point.
  * @returns An array containing the slope and y-intercept.
@@ -29,6 +30,7 @@ function lineExpression(point0: Point, point1: Point): [number, number] {
 
 /**
  * Checks if a point lies on a line segment.
+ * @notExported
  * @param point - The point to check.
  * @param line - An array representing the line segment [start, end].
  * @returns `true` if the point lies on the segment, otherwise `false`.
@@ -44,6 +46,7 @@ function isOnSegment(point: Point, line: Point[]): boolean {
 
 /**
  * Checks if two line segments intersect.
+ * @notExported
  * @param line0 - The first line segment [start, end].
  * @param line1 - The second line segment [start, end].
  * @returns `true` if the line segments intersect, otherwise `false`.
@@ -69,6 +72,7 @@ function doIntersect(line0: Point[], line1: Point[]): boolean {
 
 /**
  * Checks if a point is inside a polygon.
+ * @notExported
  * @param point - The point to check.
  * @param polygon - An array of points representing the polygon.
  * @returns `true` if the point is inside the polygon, otherwise `false`.
@@ -91,6 +95,7 @@ function isPointInPolygon(point: Point, polygon: Point[]): boolean {
 
 /**
  * Checks if a line segment is inside a polygon.
+ * @notExported
  * @param line - The line segment [start, end].
  * @param polygon - An array of points representing the polygon.
  * @returns `true` if the line segment is inside the polygon, otherwise `false`.
@@ -121,6 +126,7 @@ function isLineInPolygon(line: Point[], polygon: Point[]): boolean {
 
 /**
  * Calculates the lengths of sides in a polygon.
+ * @notExported
  * @param pointArray - An array of points representing the polygon.
  * @returns An array of side lengths.
  */
@@ -133,6 +139,7 @@ function calculateSideLengths(pointArray: Point[]): number[] {
 
 /**
  * Calculates the area of a triangle using its side lengths.
+ * @notExported
  * @param {Point[]} pointArray - An array of points representing the vertices of the triangle.
  * @returns {number} The area of the triangle.
  * @throws {Error} Thrown if pointArray is not a valid array of minimum 3 points.
@@ -159,6 +166,7 @@ function calculatePolygonArea(pointArray: Point[]): number {
 
 /**
  * Calculates the sliver ratio of a polygon.
+ * @notExported
  * @param pointArray - An array of points representing the polygon.
  * @returns The sliver ratio of the polygon.
  */
@@ -173,6 +181,7 @@ function calculateSliverRatio(pointArray: Point[]): number {
 
 /**
  * Finds the best ear in the polygon and returns it along with the remaining vertices.
+ * @notExported
  * @param {Point[]} pointArray - The list of polygon vertices.
  * @param {boolean} isConvex - Indicates whether the polygon is convex.
  * @param {boolean} optimize - Indicates whether to optimize the ear finding.
@@ -222,7 +231,8 @@ function findBestEar(
 }
 
 /**
- * Divides a triangle into a series of triangles with areas not exceeding a.
+ * Divides a triangle into a series of triangles with areas not exceeding limitArea.
+ * @notExported
  * @param {Point[]} pointArray - The triangle to be divided.
  * @param {number} limitArea - The upper limit for triangle areas.
  * @returns {Point[][]} A series of triangles.
@@ -269,6 +279,7 @@ function shatterTriangle(pointArray: Point[], limitArea: number): Point[][] {
 
 /**
  * Triangulates a polygon and returns a list of triangles.
+ * @notExported
  * @param pointArray The list of polygon vertices.
  * @param area Maximum area for each resulting triangle.
  * @param isConvex Indicates whether the polygon is isConvex.
