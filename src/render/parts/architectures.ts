@@ -125,7 +125,7 @@ function generateBox(
         upperRightPoint: Point,
         bottomLeftPoint: Point,
         bottomRightPoint: Point
-    ) => Point[][] = (_1, _2, _3, _4) => []
+    ) => Point[][] = () => []
 ): SvgPolyline[] {
     const mid = -width * 0.5 + width * rotation;
     const bmid = -width * 0.5 + width * (1 - rotation);
@@ -230,7 +230,7 @@ function generateBox(
  * @param {number[]} [vsp=[1, 2]] - The vertical subdivision parameters.
  * @returns {Point[][]} An array of points representing the decorative elements.
  */
-function generateDeco(
+function generateDecoration(
     style: number,
     upperLeftPoint: Point = Point.O,
     upperRightPoint: Point = new Point(0, 100),
@@ -239,7 +239,7 @@ function generateDeco(
     hsp: number[] = [1, 3],
     vsp: number[] = [1, 2]
 ): Point[][] {
-    const plist: Point[][] = [];
+    const pointArray: Point[][] = [];
     const dl = div([upperLeftPoint, bottomLeftPoint], vsp[1]);
     const dr = div([upperRightPoint, bottomRightPoint], vsp[1]);
     const du = div([upperLeftPoint, upperRightPoint], hsp[1]);
@@ -257,17 +257,17 @@ function generateDeco(
             const mmr = div([mru, mrd], vsp[1])[i];
             const ml = dl[i];
             const mr = dr[i];
-            plist.push(div([mml, ml], 5));
-            plist.push(div([mmr, mr], 5));
+            pointArray.push(div([mml, ml], 5));
+            pointArray.push(div([mmr, mr], 5));
         }
-        plist.push(div([mlu, mld], 5));
-        plist.push(div([mru, mrd], 5));
+        pointArray.push(div([mlu, mld], 5));
+        pointArray.push(div([mru, mrd], 5));
     } else if (style === 2) {
         // ||||
         for (let i = hsp[0]; i < du.length - hsp[0]; i += hsp[0]) {
             const mu = du[i];
             const md = dd[i];
-            plist.push(div([mu, md], 5));
+            pointArray.push(div([mu, md], 5));
         }
     } else if (style === 3) {
         // |##|
@@ -282,13 +282,13 @@ function generateDeco(
             const mmu = div([mlu, mru], vsp[1])[i];
             const mmd = div([mld, mrd], vsp[1])[i];
 
-            plist.push(div([mml, mmr], 5));
-            plist.push(div([mmu, mmd], 5));
+            pointArray.push(div([mml, mmr], 5));
+            pointArray.push(div([mmu, mmd], 5));
         }
-        plist.push(div([mlu, mld], 5));
-        plist.push(div([mru, mrd], 5));
+        pointArray.push(div([mlu, mld], 5));
+        pointArray.push(div([mru, mrd], 5));
     }
-    return plist;
+    return pointArray;
 }
 
 /**
@@ -407,29 +407,28 @@ function generateRail(
     }
 
     const polylines: SvgPolyline[] = [];
+    const halfLength = pointArray.length / 2;
 
-    for (let i = 0; i < pointArray.length / 2; i++) {
-        for (let j = 0; j < pointArray[i].length; j++) {
-            pointArray[i][j].y +=
-                (Noise.noise(prng, i, j * 0.5, seed) - 0.5) * height;
-            pointArray[(pointArray.length / 2 + i) % pointArray.length][
-                j %
-                    pointArray[(pointArray.length / 2 + i) % pointArray.length]
-                        .length
-            ].y += (Noise.noise(prng, i + 0.5, j * 0.5, seed) - 0.5) * height;
-            const ln = div(
-                [
-                    pointArray[i][j],
-                    pointArray[(pointArray.length / 2 + i) % pointArray.length][
-                        j %
-                            pointArray[
-                                (pointArray.length / 2 + i) % pointArray.length
-                            ].length
-                    ],
-                ],
-                2
-            );
+    for (let i = 0; i < halfLength; i++) {
+        const rotatedIndex = (halfLength + i) % pointArray.length;
+        const rotatedArray = pointArray[rotatedIndex];
+        const currentArray = pointArray[i];
+
+        for (let j = 0; j < currentArray.length; j++) {
+            const currentPoint = currentArray[j];
+            const rotatedPoint = rotatedArray[j % rotatedArray.length];
+
+            const noiseI = i + j * 0.5;
+            const noiseJ = j * 0.5;
+            const yNoise1 = Noise.noise(prng, noiseI, noiseJ, seed) - 0.5;
+            const yNoise2 = Noise.noise(prng, noiseI + 0.5, noiseJ, seed) - 0.5;
+
+            currentPoint.y += yNoise1 * height;
+            rotatedPoint.y += yNoise2 * height;
+
+            const ln = div([currentPoint, rotatedPoint], 2);
             ln[0].x += prng.random(-0.25, 0.25) * height;
+
             polylines.push(
                 createPolyline(
                     ln,
@@ -832,16 +831,14 @@ export function generateHouse(
     const height = 10;
     const perturbation = 5;
     const hasRail = false;
-
-    const elementlists: ISvgElement[][] = [];
-
-    const dec = (
+    const svgElements: ISvgElement[][] = [];
+    const decorator = (
         upperLeftPoint: Point,
         upperRightPoint: Point,
         bottomLeftPoint: Point,
         bottomRightPoint: Point
     ) =>
-        generateDeco(
+        generateDecoration(
             style,
             upperLeftPoint,
             upperRightPoint,
@@ -851,14 +848,14 @@ export function generateHouse(
             [[], [1, 2], [1, 2], [1, 3]][style]
         );
 
-    let hoff = 0;
+    let hightOffset = 0;
 
     for (let i = 0; i < stories; i++) {
-        elementlists.push(
+        svgElements.push(
             generateBox(
                 prng,
                 xOffset,
-                yOffset - hoff,
+                yOffset - hightOffset,
                 height,
                 strokeWidth * Math.pow(0.85, i),
                 rotation,
@@ -866,16 +863,16 @@ export function generateHouse(
                 false,
                 true,
                 1.5,
-                dec
+                decorator
             )
         );
 
-        elementlists.push(
+        svgElements.push(
             hasRail
                 ? generateRail(
                       prng,
                       xOffset,
-                      yOffset - hoff,
+                      yOffset - hightOffset,
                       i * 0.2,
                       false,
                       height / 2,
@@ -891,11 +888,11 @@ export function generateHouse(
 
         const text: string =
             stories === 1 && prng.random() < 1 / 3 ? "Pizza Hut" : "";
-        elementlists.push(
+        svgElements.push(
             generateRoof(
                 prng,
                 xOffset,
-                yOffset - hoff - height,
+                yOffset - hightOffset - height,
                 height,
                 strokeWidth * Math.pow(0.9, i),
                 rotation,
@@ -905,10 +902,10 @@ export function generateHouse(
             )
         );
 
-        hoff += height * 1.5;
+        hightOffset += height * 1.5;
     }
 
-    return elementlists.flat();
+    return svgElements.flat();
 }
 
 /**
@@ -935,21 +932,13 @@ export function generatePagoda(
 
     let heightOffset = 0;
 
-    /**
-     * Defines the decoration for the arch components.
-     * @param upperLeftPoint - Upper left point.
-     * @param upperRightPoint - Upper right point.
-     * @param bottomLeftPoint - Lower left point.
-     * @param bottomRightPoint - Lower right point.
-     * @returns An array of points representing the decoration.
-     */
-    const decoration = (
+    const decorator = (
         upperLeftPoint: Point,
         upperRightPoint: Point,
         bottomLeftPoint: Point,
         bottomRightPoint: Point
     ) =>
-        generateDeco(
+        generateDecoration(
             1,
             upperLeftPoint,
             upperRightPoint,
@@ -972,7 +961,7 @@ export function generatePagoda(
                 false,
                 true,
                 1.5,
-                decoration
+                decorator
             )
         );
         polylineArray.push(
@@ -1031,16 +1020,6 @@ export function generateTower(
 
     let heightOffset = 0;
 
-    /**
-     * Defines an empty decoration for the larger arch components.
-     * @param _1 - Point parameter not used.
-     * @param _2 - Point parameter not used.
-     * @param _3 - Point parameter not used.
-     * @param _4 - Point parameter not used.
-     * @returns An empty array since no decoration is applied.
-     */
-    const emptyDecoration = (_1: Point, _2: Point, _3: Point, _4: Point) => [];
-
     for (let i = 0; i < stories; i++) {
         polylineArray.push(
             generateBox(
@@ -1053,8 +1032,7 @@ export function generateTower(
                 period / 2,
                 true,
                 true,
-                1.5,
-                emptyDecoration
+                1.5
             )
         );
         polylineArray.push(
