@@ -47,7 +47,7 @@ Made of `Hut` 🟩, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>House</summary>
 
-Made of `Deco` ⬛ and `Box` 🟥
+Made of `Roof` ⬛ and `Box` 🟥
 
 ![arch02](../img/arch/arch02.png)
 
