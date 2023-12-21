@@ -9,13 +9,6 @@ import { SvgPolyline, SvgText } from "../svg/types";
 import { div, generateStroke, generateTexture } from "./brushes";
 import { generateHat02, generateMan, generateStick } from "./man";
 
-function flip(ptlist: Point[], axis: number = 0): Point[] {
-    ptlist.forEach((i) => {
-        i.x = axis - i.x - axis;
-    });
-    return ptlist;
-}
-
 /**
  * Generates a hut using procedural generation.
  * @notExported
@@ -331,16 +324,16 @@ function generateRail(
 ): SvgPolyline[] {
     const mid = -width * 0.5 + width * rotation;
     const bmid = -width * 0.5 + width * (1 - rotation);
-    const ptlist: Point[][] = [];
+    const pointArray: Point[][] = [];
 
     if (hasFront) {
-        ptlist.push(
+        pointArray.push(
             div(
                 [new Point(-width * 0.5, 0), new Point(mid, perturbation)],
                 segments
             )
         );
-        ptlist.push(
+        pointArray.push(
             div(
                 [new Point(mid, perturbation), new Point(width * 0.5, 0)],
                 segments
@@ -349,13 +342,13 @@ function generateRail(
     }
 
     if (hasTrack) {
-        ptlist.push(
+        pointArray.push(
             div(
                 [new Point(-width * 0.5, 0), new Point(bmid, -perturbation)],
                 segments
             )
         );
-        ptlist.push(
+        pointArray.push(
             div(
                 [new Point(bmid, -perturbation), new Point(width * 0.5, 0)],
                 segments
@@ -364,7 +357,7 @@ function generateRail(
     }
 
     if (hasFront) {
-        ptlist.push(
+        pointArray.push(
             div(
                 [
                     new Point(-width * 0.5, -height),
@@ -373,7 +366,7 @@ function generateRail(
                 segments
             )
         );
-        ptlist.push(
+        pointArray.push(
             div(
                 [
                     new Point(mid, -height + perturbation),
@@ -385,7 +378,7 @@ function generateRail(
     }
 
     if (hasTrack) {
-        ptlist.push(
+        pointArray.push(
             div(
                 [
                     new Point(-width * 0.5, -height),
@@ -394,7 +387,7 @@ function generateRail(
                 segments
             )
         );
-        ptlist.push(
+        pointArray.push(
             div(
                 [
                     new Point(bmid, -height - perturbation),
@@ -406,29 +399,32 @@ function generateRail(
     }
 
     if (hasTrack) {
-        const open = Math.floor(prng.random(0, ptlist.length));
-        ptlist[open] = ptlist[open].slice(0, -1);
-        ptlist[(open + ptlist.length) % ptlist.length] = ptlist[
-            (open + ptlist.length) % ptlist.length
+        const open = Math.floor(prng.random(0, pointArray.length));
+        pointArray[open] = pointArray[open].slice(0, -1);
+        pointArray[(open + pointArray.length) % pointArray.length] = pointArray[
+            (open + pointArray.length) % pointArray.length
         ].slice(0, -1);
     }
 
     const polylines: SvgPolyline[] = [];
 
-    for (let i = 0; i < ptlist.length / 2; i++) {
-        for (let j = 0; j < ptlist[i].length; j++) {
-            ptlist[i][j].y +=
+    for (let i = 0; i < pointArray.length / 2; i++) {
+        for (let j = 0; j < pointArray[i].length; j++) {
+            pointArray[i][j].y +=
                 (Noise.noise(prng, i, j * 0.5, seed) - 0.5) * height;
-            ptlist[(ptlist.length / 2 + i) % ptlist.length][
-                j % ptlist[(ptlist.length / 2 + i) % ptlist.length].length
+            pointArray[(pointArray.length / 2 + i) % pointArray.length][
+                j %
+                    pointArray[(pointArray.length / 2 + i) % pointArray.length]
+                        .length
             ].y += (Noise.noise(prng, i + 0.5, j * 0.5, seed) - 0.5) * height;
             const ln = div(
                 [
-                    ptlist[i][j],
-                    ptlist[(ptlist.length / 2 + i) % ptlist.length][
+                    pointArray[i][j],
+                    pointArray[(pointArray.length / 2 + i) % pointArray.length][
                         j %
-                            ptlist[(ptlist.length / 2 + i) % ptlist.length]
-                                .length
+                            pointArray[
+                                (pointArray.length / 2 + i) % pointArray.length
+                            ].length
                     ],
                 ],
                 2
@@ -447,11 +443,13 @@ function generateRail(
         }
     }
 
-    for (let i = 0; i < ptlist.length; i++) {
+    for (let i = 0; i < pointArray.length; i++) {
         polylines.push(
             generateStroke(
                 prng,
-                ptlist[i].map((p) => new Point(p.x + xOffset, p.y + yOffset)),
+                pointArray[i].map(
+                    (p) => new Point(p.x + xOffset, p.y + yOffset)
+                ),
                 "rgba(100,100,100,0.5)",
                 "rgba(100,100,100,0.5)",
                 strokeWidth,
@@ -476,7 +474,7 @@ function generateRail(
  * @param {number} [rotation=0.7] - The rotation parameter for Roof.
  * @param {number} [strokeWidth=3] - The stroke width of the Roof.
  * @param {number} [perturbation=4] - The perturbation parameter for Roof generation.
- * @param {[number, string]} [pla=[0, ""]] - An array indicating whether to place additional text on the Roof.
+ * @param {string} [text=""] - Additional text to put on the Roof.
  * @param {number} [cor=5] - The cor parameter for Roof generation.
  * @returns {ISvgElement[]} An array of SVG elements representing Roof.
  */
@@ -489,14 +487,14 @@ function generateRoof(
     rotation: number = 0.7,
     strokeWidth: number = 3,
     perturbation: number = 4,
-    pla: [number, string] = [0, ""],
+    text: string = "",
     cor: number = 5
 ): ISvgElement[] {
-    const opf = function (ptlist: Point[]) {
+    const opf = function (pointArray: Point[]) {
         if (rotation < 0.5) {
-            return flip(ptlist);
+            return pointArray.map((point) => new Point(-point.x, point.y));
         } else {
-            return ptlist;
+            return pointArray;
         }
     };
     const rrot = rotation < 0.5 ? 1 - rotation : rotation;
@@ -504,8 +502,8 @@ function generateRoof(
     const mid = -width * 0.5 + width * rrot;
     const quat = (mid + width * 0.5) * 0.5 - mid;
 
-    const ptlist = [];
-    ptlist.push(
+    const pointArray = [];
+    pointArray.push(
         div(
             opf([
                 new Point(-width * 0.5 + quat, -height - perturbation / 2),
@@ -518,7 +516,7 @@ function generateRoof(
             5
         )
     );
-    ptlist.push(
+    pointArray.push(
         div(
             opf([
                 new Point(mid + quat, -height),
@@ -528,7 +526,7 @@ function generateRoof(
             5
         )
     );
-    ptlist.push(
+    pointArray.push(
         div(
             opf([
                 new Point(mid + quat, -height),
@@ -539,7 +537,7 @@ function generateRoof(
         )
     );
 
-    ptlist.push(
+    pointArray.push(
         div(
             opf([
                 new Point(-width * 0.5 - cor, 0),
@@ -548,7 +546,7 @@ function generateRoof(
             5
         )
     );
-    ptlist.push(
+    pointArray.push(
         div(
             opf([
                 new Point(width * 0.5 + cor, 0),
@@ -558,7 +556,7 @@ function generateRoof(
         )
     );
 
-    ptlist.push(
+    pointArray.push(
         div(
             opf([
                 new Point(-width * 0.5 + quat, -height - perturbation / 2),
@@ -579,11 +577,13 @@ function generateRoof(
     ]);
     polylines.push(createPolyline(polist, xOffset, yOffset, "white", "none"));
 
-    for (let i = 0; i < ptlist.length; i++) {
+    for (let i = 0; i < pointArray.length; i++) {
         polylines.push(
             generateStroke(
                 prng,
-                ptlist[i].map((p) => new Point(p.x + xOffset, p.y + yOffset)),
+                pointArray[i].map(
+                    (p) => new Point(p.x + xOffset, p.y + yOffset)
+                ),
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",
                 strokeWidth,
@@ -594,7 +594,7 @@ function generateRoof(
         );
     }
 
-    if (pla[0] === 1) {
+    if (text) {
         let pp = opf([
             new Point(mid + quat / 2, -height / 2 + perturbation / 2),
             new Point(
@@ -609,7 +609,7 @@ function generateRoof(
         const a = Math.atan2(pp[1].y - pp[0].y, pp[1].x - pp[0].x);
         const adeg = (a * 180) / Math.PI;
 
-        const text = new SvgText(pla[1], {
+        const newText = new SvgText(text, {
             fontSize: height * 0.6,
             fontFamily: "Verdana",
             textAnchor: "middle",
@@ -621,7 +621,7 @@ function generateRoof(
             },
         });
 
-        polylines.push(text);
+        polylines.push(newText);
     }
 
     return polylines;
@@ -650,7 +650,7 @@ function generatePagodaRoof(
 ): SvgPolyline[] {
     const cor = 10;
     const sid = 4;
-    const ptlist: Point[][] = [];
+    const pointArray: Point[][] = [];
     const polist: Point[] = [new Point(0, -height)];
     const polylines: SvgPolyline[] = [];
 
@@ -660,9 +660,12 @@ function generatePagodaRoof(
             perturbation * (1 - Math.abs((i * 1.0) / (sid - 1) - 0.5) * 2);
         const fxx = (width + cor) * ((i * 1.0) / (sid - 1) - 0.5);
         if (i > 0) {
-            ptlist.push([ptlist[ptlist.length - 1][2], new Point(fxx, fy)]);
+            pointArray.push([
+                pointArray[pointArray.length - 1][2],
+                new Point(fxx, fy),
+            ]);
         }
-        ptlist.push([
+        pointArray.push([
             new Point(0, -height),
             new Point(fx * 0.5, (-height + fy) * 0.5),
             new Point(fxx, fy),
@@ -672,11 +675,11 @@ function generatePagodaRoof(
 
     polylines.push(createPolyline(polist, xOffset, yOffset, "white", "none"));
 
-    for (let i = 0; i < ptlist.length; i++) {
+    for (let i = 0; i < pointArray.length; i++) {
         polylines.push(
             generateStroke(
                 prng,
-                div(ptlist[i], 5).map(
+                div(pointArray[i], 5).map(
                     (p) => new Point(p.x + xOffset, p.y + yOffset)
                 ),
                 "rgba(100,100,100,0.4)",
@@ -886,8 +889,8 @@ export function generateHouse(
                 : []
         );
 
-        const pla: [number, string] =
-            stories === 1 && prng.random() < 1 / 3 ? [1, "Pizza Hut"] : [0, ""];
+        const text: string =
+            stories === 1 && prng.random() < 1 / 3 ? "Pizza Hut" : "";
         elementlists.push(
             generateRoof(
                 prng,
@@ -898,7 +901,7 @@ export function generateHouse(
                 rotation,
                 1.5,
                 perturbation,
-                pla
+                text
             )
         );
 
