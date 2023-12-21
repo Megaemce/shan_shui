@@ -12,14 +12,14 @@ import {
     generateTree06,
     generateTree07,
     generateTree08,
-} from "./tree";
+} from "./trees";
 import {
     generatePavilion,
     generateHouse,
     generatePagoda,
     generateTower,
     generateTransmissionTower,
-} from "./arch";
+} from "./architectures";
 import { midPoint, triangulate } from "../basic/polytools";
 import { Bound } from "../basic/range";
 import { PRNG } from "../basic/PRNG";

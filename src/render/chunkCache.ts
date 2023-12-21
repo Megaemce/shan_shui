@@ -2,12 +2,12 @@ import { Chunk, IChunk } from "../render/basic/chunk";
 import { design } from "../render/basic/designer";
 import { PRNG } from "../render/basic/PRNG";
 import { Range } from "../render/basic/range";
-import { generateBoat } from "../render/parts/arch";
+import { generateBoat } from "./parts/architectures";
 import {
     generateDistantMountain,
     generateFlatMountain,
     generateMountain,
-} from "../render/parts/mountain";
+} from "./parts/mountains";
 import { generateWater } from "../render/parts/water";
 
 /**

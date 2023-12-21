@@ -31,7 +31,7 @@ Made of `Hat` (optional), `Man` and `Stick` (optional)
 <br>
 
 <details>
-<summary>🏣 Architecture</summary>
+<summary>🏣 Architectures</summary>
 <br>
 
 <details>
@@ -93,7 +93,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <br>
 
 <details>
-<summary>🌳 Tree</summary>
+<summary>🌳 Trees</summary>
 <br>
 
 <details>
@@ -164,7 +164,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <br>
 
 <details>
-<summary>⛰️ Mountain</summary>
+<summary>⛰️ Mountains</summary>
 <br>
 
 <details>
