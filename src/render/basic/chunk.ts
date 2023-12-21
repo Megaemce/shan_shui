@@ -11,9 +11,6 @@ type ChunkTag = "mount" | "flatmount" | "distmount" | "boat" | "water" | "?";
  * Represents an interface for a Chunk.
  */
 export interface IChunk extends IPoint {
-    /**
-     * The tag associated with the chunk.
-     */
     tag: ChunkTag;
 }
 
@@ -21,35 +18,16 @@ export interface IChunk extends IPoint {
  * Represents a chunk of terrain with SVG elements.
  */
 export class Chunk implements IChunk {
-    /**
-     * The tag associated with the chunk.
-     * @default "?"
-     */
+    /** The tag associated with the chunk. */
     tag: ChunkTag = "?";
-
-    /**
-     * The x-coordinate of the chunk.
-     * @default 0
-     */
+    /** The x-coordinate of the chunk. */
     x: number = 0;
-
-    /**
-     * The y-coordinate of the chunk.
-     * @default 0
-     */
+    /** The y-coordinate of the chunk. */
     y: number = 0;
-
-    /**
-     * The SVG elements that make up the chunk.
-     * @default []
-     */
+    /** The SVG elements that make up the chunk. */
     elements: ISvgElement[] = [];
-
-    /**
-     * The rendered SVG content of the chunk.
-     * @default this.getSvgContent()
-     */
-    canvas: string = this.getSvgContent();
+    /** The rendered SVG content of the chunk. */
+    canvas: string;
 
     /**
      * Creates an instance of Chunk.
@@ -59,7 +37,7 @@ export class Chunk implements IChunk {
      * @param elements - The SVG elements that make up the chunk.
      */
     constructor(
-        tag: ChunkTag,
+        tag: ChunkTag = "?",
         x: number = 0,
         y: number = 0,
         elements: ISvgElement[] = []
@@ -68,6 +46,7 @@ export class Chunk implements IChunk {
         this.x = x;
         this.y = y;
         this.elements = elements;
+        this.canvas = this.elements.map((p) => p.render()).join("\n");
     }
 
     /**
@@ -77,43 +56,19 @@ export class Chunk implements IChunk {
     render(): string {
         return this.canvas;
     }
-
-    /**
-     * Generates the SVG content of the chunk.
-     * @returns The SVG content as a string.
-     * @private
-     */
-    private getSvgContent(): string {
-        return this.elements.map((p) => p.render()).join("\n");
-    }
 }
 
 /**
  * Represents a design chunk with tag, coordinates, and height information.
  */
 export class DesignChunk implements IChunk {
-    /**
-     * The tag associated with the design chunk.
-     * @default "?"
-     */
+    /** The tag associated with the design chunk. */
     tag: ChunkTag = "?";
-
-    /**
-     * The x-coordinate of the design chunk.
-     * @default 0
-     */
+    /** The x-coordinate of the design chunk. */
     x: number = 0;
-
-    /**
-     * The y-coordinate of the design chunk.
-     * @default 0
-     */
+    /** The y-coordinate of the design chunk. */
     y: number = 0;
-
-    /**
-     * The height information of the design chunk.
-     * @default 0
-     */
+    /** The height information of the design chunk. */
     height: number = 0;
 
     /**
