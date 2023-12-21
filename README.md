@@ -1,112 +1,28 @@
 # {Shan, Shui}\*
 
-Procedurally-understandably-generated vector-format infinitely-scrolling Chinese landscape for the browser.
-This is a newer version of [RedContritio's](https://github.com/RedContritio) [app](https://github.com/RedContritio/shan_shui_inf) based on original code from [{Shan, Shui}\*](https://github.com/LingDong-/shan-shui-inf/blob/master/README.md#shan-shui) coded by [Lingdong Huang](https://github.com/LingDong-). This version is build on React 18 with less dependecies.
+Discover the beauty of an ever-evolving Chinese landscape art. This project combines the elegance of procedural generation with the power of vector graphics to create a mesmerizing, infinite-scrolling journey through the heart of Chinese art and culture.
 
-Documentation can be seen [here](https://htmlpreview.github.io/?https://github.com/Megaemce/shan_shui/blob/main/docs/index.html)
+## 🏗️ Tech stack
 
-## Components
+React and nothing more! ✨
 
-### generateMan
+## ⚙️ Installation
 
-![man](public/img/man.png)
+[Check it in online](https://shan-shui.vercel.app/) or locally:
 
-### water
+```
+npm install
+npm start
+```
 
-![water](public/img/water.png)
+## 📖 Documentation
 
-### architecture
+[Check it in online](https://htmlpreview.github.io/?https://github.com/Megaemce/shan_shui/blob/main/public/docs/index.html) or generated locally with TypeDoc
 
-#### GenerateArch01
+```
+npm doc
+```
 
-![arch01](public/img/arch/arch01.png)
+## 🙏🏻 Thank you
 
-green - `generateHut`
-
-red - `generateBox`
-
-pink - `generateRail`
-
-#### GenerateArch02
-
-![arch02](public/img/arch/arch02.png)
-
-black - `generateDeco`
-
-red - `generateBox`
-
-#### generateArch03
-
-![arch03](public/img/arch/arch03.png)
-
-blue - `generatePagodaRoof`
-
-red - `generateBox`
-
-pink - `generateRail`
-
-#### generateArch04
-
-![arch04](public/img/arch/arch04.png)
-
-blue - `generatePagodaRoof`
-
-red - `generateBox`
-
-pink - `generateRail`
-
-#### generateBoat
-
-![boat01](public/img/arch/boat01.png)
-
-#### generateTransmissionTower
-
-![tower01](public/img/arch/tower01.png)
-
-### tree
-
-#### generateTree01
-
-![tree01](public/img/tree/tree01.png)
-
-#### generateTree02
-
-![tree02](public/img/tree/tree02.png)
-
-#### generateTree03
-
-![tree03](public/img/tree/tree03.png)
-
-#### generateTree04
-
-![tree04](public/img/tree/tree04.png)
-
-#### generateTree05
-
-![tree05](public/img/tree/tree05.png)
-
-#### generateTree06
-
-![tree06](public/img/tree/tree06.png)
-
-#### generateTree07
-
-![tree07](public/img/tree/tree07.png)
-
-#### generateTree08
-
-![tree08](public/img/tree/tree08.png)
-
-### mountain
-
-#### generateMountain
-
-![mountain](public/img/mountain.png)
-
-#### generateFlatMountain
-
-![flatmountain](public/img/flatmountain.png)
-
-#### generateDistantMountain
-
-![distmountain](public/img/distmountain.png)
+This is the third iteration of this app. Firstly, it was created as a [monolithic JavaScript file](https://github.com/LingDong-/shan-shui-inf) by [Lingdong Huang](https://github.com/LingDong-) and then it was [rebuilt with React](https://github.com/RedContritio/shan_shui_inf) by [RedContritio's](https://github.com/RedContritio).

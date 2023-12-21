@@ -24,7 +24,8 @@
   "devDependencies": {
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
-    "typedoc": "^0.25.4"
+    "typedoc": "^0.25.4",
+    "typedoc-theme-hierarchy": "^4.1.2"
   },
   "browserslist": {
     "production": [

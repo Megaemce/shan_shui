@@ -15,9 +15,13 @@
   "include": ["src/**/*.tsx", "src/**/*.ts"],
   "exclude": ["node_modules"],
   "typedocOptions": {
-     "entryPoints": ["src/**/*.ts"],
-     "out": "docs",
-     "name": "{Shan Shui}*",
-     "readme": "none"
+    "entryPoints": ["src"],
+    "entryPointStrategy": "Expand",
+    "out": "public/docs",
+    "plugin": ["typedoc-theme-hierarchy"],
+    "theme": "hierarchy",
+    "name": "{Shan, Shui}*",
+    "readme": "public/readmeDocs.md"
   }
+  
 }
