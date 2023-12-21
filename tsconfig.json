@@ -18,7 +18,7 @@
     "entryPoints": ["src"],
     "entryPointStrategy": "Expand",
     "out": "public/docs",
-    "plugin": ["typedoc-theme-hierarchy"],
+    "plugin": ["typedoc-theme-hierarchy", "@zamiell/typedoc-plugin-not-exported"],
     "theme": "hierarchy",
     "name": "{Shan, Shui}*",
     "readme": "public/readmeDocs.md"
