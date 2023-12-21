@@ -17,6 +17,7 @@ npm start
 <summary>👨🏻‍🌾 Man</summary>
 
 Made of `Hat` (optional), `Man` and `Stick` (optional)
+
 ![man](../img/man.png)
 
 </details>
@@ -37,6 +38,7 @@ Made of `Hat` (optional), `Man` and `Stick` (optional)
 <summary>Arch01</summary>
 
 Made of `Hut` 🟩, `Box` 🟥 and `Rail` 🟧
+
 ![arch01](../img/arch/arch01.png)
 
 </details>
@@ -56,6 +58,7 @@ Made of `Deco` ⬛ and `Box` 🟥
 <summary>Arch03</summary>
 
 Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
+
 ![arch03](../img/arch/arch03.png)
 
 </details>
@@ -65,6 +68,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <summary>Arch04</summary>
 
 Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
+
 ![arch04](../img/arch/arch04.png)
 
 </details>
