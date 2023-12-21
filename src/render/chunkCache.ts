@@ -1,4 +1,4 @@
-import { Chunk, IChunk } from "../render/basic/chunk";
+import { Chunk, ChunkTag, IChunk } from "../render/basic/chunk";
 import { design } from "../render/basic/designer";
 import { PRNG } from "../render/basic/PRNG";
 import { Range } from "../render/basic/range";
@@ -60,47 +60,68 @@ export class ChunkCache {
      * @param prng - The pseudo-random number generator.
      */
     private processChunk(prng: PRNG, plan: IChunk[]): void {
-        for (let i = 0; i < plan.length; i++) {
-            const { tag, x, y } = plan[i];
+        const tagToGeneratorMap = new Map<
+            ChunkTag,
+            (prng: PRNG, x: number, y: number) => void
+        >();
 
-            if (tag === "mount") {
-                this.chunks.push(
-                    generateMountain(prng, x, y, prng.random(0, 2 * i))
-                );
-                this.chunks.push(generateWater(prng, x, y));
-            } else if (tag === "flatmount") {
-                this.chunks.push(
-                    generateFlatMountain(
-                        prng,
-                        x,
-                        y,
-                        prng.random(0, 2 * Math.PI),
-                        100,
-                        prng.random(0.5, 0.7),
-                        prng.random(600, 1000)
-                    )
-                );
-            } else if (tag === "distmount") {
-                this.chunks.push(
-                    generateDistantMountain(
-                        prng,
-                        x,
-                        y,
-                        prng.random(0, 100),
-                        150,
-                        prng.randomChoice([500, 1000, 1500])
-                    )
-                );
-            } else if (tag === "boat") {
-                this.chunks.push(
-                    generateBoat(
-                        prng,
-                        x,
-                        y,
-                        y / 800,
-                        prng.randomChoice([true, false])
-                    )
-                );
+        tagToGeneratorMap.set("mount", (prng, x, y) => {
+            this.chunks.push(
+                generateMountain(
+                    prng,
+                    x,
+                    y,
+                    prng.random(0, 2 * plan.indexOf({ tag: "mount", x, y }))
+                )
+            );
+            this.chunks.push(generateWater(prng, x, y));
+        });
+
+        tagToGeneratorMap.set("flatmount", (prng, x, y) => {
+            this.chunks.push(
+                generateFlatMountain(
+                    prng,
+                    x,
+                    y,
+                    prng.random(0, 2 * Math.PI),
+                    100,
+                    prng.random(0.5, 0.7),
+                    prng.random(600, 1000)
+                )
+            );
+        });
+
+        tagToGeneratorMap.set("distmount", (prng, x, y) => {
+            this.chunks.push(
+                generateDistantMountain(
+                    prng,
+                    x,
+                    y,
+                    prng.random(0, 100),
+                    150,
+                    prng.randomChoice([500, 1000, 1500])
+                )
+            );
+        });
+
+        tagToGeneratorMap.set("boat", (prng, x, y) => {
+            this.chunks.push(
+                generateBoat(
+                    prng,
+                    x,
+                    y,
+                    y / 800,
+                    prng.randomChoice([true, false])
+                )
+            );
+        });
+
+        for (const chunk of plan) {
+            const { tag, x, y } = chunk;
+            const generator = tagToGeneratorMap.get(tag);
+
+            if (generator) {
+                generator(prng, x, y);
             }
         }
     }
@@ -154,8 +175,11 @@ export class ChunkCache {
         const content: string = `<svg id="SVG" xmlns="http://www.w3.org/2000/svg" width="${
             range.right - range.left
         }" height="${windowHeight}" style="mix-blend-mode: 'multiply'" viewBox="${viewbox}">${this.chunks
-            .filter((c) => c.x >= left && c.x < right)
-            .map((c) => `<g transform="translate(0, 0)">${c.render()}</g>`)
+            .filter((chunk) => chunk.x >= left && chunk.x < right)
+            .map(
+                (chunk) =>
+                    `<g transform="translate(0, 0)">${chunk.render()}</g>`
+            )
             .join("\n")} </svg>`;
 
         const element = document.createElement("a");
