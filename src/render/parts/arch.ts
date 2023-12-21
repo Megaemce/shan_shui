@@ -693,18 +693,18 @@ function generatePagodaRoof(
 }
 
 /**
- * Generates Arch01 SVG elements.
+ * Generates Pavilion SVG elements.
  *
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} xOffset - The x-coordinate offset.
  * @param {number} yOffset - The y-coordinate offset.
  * @param {number} [seed=0] - The seed for randomization.
- * @param {number} [height=70] - The height of the Arch01.
- * @param {number} [strokeWidth=180] - The stroke width of the Arch01.
- * @param {number} [perturbation=5] - A parameter for Arch01 generation.
- * @returns {SvgPolyline[]} An array of SVG polyline elements representing Arch01.
+ * @param {number} [height=70] - The height of the Pavilion.
+ * @param {number} [strokeWidth=180] - The stroke width of the Pavilion.
+ * @param {number} [perturbation=5] - A parameter for Pavilion generation.
+ * @returns {SvgPolyline[]} An array of SVG polyline elements representing Pavilion.
  */
-export function generateArch01(
+export function generatePavilion(
     prng: PRNG,
     xOffset: number,
     yOffset: number,
@@ -806,18 +806,18 @@ export function generateArch01(
 }
 
 /**
- * Generates Arch02 SVG elements.
+ * Generates House SVG elements.
  *
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} xOffset - The x-coordinate offset.
  * @param {number} yOffset - The y-coordinate offset.
- * @param {number} [strokeWidth=50] - The stroke width of the Arch02.
- * @param {number} [stories=3] - The number of stories in the Arch02.
- * @param {number} [rotation=0.3] - The rotation parameter for Arch02.
- * @param {number} [style=1] - The style parameter for Arch02.
- * @returns {ISvgElement[]} An array of SVG elements representing Arch02.
+ * @param {number} [strokeWidth=50] - The stroke width of the House.
+ * @param {number} [stories=3] - The number of stories in the House.
+ * @param {number} [rotation=0.3] - The rotation parameter for House.
+ * @param {number} [style=1] - The style parameter for House.
+ * @returns {ISvgElement[]} An array of SVG elements representing House.
  */
-export function generateArch02(
+export function generateHouse(
     prng: PRNG,
     xOffset: number,
     yOffset: number,
@@ -917,7 +917,7 @@ export function generateArch02(
  * @param stories - The number of arches to generate.
  * @returns An array of SvgPolyline representing the arch structures.
  */
-export function generateArch03(
+export function generatePagoda(
     prng: PRNG,
     xOffset: number,
     yOffset: number,
@@ -1013,7 +1013,7 @@ export function generateArch03(
  * @param stories - The number of arches to generate.
  * @returns An array of SvgPolyline representing the arch structures.
  */
-export function generateArch04(
+export function generateTower(
     prng: PRNG,
     xOffset: number,
     yOffset: number,

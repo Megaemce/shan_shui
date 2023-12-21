@@ -14,10 +14,10 @@ import {
     generateTree08,
 } from "./tree";
 import {
-    generateArch01,
-    generateArch02,
-    generateArch03,
-    generateArch04,
+    generatePavilion,
+    generateHouse,
+    generatePagoda,
+    generateTower,
     generateTransmissionTower,
 } from "./arch";
 import { midPoint, triangulate } from "../basic/polytools";
@@ -371,7 +371,7 @@ export function generateMountain(
                 const treeType = prng.randomChoice([0, 0, 1, 1, 1, 2]);
 
                 if (treeType === 1) {
-                    return generateArch02(
+                    return generateHouse(
                         prng,
                         x + xOffset,
                         y + yOffset,
@@ -381,7 +381,7 @@ export function generateMountain(
                         prng.randomChoice([1, 2, 3])
                     );
                 } else if (treeType === 2) {
-                    return generateArch04(
+                    return generateTower(
                         prng,
                         x + xOffset,
                         y + yOffset,
@@ -408,7 +408,7 @@ export function generateMountain(
         generateVegetate(
             pointArray,
             function (x, y) {
-                return generateArch03(
+                return generatePagoda(
                     prng,
                     x + xOffset,
                     y + yOffset,
@@ -894,7 +894,7 @@ export function generateFlatDecorations(
     const ts = prng.randomChoice([0, 0, 0, 0, 1]);
     if (ts === 1 && tt !== 4) {
         polylineArray.push(
-            generateArch01(
+            generatePavilion(
                 prng,
                 xOffset + prng.normalizedRandom(bounding.xMin, bounding.xMax),
                 yOffset + (bounding.yMin + bounding.yMax) / 2 + 20,

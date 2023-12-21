@@ -35,7 +35,7 @@ Made of `Hat` (optional), `Man` and `Stick` (optional)
 <br>
 
 <details>
-<summary>Arch01</summary>
+<summary>Pavilion</summary>
 
 Made of `Hut` 🟩, `Box` 🟥 and `Rail` 🟧
 
@@ -45,7 +45,7 @@ Made of `Hut` 🟩, `Box` 🟥 and `Rail` 🟧
 <br>
 
 <details>
-<summary>Arch02</summary>
+<summary>House</summary>
 
 Made of `Deco` ⬛ and `Box` 🟥
 
@@ -55,7 +55,7 @@ Made of `Deco` ⬛ and `Box` 🟥
 <br>
 
 <details>
-<summary>Arch03</summary>
+<summary>Pagoda</summary>
 
 Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 
@@ -65,7 +65,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <br>
 
 <details>
-<summary>Arch04</summary>
+<summary>Tower</summary>
 
 Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 
