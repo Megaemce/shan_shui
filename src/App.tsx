@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import SettingPanel from "./ui/SettingPanel";
 import ScrollableCanvas from "./ui/ScrollableCanvas";
 import BackgroundRender from "./ui/BackgroundRender";
-import { PRNG } from "./render/basic/PRNG";
-import { Range } from "./render/basic/range";
-import { PerlinNoise } from "./render/basic/perlinNoise";
-import { ChunkCache } from "./render/chunkCache";
+import { PRNG } from "./classes/PRNG";
+import { Range } from "./classes/Range";
+import { PerlinNoise } from "./classes/PerlinNoise";
+import { ChunkCache } from "./classes/ChunkCache";
 import "./App.css";
 
 /**

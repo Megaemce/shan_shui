@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { PRNG } from "../render/basic/PRNG";
-import { Range } from "../render/basic/range";
-import { ChunkCache } from "../render/chunkCache";
+import { PRNG } from "../classes/PRNG";
+import { Range } from "../classes/Range";
+import { ChunkCache } from "../classes/ChunkCache";
 import ButtonSet from "./ButtonSet";
 import ButtonSource from "./ButtonSource";
 import Menu from "./Menu";

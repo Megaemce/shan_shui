@@ -1,6 +1,6 @@
 import React from "react";
-import { PerlinNoise } from "../render/basic/perlinNoise";
-import { PRNG } from "../render/basic/PRNG";
+import { PerlinNoise } from "../classes/PerlinNoise";
+import { PRNG } from "../classes/PRNG";
 
 class BackgroundRender extends React.Component {
     canvasRef = React.createRef<HTMLCanvasElement>();
