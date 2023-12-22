@@ -79,7 +79,7 @@ const App: React.FC = () => {
      * Effect to handle changes in the PRNG seed.
      */
     useEffect(() => {
-        prngRef.current.seed(seed);
+        prngRef.current.seed = seed;
     }, [seed]);
 
     /**

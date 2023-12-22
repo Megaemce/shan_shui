@@ -4,56 +4,59 @@ import { Range } from "./range";
  * Pseudo-Random Number Generator (PRNG) class.
  */
 export class PRNG {
-    private s: number = 1234;
-    private readonly p: number = 999979;
-    private readonly q: number = 999983;
-    private readonly m: number = this.p * this.q;
+    private _seed: number = 1234;
+    private readonly primeOne: number = 999979;
+    private readonly primeTwo: number = 999983;
+    private readonly semiprime: number = this.primeOne * this.primeTwo;
 
     /**
      * Hashes the input value for use in seeding.
-     * @param value - The input value to be hashed.
+     * @param {string | number} value - The input value to be hashed.
      * @returns The hashed value.
      */
-    private hash(value: any): number {
-        const y = JSON.stringify(value);
-        return y
+    private hash(value: string | number): number {
+        const stringFromValue = JSON.stringify(value);
+        const numberFromString = stringFromValue
             .split("")
             .reduce(
                 (acc, char, i) => acc + char.charCodeAt(0) * Math.pow(128, i),
                 0
             );
+        return numberFromString;
     }
 
     /**
-     * Seeds the PRNG with the specified value.
-     * @param value - The value to use for seeding. If undefined, the current timestamp is used.
-     * @param logCallback - Optional callback to log the seeding process.
+     * Sets the seed value for the Pseudorandom Number Generator (PRNG).
+     * If the value is undefined, the current timestamp is used as the seed.
+     *
+     * @param {string | number} value - The value to use for seeding.
      */
-    seed(value: any, logCallback?: (message: string) => void): void {
+    set seed(value: string | number) {
         if (value === undefined) {
             value = new Date().getTime();
         }
 
-        let y = 0;
+        let newSeed = 0;
         let z = 0;
 
         /**
          * Redo the seeding process if the generated value is not suitable.
          */
         const redo = () => {
-            y = (this.hash(value) + z) % this.m;
+            newSeed = (this.hash(value) + z) % this.semiprime;
             z += 1;
         };
 
-        while (y % this.p === 0 || y % this.q === 0 || y === 0 || y === 1) {
+        while (
+            newSeed % this.primeOne === 0 ||
+            newSeed % this.primeTwo === 0 ||
+            newSeed === 0 ||
+            newSeed === 1
+        ) {
             redo();
         }
 
-        this.s = y;
-
-        if (logCallback) {
-            logCallback(`seed(${value}) = ${this.s}`);
-        }
+        this._seed = newSeed;
 
         // Skip the first few numbers after seeding
         for (let i = 0; i < 10; i++) {
@@ -66,8 +69,8 @@ export class PRNG {
      * @returns The next pseudo-random number (float) in the sequence.
      */
     next(): number {
-        this.s = (this.s * this.s) % this.m;
-        return this.s / this.m;
+        this._seed = (this._seed * this._seed) % this.semiprime;
+        return this._seed / this.semiprime;
     }
 
     /**
