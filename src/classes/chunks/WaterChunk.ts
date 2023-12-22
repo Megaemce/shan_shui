@@ -1,9 +1,9 @@
-import { Chunk } from "../classes/Chunk";
-import { Noise } from "../classes/PerlinNoise";
-import { Point } from "../classes/Point";
-import { PRNG } from "../classes/PRNG";
-import { SvgPolyline } from "../classes/SvgPolyline";
-import { generateStroke } from "./brushes/generateStroke";
+import { Chunk } from "../Chunk";
+import { Noise } from "../PerlinNoise";
+import { Point } from "../Point";
+import { PRNG } from "../PRNG";
+import { SvgPolyline } from "../SvgPolyline";
+import { generateStroke } from "../../parts/brushes/generateStroke";
 
 /**
  * Class representing a water chunk with undulating waves.

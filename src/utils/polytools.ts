@@ -1,4 +1,35 @@
 import { Point } from "../classes/Point";
+import { Bound } from "../classes/Bound";
+
+/**
+ * Calculate the bounding box of a list of points.
+ *
+ * @param {Point[]} pointArray - The list of points.
+ * @returns {Bound} The bounding box.
+ */
+export function calculateBoundingBox(pointArray: Point[]): Bound {
+    let minX = pointArray[0].x;
+    let maxX = pointArray[0].x;
+    let minY = pointArray[0].y;
+    let maxY = pointArray[0].y;
+
+    pointArray.forEach((point) => {
+        if (point.x < minX) {
+            minX = point.x;
+        }
+        if (point.x > maxX) {
+            maxX = point.x;
+        }
+        if (point.y < minY) {
+            minY = point.y;
+        }
+        if (point.y > maxY) {
+            maxY = point.y;
+        }
+    });
+
+    return new Bound(minX, maxX, minY, maxY);
+}
 
 /**
  * Calculates the Euclidean distance between two points.

@@ -1,9 +1,9 @@
-import { Point } from "../../classes/Point";
-import { Noise } from "../../classes/PerlinNoise";
+import { Point } from "../Point";
+import { Noise } from "../PerlinNoise";
 import { midPoint, triangulate } from "../../utils/polytools";
-import { PRNG } from "../../classes/PRNG";
-import { SvgPolyline } from "../../classes/SvgPolyline";
-import { Chunk } from "../../classes/Chunk";
+import { PRNG } from "../PRNG";
+import { SvgPolyline } from "../SvgPolyline";
+import { Chunk } from "../Chunk";
 
 /**
  * Represents a distant mountain chunk with varying heights and colors.

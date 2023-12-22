@@ -1,13 +1,13 @@
-import { Point } from "../../classes/Point";
-import { Noise } from "../../classes/PerlinNoise";
-import { generateStroke } from "../brushes/generateStroke";
-import { generateTexture } from "../brushes/generateTexture";
-import { div } from "../brushes/div";
-import { PRNG } from "../../classes/PRNG";
-import { SvgPolyline } from "../../classes/SvgPolyline";
-import { Chunk } from "../../classes/Chunk";
-import { calculateBoundingBox } from "./generateMountains";
-import { generateFlatDecorations } from "./generateFlatDecorations";
+import { Point } from "../Point";
+import { Noise } from "../PerlinNoise";
+import { generateStroke } from "../../parts/brushes/generateStroke";
+import { generateTexture } from "../../parts/brushes/generateTexture";
+import { div } from "../../parts/brushes/div";
+import { PRNG } from "../PRNG";
+import { SvgPolyline } from "../SvgPolyline";
+import { Chunk } from "../Chunk";
+import { calculateBoundingBox } from "../../utils/polytools";
+import { generateFlatDecorations } from "../../parts/mountains/generateFlatDecorations";
 
 /**
  * Represents a flat mountain chunk with optional vegetation and textures.

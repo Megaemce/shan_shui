@@ -4,10 +4,10 @@ import { design } from "../utils/designer";
 import { PRNG } from "./PRNG";
 import { Range } from "./Range";
 import { generateBoat } from "../parts/architectures/generateBoat";
-import { generateMountain } from "../parts/mountains/generateMountains";
-import { DistantMountainChunk } from "../parts/mountains/DistantMountainChunk";
-import { FlatMountainChunk } from "../parts/mountains/FlatMountainChunk";
-import { WaterChunk } from "../parts/WaterChunk";
+import { MountainChunk } from "./chunks/MountainChunk";
+import { DistantMountainChunk } from "./chunks/DistantMountainChunk";
+import { FlatMountainChunk } from "./chunks/FlatMountainChunk";
+import { WaterChunk } from "./chunks/WaterChunk";
 
 /**
  * Class representing a ChunkCache used for generating and managing chunks of terrain.
@@ -62,7 +62,7 @@ export class ChunkCache {
         plan.forEach(({ tag, x, y }, i) => {
             if (tag === "mount") {
                 this.chunks.push(
-                    generateMountain(prng, x, y, prng.random(0, 2 * i))
+                    new MountainChunk(prng, x, y, prng.random(0, 2 * i))
                 );
                 this.chunks.push(new WaterChunk(prng, x, y));
             } else if (tag === "flatmount") {
