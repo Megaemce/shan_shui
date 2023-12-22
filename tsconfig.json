@@ -17,7 +17,7 @@
   "typedocOptions": {
     "entryPoints": ["src"],
     "entryPointStrategy": "Expand",
-    "out": "public/docs",
+    "out": "../shan_shui_docs",
     "plugin": ["typedoc-theme-hierarchy", "@zamiell/typedoc-plugin-not-exported"],
     "theme": "hierarchy",
     "name": "{Shan, Shui}*",
