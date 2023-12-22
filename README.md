@@ -17,7 +17,7 @@ npm start
 
 ## 📖 Documentation
 
-[Check it in online](https://htmlpreview.github.io/?https://github.com/Megaemce/shan_shui/blob/main/public/docs/index.html) or generated locally with TypeDoc
+[Check it in online](https://megaemce.github.io/shan_shui_docs/) or generate locally with TypeDoc
 
 ```
 npm doc
@@ -25,4 +25,5 @@ npm doc
 
 ## 🙏🏻 Thank you
 
-This is the third iteration of this app. Firstly, it was created as a [monolithic JavaScript file](https://github.com/LingDong-/shan-shui-inf) by [Lingdong Huang](https://github.com/LingDong-) and then it was [rebuilt with React](https://github.com/RedContritio/shan_shui_inf) by [RedContritio's](https://github.com/RedContritio).
+This is the third iteration of this app. 
+Firstly, it was created as a [monolithic JavaScript file](https://github.com/LingDong-/shan-shui-inf) by [Lingdong Huang](https://github.com/LingDong-) and then it was [rebuilt with React](https://github.com/RedContritio/shan_shui_inf) by [RedContritio](https://github.com/RedContritio).
