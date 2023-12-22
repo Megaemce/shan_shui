@@ -5,16 +5,6 @@ import { ISvgAttributes } from "../interfaces/ISvgAttributes";
 import { ISvgStyles } from "../interfaces/ISvgStyles";
 
 /**
- * Calculates the Euclidean distance between two points.
- * @param p0 - The first point.
- * @param p1 - The second point.
- * @returns The distance between the two points.
- */
-export function distance(p0: Point, p1: Point): number {
-    return p0.to(p1).length();
-}
-
-/**
  * Converts a camelCase string to kebab-case.
  * @param key - The input camelCase string.
  * @returns The converted kebab-case string.

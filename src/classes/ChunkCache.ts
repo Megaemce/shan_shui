@@ -7,7 +7,7 @@ import { generateBoat } from "../parts/architectures/generateBoat";
 import { generateMountain } from "../parts/mountains/generateMountains";
 import { generateDistantMountain } from "../parts/mountains/generateDistantMountain";
 import { generateFlatMountain } from "../parts/mountains/generateFlatMountain";
-import { generateWater } from "../parts/water";
+import { Water } from "../parts/Water";
 
 /**
  * Class representing a ChunkCache used for generating and managing chunks of terrain.
@@ -64,7 +64,7 @@ export class ChunkCache {
                 this.chunks.push(
                     generateMountain(prng, x, y, prng.random(0, 2 * i))
                 );
-                this.chunks.push(generateWater(prng, x, y));
+                this.chunks.push(new Water(prng, x, y));
             } else if (tag === "flatmount") {
                 this.chunks.push(
                     generateFlatMountain(

@@ -1,5 +1,14 @@
 import { Point } from "../classes/Point";
-import { distance } from "./utils";
+
+/**
+ * Calculates the Euclidean distance between two points.
+ * @param p0 - The first point.
+ * @param p1 - The second point.
+ * @returns The distance between the two points.
+ */
+export function distance(p0: Point, p1: Point): number {
+    return p0.to(p1).length();
+}
 
 /**
  * Calculates the midpoint of an array of points.
@@ -280,7 +289,6 @@ function shatterTriangle(pointArray: Point[], limitArea: number): Point[][] {
 
 /**
  * Triangulates a polygon and returns a list of triangles.
- * @notExported
  * @param pointArray The list of polygon vertices.
  * @param area Maximum area for each resulting triangle.
  * @param isConvex Indicates whether the polygon is isConvex.
