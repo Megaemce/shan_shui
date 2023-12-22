@@ -18,14 +18,14 @@ npm start
 
 Made of `Hat` (optional), `Man` and `Stick` (optional)
 
-![man](https://github.com/Megaemce/shan_shui/tree/main/public/img/man.png)
+![man](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/man.png)
 
 </details>
 <br>
 <details>
 <summary>💦 Water</summary>
 
-![water](https://github.com/Megaemce/shan_shui/tree/main/public/img/water.png)
+![water](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/water.png)
 
 </details>
 <br>
@@ -39,7 +39,7 @@ Made of `Hat` (optional), `Man` and `Stick` (optional)
 
 Made of `Hut` 🟩, `Box` 🟥 and `Rail` 🟧
 
-![arch01](https://github.com/Megaemce/shan_shui/tree/main/public/img/arch/arch01.png)
+![arch01](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch01.png)
 
 </details>
 <br>
@@ -49,7 +49,7 @@ Made of `Hut` 🟩, `Box` 🟥 and `Rail` 🟧
 
 Made of `Roof` ⬛ and `Box` 🟥
 
-![arch02](https://github.com/Megaemce/shan_shui/tree/main/public/img/arch/arch02.png)
+![arch02](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch02.png)
 
 </details>
 <br>
@@ -59,7 +59,7 @@ Made of `Roof` ⬛ and `Box` 🟥
 
 Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 
-![arch03](https://github.com/Megaemce/shan_shui/tree/main/public/img/arch/arch03.png)
+![arch03](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch03.png)
 
 </details>
 <br>
@@ -69,7 +69,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 
 Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 
-![arch04](https://github.com/Megaemce/shan_shui/tree/main/public/img/arch/arch04.png)
+![arch04](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch04.png)
 
 </details>
 <br>
@@ -77,7 +77,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Boat</summary>
 
-![boat01](https://github.com/Megaemce/shan_shui/tree/main/public/img/arch/boat01.png)
+![boat01](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/boat01.png)
 
 </details>
 <br>
@@ -85,7 +85,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>TransmissionTower</summary>
 
-![tower01](https://github.com/Megaemce/shan_shui/tree/main/public/img/arch/tower01.png)
+![tower01](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/tower01.png)
 
 </details>
 
@@ -99,7 +99,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree01</summary>
 
-![tree01](https://github.com/Megaemce/shan_shui/tree/main/public/img/tree/tree01.png)
+![tree01](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree01.png)
 
 </details>
 <br>
@@ -107,7 +107,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree02</summary>
 
-![tree02](https://github.com/Megaemce/shan_shui/tree/main/public/img/tree/tree02.png)
+![tree02](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree02.png)
 
 </details>
 
@@ -116,7 +116,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree03</summary>
 
-![tree03](https://github.com/Megaemce/shan_shui/tree/main/public/img/tree/tree03.png)
+![tree03](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree03.png)
 
 </details>
 <br>
@@ -124,7 +124,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree04</summary>
 
-![tree04](https://github.com/Megaemce/shan_shui/tree/main/public/img/tree/tree04.png)
+![tree04](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree04.png)
 
 </details>
 <br>
@@ -132,7 +132,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree05</summary>
 
-![tree05](https://github.com/Megaemce/shan_shui/tree/main/public/img/tree/tree05.png)
+![tree05](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree05.png)
 
 </details>
 <br>
@@ -140,7 +140,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree06</summary>
 
-![tree06](https://github.com/Megaemce/shan_shui/tree/main/public/img/tree/tree06.png)
+![tree06](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree06.png)
 
 </details>
 <br>
@@ -148,7 +148,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree07</summary>
 
-![tree07](https://github.com/Megaemce/shan_shui/tree/main/public/img/tree/tree07.png)
+![tree07](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree07.png)
 
 </details>
 <br>
@@ -156,7 +156,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree08</summary>
 
-![tree08](https://github.com/Megaemce/shan_shui/tree/main/public/img/tree/tree08.png)
+![tree08](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree08.png)
 
 </details>
 
@@ -170,7 +170,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Mountain</summary>
 
-![mountain](https://github.com/Megaemce/shan_shui/tree/main/public/img/mountain.png)
+![mountain](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/mountain.png)
 
 </details>
 <br>
@@ -178,7 +178,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>FlatMountain</summary>
 
-![flatmountain](https://github.com/Megaemce/shan_shui/tree/main/public/img/flatmountain.png)
+![flatmountain](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/flatmountain.png)
 
 </details>
 <br>
@@ -186,7 +186,7 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>DistantMountain</summary>
 
-![distmountain](https://github.com/Megaemce/shan_shui/tree/main/public/img/distmountain.png)
+![distmountain](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/distmountain.png)
 
 </details>
 <br>
