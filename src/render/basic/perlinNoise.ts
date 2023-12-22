@@ -120,17 +120,6 @@ export class PerlinNoise {
         }
         return r;
     }
-
-    /**
-     * Seeds the Perlin noise generator.
-     * @param prng - The pseudorandom number generator.
-     */
-    seed(prng: PRNG): void {
-        this.perlin = new Array(PERLIN_SIZE + 1);
-        for (let i = 0; i < PERLIN_SIZE + 1; i++) {
-            this.perlin[i] = prng.random();
-        }
-    }
 }
 
 /**
