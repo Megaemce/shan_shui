@@ -10,9 +10,9 @@ import { generateStroke } from "./brushes/generateStroke";
  *
  * @extends Chunk
  */
-class Water extends Chunk {
+class WaterChunk extends Chunk {
     /**
-     * Creates an instance of Water.
+     * Creates an instance of WaterChunk.
      *
      * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - X-coordinate offset for the chunk.
@@ -73,4 +73,4 @@ class Water extends Chunk {
     }
 }
 
-export { Water };
+export { WaterChunk };
