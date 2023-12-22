@@ -31,7 +31,7 @@ export function generateHat01(
     ];
 
     polylines.push(
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             transformPolyline(p0, p1, flipPolyline(shapePoint, horizontalFlip)),
             0,
             0,
@@ -49,7 +49,7 @@ export function generateHat01(
         );
     }
     polylines.push(
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             transformPolyline(p0, p1, flipPolyline(qlist1, horizontalFlip)),
             0,
             0,

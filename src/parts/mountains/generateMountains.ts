@@ -1,5 +1,5 @@
 import { Point } from "../../classes/Point";
-import { distance } from "../../utils/utils";
+import { distance } from "../../utils/polytools";
 import { Noise } from "../../classes/PerlinNoise";
 import { generateStroke } from "../brushes/generateStroke";
 import { generateTexture } from "../brushes/generateTexture";
@@ -87,13 +87,7 @@ export function generateFoot(
 
     for (let i = 0; i < footArray.length; i++) {
         polylines.push(
-            SvgPolyline.createPolyline(
-                footArray[i],
-                xOffset,
-                yOffset,
-                "white",
-                "none"
-            )
+            new SvgPolyline(footArray[i], xOffset, yOffset, "white", "none")
         );
     }
 
@@ -226,7 +220,7 @@ export function generateMountain(
 
     // WHITE BG
     elementLists.push([
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             pointArray[0].concat([new Point(0, reso[0] * 4)]),
             xOffset,
             yOffset,

@@ -32,7 +32,7 @@ export function generateHat02(
         new Point(0.3, 0.5),
     ];
     polylines.push(
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             transformPolyline(p0, p1, flipPolyline(shapePoint, horizontalFlip)),
             0,
             0,

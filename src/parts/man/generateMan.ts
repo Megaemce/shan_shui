@@ -1,10 +1,10 @@
+import { PRNG } from "../../classes/PRNG";
 import { Point } from "../../classes/Point";
-import { distance } from "../../utils/utils";
+import { SvgPolyline } from "../../classes/SvgPolyline";
 import { Vector } from "../../classes/Vector";
 import { IPoint } from "../../interfaces/IPoint";
-import { PRNG } from "../../classes/PRNG";
+import { distance } from "../../utils/polytools";
 import { generateBezierCurve } from "../../utils/utils";
-import { SvgPolyline } from "../../classes/SvgPolyline";
 import { generateHat01 } from "./generateHat01";
 import { generateCloth } from "./generateCloth";
 
@@ -334,7 +334,7 @@ export function generateMan(
     hlist1.splice(0, Math.floor(hlist1.length * 0.1));
     hlist2.splice(0, Math.floor(hlist2.length * 0.95));
     polylineArray.push([
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             hlist1.concat(hlist2.reverse()).map(toGlobal),
             0,
             0,

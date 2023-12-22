@@ -75,12 +75,5 @@ export function generateStroke(
         )
         .concat([pointArray[0]]);
 
-    return SvgPolyline.createPolyline(
-        vtxlist,
-        0,
-        0,
-        fillColor,
-        strokeColor,
-        strokWidth
-    );
+    return new SvgPolyline(vtxlist, 0, 0, fillColor, strokeColor, strokWidth);
 }

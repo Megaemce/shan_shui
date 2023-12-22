@@ -72,7 +72,7 @@ export function generateRock(
 
     //WHITE BG
     polylineArray.push([
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             pointArray[0].concat([new Point(0, 0)]),
             xOffset,
             yOffset,

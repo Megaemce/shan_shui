@@ -87,9 +87,7 @@ export function generateTree05(
         }
     }
 
-    polylineArray.push([
-        SvgPolyline.createPolyline(trmlist, x, y, "white", col),
-    ]);
+    polylineArray.push([new SvgPolyline(trmlist, x, y, "white", col)]);
 
     trmlist.splice(0, 1);
     trmlist.splice(trmlist.length - 1, 1);

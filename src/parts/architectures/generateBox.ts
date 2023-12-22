@@ -94,7 +94,7 @@ export function generateBox(
     const polylineList: SvgPolyline[] = [];
     if (!hasTransparency) {
         polylineList.push(
-            SvgPolyline.createPolyline(
+            new SvgPolyline(
                 [
                     new Point(width * 0.5, -height),
                     new Point(width * 0.5, -height),

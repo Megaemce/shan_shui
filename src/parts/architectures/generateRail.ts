@@ -144,7 +144,7 @@ export function generateRail(
             ln[0].x += prng.random(-0.25, 0.25) * height;
 
             polylines.push(
-                SvgPolyline.createPolyline(
+                new SvgPolyline(
                     ln,
                     xOffset,
                     yOffset,

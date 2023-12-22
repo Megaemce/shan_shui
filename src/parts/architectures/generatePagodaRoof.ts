@@ -49,9 +49,7 @@ export function generatePagodaRoof(
         polist.push(new Point(fxx, fy));
     }
 
-    polylines.push(
-        SvgPolyline.createPolyline(polist, xOffset, yOffset, "white", "none")
-    );
+    polylines.push(new SvgPolyline(polist, xOffset, yOffset, "white", "none"));
 
     for (let i = 0; i < pointArray.length; i++) {
         polylines.push(

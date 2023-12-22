@@ -1,5 +1,5 @@
 import { Point } from "../../classes/Point";
-import { distance } from "../../utils/utils";
+import { distance } from "../../utils/polytools";
 import { Vector } from "../../classes/Vector";
 import { PRNG } from "../../classes/PRNG";
 import { SvgPolyline } from "../../classes/SvgPolyline";
@@ -193,9 +193,7 @@ export function generateTree08(
     }
 
     // Add the main trunk to the polyline array
-    polylineArray.push([
-        SvgPolyline.createPolyline(trlist, x, y, "white", col),
-    ]);
+    polylineArray.push([new SvgPolyline(trlist, x, y, "white", col)]);
 
     // Add a colored stroke to the main trunk
     const color = `rgba(100,100,100,${prng.random(0.6, 0.7).toFixed(3)})`;

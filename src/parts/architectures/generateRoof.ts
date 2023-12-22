@@ -119,9 +119,7 @@ export function generateRoof(
         new Point(width * 0.5, 0),
         new Point(mid, perturbation),
     ]);
-    polylines.push(
-        SvgPolyline.createPolyline(polist, xOffset, yOffset, "white", "none")
-    );
+    polylines.push(new SvgPolyline(polist, xOffset, yOffset, "white", "none"));
 
     for (let i = 0; i < pointArray.length; i++) {
         polylines.push(

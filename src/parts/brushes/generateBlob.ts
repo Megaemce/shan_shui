@@ -40,5 +40,5 @@ export function generateBlob(
         noise,
         strokeWidthFunction
     );
-    return SvgPolyline.createPolyline(pointArray, 0, 0, fillColor, fillColor);
+    return new SvgPolyline(pointArray, 0, 0, fillColor, fillColor);
 }

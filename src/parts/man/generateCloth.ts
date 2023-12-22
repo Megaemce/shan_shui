@@ -24,7 +24,7 @@ export function generateCloth(
     const tlist = generateBezierCurve(pointArray);
     const [tlist1, tlist2] = expand(tlist, fun);
     polylines.push(
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             tlist1.concat(tlist2.reverse()).map(toGlobal),
             0,
             0,

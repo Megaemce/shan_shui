@@ -53,9 +53,7 @@ export function generateBoat(
         pointList2.push(new Point(i * direction, function2(i / length)));
     }
     const pointList: Point[] = pointList1.concat(pointList2.reverse());
-    polylineArray.push([
-        SvgPolyline.createPolyline(pointList, xOffset, yOffset, "white"),
-    ]);
+    polylineArray.push([new SvgPolyline(pointList, xOffset, yOffset, "white")]);
     polylineArray.push([
         generateStroke(
             prng,

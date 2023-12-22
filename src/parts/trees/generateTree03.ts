@@ -89,7 +89,7 @@ export function generateTree03(
         );
     }
     const lc = line1.concat(line2.reverse());
-    polylines.push(SvgPolyline.createPolyline(lc, 0, 0, "white", col, 1.5));
+    polylines.push(new SvgPolyline(lc, 0, 0, "white", col, 1.5));
 
     return polylines.concat(blobs);
 }

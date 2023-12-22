@@ -36,7 +36,7 @@ export function generateStick(
         );
     }
     polylines.push(
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             transformPolyline(p0, p1, flipPolyline(qlist1, horizontalFlip)),
             0,
             0,

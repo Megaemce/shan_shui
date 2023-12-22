@@ -7,7 +7,6 @@ import { generateStroke } from "../brushes/generateStroke";
 
 /**
  * Generates a bark-like structure.
- * @notExported
  * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} x - X-coordinate of the bark.
  * @param {number} y - Y-coordinate of the bark.

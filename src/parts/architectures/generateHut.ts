@@ -41,7 +41,7 @@ export function generateHut(
     const polylines: SvgPolyline[] = [];
 
     polylines.push(
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             pointList[0]
                 .slice(0, -1)
                 .concat(pointList[pointList.length - 1].slice(0, -1).reverse()),
@@ -52,7 +52,7 @@ export function generateHut(
         )
     );
     polylines.push(
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             pointList[0],
             xOffset,
             yOffset,
@@ -62,7 +62,7 @@ export function generateHut(
         )
     );
     polylines.push(
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             pointList[pointList.length - 1],
             xOffset,
             yOffset,

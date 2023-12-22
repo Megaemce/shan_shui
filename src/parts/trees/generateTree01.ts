@@ -79,7 +79,7 @@ export function generateTree01(
         );
     }
 
-    polylines.push(SvgPolyline.createPolyline(line1, 0, 0, "none", col, 1.5));
-    polylines.push(SvgPolyline.createPolyline(line2, 0, 0, "none", col, 1.5));
+    polylines.push(new SvgPolyline(line1, 0, 0, "none", col, 1.5));
+    polylines.push(new SvgPolyline(line2, 0, 0, "none", col, 1.5));
     return polylines;
 }

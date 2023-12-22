@@ -65,7 +65,7 @@ export function generateTree07(
                     bfunc
                 );
 
-                //canv+=SvgPolyline.createPolyline(bpl,{fill:col,strokeWidth:0})
+                //canv+=new SvgPolyline(bpl,{fill:col,strokeWidth:0})
                 T = T.concat(triangulate(bpl as Point[], 50, true, false));
             }
         }
@@ -83,14 +83,14 @@ export function generateTree07(
         );
     }
 
-    //canv += SvgPolyline.createPolyline(line1.concat(line2.reverse()),{fill:col,strokeWidth:0})
+    //canv += new SvgPolyline(line1.concat(line2.reverse()),{fill:col,strokeWidth:0})
     T = triangulate(line1.concat(line2.reverse()), 50, true, true).concat(T);
 
     for (let k = 0; k < T.length; k++) {
         const m = midPoint(T[k]);
         const c = (Noise.noise(prng, m.x * 0.02, m.y * 0.02) * 200 + 50) | 0;
         const co = `rgba(${c},${c},${c},0.8)`;
-        polylines.push(SvgPolyline.createPolyline(T[k], 0, 0, co, co));
+        polylines.push(new SvgPolyline(T[k], 0, 0, co, co));
     }
     return polylines;
 }

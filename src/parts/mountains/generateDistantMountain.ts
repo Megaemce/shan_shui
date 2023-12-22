@@ -69,21 +69,14 @@ export function generateDistantMountain(
         };
         const pe = pointArray[i][pointArray[i].length - 1];
         polylines.push(
-            SvgPolyline.createPolyline(
-                pointArray[i],
-                0,
-                0,
-                getCol(pe.x, pe.y),
-                "none",
-                1
-            )
+            new SvgPolyline(pointArray[i], 0, 0, getCol(pe.x, pe.y), "none", 1)
         );
 
         const T = triangulate(pointArray[i], 100, true, false);
         for (let k = 0; k < T.length; k++) {
             const m = midPoint(T[k]);
             const co = getCol(m.x, m.y);
-            polylines.push(SvgPolyline.createPolyline(T[k], 0, 0, co, co, 1));
+            polylines.push(new SvgPolyline(T[k], 0, 0, co, co, 1));
         }
     }
 

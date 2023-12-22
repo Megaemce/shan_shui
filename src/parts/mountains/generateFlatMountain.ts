@@ -75,7 +75,7 @@ export function generateFlatMountain(
 
     // WHITE BG
     polylineArray.push([
-        SvgPolyline.createPolyline(
+        new SvgPolyline(
             pointArray[0].concat([new Point(0, reso[0] * 4)]),
             xOffset,
             yOffset,
@@ -164,14 +164,7 @@ export function generateFlatMountain(
     }
 
     polylineArray.push([
-        SvgPolyline.createPolyline(
-            grlist,
-            xOffset,
-            yOffset,
-            "white",
-            "none",
-            2
-        ),
+        new SvgPolyline(grlist, xOffset, yOffset, "white", "none", 2),
     ]);
     polylineArray.push([
         generateStroke(
