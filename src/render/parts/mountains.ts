@@ -23,7 +23,8 @@ import {
 import { midPoint, triangulate } from "../basic/polytools";
 import { Bound } from "../basic/range";
 import { PRNG } from "../basic/PRNG";
-import { ISvgElement, SvgPolyline } from "../svg";
+import { ISvgElement } from "../svg/interfaces";
+import { SvgPolyline } from "../svg/types";
 import { Chunk } from "../basic/chunk";
 
 /**

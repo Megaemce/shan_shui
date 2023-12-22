@@ -3,7 +3,7 @@ import { Point, Vector } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
 import { normalizeNoise } from "../basic/utils";
 import { createPolyline } from "../svg/createPolyline";
-import { SvgPolyline } from "../svg";
+import { SvgPolyline } from "../svg/types";
 
 /**
  * Generates a stylized stroke using Perlin noise.

@@ -1,4 +1,4 @@
-import { ISvgElement } from "../svg";
+import { ISvgElement } from "../svg/interfaces";
 import { IPoint } from "./point";
 
 /**

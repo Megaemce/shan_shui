@@ -4,7 +4,7 @@ import { Point } from "../basic/point";
 import { PRNG } from "../basic/PRNG";
 import { createPolyline } from "../svg/createPolyline";
 import { midPoint } from "../basic/polytools";
-import { ISvgElement } from "../svg";
+import { ISvgElement } from "../svg/interfaces";
 import { SvgPolyline, SvgText } from "../svg/types";
 import { div, generateStroke, generateTexture } from "./brushes";
 import { generateHat02, generateMan, generateStick } from "./man";
