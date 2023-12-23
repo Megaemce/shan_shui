@@ -75,8 +75,8 @@ export default class PRNG {
 
     /**
      * Generates a pseudo-random number within the specified range.
-     * @param lowerBound - The lower calculateBoundingBox of the range.
-     * @param upperBound - The upper calculateBoundingBox of the range.
+     * @param lowerBound - The lower bound of the range.
+     * @param upperBound - The upper bound of the range.
      * @returns A pseudo-random number within the specified range or from range [0,1]
      */
     random(lowerBound: number = 0, upperBound: number = 1): number {
