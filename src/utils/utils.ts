@@ -5,6 +5,33 @@ import { ISvgAttributes } from "../interfaces/ISvgAttributes";
 import { ISvgStyles } from "../interfaces/ISvgStyles";
 
 /**
+ * Checks if a point is a local maximum within a circular area.
+ * @param {Point} center - The center point to check.
+ * @param {Function} getValue - The function to get the value at a given point.
+ * @param {number} radius - The radius of the circular area.
+ * @returns {boolean} True if the center point is a local maximum, false otherwise.
+ */
+export function isLocalMaximum(
+    center: Point,
+    getValue: Function,
+    radius: number
+): boolean {
+    const centerValue = getValue(center);
+
+    for (let x = center.x - radius; x <= center.x + radius; x++) {
+        for (let y = center.y - radius; y <= center.y + radius; y++) {
+            const neighborValue = getValue(new Point(x, y));
+
+            if (centerValue < neighborValue) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+/**
  * Converts a camelCase string to kebab-case.
  * @param key - The input camelCase string.
  * @returns The converted kebab-case string.

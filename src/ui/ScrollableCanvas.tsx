@@ -134,7 +134,7 @@ const ScrollableCanvas: React.FC<IProps> = ({
                                 style={{ mixBlendMode: "multiply" }}
                                 viewBox={viewbox}
                             >
-                                {chunkCache.chunks.map((chunk) => (
+                                {chunkCache.chunkArray.map((chunk) => (
                                     <g
                                         key={`${chunk.tag} ${chunk.x} ${chunk.y}`}
                                         transform="translate(0, 0)"

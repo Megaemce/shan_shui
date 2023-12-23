@@ -1,6 +1,6 @@
 import { Chunk } from "./Chunk";
 import { IChunk } from "../interfaces/IChunk";
-import { design } from "../utils/designer";
+import { Designer } from "./Designer";
 import { PRNG } from "./PRNG";
 import { Range } from "./Range";
 import { generateBoat } from "../parts/architectures/generateBoat";
@@ -14,11 +14,10 @@ import { WaterChunk } from "./chunks/WaterChunk";
  */
 export class ChunkCache {
     /** Array to store generated chunks. */
-    chunks: Chunk[] = [];
+    chunkArray: Chunk[] = [];
     /** Range representing the visible area. */
     visibleRange: Range = new Range();
     /** Array storing information about mountain coverage in each chunk. */
-    mountainArray: number[] = [];
 
     /** Width of each chunk. */
     private static readonly CHUNK_WIDTH: number = 512;
@@ -46,11 +45,11 @@ export class ChunkCache {
                           this.visibleRange.left,
                       ];
 
-            const plan: IChunk[] = design(prng, this.mountainArray, start, end);
-            this.processChunk(prng, plan);
+            const plan = new Designer(prng, start, end);
+            this.processChunk(prng, plan.regions);
         }
 
-        this.chunks.sort((a, b) => a.y - b.y);
+        this.chunkArray.sort((a, b) => a.y - b.y);
     }
 
     /**
@@ -60,13 +59,14 @@ export class ChunkCache {
      */
     private processChunk(prng: PRNG, plan: IChunk[]): void {
         plan.forEach(({ tag, x, y }, i) => {
+            console.log(tag);
             if (tag === "mount") {
-                this.chunks.push(
+                this.chunkArray.push(
                     new MountainChunk(prng, x, y, prng.random(0, 2 * i))
                 );
-                this.chunks.push(new WaterChunk(prng, x, y));
+                this.chunkArray.push(new WaterChunk(prng, x, y));
             } else if (tag === "flatmount") {
-                this.chunks.push(
+                this.chunkArray.push(
                     new FlatMountainChunk(
                         prng,
                         x,
@@ -78,7 +78,7 @@ export class ChunkCache {
                     )
                 );
             } else if (tag === "distmount") {
-                this.chunks.push(
+                this.chunkArray.push(
                     new DistantMountainChunk(
                         prng,
                         x,
@@ -89,7 +89,7 @@ export class ChunkCache {
                     )
                 );
             } else if (tag === "boat") {
-                this.chunks.push(
+                this.chunkArray.push(
                     generateBoat(
                         prng,
                         x,
@@ -150,7 +150,7 @@ export class ChunkCache {
 
         const content: string = `<svg id="SVG" xmlns="http://www.w3.org/2000/svg" width="${
             range.right - range.left
-        }" height="${windowHeight}" style="mix-blend-mode: 'multiply'" viewBox="${viewbox}">${this.chunks
+        }" height="${windowHeight}" style="mix-blend-mode: 'multiply'" viewBox="${viewbox}">${this.chunkArray
             .filter((chunk) => chunk.x >= left && chunk.x < right)
             .map(
                 (chunk) =>
