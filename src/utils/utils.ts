@@ -1,8 +1,91 @@
 import { midPoint } from "./polytools";
-import { Point } from "../classes/Point";
-import { Range } from "../classes/Range";
-import { ISvgAttributes } from "../interfaces/ISvgAttributes";
-import { ISvgStyles } from "../interfaces/ISvgStyles";
+import Point from "../classes/Point";
+import Range from "../classes/Range";
+import ISvgAttributes from "../interfaces/ISvgAttributes";
+import ISvgStyles from "../interfaces/ISvgStyles";
+
+/**
+ * Expands a given array of points using a width function.
+ * @notExported
+ * @param {Point[]} pointArray - The array of points to be expanded.
+ * @param {(v: number) => number} wfun - The width function.
+ * @returns {Point[][]} An array containing two sets of expanded points.
+ */
+export function expand(
+    pointArray: Point[],
+    wfun: (v: number) => number
+): Point[][] {
+    const vtxlist0: Point[] = [];
+    const vtxlist1: Point[] = [];
+
+    for (let i = 1; i < pointArray.length - 1; i++) {
+        const w = wfun(i / pointArray.length);
+        const a1 = Math.atan2(
+            pointArray[i].y - pointArray[i - 1].y,
+            pointArray[i].x - pointArray[i - 1].x
+        );
+        const a2 = Math.atan2(
+            pointArray[i].y - pointArray[i + 1].y,
+            pointArray[i].x - pointArray[i + 1].x
+        );
+        let a = (a1 + a2) / 2;
+        if (a < a2) {
+            a += Math.PI;
+        }
+        vtxlist0.push(
+            new Point(
+                pointArray[i].x + w * Math.cos(a),
+                pointArray[i].y + w * Math.sin(a)
+            )
+        );
+        vtxlist1.push(
+            new Point(
+                pointArray[i].x - w * Math.cos(a),
+                pointArray[i].y - w * Math.sin(a)
+            )
+        );
+    }
+    const l = pointArray.length - 1;
+    const a0 =
+        Math.atan2(
+            pointArray[1].y - pointArray[0].y,
+            pointArray[1].x - pointArray[0].x
+        ) -
+        Math.PI / 2;
+    const a1 =
+        Math.atan2(
+            pointArray[l].y - pointArray[l - 1].y,
+            pointArray[l].x - pointArray[l - 1].x
+        ) -
+        Math.PI / 2;
+    const w0 = wfun(0);
+    const w1 = wfun(1);
+    vtxlist0.unshift(
+        new Point(
+            pointArray[0].x + w0 * Math.cos(a0),
+            pointArray[0].y + w0 * Math.sin(a0)
+        )
+    );
+    vtxlist1.unshift(
+        new Point(
+            pointArray[0].x - w0 * Math.cos(a0),
+            pointArray[0].y - w0 * Math.sin(a0)
+        )
+    );
+    vtxlist0.push(
+        new Point(
+            pointArray[l].x + w1 * Math.cos(a1),
+            pointArray[l].y + w1 * Math.sin(a1)
+        )
+    );
+    vtxlist1.push(
+        new Point(
+            pointArray[l].x - w1 * Math.cos(a1),
+            pointArray[l].y - w1 * Math.sin(a1)
+        )
+    );
+    return [vtxlist0, vtxlist1];
+}
 
 /**
  * Checks if a point is a local maximum within a circular area.

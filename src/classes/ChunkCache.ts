@@ -1,18 +1,18 @@
-import { Chunk } from "./Chunk";
-import { IChunk } from "../interfaces/IChunk";
-import { Designer } from "./Designer";
-import { PRNG } from "./PRNG";
-import { Range } from "./Range";
-import { generateBoat } from "../parts/architectures/generateBoat";
-import { MountainChunk } from "./chunks/MountainChunk";
-import { DistantMountainChunk } from "./chunks/DistantMountainChunk";
-import { FlatMountainChunk } from "./chunks/FlatMountainChunk";
-import { WaterChunk } from "./chunks/WaterChunk";
+import Chunk from "./Chunk";
+import IChunk from "../interfaces/IChunk";
+import Designer from "./Designer";
+import PRNG from "./PRNG";
+import Range from "./Range";
+import BoatChunk from "./chunks/BoatChunk";
+import MountainChunk from "./chunks/MountainChunk";
+import DistantMountainChunk from "./chunks/DistantMountainChunk";
+import FlatMountainChunk from "./chunks/FlatMountainChunk";
+import WaterChunk from "./chunks/WaterChunk";
 
 /**
  * Class representing a ChunkCache used for generating and managing chunks of terrain.
  */
-export class ChunkCache {
+export default class ChunkCache {
     /** Array to store generated chunks. */
     chunkArray: Chunk[] = [];
     /** Range representing the visible area. */
@@ -59,7 +59,6 @@ export class ChunkCache {
      */
     private processChunk(prng: PRNG, plan: IChunk[]): void {
         plan.forEach(({ tag, x, y }, i) => {
-            console.log(tag);
             if (tag === "mount") {
                 this.chunkArray.push(
                     new MountainChunk(prng, x, y, prng.random(0, 2 * i))
@@ -90,7 +89,7 @@ export class ChunkCache {
                 );
             } else if (tag === "boat") {
                 this.chunkArray.push(
-                    generateBoat(
+                    new BoatChunk(
                         prng,
                         x,
                         y,

@@ -1,10 +1,10 @@
-import { ISvgStyles } from "./ISvgStyles";
+import ISvgStyles from "./ISvgStyles";
 
 /**
  * Represents attributes for SVG elements.
  */
 
-export interface ISvgAttributes {
+export default interface ISvgAttributes {
     /** Style attributes for the SVG element. */
     style: Partial<ISvgStyles>;
     /** Font size of the text element. */

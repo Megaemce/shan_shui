@@ -1,8 +1,8 @@
-import { DesignChunk } from "./DesignChunk";
-import { IChunk } from "../interfaces/IChunk";
+import DesignChunk from "./DesignChunk";
+import IChunk from "../interfaces/IChunk";
 import { Noise } from "./PerlinNoise";
-import { Point } from "./Point";
-import { PRNG } from "./PRNG";
+import Point from "./Point";
+import PRNG from "./PRNG";
 import { isLocalMaximum } from "../utils/utils";
 
 /**
@@ -43,7 +43,7 @@ const NOISE_SAMPLE = 0.03;
 /**
  * Class for generating terrain design chunks based on Perlin noise.
  */
-class Designer {
+export default class Designer {
     regions: IChunk[] = [];
     prng: PRNG;
     iMin: number;
@@ -207,5 +207,3 @@ class Designer {
         );
     }
 }
-
-export { Designer };

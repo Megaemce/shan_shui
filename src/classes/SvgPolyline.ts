@@ -1,14 +1,14 @@
-import { ISvgElement } from "../interfaces/ISvgElement";
-import { ISvgAttributes } from "../interfaces/ISvgAttributes";
+import ISvgElement from "../interfaces/ISvgElement";
+import ISvgAttributes from "../interfaces/ISvgAttributes";
 import { attributesToString } from "../utils/utils";
-import { Point } from "./Point";
-import { Vector } from "./Vector";
-import { SvgPoint } from "./SvgPoint";
+import Point from "./Point";
+import Vector from "./Vector";
+import SvgPoint from "./SvgPoint";
 
 /**
  * Represents a polyline in SVG.
  */
-export class SvgPolyline implements ISvgElement {
+export default class SvgPolyline implements ISvgElement {
     /** Attribute object for additional SVG attributes. */
     attr: Partial<ISvgAttributes> = {};
     /** Array of points defining the polyline. */
@@ -31,8 +31,8 @@ export class SvgPolyline implements ISvgElement {
         strokeColor: string = "rgba(0,0,0,0)",
         strokeWidth: number = 0
     ) {
-        this.points = points.map((p) =>
-            SvgPoint.from(p.move(new Vector(xOffset, yOffset)))
+        this.points = points.map((point) =>
+            SvgPoint.from(point.move(new Vector(xOffset, yOffset)))
         );
         this.attr = {
             style: {
@@ -50,7 +50,7 @@ export class SvgPolyline implements ISvgElement {
     render(): string {
         const attrstr = attributesToString(this.attr);
         return `<polyline points='${this.points
-            .map((p) => p.render())
+            .map((point) => point.render())
             .join(" ")}' ${attrstr}/>`;
     }
 }

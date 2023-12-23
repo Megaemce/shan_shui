@@ -1,10 +1,10 @@
-import { ISvgElement } from "../interfaces/ISvgElement";
-import { IPoint } from "../interfaces/IPoint";
+import ISvgElement from "../interfaces/ISvgElement";
+import IPoint from "../interfaces/IPoint";
 
 /**
  * Represents a point in SVG coordinates.
  */
-export class SvgPoint implements ISvgElement, IPoint {
+export default class SvgPoint implements ISvgElement, IPoint {
     /**
      * Initializes a new instance of the SvgPoint class.
      * @param _x - The x-coordinate of the point.

@@ -1,8 +1,8 @@
 import React from "react";
 import { PerlinNoise } from "../classes/PerlinNoise";
-import { PRNG } from "../classes/PRNG";
+import PRNG from "../classes/PRNG";
 
-class BackgroundRender extends React.Component {
+export default class BackgroundRender extends React.Component {
     canvasRef = React.createRef<HTMLCanvasElement>();
 
     generate(prng: PRNG, noise: PerlinNoise): string | undefined {
@@ -42,5 +42,3 @@ class BackgroundRender extends React.Component {
         );
     }
 }
-
-export default BackgroundRender;

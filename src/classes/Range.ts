@@ -1,9 +1,9 @@
-import { IRange } from "../interfaces/IRange";
+import IRange from "../interfaces/IRange";
 
 /**
  * Class representing a numeric range.
  */
-export class Range implements IRange {
+export default class Range implements IRange {
     /**
      * Creates a new Range.
      * @param left - The left boundary of the range.

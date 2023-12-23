@@ -1,12 +1,12 @@
-import { ISvgElement } from "../interfaces/ISvgElement";
-import { ISvgAttributes } from "../interfaces/ISvgAttributes";
+import ISvgElement from "../interfaces/ISvgElement";
+import ISvgAttributes from "../interfaces/ISvgAttributes";
 import { attributesToString } from "../utils/utils";
 
 /**
  * Represents a text element in SVG.
  */
 
-export class SvgText implements ISvgElement {
+export default class SvgText implements ISvgElement {
     /** Attribute object for additional SVG attributes. */
     attr: Partial<ISvgAttributes> = {};
     /** The content of the text element. */

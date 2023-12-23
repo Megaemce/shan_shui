@@ -2,7 +2,7 @@
  * Class representing boundaries in the x and y directions.
  */
 
-export class Bound {
+export default class Bound {
     /**
      * Creates a new Bound.
      * @param xMin - The minimum value for the x-axis.

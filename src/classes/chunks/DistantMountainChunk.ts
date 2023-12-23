@@ -1,16 +1,16 @@
-import { Point } from "../Point";
+import Point from "../Point";
 import { Noise } from "../PerlinNoise";
 import { midPoint, triangulate } from "../../utils/polytools";
-import { PRNG } from "../PRNG";
-import { SvgPolyline } from "../SvgPolyline";
-import { Chunk } from "../Chunk";
+import PRNG from "../PRNG";
+import SvgPolyline from "../SvgPolyline";
+import Chunk from "../Chunk";
 
 /**
  * Represents a distant mountain chunk with varying heights and colors.
  *
  * @extends Chunk
  */
-class DistantMountainChunk extends Chunk {
+export default class DistantMountainChunk extends Chunk {
     /**
      * Constructor for generating a distant mountain chunk with varying heights and colors.
      *
@@ -29,9 +29,10 @@ class DistantMountainChunk extends Chunk {
         height: number = 300,
         length: number = 2000
     ) {
+        super("distmount", xOffset, yOffset);
+
         const seg = 5;
         const span = 10;
-        const polylines: SvgPolyline[] = [];
         const pointArray: Point[][] = [];
 
         for (let i = 0; i < length / span / seg; i++) {
@@ -68,14 +69,14 @@ class DistantMountainChunk extends Chunk {
             }
         }
 
+        const getCol = function (x: number, y: number) {
+            const c = Noise.noise(prng, x * 0.02, y * 0.02, yOffset) * 55 + 200;
+            return `rgb(${c},${c},${c})`;
+        };
+
         for (let i = 0; i < pointArray.length; i++) {
-            const getCol = function (x: number, y: number) {
-                const c =
-                    Noise.noise(prng, x * 0.02, y * 0.02, yOffset) * 55 + 200;
-                return `rgb(${c},${c},${c})`;
-            };
             const pe = pointArray[i][pointArray[i].length - 1];
-            polylines.push(
+            this.add(
                 new SvgPolyline(
                     pointArray[i],
                     0,
@@ -90,12 +91,8 @@ class DistantMountainChunk extends Chunk {
             for (let k = 0; k < T.length; k++) {
                 const m = midPoint(T[k]);
                 const co = getCol(m.x, m.y);
-                polylines.push(new SvgPolyline(T[k], 0, 0, co, co, 1));
+                this.add(new SvgPolyline(T[k], 0, 0, co, co, 1));
             }
         }
-
-        super("distmount", xOffset, yOffset, polylines);
     }
 }
-
-export { DistantMountainChunk };

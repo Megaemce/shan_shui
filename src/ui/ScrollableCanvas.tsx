@@ -1,83 +1,13 @@
-import React, { useState } from "react";
-import { PRNG } from "../classes/PRNG";
-import { Range } from "../classes/Range";
-import { ChunkCache } from "../classes/ChunkCache";
+import React from "react";
+import Range from "../classes/Range";
 import "./styles.css";
-
-/**
- * Represents the properties for the ScrollBar component.
- */
-interface IBarProps {
-    /** The unique identifier for the ScrollBar. */
-    id: string;
-    /** The height of the ScrollBar. */
-    height: number;
-    /** The function to be executed when the ScrollBar is clicked. */
-    onClick: () => void;
-    /** The icon to be displayed in the ScrollBar. */
-    icon: string;
-}
-
-/**
- * ScrollBar component for navigation within the ScrollableCanvas.
- */
-const ScrollBar: React.FC<IBarProps> = ({ id, height, onClick, icon }) => {
-    const [isHover, setIsHover] = useState(false);
-
-    /**
-     * Handles mouseover event to set the hover state to true.
-     */
-    const onMouseOver = () => setIsHover(true);
-
-    /**
-     * Handles mouseout event to set the hover state to false.
-     */
-    const onMouseOut = () => setIsHover(false);
-
-    return (
-        <div
-            id={id}
-            onMouseOver={onMouseOver}
-            onMouseOut={onMouseOut}
-            onClick={onClick}
-            style={{
-                backgroundColor: `rgba(0, 0, 0, ${isHover ? 0.1 : 0})`,
-                height,
-            }}
-        >
-            <div id={`${id}.t`}>
-                <span>{icon}</span>
-            </div>
-        </div>
-    );
-};
-
-/**
- * Represents the properties for the ScrollableCanvas component.
- */
-interface IProps {
-    /** Function to scroll the canvas by a specified value. */
-    horizontalScroll: (value: number) => void;
-    /** The height of the canvas. */
-    windowHeight: number;
-    /** The background image URL for the canvas. */
-    background: string | undefined;
-    /** The seed value for random number generation. */
-    seed: string;
-    /** The current x-coordinate of the canvas. */
-    currentPosition: number;
-    /** The width of the canvas. */
-    windowWidth: number;
-    /** PRNG (Pseudo-Random Number Generator) instance. */
-    prng: PRNG;
-    /** ChunkCache instance for caching and managing chunks. */
-    chunkCache: ChunkCache;
-}
+import { ScrollBar } from "./ScrollBar";
+import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
 
 /**
  * ScrollableCanvas component for rendering a scrollable canvas with ScrollBars.
  */
-const ScrollableCanvas: React.FC<IProps> = ({
+const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     horizontalScroll,
     windowHeight,
     background,

@@ -1,30 +1,11 @@
-import React from "react";
-import { useState } from "react";
-import { PRNG } from "../classes/PRNG";
-import { Range } from "../classes/Range";
-import { ChunkCache } from "../classes/ChunkCache";
+import React, { useState } from "react";
 import ButtonSet from "./ButtonSet";
 import ButtonSource from "./ButtonSource";
 import Menu from "./Menu";
 import "./styles.css";
+import { ISettingPanel } from "../interfaces/ISettingPanel";
 
-interface SettingPanelProps {
-    seed: string;
-    changeSeed: (seed: string) => void;
-    reloadWindowSeed: () => void;
-    horizontalScroll: (value: number) => void;
-    toggleAutoScroll: (status: boolean, value: number) => void;
-    currentPosition: number;
-    chunkCache: ChunkCache;
-    windowWidth: number;
-    windowHeight: number;
-    prng: PRNG;
-    saveRange: Range;
-    onChangeSaveRange: (r: Range) => void;
-    toggleAutoLoad: (status: boolean) => void;
-}
-
-const SettingPanel: React.FC<SettingPanelProps> = ({
+const SettingPanel: React.FC<ISettingPanel> = ({
     seed,
     changeSeed,
     reloadWindowSeed,

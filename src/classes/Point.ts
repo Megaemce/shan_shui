@@ -1,10 +1,10 @@
-import { IPoint } from "../interfaces/IPoint";
-import { Vector } from "./Vector";
+import IPoint from "../interfaces/IPoint";
+import Vector from "./Vector";
 
 /**
  * Class representing a 2D point with x and y coordinates.
  */
-export class Point implements IPoint {
+export default class Point implements IPoint {
     /**
      * Creates a new Point instance.
      * @param x - The x-coordinate.

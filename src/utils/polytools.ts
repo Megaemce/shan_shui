@@ -1,5 +1,49 @@
-import { Point } from "../classes/Point";
-import { Bound } from "../classes/Bound";
+import Point from "../classes/Point";
+import Bound from "../classes/Bound";
+
+/**
+ * Flips a polygon horizontally if the horizontalFlip is true. Otherwise return original array.
+ *
+ * @param {Point[]} pointArray - The array of points defining the polygon.
+ * @param {boolean} horizontalFlip - Whether to perform a horizontal flip.
+ * @returns {Point[]} The flipped polygon.
+ */
+export const flipPolyline = function (
+    pointArray: Point[],
+    horizontalFlip: boolean
+): Point[] {
+    return pointArray.map(function (v) {
+        return horizontalFlip ? new Point(-v.x, v.y) : v;
+    });
+};
+
+/**
+ * Transforms a polygon defined by a point array using a line segment.
+ * @param {Point} p0 - The starting point of the line segment.
+ * @param {Point} p1 - The ending point of the line segment.
+ * @param {Point[]} pointArray - The array of points defining the polygon.
+ * @returns {Point[]} The transformed polygon.
+ */
+export function transformPolyline(
+    p0: Point,
+    p1: Point,
+    pointArray: Point[]
+): Point[] {
+    const array = pointArray.map(function (v) {
+        return new Point(-v.x, v.y);
+    });
+    const ang = Math.atan2(p1.y - p0.y, p1.x - p0.x) - Math.PI / 2;
+    const scl = distance(p0, p1);
+    const qlist = array.map(function (v) {
+        const d = distance(v, new Point(0, 0));
+        const a = Math.atan2(v.y, v.x);
+        return new Point(
+            p0.x + d * scl * Math.cos(ang + a),
+            p0.y + d * scl * Math.sin(ang + a)
+        );
+    });
+    return qlist;
+}
 
 /**
  * Calculate the bounding box of a list of points.

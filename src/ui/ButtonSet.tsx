@@ -1,12 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import "./styles.css";
-
-interface IProps {
-    menu_visible: boolean;
-    left: number;
-    onClick: () => void;
-}
+import { IProps } from "../interfaces/IProps";
 
 const ButtonSet: React.FC<IProps> = ({ menu_visible, left, onClick }) => {
     const [isHover, setIsHover] = useState(false);
