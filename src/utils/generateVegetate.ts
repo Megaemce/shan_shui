@@ -6,14 +6,14 @@ import ComplexSvg from "../classes/ComplexSvg";
  * @param {Point[][]} pointArray - 2D array of points representing the terrain.
  * @param {(x: number, y: number) => ComplexSvg} treeFunc - Function to generate vegetation elements at a given location.
  * @param {(i: number, j: number) => boolean} growthRule - Rule determining whether vegetation should grow at a specific point.
- * @param {(pl: Point[], i: number) => boolean} proofRule - Rule providing additional conditions for vegetation growth.
+ * @param {(pointArray: Point[], i: number) => boolean} proofRule - Rule based upon the vegatation is added or not
  * @returns {void}.
  */
 export function generateVegetate(
     pointArray: Point[][],
     treeFunc: (x: number, y: number) => ComplexSvg,
     growthRule: (i: number, j: number) => boolean,
-    proofRule: (pl: Point[], i: number) => boolean,
+    proofRule: (pointArray: Point[], i: number) => boolean,
     target: ComplexSvg
 ): void {
     const vegList: Point[] = [];

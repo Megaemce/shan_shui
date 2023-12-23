@@ -93,7 +93,7 @@ export default class MountainChunk extends Chunk {
                     Math.abs(pointArray[i][j].y) / height > 0.2
                 );
             },
-            (_v, _i) => true,
+            () => true,
             this
         );
 
@@ -156,7 +156,7 @@ export default class MountainChunk extends Chunk {
                     Math.abs(pointArray[i][j].y) / height > 0.5
                 );
             },
-            (_v, _i) => true,
+            () => true,
             this
         );
 
@@ -228,7 +228,7 @@ export default class MountainChunk extends Chunk {
                         Math.pow(noise, 4) < 0.012
                     );
                 },
-                (_vegList, _i) => true,
+                () => true,
                 this
             );
         }
@@ -269,7 +269,7 @@ export default class MountainChunk extends Chunk {
                     Math.pow(noise, 4) < 0.008
                 );
             },
-            (_vegList, _i) => true,
+            () => true,
             this
         );
 
@@ -293,7 +293,7 @@ export default class MountainChunk extends Chunk {
                     prng.random() < 0.02
                 );
             },
-            (_vegList, _i) => true,
+            () => true,
             this
         );
         // TRANSMISSION TOWER
@@ -316,7 +316,7 @@ export default class MountainChunk extends Chunk {
                     Math.pow(noise, 4) < 0.002
                 );
             },
-            (_vegList, _i) => true,
+            () => true,
             this
         );
 
@@ -340,7 +340,7 @@ export default class MountainChunk extends Chunk {
                     prng.random() < 0.1
                 );
             },
-            (_vegList, _i) => true,
+            () => true,
             this
         );
     }

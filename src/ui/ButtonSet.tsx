@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import "./styles.css";
-import { IProps } from "../interfaces/IProps";
+import IButtonSet from "../interfaces/IButtonSet";
 
-const ButtonSet: React.FC<IProps> = ({ menu_visible, left, onClick }) => {
+const ButtonSet: React.FC<IButtonSet> = ({ menu_visible, left, onClick }) => {
     const [isHover, setIsHover] = useState(false);
 
     const bgrColor: string = `rgba(0, 0, 0, ${isHover ? 0.1 : 0})`;
