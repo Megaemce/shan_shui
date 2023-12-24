@@ -7,7 +7,7 @@ import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
 /**
  * ScrollableCanvas component for rendering a scrollable canvas with ScrollBars.
  */
-const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
+export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     horizontalScroll,
     windowHeight,
     background,
@@ -88,5 +88,3 @@ const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
         </table>
     );
 };
-
-export default ScrollableCanvas;

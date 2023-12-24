@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import ButtonSet from "./ButtonSet";
-import ButtonSource from "./ButtonSource";
-import Menu from "./Menu";
+import { ButtonSet } from "./ButtonSet";
+import { ButtonSource } from "./ButtonSource";
+import { Menu } from "./Menu";
 import "./styles.css";
 import { ISettingPanel } from "../interfaces/ISettingPanel";
 
-const SettingPanel: React.FC<ISettingPanel> = ({
+export const SettingPanel: React.FC<ISettingPanel> = ({
     seed,
     changeSeed,
     reloadWindowSeed,
@@ -58,5 +58,3 @@ const SettingPanel: React.FC<ISettingPanel> = ({
         </div>
     );
 };
-
-export default SettingPanel;

@@ -5,7 +5,7 @@ import { DebounceInput } from "react-debounce-input";
 import "./styles.css";
 import { IMenu } from "../interfaces/IMenu";
 
-const Menu: React.FC<IMenu> = ({
+export const Menu: React.FC<IMenu> = ({
     display,
     seed,
     changeSeed,
@@ -206,5 +206,3 @@ const Menu: React.FC<IMenu> = ({
         </div>
     );
 };
-
-export default Menu;

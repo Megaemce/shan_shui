@@ -6,7 +6,6 @@ import ISvgStyles from "../interfaces/ISvgStyles";
 
 /**
  * Expands a given array of points using a width function.
- * @notExported
  * @param {Point[]} pointArray - The array of points to be expanded.
  * @param {(v: number) => number} wfun - The width function.
  * @returns {Point[][]} An array containing two sets of expanded points.

@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import "./styles.css";
 
-const ButtonSource: React.FC = () => {
+export const ButtonSource: React.FC = () => {
     const [isHover, setIsHover] = useState(false);
 
     const handleMouseOver = () => setIsHover(true);
@@ -31,5 +31,3 @@ const ButtonSource: React.FC = () => {
         </div>
     );
 };
-
-export default ButtonSource;
