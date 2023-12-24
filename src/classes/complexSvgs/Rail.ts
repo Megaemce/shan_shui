@@ -18,7 +18,7 @@ export default class Rail extends ComplexSvg {
      * @param {boolean} [hasTrack=true] - Indicates whether to generate track segments.
      * @param {number} [height=20] - The height of the rail.
      * @param {number} [width=180] - The width of the rail.
-     * @param {number} [perturbation=4] - The perturbation parameter for rail generation.
+     * @param {number} [perspective=4] - The perspective parameter for rail generation.
      * @param {number} [segments=4] - The number of segments in the rail.
      * @param {boolean} [hasFront=true] - Indicates whether to generate front rail segments.
      * @param {number} [rotation=0.7] - The rotation parameter for rail.
@@ -32,7 +32,7 @@ export default class Rail extends ComplexSvg {
         hasTrack: boolean = true,
         height: number = 20,
         width: number = 180,
-        perturbation: number = 4,
+        perspective: number = 4,
         segments: number = 4,
         hasFront: boolean = true,
         rotation: number = 0.7,
@@ -47,13 +47,13 @@ export default class Rail extends ComplexSvg {
         if (hasFront) {
             pointArray.push(
                 div(
-                    [new Point(-width * 0.5, 0), new Point(mid, perturbation)],
+                    [new Point(-width * 0.5, 0), new Point(mid, perspective)],
                     segments
                 )
             );
             pointArray.push(
                 div(
-                    [new Point(mid, perturbation), new Point(width * 0.5, 0)],
+                    [new Point(mid, perspective), new Point(width * 0.5, 0)],
                     segments
                 )
             );
@@ -62,16 +62,13 @@ export default class Rail extends ComplexSvg {
         if (hasTrack) {
             pointArray.push(
                 div(
-                    [
-                        new Point(-width * 0.5, 0),
-                        new Point(bmid, -perturbation),
-                    ],
+                    [new Point(-width * 0.5, 0), new Point(bmid, -perspective)],
                     segments
                 )
             );
             pointArray.push(
                 div(
-                    [new Point(bmid, -perturbation), new Point(width * 0.5, 0)],
+                    [new Point(bmid, -perspective), new Point(width * 0.5, 0)],
                     segments
                 )
             );
@@ -82,7 +79,7 @@ export default class Rail extends ComplexSvg {
                 div(
                     [
                         new Point(-width * 0.5, -height),
-                        new Point(mid, -height + perturbation),
+                        new Point(mid, -height + perspective),
                     ],
                     segments
                 )
@@ -90,7 +87,7 @@ export default class Rail extends ComplexSvg {
             pointArray.push(
                 div(
                     [
-                        new Point(mid, -height + perturbation),
+                        new Point(mid, -height + perspective),
                         new Point(width * 0.5, -height),
                     ],
                     segments
@@ -103,7 +100,7 @@ export default class Rail extends ComplexSvg {
                 div(
                     [
                         new Point(-width * 0.5, -height),
-                        new Point(bmid, -height - perturbation),
+                        new Point(bmid, -height - perspective),
                     ],
                     segments
                 )
@@ -111,7 +108,7 @@ export default class Rail extends ComplexSvg {
             pointArray.push(
                 div(
                     [
-                        new Point(bmid, -height - perturbation),
+                        new Point(bmid, -height - perspective),
                         new Point(width * 0.5, -height),
                     ],
                     segments

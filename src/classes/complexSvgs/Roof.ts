@@ -16,7 +16,7 @@ export default class Roof extends ComplexSvg {
         width: number = 120,
         rotation: number = 0.7,
         strokeWidth: number = 3,
-        perturbation: number = 4,
+        perspective: number = 4,
         text: string = "",
         cor: number = 5
     ) {
@@ -39,10 +39,10 @@ export default class Roof extends ComplexSvg {
         pointArray.push(
             div(
                 opf([
-                    new Point(-width * 0.5 + quat, -height - perturbation / 2),
+                    new Point(-width * 0.5 + quat, -height - perspective / 2),
                     new Point(
                         -width * 0.5 + quat * 0.5,
-                        -height / 2 - perturbation / 4
+                        -height / 2 - perspective / 4
                     ),
                     new Point(-width * 0.5 - cor, 0),
                 ]),
@@ -63,8 +63,8 @@ export default class Roof extends ComplexSvg {
             div(
                 opf([
                     new Point(mid + quat, -height),
-                    new Point(mid + quat / 2, -height / 2 + perturbation / 2),
-                    new Point(mid + cor, perturbation),
+                    new Point(mid + quat / 2, -height / 2 + perspective / 2),
+                    new Point(mid + cor, perspective),
                 ]),
                 5
             )
@@ -74,7 +74,7 @@ export default class Roof extends ComplexSvg {
             div(
                 opf([
                     new Point(-width * 0.5 - cor, 0),
-                    new Point(mid + cor, perturbation),
+                    new Point(mid + cor, perspective),
                 ]),
                 5
             )
@@ -83,7 +83,7 @@ export default class Roof extends ComplexSvg {
             div(
                 opf([
                     new Point(width * 0.5 + cor, 0),
-                    new Point(mid + cor, perturbation),
+                    new Point(mid + cor, perspective),
                 ]),
                 5
             )
@@ -92,7 +92,7 @@ export default class Roof extends ComplexSvg {
         pointArray.push(
             div(
                 opf([
-                    new Point(-width * 0.5 + quat, -height - perturbation / 2),
+                    new Point(-width * 0.5 + quat, -height - perspective / 2),
                     new Point(mid + quat, -height),
                 ]),
                 5
@@ -101,10 +101,10 @@ export default class Roof extends ComplexSvg {
 
         const polist = opf([
             new Point(-width * 0.5, 0),
-            new Point(-width * 0.5 + quat, -height - perturbation / 2),
+            new Point(-width * 0.5 + quat, -height - perspective / 2),
             new Point(mid + quat, -height),
             new Point(width * 0.5, 0),
-            new Point(mid, perturbation),
+            new Point(mid, perspective),
         ]);
         this.add(new SvgPolyline(polist, xOffset, yOffset, "white", "none"));
 
@@ -127,10 +127,10 @@ export default class Roof extends ComplexSvg {
 
         if (text) {
             let pp = opf([
-                new Point(mid + quat / 2, -height / 2 + perturbation / 2),
+                new Point(mid + quat / 2, -height / 2 + perspective / 2),
                 new Point(
                     -strokeWidth * 0.5 + quat * 0.5,
-                    -height / 2 - perturbation / 4
+                    -height / 2 - perspective / 4
                 ),
             ]);
             if (pp[0].x > pp[1].x) {

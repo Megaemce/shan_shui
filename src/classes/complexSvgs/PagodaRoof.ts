@@ -16,7 +16,7 @@ export default class PagodaRoof extends ComplexSvg {
      * @param {number} [height=20] - The height of the Pagoda Roof.
      * @param {number} [width=120] - The width of the Pagoda Roof.
      * @param {number} [strokeWidth=3] - The stroke width of the Pagoda Roof.
-     * @param {number} [perturbation=4] - The perturbation parameter for Pagoda Roof generation.
+     * @param {number} [perspective=4] - The perspective parameter for Pagoda Roof generation.
      */
     constructor(
         prng: PRNG,
@@ -25,7 +25,7 @@ export default class PagodaRoof extends ComplexSvg {
         height: number = 20,
         width: number = 120,
         strokeWidth: number = 3,
-        perturbation: number = 4
+        perspective: number = 4
     ) {
         super();
 
@@ -37,7 +37,7 @@ export default class PagodaRoof extends ComplexSvg {
         for (let i = 0; i < sid; i++) {
             const fx = width * ((i * 1) / (sid - 1) - 0.5);
             const fy =
-                perturbation * (1 - Math.abs((i * 1) / (sid - 1) - 0.5) * 2);
+                perspective * (1 - Math.abs((i * 1) / (sid - 1) - 0.5) * 2);
             const fxx = (width + cor) * ((i * 1) / (sid - 1) - 0.5);
             if (i > 0) {
                 pointArray.push([

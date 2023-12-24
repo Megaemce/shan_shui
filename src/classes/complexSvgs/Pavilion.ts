@@ -13,7 +13,7 @@ export default class Pavilion extends ComplexSvg {
         seed: number = 0,
         height: number = 70,
         strokeWidth: number = 180,
-        perturbation: number = 5
+        perspective: number = 5
     ) {
         super();
 
@@ -31,7 +31,7 @@ export default class Pavilion extends ComplexSvg {
                 h1,
                 (strokeWidth * 2) / 3,
                 0.7,
-                perturbation,
+                perspective,
                 true,
                 false
             )
@@ -46,7 +46,7 @@ export default class Pavilion extends ComplexSvg {
                 true,
                 10,
                 strokeWidth,
-                perturbation * 2,
+                perspective * 2,
                 prng.random(3, 6),
                 false
             )
@@ -102,7 +102,7 @@ export default class Pavilion extends ComplexSvg {
                 false,
                 10,
                 strokeWidth,
-                perturbation * 2,
+                perspective * 2,
                 prng.random(3, 6),
                 true
             )

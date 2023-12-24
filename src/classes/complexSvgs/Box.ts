@@ -16,7 +16,7 @@ export default class Box extends ComplexSvg {
      * @param {number} [height=20] - The height of the box.
      * @param {number} [width=120] - The width of the box.
      * @param {number} [rotation=0.7] - The rotation factor of the box.
-     * @param {number} [perturbation=4] - The perturbation factor of the box.
+     * @param {number} [perspective=4] - The perspective factor of the box.
      * @param {boolean} [hasTransparency=true] - Indicates whether the box has transparency.
      * @param {boolean} [hasBottom=true] - Indicates whether the box has a bottom.
      * @param {number} [strokeWidth=3] - The stroke width of the box.
@@ -29,7 +29,7 @@ export default class Box extends ComplexSvg {
         height: number = 20,
         width: number = 120,
         rotation: number = 0.7,
-        perturbation: number = 4,
+        perspective: number = 4,
         hasTransparency: boolean = true,
         hasBottom: boolean = true,
         strokeWidth: number = 3,
@@ -57,19 +57,16 @@ export default class Box extends ComplexSvg {
         if (hasBottom) {
             pointList.push(
                 div(
-                    [new Point(-width * 0.5, 0), new Point(mid, perturbation)],
+                    [new Point(-width * 0.5, 0), new Point(mid, perspective)],
                     5
                 )
             );
             pointList.push(
-                div(
-                    [new Point(width * 0.5, 0), new Point(mid, perturbation)],
-                    5
-                )
+                div([new Point(width * 0.5, 0), new Point(mid, perspective)], 5)
             );
         }
         pointList.push(
-            div([new Point(mid, -height), new Point(mid, perturbation)], 5)
+            div([new Point(mid, -height), new Point(mid, perspective)], 5)
         );
         if (hasTransparency) {
             if (hasBottom) {
@@ -77,7 +74,7 @@ export default class Box extends ComplexSvg {
                     div(
                         [
                             new Point(-width * 0.5, 0),
-                            new Point(bmid, -perturbation),
+                            new Point(bmid, -perspective),
                         ],
                         5
                     )
@@ -86,7 +83,7 @@ export default class Box extends ComplexSvg {
                     div(
                         [
                             new Point(width * 0.5, 0),
-                            new Point(bmid, -perturbation),
+                            new Point(bmid, -perspective),
                         ],
                         5
                     )
@@ -94,7 +91,7 @@ export default class Box extends ComplexSvg {
             }
             pointList.push(
                 div(
-                    [new Point(bmid, -height), new Point(bmid, -perturbation)],
+                    [new Point(bmid, -height), new Point(bmid, -perspective)],
                     5
                 )
             );
@@ -104,9 +101,9 @@ export default class Box extends ComplexSvg {
         const extendedPointList = pointList.concat(
             decorator(
                 new Point(surface * width * 0.5, -height),
-                new Point(mid, -height + perturbation),
+                new Point(mid, -height + perspective),
                 new Point(surface * width * 0.5, 0),
-                new Point(mid, perturbation)
+                new Point(mid, perspective)
             )
         );
 
@@ -117,7 +114,7 @@ export default class Box extends ComplexSvg {
                         new Point(width * 0.5, -height),
                         new Point(width * 0.5, -height),
                         new Point(width * 0.5, 0),
-                        new Point(mid, perturbation),
+                        new Point(mid, perspective),
                         new Point(-width * 0.5, 0),
                     ],
                     xOffset,

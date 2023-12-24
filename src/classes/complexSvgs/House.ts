@@ -19,7 +19,7 @@ export default class House extends ComplexSvg {
         super();
 
         const height = 10;
-        const perturbation = 5;
+        const perspective = 5;
         const hasRail = false;
         const decorator = (
             upperLeftPoint: Point,
@@ -48,7 +48,7 @@ export default class House extends ComplexSvg {
                     height,
                     strokeWidth * Math.pow(0.85, i),
                     rotation,
-                    perturbation,
+                    perspective,
                     false,
                     true,
                     1.5,
@@ -66,7 +66,7 @@ export default class House extends ComplexSvg {
                         false,
                         height / 2,
                         strokeWidth * Math.pow(0.85, i) * 1.1,
-                        perturbation,
+                        perspective,
                         4,
                         true,
                         rotation,
@@ -85,7 +85,7 @@ export default class House extends ComplexSvg {
                     strokeWidth * Math.pow(0.9, i),
                     rotation,
                     1.5,
-                    perturbation,
+                    perspective,
                     text
                 )
             );
