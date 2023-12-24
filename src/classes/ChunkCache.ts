@@ -99,6 +99,7 @@ export default class ChunkCache {
                 );
             }
         });
+        console.log(this.chunkArray);
     }
 
     /**

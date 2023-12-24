@@ -8,15 +8,15 @@ import { generateBlobPoints } from "../../utils/generateBlobPoints";
 export default class Blob extends SvgPolyline {
     /**
      * Constructor for the BlobGenerator class.
-     * @param prng - PRNG instance for random number generation.
-     * @param x - X-coordinate of the blob.
-     * @param y - Y-coordinate of the blob.
-     * @param angle - Angle of the blob.
-     * @param fillColor - Fill fillColor of the blob.
-     * @param length - Length of the blob.
-     * @param strokeWidth - Width of the blob's outline.
-     * @param noise - Amount of noise applied to the blob's outline.
-     * @param strokeWidthFunction - Function to modulate the blob's outline width (default is sin function).
+     * @param {PRNG} prng - PRNG instance for random number generation.
+     * @param {number} x - X-coordinate of the blob.
+     * @param {number} y - Y-coordinate of the blob.
+     * @param {number} [angle=0] - Angle of the blob.
+     * @param {string} [fillColor="rgba(200,200,200,0.9)"] - Fill fillColor of the blob.
+     * @param {number} [length=20] - Length of the blob.
+     * @param {number} [strokeWidth=5] - Width of the blob's outline.
+     * @param {number} [noise=0.5] - Amount of noise applied to the blob's outline.
+     * @param {Function} [strokeWidthFunction] - Function to modulate the blob's outline width (default is sin function).
      */
     constructor(
         prng: PRNG,

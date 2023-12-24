@@ -11,9 +11,9 @@ export interface IComplexSvg {
     /**
      * An array of SvgPolyline elements.
      *
-     * @type {SvgPolyline[]}
+     * @type {Array<SvgPolyline | SvgText>}
      */
-    elements: SvgPolyline[];
+    elements: Array<SvgPolyline | SvgText>;
 
     /**
      * Renders the ComplexSvg and returns the resulting SVG string.

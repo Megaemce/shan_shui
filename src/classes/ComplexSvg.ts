@@ -3,12 +3,14 @@ import SvgPolyline from "./SvgPolyline";
 import SvgText from "./SvgText";
 
 export default class ComplexSvg implements IComplexSvg {
-    elements: SvgPolyline[] = [];
+    elements: Array<SvgPolyline | SvgText> = [];
 
     add(object: SvgPolyline | ComplexSvg | SvgText) {
+        console.log("Adding object:", object);
         if (object instanceof SvgPolyline) this.elements.concat(object);
         else if (object instanceof ComplexSvg)
             this.elements.concat(object.elements);
+        else this.elements.concat(object);
     }
 
     /**

@@ -61,7 +61,6 @@ const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                                 xmlns="http://www.w3.org/2000/svg"
                                 width={windowWidth}
                                 height={windowHeight}
-                                style={{ mixBlendMode: "multiply" }}
                                 viewBox={viewbox}
                             >
                                 {chunkCache.chunkArray.map((chunk) => (

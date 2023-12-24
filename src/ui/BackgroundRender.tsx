@@ -14,13 +14,14 @@ export default class BackgroundRender extends React.Component {
 
         for (let i = 0; i < resolution / 2 + 1; i++) {
             for (let j = 0; j < resolution / 2 + 1; j++) {
-                let c = 245 + noise.noise(prng, i * 0.1, j * 0.1) * 10;
-                c -= prng.random(0, 20);
+                let color = 245 + noise.noise(prng, i * 0.1, j * 0.1) * 10;
+                color -= prng.random(0, 20);
 
-                const r = c.toFixed(0);
-                const g = (c * 0.95).toFixed(0);
-                const b = (c * 0.85).toFixed(0);
-                ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                const red = color.toFixed(0);
+                const green = (color * 0.95).toFixed(0);
+                const blue = (color * 0.85).toFixed(0);
+
+                ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
                 ctx.fillRect(i, j, 1, 1);
                 ctx.fillRect(resolution - i, j, 1, 1);
                 ctx.fillRect(i, resolution - j, 1, 1);
