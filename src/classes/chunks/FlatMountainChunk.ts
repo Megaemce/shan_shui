@@ -2,7 +2,7 @@ import Point from "../Point";
 import { Noise } from "../PerlinNoise";
 import Stroke from "../svgPolylines/Stroke";
 import Texture from "../complexSvgs/Texture";
-import { div } from "../../utils/div";
+import { lineDivider } from "../../utils/polytools";
 import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
 import Chunk from "../Chunk";
@@ -154,8 +154,8 @@ export default class FlatMountainChunk extends Chunk {
         }
 
         const d = 5;
-        const grlist1 = div(_grlist1, d);
-        const grlist2 = div(_grlist2, d);
+        const grlist1 = lineDivider(_grlist1, d);
+        const grlist2 = lineDivider(_grlist2, d);
 
         const grlist = grlist1.reverse().concat(grlist2.concat([grlist1[0]]));
 

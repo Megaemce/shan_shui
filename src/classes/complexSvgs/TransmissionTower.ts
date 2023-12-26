@@ -1,7 +1,7 @@
 import Point from "../Point";
 import PRNG from "../PRNG";
 import Stroke from "../svgPolylines/Stroke";
-import { div } from "../../utils/div";
+import { lineDivider } from "../../utils/polytools";
 import ComplexSvg from "../ComplexSvg";
 
 /**
@@ -24,7 +24,7 @@ export default class TransmissionTower extends ComplexSvg {
         const quickStroke = function (points: Point[]) {
             return new Stroke(
                 prng,
-                div(points, 5).map(toGlobal),
+                lineDivider(points, 5).map(toGlobal),
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",
                 1,
@@ -110,8 +110,8 @@ export default class TransmissionTower extends ComplexSvg {
             );
         });
 
-        const line10 = div([p00, p10, p20, p30], 5);
-        const line11 = div([p01, p11, p21, p31], 5);
+        const line10 = lineDivider([p00, p10, p20, p30], 5);
+        const line11 = lineDivider([p01, p11, p21, p31], 5);
 
         for (let i = 0; i < line10.length - 1; i++) {
             this.add(quickStroke([line10[i], line11[i + 1]]));

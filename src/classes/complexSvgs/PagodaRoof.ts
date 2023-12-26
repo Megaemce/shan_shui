@@ -2,7 +2,7 @@ import Point from "../Point";
 import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
 import Stroke from "../svgPolylines/Stroke";
-import { div } from "../../utils/div";
+import { lineDivider } from "../../utils/polytools";
 import ComplexSvg from "../ComplexSvg";
 
 /**
@@ -59,7 +59,7 @@ export default class PagodaRoof extends ComplexSvg {
             this.add(
                 new Stroke(
                     prng,
-                    div(pointArray[i], 5).map(
+                    lineDivider(pointArray[i], 5).map(
                         (p) => new Point(p.x + xOffset, p.y + yOffset)
                     ),
                     "rgba(100,100,100,0.4)",

@@ -1,5 +1,5 @@
 import Point from "../Point";
-import { div } from "../../utils/div";
+import { lineDivider } from "../../utils/polytools";
 
 /**
  * Generates decorative elements based on the specified style.
@@ -22,10 +22,10 @@ export default function generateDecoration(
     vsp: number[] = [1, 2]
 ): Point[][] {
     const pointArray: Point[][] = [];
-    const dl = div([upperLeftPoint, bottomLeftPoint], vsp[1]);
-    const dr = div([upperRightPoint, bottomRightPoint], vsp[1]);
-    const du = div([upperLeftPoint, upperRightPoint], hsp[1]);
-    const dd = div([bottomLeftPoint, bottomRightPoint], hsp[1]);
+    const dl = lineDivider([upperLeftPoint, bottomLeftPoint], vsp[1]);
+    const dr = lineDivider([upperRightPoint, bottomRightPoint], vsp[1]);
+    const du = lineDivider([upperLeftPoint, upperRightPoint], hsp[1]);
+    const dd = lineDivider([bottomLeftPoint, bottomRightPoint], hsp[1]);
 
     if (style === 1) {
         // -| |-
@@ -35,21 +35,21 @@ export default function generateDecoration(
         const mrd = dd[du.length - 1 - hsp[0]];
 
         for (let i = vsp[0]; i < dl.length - vsp[0]; i += vsp[0]) {
-            const mml = div([mlu, mld], vsp[1])[i];
-            const mmr = div([mru, mrd], vsp[1])[i];
+            const mml = lineDivider([mlu, mld], vsp[1])[i];
+            const mmr = lineDivider([mru, mrd], vsp[1])[i];
             const ml = dl[i];
             const mr = dr[i];
-            pointArray.push(div([mml, ml], 5));
-            pointArray.push(div([mmr, mr], 5));
+            pointArray.push(lineDivider([mml, ml], 5));
+            pointArray.push(lineDivider([mmr, mr], 5));
         }
-        pointArray.push(div([mlu, mld], 5));
-        pointArray.push(div([mru, mrd], 5));
+        pointArray.push(lineDivider([mlu, mld], 5));
+        pointArray.push(lineDivider([mru, mrd], 5));
     } else if (style === 2) {
         // ||||
         for (let i = hsp[0]; i < du.length - hsp[0]; i += hsp[0]) {
             const mu = du[i];
             const md = dd[i];
-            pointArray.push(div([mu, md], 5));
+            pointArray.push(lineDivider([mu, md], 5));
         }
     } else if (style === 3) {
         // |##|
@@ -59,16 +59,16 @@ export default function generateDecoration(
         const mrd = dd[du.length - 1 - hsp[0]];
 
         for (let i = vsp[0]; i < dl.length - vsp[0]; i += vsp[0]) {
-            const mml = div([mlu, mld], vsp[1])[i];
-            const mmr = div([mru, mrd], vsp[1])[i];
-            const mmu = div([mlu, mru], vsp[1])[i];
-            const mmd = div([mld, mrd], vsp[1])[i];
+            const mml = lineDivider([mlu, mld], vsp[1])[i];
+            const mmr = lineDivider([mru, mrd], vsp[1])[i];
+            const mmu = lineDivider([mlu, mru], vsp[1])[i];
+            const mmd = lineDivider([mld, mrd], vsp[1])[i];
 
-            pointArray.push(div([mml, mmr], 5));
-            pointArray.push(div([mmu, mmd], 5));
+            pointArray.push(lineDivider([mml, mmr], 5));
+            pointArray.push(lineDivider([mmu, mmd], 5));
         }
-        pointArray.push(div([mlu, mld], 5));
-        pointArray.push(div([mru, mrd], 5));
+        pointArray.push(lineDivider([mlu, mld], 5));
+        pointArray.push(lineDivider([mru, mrd], 5));
     }
     return pointArray;
 }

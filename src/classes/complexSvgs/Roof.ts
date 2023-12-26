@@ -1,6 +1,6 @@
 import Point from "../Point";
 import PRNG from "../PRNG";
-import { div } from "../../utils/div";
+import { lineDivider } from "../../utils/polytools";
 import ComplexSvg from "../ComplexSvg";
 import SvgPolyline from "../SvgPolyline";
 import SvgText from "../SvgText";
@@ -37,7 +37,7 @@ export default class Roof extends ComplexSvg {
 
         const pointArray = [];
         pointArray.push(
-            div(
+            lineDivider(
                 opf([
                     new Point(-width * 0.5 + quat, -height - perspective / 2),
                     new Point(
@@ -50,7 +50,7 @@ export default class Roof extends ComplexSvg {
             )
         );
         pointArray.push(
-            div(
+            lineDivider(
                 opf([
                     new Point(mid + quat, -height),
                     new Point((mid + quat + width * 0.5) / 2, -height / 2),
@@ -60,7 +60,7 @@ export default class Roof extends ComplexSvg {
             )
         );
         pointArray.push(
-            div(
+            lineDivider(
                 opf([
                     new Point(mid + quat, -height),
                     new Point(mid + quat / 2, -height / 2 + perspective / 2),
@@ -71,7 +71,7 @@ export default class Roof extends ComplexSvg {
         );
 
         pointArray.push(
-            div(
+            lineDivider(
                 opf([
                     new Point(-width * 0.5 - cor, 0),
                     new Point(mid + cor, perspective),
@@ -80,7 +80,7 @@ export default class Roof extends ComplexSvg {
             )
         );
         pointArray.push(
-            div(
+            lineDivider(
                 opf([
                     new Point(width * 0.5 + cor, 0),
                     new Point(mid + cor, perspective),
@@ -90,7 +90,7 @@ export default class Roof extends ComplexSvg {
         );
 
         pointArray.push(
-            div(
+            lineDivider(
                 opf([
                     new Point(-width * 0.5 + quat, -height - perspective / 2),
                     new Point(mid + quat, -height),

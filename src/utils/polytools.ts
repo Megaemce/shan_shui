@@ -2,6 +2,37 @@ import Point from "../classes/Point";
 import Bound from "../classes/Bound";
 
 /**
+ * Generates a new array of points by dividing every pair of points by segments number.
+ *
+ * @param {Point[]} pointArray - The array of points to be divided.
+ * @param {number} segments - The number of new segments between the two points from the array.
+ * @return {Point[]} The new array of points by dividing every pair of points by segments number.
+ */
+export function lineDivider(pointArray: Point[], segments: number): Point[] {
+    if (pointArray.length === 0) {
+        console.trace();
+        console.warn(pointArray, segments);
+    }
+    const totalLength = (pointArray.length - 1) * segments;
+    const result = new Array(totalLength);
+
+    for (let i = 0; i < totalLength; i += 1) {
+        const index = Math.floor(i / segments);
+        const lastPoint = pointArray[index];
+        const nextPoint = pointArray[index + 1];
+        const progress = (i % segments) / segments;
+        const newX = lastPoint.x * (1 - progress) + nextPoint.x * progress;
+        const newY = lastPoint.y * (1 - progress) + nextPoint.y * progress;
+
+        result[i] = new Point(newX, newY);
+    }
+
+    result[totalLength] = pointArray[pointArray.length - 1];
+
+    return result;
+}
+
+/**
  * Flips a polygon horizontally if the horizontalFlip is true. Otherwise return original array.
  *
  * @param {Point[]} pointArray - The array of points defining the polygon.
@@ -355,8 +386,7 @@ function shatterTriangle(pointArray: Point[], limitArea: number): Point[][] {
 
             return [...firstTriangle, ...secondTriangle];
         } catch (err) {
-            console.log(pointArray);
-            console.log(err);
+            console.warn(pointArray, err);
             return [];
         }
     }

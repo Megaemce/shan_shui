@@ -3,7 +3,7 @@ import Vector from "../Vector";
 import PRNG from "../PRNG";
 import Stroke from "../svgPolylines/Stroke";
 import { distance } from "../../utils/polytools";
-import { div } from "../../utils/div";
+import { lineDivider } from "../../utils/polytools";
 import ComplexSvg from "../ComplexSvg";
 import generateBranch from "../svgPolylines/generateBranch";
 import SvgPolyline from "../SvgPolyline";
@@ -119,7 +119,7 @@ export default class Tree08 extends ComplexSvg {
             (x: number) => -Math.sin(x * Math.PI),
         ]);
 
-        const trmlist = div(_trmlist, 10);
+        const trmlist = lineDivider(_trmlist, 10);
 
         for (let i = 0; i < trmlist.length; i++) {
             trmlist[i].y += bfun(i / trmlist.length) * 2;

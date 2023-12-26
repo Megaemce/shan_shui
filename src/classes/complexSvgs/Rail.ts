@@ -3,7 +3,7 @@ import Point from "../Point";
 import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
 import Stroke from "../svgPolylines/Stroke";
-import { div } from "../../utils/div";
+import { lineDivider } from "../../utils/polytools";
 import ComplexSvg from "../ComplexSvg";
 
 /**
@@ -46,13 +46,13 @@ export default class Rail extends ComplexSvg {
 
         if (hasFront) {
             pointArray.push(
-                div(
+                lineDivider(
                     [new Point(-width * 0.5, 0), new Point(mid, perspective)],
                     segments
                 )
             );
             pointArray.push(
-                div(
+                lineDivider(
                     [new Point(mid, perspective), new Point(width * 0.5, 0)],
                     segments
                 )
@@ -61,13 +61,13 @@ export default class Rail extends ComplexSvg {
 
         if (hasTrack) {
             pointArray.push(
-                div(
+                lineDivider(
                     [new Point(-width * 0.5, 0), new Point(bmid, -perspective)],
                     segments
                 )
             );
             pointArray.push(
-                div(
+                lineDivider(
                     [new Point(bmid, -perspective), new Point(width * 0.5, 0)],
                     segments
                 )
@@ -76,7 +76,7 @@ export default class Rail extends ComplexSvg {
 
         if (hasFront) {
             pointArray.push(
-                div(
+                lineDivider(
                     [
                         new Point(-width * 0.5, -height),
                         new Point(mid, -height + perspective),
@@ -85,7 +85,7 @@ export default class Rail extends ComplexSvg {
                 )
             );
             pointArray.push(
-                div(
+                lineDivider(
                     [
                         new Point(mid, -height + perspective),
                         new Point(width * 0.5, -height),
@@ -97,7 +97,7 @@ export default class Rail extends ComplexSvg {
 
         if (hasTrack) {
             pointArray.push(
-                div(
+                lineDivider(
                     [
                         new Point(-width * 0.5, -height),
                         new Point(bmid, -height - perspective),
@@ -106,7 +106,7 @@ export default class Rail extends ComplexSvg {
                 )
             );
             pointArray.push(
-                div(
+                lineDivider(
                     [
                         new Point(bmid, -height - perspective),
                         new Point(width * 0.5, -height),
@@ -145,7 +145,7 @@ export default class Rail extends ComplexSvg {
                 currentPoint.y += yNoise1 * height;
                 rotatedPoint.y += yNoise2 * height;
 
-                const ln = div([currentPoint, rotatedPoint], 2);
+                const ln = lineDivider([currentPoint, rotatedPoint], 2);
                 ln[0].x += prng.random(-0.25, 0.25) * height;
 
                 this.add(
