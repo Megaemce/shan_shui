@@ -27,7 +27,7 @@ export default class BoatChunk extends Chunk {
                 0.5 * scale,
                 [0, 30, 20, 30, 10, 30, 30, 30, 30],
                 true,
-                1
+                2
             )
         );
 

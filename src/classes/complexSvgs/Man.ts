@@ -33,7 +33,7 @@ export default class Man extends ComplexSvg {
         horizontalFlip: boolean = true,
         scalling: number = 0.5,
         lengthArray: number[] = [0, 30, 20, 30, 30, 30, 30, 30, 30],
-        hasStick: boolean = true,
+        hasStick: boolean = false,
         hatNumber: number = 1
     ) {
         super();
