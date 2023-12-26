@@ -2,19 +2,30 @@ import { IComplexSvg } from "../interfaces/IComplexSvg";
 import SvgPolyline from "./SvgPolyline";
 import SvgText from "./SvgText";
 
+/**
+ * Represents a complex SVG.
+ * @implements {IComplexSvg}
+ */
 export default class ComplexSvg implements IComplexSvg {
     elements: Array<SvgPolyline | SvgText> = [];
 
+    /**
+     * Adds an object to the elements array.
+     *
+     * @param {SvgPolyline | ComplexSvg | SvgText} object - The object to be added to this.elements
+     */
     add(object: SvgPolyline | ComplexSvg | SvgText) {
-        console.log("Adding object:", object);
-        if (object instanceof SvgPolyline) this.elements.concat(object);
-        else if (object instanceof ComplexSvg)
-            this.elements.concat(object.elements);
-        else this.elements.concat(object);
+        if (object instanceof SvgPolyline) {
+            this.elements = this.elements.concat(object);
+        } else if (object instanceof ComplexSvg) {
+            this.elements = this.elements.concat(object.elements);
+        } else {
+            this.elements = this.elements.concat(object);
+        }
     }
 
     /**
-     * Renders the SVG representation of complex svg
+     * Renders the SVG representation of the complex SVG.
      *
      * @returns {string} The SVG string.
      */
