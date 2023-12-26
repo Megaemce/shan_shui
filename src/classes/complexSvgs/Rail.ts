@@ -40,20 +40,39 @@ export default class Rail extends ComplexSvg {
     ) {
         super();
 
-        const mid = -width * 0.5 + width * rotation;
-        const bmid = -width * 0.5 + width * (1 - rotation);
+        const left = -width / 2;
+        const right = width / 2;
+        const top = -height;
+        const bottom = 0;
+        const front_x = left + width * rotation;
+        const front_y = perspective;
+        const back_x = left + width * (1 - rotation);
+        const back_y = -perspective;
+
         const pointArray: Point[][] = [];
 
         if (hasFront) {
             pointArray.push(
                 lineDivider(
-                    [new Point(-width * 0.5, 0), new Point(mid, perspective)],
+                    [new Point(left, bottom), new Point(front_x, front_y)],
                     segments
                 )
             );
             pointArray.push(
                 lineDivider(
-                    [new Point(mid, perspective), new Point(width * 0.5, 0)],
+                    [new Point(front_x, front_y), new Point(right, bottom)],
+                    segments
+                )
+            );
+            pointArray.push(
+                lineDivider(
+                    [new Point(left, top), new Point(front_x, top + front_y)],
+                    segments
+                )
+            );
+            pointArray.push(
+                lineDivider(
+                    [new Point(front_x, top + front_y), new Point(right, top)],
                     segments
                 )
             );
@@ -62,67 +81,34 @@ export default class Rail extends ComplexSvg {
         if (hasTrack) {
             pointArray.push(
                 lineDivider(
-                    [new Point(-width * 0.5, 0), new Point(bmid, -perspective)],
+                    [new Point(left, bottom), new Point(back_x, back_y)],
                     segments
                 )
             );
             pointArray.push(
                 lineDivider(
-                    [new Point(bmid, -perspective), new Point(width * 0.5, 0)],
+                    [new Point(back_x, back_y), new Point(right, bottom)],
                     segments
                 )
             );
-        }
+            pointArray.push(
+                lineDivider(
+                    [new Point(left, top), new Point(back_x, top - front_y)],
+                    segments
+                )
+            );
+            pointArray.push(
+                lineDivider(
+                    [new Point(back_x, top - front_y), new Point(right, top)],
+                    segments
+                )
+            );
 
-        if (hasFront) {
-            pointArray.push(
-                lineDivider(
-                    [
-                        new Point(-width * 0.5, -height),
-                        new Point(mid, -height + perspective),
-                    ],
-                    segments
-                )
-            );
-            pointArray.push(
-                lineDivider(
-                    [
-                        new Point(mid, -height + perspective),
-                        new Point(width * 0.5, -height),
-                    ],
-                    segments
-                )
-            );
-        }
-
-        if (hasTrack) {
-            pointArray.push(
-                lineDivider(
-                    [
-                        new Point(-width * 0.5, -height),
-                        new Point(bmid, -height - perspective),
-                    ],
-                    segments
-                )
-            );
-            pointArray.push(
-                lineDivider(
-                    [
-                        new Point(bmid, -height - perspective),
-                        new Point(width * 0.5, -height),
-                    ],
-                    segments
-                )
-            );
-        }
-
-        if (hasTrack) {
             const open = Math.floor(prng.random(0, pointArray.length));
-            pointArray[open] = pointArray[open].slice(0, -1);
-            pointArray[(open + pointArray.length) % pointArray.length] =
-                pointArray[
-                    (open + pointArray.length) % pointArray.length
-                ].slice(0, -1);
+            pointArray[open].pop();
+
+            const wrappedIndex = (open + pointArray.length) % pointArray.length;
+            pointArray[wrappedIndex].pop();
         }
 
         const halfLength = pointArray.length / 2;
