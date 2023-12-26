@@ -47,13 +47,13 @@ export default class Pavilion extends ComplexSvg {
                 10,
                 strokeWidth,
                 perspective * 2,
-                prng.random(3, 6),
+                Math.floor(prng.random(3, 6)),
                 false
             )
         );
 
-        const poeple = prng.randomChoice([0, 1, 1, 2]);
-        if (poeple === 1) {
+        const people = prng.randomChoice([0, 1, 1, 2]);
+        if (people === 1) {
             this.add(
                 new Man(
                     prng,
@@ -67,7 +67,7 @@ export default class Pavilion extends ComplexSvg {
                     0.42
                 )
             );
-        } else if (poeple === 2) {
+        } else if (people === 2) {
             this.add(
                 new Man(
                     prng,
@@ -103,7 +103,7 @@ export default class Pavilion extends ComplexSvg {
                 10,
                 strokeWidth,
                 perspective * 2,
-                prng.random(3, 6),
+                Math.floor(prng.random(3, 6)),
                 true
             )
         );
