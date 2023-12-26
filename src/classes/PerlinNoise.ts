@@ -1,5 +1,5 @@
 // Modified from https://raw.githubusercontent.com/processing/p5.js/master/src/math/noise.js
-import { PRNG } from "./PRNG";
+import PRNG from "./PRNG";
 
 /**
  * Number of bits to wrap along the y-axis.

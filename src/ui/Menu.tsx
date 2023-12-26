@@ -1,29 +1,11 @@
 import React from "react";
 import { ChangeEvent, useState } from "react";
-import { PRNG } from "../classes/PRNG";
-import { Range } from "../classes/Range";
-import { ChunkCache } from "../classes/ChunkCache";
+import Range from "../classes/Range";
 import { DebounceInput } from "react-debounce-input";
 import "./styles.css";
+import { IMenu } from "../interfaces/IMenu";
 
-interface MenuProps {
-    display: string;
-    seed: string;
-    changeSeed: (seed: string) => void;
-    reloadWindowSeed: () => void;
-    horizontalScroll: (v: number) => void;
-    toggleAutoScroll: (s: boolean, v: number) => void;
-    currentPosition: number;
-    windowWidth: number;
-    windowHeight: number;
-    chunkCache: ChunkCache;
-    prng: PRNG;
-    saveRange: Range;
-    onChangeSaveRange: (r: Range) => void;
-    toggleAutoLoad: (s: boolean) => void;
-}
-
-const Menu: React.FC<MenuProps> = ({
+export const Menu: React.FC<IMenu> = ({
     display,
     seed,
     changeSeed,
@@ -224,5 +206,3 @@ const Menu: React.FC<MenuProps> = ({
         </div>
     );
 };
-
-export default Menu;

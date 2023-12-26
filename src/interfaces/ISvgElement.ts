@@ -1,12 +1,23 @@
-import { ISvgAttributes } from "./ISvgAttributes";
+import ISvgAttributes from "./ISvgAttributes";
 
 /**
  * Represents a generic SVG element.
+ *
+ * @interface
  */
-
-export interface ISvgElement {
-    /** Attribute object for additional SVG attributes. */
+export default interface ISvgElement {
+    /**
+     * Attribute object for additional SVG attributes.
+     *
+     * @type {Partial<ISvgAttributes>}
+     */
     attr: Partial<ISvgAttributes>;
-    /** Renders the SVG element as a string. */
+
+    /**
+     * Renders the SVG element as a string.
+     *
+     * @function
+     * @returns {string} The SVG string representation.
+     */
     render: () => string;
 }

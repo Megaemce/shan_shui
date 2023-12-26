@@ -1,9 +1,9 @@
-import { Range } from "./Range";
+import Range from "./Range";
 
 /**
  * Pseudo-Random Number Generator (PRNG) class.
  */
-export class PRNG {
+export default class PRNG {
     private _seed: number = 1234;
     private readonly primeOne: number = 999979;
     private readonly primeTwo: number = 999983;
@@ -75,8 +75,8 @@ export class PRNG {
 
     /**
      * Generates a pseudo-random number within the specified range.
-     * @param lowerBound - The lower calculateBoundingBox of the range.
-     * @param upperBound - The upper calculateBoundingBox of the range.
+     * @param lowerBound - The lower bound of the range.
+     * @param upperBound - The upper bound of the range.
      * @returns A pseudo-random number within the specified range or from range [0,1]
      */
     random(lowerBound: number = 0, upperBound: number = 1): number {

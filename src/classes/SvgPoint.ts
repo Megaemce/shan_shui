@@ -1,32 +1,61 @@
-import { ISvgElement } from "../interfaces/ISvgElement";
-import { IPoint } from "../interfaces/IPoint";
+import ISvgElement from "../interfaces/ISvgElement";
+import IPoint from "../interfaces/IPoint";
 
 /**
  * Represents a point in SVG coordinates.
+ *
+ * @implements {ISvgElement} - Interface representing an SVG element.
+ * @implements {IPoint} - Interface representing a point in coordinates.
  */
-export class SvgPoint implements ISvgElement, IPoint {
+export default class SvgPoint implements ISvgElement, IPoint {
     /**
-     * Initializes a new instance of the SvgPoint class.
-     * @param _x - The x-coordinate of the point.
-     * @param _y - The y-coordinate of the point.
+     * The x-coordinate of the point.
+     *
+     * @type {number}
      */
-    constructor(_x: number, _y: number) {
-        this.x = _x;
-        this.y = _y;
-    }
-
-    /** The x-coordinate of the point. */
     x: number;
-    /** The y-coordinate of the point. */
+
+    /**
+     * The y-coordinate of the point.
+     *
+     * @type {number}
+     */
     y: number;
 
-    /** Attribute object for additional SVG attributes. */
-    attr = {};
+    /**
+     * Attribute object for additional SVG attributes.
+     *
+     * @type {Record<string, any>}
+     */
+    attr: Record<string, any> = {};
+
+    /**
+     * Initializes a new instance of the SvgPoint class.
+     *
+     * @param {number} x - The x-coordinate of the point.
+     * @param {number} y - The y-coordinate of the point.
+     */
+    constructor(x: number, y: number) {
+        /**
+         * The x-coordinate of the point.
+         *
+         * @type {number}
+         */
+        this.x = x;
+
+        /**
+         * The y-coordinate of the point.
+         *
+         * @type {number}
+         */
+        this.y = y;
+    }
 
     /**
      * Creates an SvgPoint instance from an IPoint object.
-     * @param p - The IPoint object.
-     * @returns A new SvgPoint instance.
+     *
+     * @param {IPoint} p - The IPoint object.
+     * @returns {SvgPoint} A new SvgPoint instance.
      */
     static from(p: IPoint): SvgPoint {
         return new SvgPoint(p.x, p.y);
@@ -34,7 +63,8 @@ export class SvgPoint implements ISvgElement, IPoint {
 
     /**
      * Renders the point as a string.
-     * @returns The string representation of the point.
+     *
+     * @returns {string} The string representation of the point.
      */
     render(): string {
         return `${this.x.toFixed(1)},${this.y.toFixed(1)}`;

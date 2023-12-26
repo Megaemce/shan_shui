@@ -1,20 +1,20 @@
-import { Point } from "../Point";
+import Point from "../Point";
 import { Noise } from "../PerlinNoise";
-import { generateStroke } from "../../parts/brushes/generateStroke";
-import { generateTexture } from "../../parts/brushes/generateTexture";
-import { div } from "../../parts/brushes/div";
-import { PRNG } from "../PRNG";
-import { SvgPolyline } from "../SvgPolyline";
-import { Chunk } from "../Chunk";
+import Stroke from "../svgPolylines/Stroke";
+import Texture from "../complexSvgs/Texture";
+import { lineDivider } from "../../utils/polytools";
+import PRNG from "../PRNG";
+import SvgPolyline from "../SvgPolyline";
+import Chunk from "../Chunk";
 import { calculateBoundingBox } from "../../utils/polytools";
-import { generateFlatDecorations } from "../../parts/mountains/generateFlatDecorations";
+import FlatDecoration from "../complexSvgs/FlatDecoration";
 
 /**
  * Represents a flat mountain chunk with optional vegetation and textures.
  *
  * @extends Chunk
  */
-class FlatMountainChunk extends Chunk {
+export default class FlatMountainChunk extends Chunk {
     /**
      * Constructor for generating a flat mountain chunk with optional vegetation and textures.
      *
@@ -35,8 +35,9 @@ class FlatMountainChunk extends Chunk {
         flatness: number = 0.5,
         strokeWidth: number = prng.random(400, 600)
     ) {
+        super("flatmount", xOffset, yOffset);
+
         const textureCount: number = 80;
-        const polylineArray: SvgPolyline[][] = [];
         const pointArray: Point[][] = [];
         const reso = [5, 50];
         const flat: Point[][] = [];
@@ -78,19 +79,19 @@ class FlatMountainChunk extends Chunk {
         }
 
         // WHITE BG
-        polylineArray.push([
+        this.add(
             new SvgPolyline(
                 pointArray[0].concat([new Point(0, reso[0] * 4)]),
                 xOffset,
                 yOffset,
                 "white",
                 "none"
-            ),
-        ]);
+            )
+        );
 
         // OUTLINE
-        polylineArray.push([
-            generateStroke(
+        this.add(
+            new Stroke(
                 prng,
                 pointArray[0].map(
                     (p) => new Point(p.x + xOffset, p.y + yOffset)
@@ -99,12 +100,12 @@ class FlatMountainChunk extends Chunk {
                 "rgba(100,100,100,0.3)",
                 3,
                 1
-            ),
-        ]);
+            )
+        );
 
         // TEXTURE
-        polylineArray.push(
-            generateTexture(
+        this.add(
+            new Texture(
                 prng,
                 pointArray,
                 xOffset,
@@ -126,7 +127,6 @@ class FlatMountainChunk extends Chunk {
         }
 
         if (_grlist1.length === 0) {
-            super("flatmount", xOffset, yOffset, polylineArray.flat());
             return;
         }
 
@@ -154,8 +154,8 @@ class FlatMountainChunk extends Chunk {
         }
 
         const d = 5;
-        const grlist1 = div(_grlist1, d);
-        const grlist2 = div(_grlist2, d);
+        const grlist1 = lineDivider(_grlist1, d);
+        const grlist2 = lineDivider(_grlist2, d);
 
         const grlist = grlist1.reverse().concat(grlist2.concat([grlist1[0]]));
 
@@ -164,30 +164,24 @@ class FlatMountainChunk extends Chunk {
             grlist[i].x *= 1 - v + Noise.noise(prng, grlist[i].y * 0.5) * v;
         }
 
-        polylineArray.push([
-            new SvgPolyline(grlist, xOffset, yOffset, "white", "none", 2),
-        ]);
-        polylineArray.push([
-            generateStroke(
+        this.add(new SvgPolyline(grlist, xOffset, yOffset, "white", "none", 2));
+        this.add(
+            new Stroke(
                 prng,
                 grlist.map((p) => new Point(p.x + xOffset, p.y + yOffset)),
                 "rgba(100,100,100,0.2)",
                 "rgba(100,100,100,0.2)",
                 3
-            ),
-        ]);
+            )
+        );
 
-        polylineArray.push(
-            generateFlatDecorations(
+        this.add(
+            new FlatDecoration(
                 prng,
                 xOffset,
                 yOffset,
                 calculateBoundingBox(grlist)
             )
         );
-
-        super("flatmount", xOffset, yOffset, polylineArray.flat());
     }
 }
-
-export { FlatMountainChunk };

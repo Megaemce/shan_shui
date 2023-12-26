@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import SettingPanel from "./ui/SettingPanel";
-import ScrollableCanvas from "./ui/ScrollableCanvas";
+import { SettingPanel } from "./ui/SettingPanel";
+import { ScrollableCanvas } from "./ui/ScrollableCanvas";
 import BackgroundRender from "./ui/BackgroundRender";
-import { PRNG } from "./classes/PRNG";
-import { Range } from "./classes/Range";
+import PRNG from "./classes/PRNG";
+import Range from "./classes/Range";
 import { PerlinNoise } from "./classes/PerlinNoise";
-import { ChunkCache } from "./classes/ChunkCache";
+import ChunkCache from "./classes/ChunkCache";
 import "./App.css";
 
 /**
@@ -13,7 +13,8 @@ import "./App.css";
  * @component
  * @returns {JSX.Element} The main application component.
  */
-const App: React.FC = () => {
+
+export const App: React.FC = () => {
     const FPS = 60;
     const currentSeed = new URLSearchParams(window.location.search).get("seed");
     const currentDate = new Date().getTime().toString();
@@ -191,5 +192,3 @@ const App: React.FC = () => {
         </>
     );
 };
-
-export default App;

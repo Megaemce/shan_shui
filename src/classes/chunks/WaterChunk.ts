@@ -1,16 +1,15 @@
-import { Chunk } from "../Chunk";
+import Chunk from "../Chunk";
 import { Noise } from "../PerlinNoise";
-import { Point } from "../Point";
-import { PRNG } from "../PRNG";
-import { SvgPolyline } from "../SvgPolyline";
-import { generateStroke } from "../../parts/brushes/generateStroke";
+import Point from "../Point";
+import PRNG from "../PRNG";
+import Stroke from "../svgPolylines/Stroke";
 
 /**
  * Class representing a water chunk with undulating waves.
  *
  * @extends Chunk
  */
-class WaterChunk extends Chunk {
+export default class WaterChunk extends Chunk {
     /**
      * Creates an instance of WaterChunk.
      *
@@ -30,16 +29,18 @@ class WaterChunk extends Chunk {
         waveLength: number = 800,
         waveClusters: number = 10
     ) {
-        const polylines: SvgPolyline[] = [];
+        super("water", xOffset, yOffset - 10000);
+
         const pointArray: Point[][] = [];
         const reso = 5;
         let yk = 0;
 
         for (let i = 0; i < waveClusters; i++) {
+            pointArray.push([]);
+
             const xk = (prng.random(-0.5, 0.5) * waveLength) / 8;
             const lk = waveLength * prng.random(0.25, 0.5);
 
-            pointArray.push([]);
             yk += prng.random(0, 5);
 
             for (let j = -lk; j < lk; j += reso) {
@@ -64,13 +65,7 @@ class WaterChunk extends Chunk {
                 (p) => new Point(p.x + xOffset, p.y + yOffset)
             );
 
-            polylines.push(
-                generateStroke(prng, translatedPoints, color, color)
-            );
+            this.add(new Stroke(prng, translatedPoints, color, color));
         }
-
-        super("water", xOffset, yOffset - 10000, polylines);
     }
 }
-
-export { WaterChunk };

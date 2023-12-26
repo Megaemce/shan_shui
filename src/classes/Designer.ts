@@ -1,8 +1,8 @@
-import { DesignChunk } from "./DesignChunk";
-import { IChunk } from "../interfaces/IChunk";
+import DesignChunk from "./DesignChunk";
+import IChunk from "../interfaces/IChunk";
 import { Noise } from "./PerlinNoise";
-import { Point } from "./Point";
-import { PRNG } from "./PRNG";
+import Point from "./Point";
+import PRNG from "./PRNG";
 import { isLocalMaximum } from "../utils/utils";
 
 /**
@@ -43,7 +43,7 @@ const NOISE_SAMPLE = 0.03;
 /**
  * Class for generating terrain design chunks based on Perlin noise.
  */
-class Designer {
+export default class Designer {
     regions: IChunk[] = [];
     prng: PRNG;
     iMin: number;
@@ -66,7 +66,7 @@ class Designer {
             Math.max(Noise.noise(prng, point.x * NOISE_SAMPLE) - 0.55, 0) * 2;
 
         this.generateMountainChunks(noiseFunction, yRange);
-        this.generateFlatMountainChunks(noiseFunction);
+        this.generateFlatMountainChunks();
         this.generateBoatChunks();
     }
 
@@ -126,8 +126,7 @@ class Designer {
                     const mountainChunk = new DesignChunk(
                         "mount",
                         xOffset,
-                        yOffset,
-                        noiseFunction(new Point(x, y))
+                        yOffset
                     );
 
                     if (this.needsAdding(localRegion, mountainChunk)) {
@@ -143,8 +142,7 @@ class Designer {
                 const distMountainChunk = new DesignChunk(
                     "distmount",
                     x,
-                    this.prng.random(230, 280),
-                    noiseFunction(new Point(x, yRange(x) * 480))
+                    this.prng.random(230, 280)
                 );
 
                 if (this.needsAdding(localRegion, distMountainChunk)) {
@@ -162,9 +160,7 @@ class Designer {
      * @param {Function} noiseFunction - The noise function.
      * @returns {IChunk[]} An array of generated chunks.
      */
-    private generateFlatMountainChunks(
-        noiseFunction: (point: Point) => number
-    ): void {
+    private generateFlatMountainChunks(): void {
         const localRegion: IChunk[] = [];
 
         for (let i = this.iMin; i < this.iMax; i++) {
@@ -175,8 +171,7 @@ class Designer {
                     const flatMountainChunk = new DesignChunk(
                         "flatmount",
                         x + this.prng.random(-700, 700),
-                        700 - j * 50,
-                        noiseFunction(new Point(x, j))
+                        700 - j * 50
                     );
 
                     if (this.needsAdding(localRegion, flatMountainChunk)) {
@@ -207,5 +202,3 @@ class Designer {
         );
     }
 }
-
-export { Designer };
