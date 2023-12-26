@@ -49,6 +49,7 @@ export default class ChunkCache {
             this.processChunk(prng, plan.regions);
         }
 
+        // render the chunks in the background first
         this.chunkArray.sort((a, b) => a.y - b.y);
     }
 
@@ -99,7 +100,6 @@ export default class ChunkCache {
                 );
             }
         });
-        console.log(this.chunkArray);
     }
 
     /**
