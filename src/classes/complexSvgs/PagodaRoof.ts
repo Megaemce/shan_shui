@@ -60,7 +60,8 @@ export default class PagodaRoof extends ComplexSvg {
                 new Stroke(
                     prng,
                     lineDivider(pointArray[i], 5).map(
-                        (p) => new Point(p.x + xOffset, p.y + yOffset)
+                        (point) =>
+                            new Point(point.x + xOffset, point.y + yOffset)
                     ),
                     "rgba(100,100,100,0.4)",
                     "rgba(100,100,100,0.4)",
