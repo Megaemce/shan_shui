@@ -22,47 +22,50 @@ export default function generateBranch(
     bendingAngle: number = 0.2 * Math.PI,
     details: number = 10
 ): Point[][] {
-    // Generate the initial curve points
-    const curvePoints: Point[] = [];
+    const tlist: Point[] = [];
+    const g = 3;
+
     let newPoint = new Point(0, 0);
     let angle0 = 0;
-    const numSegments = 3;
 
-    for (let i = 0; i < numSegments; i++) {
+    for (let i = 0; i < g; i++) {
+        i === 0 && tlist.push(new Point(0, 0));
         angle0 += ((prng.random(1, 2) * bendingAngle) / 2) * prng.randomSign();
-        newPoint.x += (Math.cos(angle0) * height) / numSegments;
-        newPoint.y -= (Math.sin(angle0) * height) / numSegments;
-        curvePoints.push(newPoint);
+        newPoint.x += (Math.cos(angle0) * height) / g;
+        newPoint.y -= (Math.sin(angle0) * height) / g;
+        tlist.push(new Point(newPoint.x, newPoint.y));
     }
 
-    // Rotate the curve to a specified angle
     const rotationAngle = Math.atan2(
-        curvePoints[curvePoints.length - 1].y,
-        curvePoints[curvePoints.length - 1].x
+        tlist[tlist.length - 1].y,
+        tlist[tlist.length - 1].x
     );
-    curvePoints.forEach((point) => {
-        const curveAngle = Math.atan2(point.y, point.x);
-        const distance = Math.sqrt(point.x ** 2 + point.y ** 2);
-        point.x = distance * Math.cos(curveAngle - rotationAngle + angle);
-        point.y = distance * Math.sin(curveAngle - rotationAngle + angle);
+
+    tlist.forEach((point) => {
+        const a = Math.atan2(point.y, point.x);
+        const distance = Math.sqrt(point.x * point.x + point.y * point.y);
+        point.x = distance * Math.cos(a - rotationAngle + angle);
+        point.y = distance * Math.sin(a - rotationAngle + angle);
     });
 
-    // Generate two stroke paths based on the curved line
     const trlist1: Point[] = [];
     const trlist2: Point[] = [];
-    const totalPoints = (curvePoints.length - 1) * details;
+    const totalPoints = (tlist.length - 1) * details;
+
     let prevPoint = new Point(0, 0);
 
-    for (let i = 0; i < totalPoints; i++) {
-        const lastPoint = curvePoints[Math.floor(i / details)];
-        const nextPoint = curvePoints[Math.ceil(i / details)];
+    for (let i = 0; i < totalPoints; i += 1) {
+        const lastPoint = tlist[Math.floor(i / details)];
+        const nextPoint = tlist[Math.ceil(i / details)];
         const p = (i % details) / details;
-        newPoint.x = lastPoint.x * (1 - p) + nextPoint.x * p;
-        newPoint.y = lastPoint.y * (1 - p) + nextPoint.y * p;
+        const weightedPoint = new Point(
+            lastPoint.x * (1 - p) + nextPoint.x * p,
+            lastPoint.y * (1 - p) + nextPoint.y * p
+        );
 
         const angle = Math.atan2(
-            newPoint.y - prevPoint.y,
-            newPoint.x - prevPoint.x
+            weightedPoint.y - prevPoint.y,
+            weightedPoint.x - prevPoint.x
         );
         const widthOffset =
             ((Noise.noise(prng, i * 0.3) - 0.5) * strokeWidth * height) / 80;
@@ -74,30 +77,27 @@ export default function generateBranch(
 
         const newWidth =
             strokeWidth * (((totalPoints - i) / totalPoints) * 0.5 + 0.5);
-
         trlist1.push(
             new Point(
-                newPoint.x +
+                weightedPoint.x +
                     Math.cos(angle + Math.PI / 2) *
                         (newWidth + widthOffset + randomness),
-                newPoint.y +
+                weightedPoint.y +
                     Math.sin(angle + Math.PI / 2) *
                         (newWidth + widthOffset + randomness)
             )
         );
-
         trlist2.push(
             new Point(
-                newPoint.x +
+                weightedPoint.x +
                     Math.cos(angle - Math.PI / 2) *
                         (newWidth - widthOffset + randomness),
-                newPoint.y +
+                weightedPoint.y +
                     Math.sin(angle - Math.PI / 2) *
                         (newWidth - widthOffset + randomness)
             )
         );
-
-        prevPoint = newPoint;
+        prevPoint = weightedPoint;
     }
 
     return [trlist1, trlist2];
