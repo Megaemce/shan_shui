@@ -90,23 +90,21 @@ export default class Barkify extends ComplexSvg {
         const trflist = trlist[0].concat(trlist[1].slice().reverse());
 
         // Generate random groups of points
-        const randomGroupArray: Point[][] = [];
-        let currentArray: Point[] = [];
-        for (let i = 0; i < trflist.length; i++) {
+        const randomGroupArray: Point[][] = [[]];
+
+        trflist.forEach((point) => {
             if (prng.random() < 0.5) {
-                randomGroupArray.push(currentArray);
-                currentArray = [];
+                randomGroupArray.push([]);
             } else {
-                currentArray.push(trflist[i]);
+                randomGroupArray[randomGroupArray.length - 1].push(point);
             }
-        }
+        });
 
         randomGroupArray.forEach((group, i) => {
-            if (group.length === 0) return;
+            if (group.length < 2) return; // Can't execute lineDivider without at least 2 points
+            let result = lineDivider(group, 4);
 
-            randomGroupArray[i] = lineDivider(group, 4);
-
-            randomGroupArray[i].forEach((point, j) => {
+            result.forEach((point, j) => {
                 point.x +=
                     (Noise.noise(prng, i, j * 0.1, 1) - 0.5) *
                     (15 + 5 * prng.gaussianRandom());
@@ -118,9 +116,7 @@ export default class Barkify extends ComplexSvg {
             this.add(
                 new Stroke(
                     prng,
-                    randomGroupArray[i].map(
-                        (point) => new Point(point.x + x, point.y + y)
-                    ),
+                    result.map((point) => new Point(point.x + x, point.y + y)),
                     "rgba(100,100,100,0.7)",
                     "rgba(100,100,100,0.7)",
                     1.5,

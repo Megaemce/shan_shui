@@ -9,10 +9,10 @@ import Bound from "../classes/Bound";
  * @return {Point[]} The new array of points by dividing every pair of points by segments number.
  */
 export function lineDivider(pointArray: Point[], segments: number): Point[] {
-    if (pointArray.length === 0) {
-        console.trace();
-        console.warn(pointArray, segments);
+    if (pointArray.length < 2) {
+        return [];
     }
+
     const totalLength = (pointArray.length - 1) * segments;
     const result = new Array(totalLength);
 
