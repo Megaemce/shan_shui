@@ -3,7 +3,7 @@ import PRNG from "../PRNG";
 import ComplexSvg from "../ComplexSvg";
 import SvgPolyline from "../SvgPolyline";
 import Stroke from "../svgPolylines/Stroke";
-import { div } from "../../utils/div";
+import { lineDivider } from "../../utils/polytools";
 
 /**
  * Represents a box generated using procedural generation.
@@ -42,56 +42,60 @@ export default class Box extends ComplexSvg {
     ) {
         super();
 
-        const mid = -width * 0.5 + width * rotation;
-        const bmid = -width * 0.5 + width * (1 - rotation);
+        const left = -width / 2;
+        const right = width / 2;
+        const top = -height;
+        const bottom = 0;
+        const front_x = left + width * rotation;
+        const front_y = perspective;
+        const back_x = left + width * (1 - rotation);
+        const back_y = -perspective;
+
         const pointList: Point[][] = [];
         pointList.push(
-            div(
-                [new Point(-width * 0.5, -height), new Point(-width * 0.5, 0)],
-                5
-            )
+            lineDivider([new Point(left, top), new Point(left, bottom)], 5)
         );
         pointList.push(
-            div([new Point(width * 0.5, -height), new Point(width * 0.5, 0)], 5)
+            lineDivider([new Point(right, top), new Point(right, bottom)], 5)
         );
         if (hasBottom) {
             pointList.push(
-                div(
-                    [new Point(-width * 0.5, 0), new Point(mid, perspective)],
+                lineDivider(
+                    [new Point(left, bottom), new Point(front_x, front_y)],
                     5
                 )
             );
             pointList.push(
-                div([new Point(width * 0.5, 0), new Point(mid, perspective)], 5)
+                lineDivider(
+                    [new Point(right, bottom), new Point(front_x, front_y)],
+                    5
+                )
             );
         }
         pointList.push(
-            div([new Point(mid, -height), new Point(mid, perspective)], 5)
+            lineDivider(
+                [new Point(front_x, top), new Point(front_x, front_y)],
+                5
+            )
         );
         if (hasTransparency) {
             if (hasBottom) {
                 pointList.push(
-                    div(
-                        [
-                            new Point(-width * 0.5, 0),
-                            new Point(bmid, -perspective),
-                        ],
+                    lineDivider(
+                        [new Point(left, bottom), new Point(back_x, back_y)],
                         5
                     )
                 );
                 pointList.push(
-                    div(
-                        [
-                            new Point(width * 0.5, 0),
-                            new Point(bmid, -perspective),
-                        ],
+                    lineDivider(
+                        [new Point(right, bottom), new Point(back_x, back_y)],
                         5
                     )
                 );
             }
             pointList.push(
-                div(
-                    [new Point(bmid, -height), new Point(bmid, -perspective)],
+                lineDivider(
+                    [new Point(back_x, top), new Point(back_x, back_y)],
                     5
                 )
             );
@@ -100,10 +104,10 @@ export default class Box extends ComplexSvg {
         const surface = (rotation < 0.5 ? 1 : 0) * 2 - 1;
         const extendedPointList = pointList.concat(
             decorator(
-                new Point(surface * width * 0.5, -height),
-                new Point(mid, -height + perspective),
-                new Point(surface * width * 0.5, 0),
-                new Point(mid, perspective)
+                new Point(surface * right, top),
+                new Point(front_x, top + front_y),
+                new Point(surface * right, bottom),
+                new Point(front_x, front_y)
             )
         );
 
@@ -111,11 +115,11 @@ export default class Box extends ComplexSvg {
             this.add(
                 new SvgPolyline(
                     [
-                        new Point(width * 0.5, -height),
-                        new Point(width * 0.5, -height),
-                        new Point(width * 0.5, 0),
-                        new Point(mid, perspective),
-                        new Point(-width * 0.5, 0),
+                        new Point(left, top),
+                        new Point(right, top),
+                        new Point(right, bottom),
+                        new Point(front_x, front_y),
+                        new Point(left, bottom),
                     ],
                     xOffset,
                     yOffset,
