@@ -170,7 +170,6 @@ export const App: React.FC = () => {
                     horizontalScroll={horizontalScroll}
                     windowHeight={windowHeight}
                     background={backgroundImage}
-                    seed={seed}
                     currentPosition={currentPosition}
                     windowWidth={windowWidth}
                     chunkCache={chunkCacheRef.current}
