@@ -1,10 +1,9 @@
-import Point from "../Point";
-import { Noise } from "../PerlinNoise";
-import { midPoint, triangulate } from "../../utils/polytools";
-import PRNG from "../PRNG";
-import SvgPolyline from "../SvgPolyline";
 import Chunk from "../Chunk";
+import Perlin from "../Perlin";
+import Point from "../Point";
+import SvgPolyline from "../SvgPolyline";
 import { config } from "../../config";
+import { midPoint, triangulate } from "../../utils/polytools";
 
 const DEFAULTHEIGHT = config.chunks.distantMountain.defaultHeight;
 const DEFAULTSEED = config.chunks.distantMountain.defaultSeed;
@@ -22,8 +21,6 @@ const STROKEWIDTH = config.chunks.distantMountain.strokeWidth;
 export default class DistantMountainChunk extends Chunk {
     /**
      * Constructor for generating a distant mountain chunk with varying heights and colors.
-     *
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
      * @param {number} [seed=DEFAULTSEED] - The seed for the noise function.
@@ -31,7 +28,6 @@ export default class DistantMountainChunk extends Chunk {
      * @param {number} [width=DEFAULTWIDTH] - The width of the mountain.
      */
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         seed: number = DEFAULTSEED,
@@ -54,7 +50,7 @@ export default class DistantMountainChunk extends Chunk {
                 xOffset + k * SPAN,
                 yOffset +
                     heightMultiplier *
-                        Noise.noise(prng, k * 0.05, seed) *
+                        Perlin.noise(k * 0.05, seed) *
                         Math.pow(
                             Math.sin((Math.PI * k) / (width / SPAN)),
                             powerExponent
@@ -80,8 +76,7 @@ export default class DistantMountainChunk extends Chunk {
 
         const getColor = function (point: Point) {
             const color =
-                Noise.noise(prng, point.x * 0.02, point.y * 0.02, yOffset) *
-                    55 +
+                Perlin.noise(point.x * 0.02, point.y * 0.02, yOffset) * 55 +
                 200;
             return `rgb(${color},${color},${color})`;
         };

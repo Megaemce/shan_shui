@@ -1,19 +1,17 @@
+import ComplexSvg from "../ComplexSvg";
 import Point from "../Point";
-import PRNG from "../PRNG";
 import Stroke from "../svgPolylines/Stroke";
 import { lineDivider } from "../../utils/polytools";
-import ComplexSvg from "../ComplexSvg";
 
 /**
  * Represents a transmission tower generated using procedural generation.
  */
 export default class TransmissionTower extends ComplexSvg {
     /**
-     * @param {PRNG} prng - The pseudorandom number generator.
      * @param {number} xOffset - The x-coordinate offset for the transmission tower.
      * @param {number} yOffset - The y-coordinate offset for the transmission tower.
      */
-    constructor(prng: PRNG, xOffset: number, yOffset: number) {
+    constructor(xOffset: number, yOffset: number) {
         super();
 
         const height = 100,
@@ -23,7 +21,6 @@ export default class TransmissionTower extends ComplexSvg {
 
         const quickStroke = function (points: Point[]) {
             return new Stroke(
-                prng,
                 lineDivider(points, 5).map(toGlobal),
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",

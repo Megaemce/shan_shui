@@ -1,12 +1,12 @@
-import Chunk from "./Chunk";
-import IChunk from "../interfaces/IChunk";
-import Designer from "./Designer";
-import PRNG from "./PRNG";
-import Range from "./Range";
 import BoatChunk from "./chunks/BoatChunk";
-import MountainChunk from "./chunks/MountainChunk";
+import Chunk from "./Chunk";
+import Designer from "./Designer";
 import DistantMountainChunk from "./chunks/DistantMountainChunk";
 import FlatMountainChunk from "./chunks/FlatMountainChunk";
+import IChunk from "../interfaces/IChunk";
+import MountainChunk from "./chunks/MountainChunk";
+import PRNG from "./PRNG";
+import Range from "./Range";
 import WaterChunk from "./chunks/WaterChunk";
 import { config } from "../config";
 
@@ -34,7 +34,7 @@ export default class ChunkCache {
      * @param prng - The pseudo-random number generator.
      * @param givenRange - The range for which to generate chunks.
      */
-    private generateChunks(prng: PRNG, givenRange: Range): void {
+    private generateChunks(givenRange: Range): void {
         while (
             givenRange.right > this.visibleRange.right - CHUNKWIDTH ||
             givenRange.left < this.visibleRange.left + CHUNKWIDTH
@@ -50,8 +50,8 @@ export default class ChunkCache {
                           this.visibleRange.left,
                       ];
 
-            const plan = new Designer(prng, start, end);
-            this.processChunk(prng, plan.regions);
+            const plan = new Designer(start, end);
+            this.processChunk(plan.regions);
         }
 
         // render the chunks in the background first
@@ -63,23 +63,22 @@ export default class ChunkCache {
      * @param plan - The generated chunk plan.
      * @param prng - The pseudo-random number generator.
      */
-    private processChunk(prng: PRNG, plan: IChunk[]): void {
+    private processChunk(plan: IChunk[]): void {
         plan.forEach(({ tag, x, y }, i) => {
             if (tag === "mount") {
                 this.chunkArray.push(
-                    new MountainChunk(prng, x, y, prng.random(0, 2 * i))
+                    new MountainChunk(x, y, PRNG.random(0, 2 * i))
                 );
-                this.chunkArray.push(new WaterChunk(prng, x, y));
+                this.chunkArray.push(new WaterChunk(x, y));
             } else if (tag === "flatmount") {
                 this.chunkArray.push(
                     new FlatMountainChunk(
-                        prng,
                         x,
                         y,
-                        prng.random(0, 2 * Math.PI),
+                        PRNG.random(0, 2 * Math.PI),
                         FLATMOUNTAINHEIGHT,
-                        prng.random(FLATMOUNTAINWIDTHMIN, FLATMOUNTAINWIDTHMAX),
-                        prng.random(
+                        PRNG.random(FLATMOUNTAINWIDTHMIN, FLATMOUNTAINWIDTHMAX),
+                        PRNG.random(
                             FLATMOUNTAINFLATNESSMIN,
                             FLATMOUNTAINFLATNESSMAX
                         )
@@ -88,22 +87,20 @@ export default class ChunkCache {
             } else if (tag === "distmount") {
                 this.chunkArray.push(
                     new DistantMountainChunk(
-                        prng,
                         x,
                         y,
-                        prng.random(0, 100),
+                        PRNG.random(0, 100),
                         DISTANTMOUNTAINHEIGHT,
-                        prng.randomChoice([500, 1000, 1500])
+                        PRNG.randomChoice([500, 1000, 1500])
                     )
                 );
             } else if (tag === "boat") {
                 this.chunkArray.push(
                     new BoatChunk(
-                        prng,
                         x,
                         y,
                         y / 800,
-                        prng.randomChoice([true, false])
+                        PRNG.randomChoice([true, false])
                     )
                 );
             }
@@ -116,16 +113,12 @@ export default class ChunkCache {
      * @param givenRange - The range for which to update the cache.
      * @param chunkWidth - The width of each chunk (default is CHUNKWIDTH).
      */
-    public update(
-        prng: PRNG,
-        givenRange: Range,
-        chunkWidth: number = CHUNKWIDTH
-    ): void {
+    public update(givenRange: Range, chunkWidth: number = CHUNKWIDTH): void {
         if (
             givenRange.right > this.visibleRange.right - chunkWidth ||
             givenRange.left < this.visibleRange.left + chunkWidth
         ) {
-            this.generateChunks(prng, givenRange);
+            this.generateChunks(givenRange);
         }
     }
 
@@ -138,7 +131,6 @@ export default class ChunkCache {
      * @param chunkWidth - The width of each chunk (default is CHUNKWIDTH).
      */
     public download(
-        prng: PRNG,
         seed: string,
         range: Range,
         windowHeight: number,
@@ -150,7 +142,7 @@ export default class ChunkCache {
             windowHeight / ZOOM
         }`;
 
-        this.update(prng, range, chunkWidth);
+        this.update(range, chunkWidth);
 
         const left = range.left - chunkWidth;
         const right = range.right + chunkWidth;

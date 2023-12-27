@@ -1,6 +1,6 @@
-import { ChunkTag } from "../types/ChunkTag";
-import IChunk from "../interfaces/IChunk";
 import ComplexSvg from "./ComplexSvg";
+import IChunk from "../interfaces/IChunk";
+import { ChunkTag } from "../types/ChunkTag";
 
 /**
  * Represents a chunk of terrain with SVG elements.

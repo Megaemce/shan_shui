@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { SettingPanel } from "./ui/SettingPanel";
-import { ScrollableCanvas } from "./ui/ScrollableCanvas";
-import BackgroundRender from "./ui/BackgroundRender";
+import "./App.css";
+import Background from "./ui/Background";
+import ChunkCache from "./classes/ChunkCache";
 import PRNG from "./classes/PRNG";
 import Range from "./classes/Range";
-import { PerlinNoise } from "./classes/PerlinNoise";
-import ChunkCache from "./classes/ChunkCache";
-import "./App.css";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { ScrollableCanvas } from "./ui/ScrollableCanvas";
+import { SettingPanel } from "./ui/SettingPanel";
 
 /**
  * Main application component.
@@ -20,13 +19,13 @@ export const App: React.FC = () => {
     const currentDate = new Date().getTime().toString();
 
     // Refs for accessing child components
-    const bgRenderRef = useRef<BackgroundRender>(null);
-    const prngRef = useRef(new PRNG());
-    const noiseRef = useRef(new PerlinNoise());
+    const backgroundRef = useRef<Background>(null);
     const chunkCacheRef = useRef(new ChunkCache());
 
     // State variables
     const [seed, setSeed] = useState<string>(currentSeed || currentDate);
+    PRNG.seed = seed;
+
     const [currentPosition, setCurrentPosition] = useState<number>(0);
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
     const [windowHeight, setWindowHeight] = useState<number>(
@@ -77,20 +76,11 @@ export const App: React.FC = () => {
     };
 
     /**
-     * Effect to handle changes in the PRNG seed.
+     * Effect to update the background image and handle window resize events when seed change
      */
     useEffect(() => {
-        prngRef.current.seed = seed;
-    }, [seed]);
-
-    /**
-     * Effect to update the background image and handle window resize events.
-     */
-    useEffect(() => {
-        const url = bgRenderRef.current?.generate(
-            prngRef.current,
-            noiseRef.current
-        );
+        PRNG.seed = seed;
+        const url = backgroundRef.current?.generateBackground();
         setBackgroundImage(url);
 
         const resizeCallback = () => {
@@ -103,7 +93,7 @@ export const App: React.FC = () => {
         return () => {
             window.removeEventListener("resize", resizeCallback);
         };
-    }, [prngRef, noiseRef, seed]);
+    }, [seed]);
 
     /**
      * Callback function to handle horizontal scrolling.
@@ -172,7 +162,6 @@ export const App: React.FC = () => {
                     chunkCache={chunkCacheRef.current}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
-                    prng={prngRef.current}
                     saveRange={saveRange}
                     onChangeSaveRange={onChangeSaveRange}
                     toggleAutoLoad={toggleAutoLoad}
@@ -184,11 +173,10 @@ export const App: React.FC = () => {
                     seed={seed}
                     currentPosition={currentPosition}
                     windowWidth={windowWidth}
-                    prng={prngRef.current}
                     chunkCache={chunkCacheRef.current}
                 />
             </div>
-            <BackgroundRender ref={bgRenderRef} />
+            <Background ref={backgroundRef} />
         </>
     );
 };

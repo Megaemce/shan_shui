@@ -1,14 +1,13 @@
-import Point from "../Point";
-import PRNG from "../PRNG";
 import Box from "./Box";
-import generateDecoration from "../svgPolylines/generateDecoration";
+import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Point from "../Point";
 import Rail from "./Rail";
 import Roof from "./Roof";
-import ComplexSvg from "../ComplexSvg";
+import generateDecoration from "../svgPolylines/generateDecoration";
 
 export default class House extends ComplexSvg {
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         strokeWidth: number = 50,
@@ -42,7 +41,6 @@ export default class House extends ComplexSvg {
         for (let i = 0; i < stories; i++) {
             this.add(
                 new Box(
-                    prng,
                     xOffset,
                     yOffset - heightOffset,
                     height,
@@ -59,7 +57,6 @@ export default class House extends ComplexSvg {
             hasRail &&
                 this.add(
                     new Rail(
-                        prng,
                         xOffset,
                         yOffset - heightOffset,
                         i * 0.2,
@@ -75,10 +72,9 @@ export default class House extends ComplexSvg {
                 );
 
             const text =
-                stories === 1 && prng.random() < 1 / 3 ? "Pizza Hut" : "";
+                stories === 1 && PRNG.random() < 1 / 3 ? "Pizza Hut" : "";
             this.add(
                 new Roof(
-                    prng,
                     xOffset,
                     yOffset - heightOffset - height,
                     height,

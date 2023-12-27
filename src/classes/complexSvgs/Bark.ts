@@ -1,9 +1,9 @@
-import { Noise } from "../PerlinNoise";
-import Point from "../Point";
-import PRNG from "../PRNG";
-import { normalizeNoise } from "../../utils/utils";
-import Stroke from "../svgPolylines/Stroke";
 import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Perlin from "../Perlin";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
+import { normalizeNoise } from "../../utils/utils";
 
 /**
  * Generates a bark-like structure.
@@ -11,19 +11,12 @@ import ComplexSvg from "../ComplexSvg";
 export default class Bark extends ComplexSvg {
     /**
      * Constructor for the BarkGenerator class.
-     * @param prng - The pseudo-random number generator.
      * @param x - X-coordinate of the bark.
      * @param y - Y-coordinate of the bark.
      * @param strokeWidth - Width of the bark.
      * @param angle - Angle of the bark.
      */
-    constructor(
-        prng: PRNG,
-        x: number,
-        y: number,
-        strokeWidth: number,
-        angle: number
-    ) {
+    constructor(x: number, y: number, strokeWidth: number, angle: number) {
         super();
 
         const fun = function (x: number) {
@@ -33,8 +26,8 @@ export default class Bark extends ComplexSvg {
         };
         const barkArray: Point[] = [];
         const lengthAngleArray: Array<[number, number]> = [];
-        const n0 = prng.random() * 10;
-        const width = prng.random(10, 20);
+        const n0 = PRNG.random() * 10;
+        const width = PRNG.random(10, 20);
         const noise = 0.5;
         const reso = 20;
 
@@ -51,7 +44,7 @@ export default class Bark extends ComplexSvg {
         }
 
         for (let i = 0; i < reso + 1; i++) {
-            noiseArray.push(Noise.noise(prng, i * 0.05, n0));
+            noiseArray.push(Perlin.noise(i * 0.05, n0));
         }
 
         noiseArray = normalizeNoise(noiseArray);
@@ -66,14 +59,13 @@ export default class Bark extends ComplexSvg {
 
         this.add(
             new Stroke(
-                prng,
                 barkArray,
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",
                 0.8,
                 0,
                 0,
-                (x) => Math.sin((x + prng.random()) * Math.PI * 3)
+                (x) => Math.sin((x + PRNG.random()) * Math.PI * 3)
             )
         );
     }

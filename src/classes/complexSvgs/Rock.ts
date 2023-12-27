@@ -1,18 +1,17 @@
-import Point from "../Point";
-import { normalizeNoise } from "../../utils/utils";
-import { Noise } from "../PerlinNoise";
-import Stroke from "../svgPolylines/Stroke";
-import Texture from "./Texture";
-import PRNG from "../PRNG";
-import SvgPolyline from "../SvgPolyline";
 import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Perlin from "../Perlin";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
+import Texture from "./Texture";
+import { normalizeNoise } from "../../utils/utils";
 
 /**
  * Represents a rock with varying heights and textures.
  */
 export default class Rock extends ComplexSvg {
     /**
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
      * @param {number} [seed=0] - The seed for the noise function. Default is 0.
@@ -21,7 +20,6 @@ export default class Rock extends ComplexSvg {
      * @param {number} [strokeWidth=100] - The width of the rock. Default is 100.
      */
     constructor(
-        private prng: PRNG,
         private xOffset: number,
         private yOffset: number,
         private seed: number = 0,
@@ -40,7 +38,7 @@ export default class Rock extends ComplexSvg {
 
             const noiseArray = [];
             for (let j = 0; j < reso[1]; j++) {
-                noiseArray.push(Noise.noise(this.prng, i, j * 0.2, this.seed));
+                noiseArray.push(Perlin.noise(i, j * 0.2, this.seed));
             }
             normalizeNoise(noiseArray);
 
@@ -84,7 +82,6 @@ export default class Rock extends ComplexSvg {
         // OUTLINE
         this.add(
             new Stroke(
-                this.prng,
                 pointArray[0].map(
                     (p) => new Point(p.x + this.xOffset, p.y + this.yOffset)
                 ),
@@ -98,13 +95,12 @@ export default class Rock extends ComplexSvg {
         // TEXTURE
         this.add(
             new Texture(
-                this.prng,
                 pointArray,
                 this.xOffset,
                 this.yOffset,
                 textureCount,
                 this.shadow,
-                () => 0.5 + this.prng.randomSign() * this.prng.random(0.2, 0.35)
+                () => 0.5 + PRNG.randomSign() * PRNG.random(0.2, 0.35)
             )
         );
     }

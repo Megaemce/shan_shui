@@ -1,5 +1,5 @@
-import ISvgElement from "../interfaces/ISvgElement";
 import IPoint from "../interfaces/IPoint";
+import ISvgElement from "../interfaces/ISvgElement";
 
 /**
  * Represents a point in SVG coordinates.

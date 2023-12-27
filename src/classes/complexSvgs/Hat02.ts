@@ -1,9 +1,9 @@
-import Point from "../Point";
+import ComplexSvg from "../ComplexSvg";
 import PRNG from "../PRNG";
+import Perlin from "../Perlin";
+import Point from "../Point";
 import SvgPolyline from "../SvgPolyline";
 import { transformPolyline, flipPolyline } from "../../utils/polytools";
-import { Noise } from "../PerlinNoise";
-import ComplexSvg from "../ComplexSvg";
 
 /**
  * Class representing a hat (version 02) using procedural generation.
@@ -11,18 +11,11 @@ import ComplexSvg from "../ComplexSvg";
 export default class Hat02 extends ComplexSvg {
     /**
      * Constructs a Hat02 instance.
-     *
-     * @param {PRNG} prng - The pseudorandom number generator.
      * @param {Point} p0 - The starting point of the line segment.
      * @param {Point} p1 - The ending point of the line segment.
      * @param {boolean} [horizontalFlip=false] - Indicates whether to horizontally flip the hat.
      */
-    constructor(
-        prng: PRNG,
-        p0: Point,
-        p1: Point,
-        horizontalFlip: boolean = false
-    ) {
+    constructor(p0: Point, p1: Point, horizontalFlip: boolean = false) {
         super();
         const shapePoint = [
             new Point(-0.3, 0.5),
@@ -49,7 +42,7 @@ export default class Hat02 extends ComplexSvg {
         for (let i = 0; i < 10; i++) {
             qlist1.push(
                 new Point(
-                    -0.3 - Noise.noise(prng, i * 0.2, prng.random()) * i * 0.1,
+                    -0.3 - Perlin.noise(i * 0.2, PRNG.random()) * i * 0.1,
                     0.5 - i * 0.3
                 )
             );

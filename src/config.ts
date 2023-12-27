@@ -1,9 +1,6 @@
 export const config = {
     chunks: {
         boat: {
-            /**
-             * example
-             */
             defaultScale: 1,
             defaultFlip: false,
             defaultLength: 120,

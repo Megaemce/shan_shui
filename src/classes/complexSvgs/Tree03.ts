@@ -1,9 +1,9 @@
-import ComplexSvg from "../ComplexSvg";
-import { Noise } from "../PerlinNoise";
-import Point from "../Point";
-import PRNG from "../PRNG";
-import SvgPolyline from "../SvgPolyline";
 import Blob from "../svgPolylines/Blob";
+import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Perlin from "../Perlin";
+import Point from "../Point";
+import SvgPolyline from "../SvgPolyline";
 
 /**
  * Generates a tree with branches and leaves influenced by a custom bending function.
@@ -11,7 +11,6 @@ import Blob from "../svgPolylines/Blob";
 export default class Tree03 extends ComplexSvg {
     /**
      * Constructor for the Tree03Generator class.
-     * @param prng - The pseudo-random number generator.
      * @param x - X-coordinate of the tree base.
      * @param y - Y-coordinate of the tree base.
      * @param height - Height of the tree.
@@ -19,7 +18,6 @@ export default class Tree03 extends ComplexSvg {
      * @param bendingAngle - Custom bending function.
      */
     constructor(
-        prng: PRNG,
         x: number,
         y: number,
         height: number = 16,
@@ -29,13 +27,13 @@ export default class Tree03 extends ComplexSvg {
         super();
 
         const strokeWidth: number = 5;
-
         const reso = 10;
         const noiseArray = [];
+
         for (let i = 0; i < reso; i++) {
             noiseArray.push([
-                Noise.noise(prng, i * 0.5),
-                Noise.noise(prng, i * 0.5, 0.5),
+                Perlin.noise(i * 0.5),
+                Perlin.noise(i * 0.5, 0.5),
             ]);
         }
 
@@ -54,23 +52,22 @@ export default class Tree03 extends ComplexSvg {
                 for (let j = 0; j < (reso - i) * 2; j++) {
                     const shape = (x: number) => Math.log(50 * x + 1) / 3.95;
                     const ox =
-                        prng.random(0, 2) *
+                        PRNG.random(0, 2) *
                         strokeWidth *
                         shape((reso - i) / reso);
                     const lcol = `rgba(${leafcol[0]},${leafcol[1]},${
                         leafcol[2]
-                    },${(prng.random(0, 0.2) + parseFloat(leafcol[3])).toFixed(
+                    },${(PRNG.random(0, 0.2) + parseFloat(leafcol[3])).toFixed(
                         3
                     )})`;
                     this.add(
                         new Blob(
-                            prng,
-                            newX + ox * prng.randomChoice([-1, 1]),
-                            newY + prng.random(-1, 1) * strokeWidth,
-                            (prng.random(-0.5, 0.5) * Math.PI) / 6,
+                            newX + ox * PRNG.randomChoice([-1, 1]),
+                            newY + PRNG.random(-1, 1) * strokeWidth,
+                            (PRNG.random(-0.5, 0.5) * Math.PI) / 6,
                             lcol,
                             ox * 2,
-                            prng.random(3, 9)
+                            PRNG.random(3, 9)
                         )
                     );
                 }

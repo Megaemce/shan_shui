@@ -1,13 +1,12 @@
-import PRNG from "../PRNG";
-import Man from "./Man";
-import Hut from "./Hut";
 import Box from "./Box";
-import Rail from "./Rail";
 import ComplexSvg from "../ComplexSvg";
+import Hut from "./Hut";
+import Man from "./Man";
+import PRNG from "../PRNG";
+import Rail from "./Rail";
 
 export default class Pavilion extends ComplexSvg {
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         seed: number = 0,
@@ -17,15 +16,14 @@ export default class Pavilion extends ComplexSvg {
     ) {
         super();
 
-        const p = prng.random(0.4, 0.6);
+        const p = PRNG.random(0.4, 0.6);
         const h0 = height * p;
         const h1 = height * (1 - p);
 
-        this.add(new Hut(prng, xOffset, yOffset - height, h0, strokeWidth));
+        this.add(new Hut(xOffset, yOffset - height, h0, strokeWidth));
 
         this.add(
             new Box(
-                prng,
                 xOffset,
                 yOffset,
                 h1,
@@ -39,7 +37,6 @@ export default class Pavilion extends ComplexSvg {
 
         this.add(
             new Rail(
-                prng,
                 xOffset,
                 yOffset,
                 seed,
@@ -47,32 +44,30 @@ export default class Pavilion extends ComplexSvg {
                 10,
                 strokeWidth,
                 perspective * 2,
-                Math.floor(prng.random(3, 6)),
+                Math.floor(PRNG.random(3, 6)),
                 false
             )
         );
 
-        const people = prng.randomChoice([0, 1, 1, 2]);
+        const people = PRNG.randomChoice([0, 1, 1, 2]);
         if (people === 1) {
             this.add(
                 new Man(
-                    prng,
                     xOffset +
-                        prng.normalizedRandom(
+                        PRNG.normalizedRandom(
                             -strokeWidth / 3,
                             strokeWidth / 3
                         ),
                     yOffset,
-                    prng.randomChoice([true, false]),
+                    PRNG.randomChoice([true, false]),
                     0.42
                 )
             );
         } else if (people === 2) {
             this.add(
                 new Man(
-                    prng,
                     xOffset +
-                        prng.normalizedRandom(
+                        PRNG.normalizedRandom(
                             -strokeWidth / 4,
                             -strokeWidth / 5
                         ),
@@ -83,9 +78,8 @@ export default class Pavilion extends ComplexSvg {
             );
             this.add(
                 new Man(
-                    prng,
                     xOffset +
-                        prng.normalizedRandom(strokeWidth / 5, strokeWidth / 4),
+                        PRNG.normalizedRandom(strokeWidth / 5, strokeWidth / 4),
                     yOffset,
                     true,
                     0.42
@@ -95,7 +89,6 @@ export default class Pavilion extends ComplexSvg {
 
         this.add(
             new Rail(
-                prng,
                 xOffset,
                 yOffset,
                 seed,
@@ -103,7 +96,7 @@ export default class Pavilion extends ComplexSvg {
                 10,
                 strokeWidth,
                 perspective * 2,
-                Math.floor(prng.random(3, 6)),
+                Math.floor(PRNG.random(3, 6)),
                 true
             )
         );
