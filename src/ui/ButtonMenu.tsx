@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import "./styles.css";
-import IButtonSet from "../interfaces/IButtonSet";
+import IButtonMenu from "../interfaces/IButtonMenu";
 
-export const ButtonSet: React.FC<IButtonSet> = ({
+export const ButtonMenu: React.FC<IButtonMenu> = ({
     menu_visible,
     left,
     onClick,

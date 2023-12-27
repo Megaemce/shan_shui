@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ButtonSet } from "./ButtonSet";
+import { ButtonMenu } from "./ButtonMenu";
 import { ButtonSource } from "./ButtonSource";
 import { Menu } from "./Menu";
 import "./styles.css";
@@ -29,7 +29,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     return (
         <div id="SETTING" style={{ left }}>
             <div id="BTN_ROW">
-                <ButtonSet
+                <ButtonMenu
                     onClick={toggleVisible}
                     menu_visible={menuVisible}
                     left={left}

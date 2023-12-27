@@ -3,7 +3,7 @@
  *
  * @interface
  */
-export default interface IButtonSet {
+export default interface IButtonMenu {
     /**
      * Indicates whether the menu is visible.
      *
