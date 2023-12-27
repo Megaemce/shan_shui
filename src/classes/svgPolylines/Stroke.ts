@@ -1,8 +1,8 @@
-import { config } from "../../config";
+import PRNG from "../PRNG";
 import Perlin from "../Perlin";
 import Point from "../Point";
-import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
+import { config } from "../../config";
 
 const DEFAULTFILLCOLOR = config.svgPolyline.stroke.defaultFillColor;
 const DEFAULTNOISE = config.svgPolyline.stroke.defaultNoise;
@@ -16,8 +16,6 @@ const DEFAULTWIDTH = config.svgPolyline.stroke.defaultWidth;
 export default class Stroke extends SvgPolyline {
     /**
      * Constructs a Stroke instance.
-     *
-     * @param {PRNG} prng - PRNG instance for random number generation.
      * @param {Point[]} pointArray - List of points defining the stroke.
      * @param {string} [fillColor=DEFAULTFILLCOLOR] - Fill color for the stroke.
      * @param {string} [color=DEFAULTSTROKECOLOR] - Stroke color.
@@ -27,7 +25,6 @@ export default class Stroke extends SvgPolyline {
      * @param {(x: number) => number} [strokeWidthFunction=(x: number) => Math.sin(x * Math.PI)] - Function to modulate stroke width.
      */
     constructor(
-        prng: PRNG,
         pointArray: Point[],
         fillColor: string = DEFAULTFILLCOLOR,
         color: string = DEFAULTSTROKECOLOR,
@@ -44,9 +41,7 @@ export default class Stroke extends SvgPolyline {
             let newWidth = width * strokeWidthFunction(i / pointArray.length);
             newWidth =
                 newWidth * (1 - noise) +
-                newWidth *
-                    noise *
-                    Perlin.noise(prng, i * 0.5, prng.random(0, 10));
+                newWidth * noise * Perlin.noise(i * 0.5, PRNG.random(0, 10));
 
             const a1 = Math.atan2(
                 pointArray[i].y - pointArray[i - 1].y,

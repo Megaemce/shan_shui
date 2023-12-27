@@ -1,15 +1,13 @@
-import Point from "../Point";
-import PRNG from "../PRNG";
-import { lineDivider } from "../../utils/polytools";
 import ComplexSvg from "../ComplexSvg";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
 import SvgPolyline from "../SvgPolyline";
 import SvgText from "../SvgText";
-import Stroke from "../svgPolylines/Stroke";
+import { lineDivider } from "../../utils/polytools";
 import { midPoint } from "../../utils/polytools";
 
 export default class Roof extends ComplexSvg {
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         height: number = 20,
@@ -111,7 +109,6 @@ export default class Roof extends ComplexSvg {
         for (let i = 0; i < pointArray.length; i++) {
             this.add(
                 new Stroke(
-                    prng,
                     pointArray[i].map(
                         (p) => new Point(p.x + xOffset, p.y + yOffset)
                     ),

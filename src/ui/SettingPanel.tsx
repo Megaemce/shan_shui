@@ -15,7 +15,6 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     chunkCache,
     windowWidth,
     windowHeight,
-    prng,
     saveRange,
     onChangeSaveRange,
     toggleAutoLoad,
@@ -49,7 +48,6 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                     chunkCache={chunkCache}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
-                    prng={prng}
                     saveRange={saveRange}
                     onChangeSaveRange={onChangeSaveRange}
                     toggleAutoLoad={toggleAutoLoad}

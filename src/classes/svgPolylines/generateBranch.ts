@@ -1,7 +1,7 @@
-import { config } from "../../config";
+import PRNG from "../PRNG";
 import Perlin from "../Perlin";
 import Point from "../Point";
-import PRNG from "../PRNG";
+import { config } from "../../config";
 
 const DEFAULTHEIGHT = config.svgPolyline.branch.defaultHeight;
 const DEFAULTSTROKEWIDTH = config.svgPolyline.branch.defaultStrokeWidth;
@@ -12,7 +12,6 @@ const DEFAULTDETAILS = config.svgPolyline.branch.defaultDetails;
 /**
  * Generates a list of points representing a branch structure.
  *
- * @param {PRNG} prng - The pseudo-random number generator.
  * @param {number} [height=DEFAULTHEIGHT] - Height of the branch.
  * @param {number} [strokeWidth=DEFAULTSTROKEWIDTH] - Width of the branch.
  * @param {number} [angle=DEFAULTANGLE] - Initial angle of the branch.
@@ -22,7 +21,6 @@ const DEFAULTDETAILS = config.svgPolyline.branch.defaultDetails;
  */
 
 export default function generateBranch(
-    prng: PRNG,
     height: number = DEFAULTHEIGHT,
     strokeWidth: number = DEFAULTSTROKEWIDTH,
     angle: number = DEFAULTANGLE,
@@ -40,7 +38,7 @@ export default function generateBranch(
 
     for (let i = 0; i < g; i++) {
         i === 0 && branches.push(new Point(0, 0));
-        angle0 += ((prng.random(1, 2) * bendingAngle) / 2) * prng.randomSign();
+        angle0 += ((PRNG.random(1, 2) * bendingAngle) / 2) * PRNG.randomSign();
         newPoint.x += (Math.cos(angle0) * height) / g;
         newPoint.y -= (Math.sin(angle0) * height) / g;
         branches.push(new Point(newPoint.x, newPoint.y));
@@ -74,11 +72,11 @@ export default function generateBranch(
             weightedPoint.x - prevPoint.x
         );
         const widthOffset =
-            ((Perlin.noise(prng, i * 0.3) - 0.5) * strokeWidth * height) / 80;
+            ((Perlin.noise(i * 0.3) - 0.5) * strokeWidth * height) / 80;
 
         let randomness = 0;
         if (p === 0) {
-            randomness = prng.random() * strokeWidth;
+            randomness = PRNG.random() * strokeWidth;
         }
 
         const newWidth =

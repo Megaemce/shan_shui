@@ -1,16 +1,14 @@
-import Point from "../Point";
-import PRNG from "../PRNG";
-import SvgPolyline from "../SvgPolyline";
-import Stroke from "../svgPolylines/Stroke";
-import { lineDivider } from "../../utils/polytools";
 import ComplexSvg from "../ComplexSvg";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
+import { lineDivider } from "../../utils/polytools";
 
 /**
  * Represents Pagoda Roof SVG elements.
  */
 export default class PagodaRoof extends ComplexSvg {
     /**
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-coordinate offset.
      * @param {number} yOffset - The y-coordinate offset.
      * @param {number} [height=20] - The height of the Pagoda Roof.
@@ -19,7 +17,6 @@ export default class PagodaRoof extends ComplexSvg {
      * @param {number} [perspective=4] - The perspective parameter for Pagoda Roof generation.
      */
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         height: number = 20,
@@ -58,7 +55,6 @@ export default class PagodaRoof extends ComplexSvg {
         for (let i = 0; i < pointArray.length; i++) {
             this.add(
                 new Stroke(
-                    prng,
                     lineDivider(pointArray[i], 5).map(
                         (point) =>
                             new Point(point.x + xOffset, point.y + yOffset)

@@ -1,7 +1,7 @@
 // Modified from https://raw.githubusercontent.com/processing/p5.js/master/src/math/noise.js
+import PRNG from "./PRNG";
 import { config } from "../config";
 import { scaledCosine } from "../utils/utils";
-import PRNG from "./PRNG";
 
 const PERLIN_AMP_FALLOFF = config.perlin.ampFalloff;
 const PERLIN_OCTAVES = config.perlin.octaves;
@@ -25,11 +25,11 @@ export default class Perlin {
      * @param z - The z-coordinate.
      * @returns The Perlin noise value at the specified point.
      */
-    static noise(prng: PRNG, x: number, y: number = 0, z: number = 0): number {
+    static noise(x: number, y: number = 0, z: number = 0): number {
         if (this.perlin === undefined) {
             this.perlin = new Array(PERLIN_SIZE + 1);
             for (let i = 0; i < PERLIN_SIZE + 1; i++) {
-                this.perlin[i] = prng.random();
+                this.perlin[i] = PRNG.random();
             }
         }
 

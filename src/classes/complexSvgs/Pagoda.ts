@@ -1,24 +1,21 @@
-import Point from "../Point";
-import PRNG from "../PRNG";
-import ComplexSvg from "../ComplexSvg";
 import Box from "./Box";
-import generateDecoration from "../svgPolylines/generateDecoration";
-import Rail from "./Rail";
+import ComplexSvg from "../ComplexSvg";
 import PagodaRoof from "./PagodaRoof";
+import Point from "../Point";
+import Rail from "./Rail";
+import generateDecoration from "../svgPolylines/generateDecoration";
 
 /**
  * Represents a series of arch structures with decreasing size.
  */
 export default class Pagoda extends ComplexSvg {
     /**
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-coordinate offset for the arches.
      * @param {number} yOffset - The y-coordinate offset for the arches.
      * @param {number} [strokeWidth=50] - The initial stroke width of the arches.
      * @param {number} [stories=7] - The number of arches to generate.
      */
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         strokeWidth: number = 50,
@@ -51,7 +48,6 @@ export default class Pagoda extends ComplexSvg {
         for (let i = 0; i < stories; i++) {
             this.add(
                 new Box(
-                    prng,
                     xOffset,
                     yOffset - heightOffset,
                     height,
@@ -66,7 +62,6 @@ export default class Pagoda extends ComplexSvg {
             );
             this.add(
                 new Rail(
-                    prng,
                     xOffset,
                     yOffset - heightOffset,
                     i * 0.2,
@@ -82,7 +77,6 @@ export default class Pagoda extends ComplexSvg {
             );
             this.add(
                 new PagodaRoof(
-                    prng,
                     xOffset,
                     yOffset - heightOffset - height,
                     height * 1.5,

@@ -1,23 +1,23 @@
-import Point from "../Point";
-import Perlin from "../Perlin";
+import Chunk from "../Chunk";
+import ComplexSvg from "../ComplexSvg";
+import House from "../complexSvgs/House";
+import MountainFoot from "../complexSvgs/MountainFoot";
 import PRNG from "../PRNG";
+import Pagoda from "../complexSvgs/Pagoda";
+import Perlin from "../Perlin";
+import Point from "../Point";
+import Rock from "../complexSvgs/Rock";
+import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
+import Texture from "../complexSvgs/Texture";
+import TransmissionTower from "../complexSvgs/TransmissionTower";
 import Tree01 from "../complexSvgs/Tree01";
 import Tree02 from "../complexSvgs/Tree02";
 import Tree03 from "../complexSvgs/Tree03";
-import House from "../complexSvgs/House";
-import TransmissionTower from "../complexSvgs/TransmissionTower";
-import Pagoda from "../complexSvgs/Pagoda";
 import generateTower from "../complexSvgs/Tower";
-import Rock from "../complexSvgs/Rock";
-import MountainFoot from "../complexSvgs/MountainFoot";
-import Stroke from "../svgPolylines/Stroke";
-import Texture from "../complexSvgs/Texture";
-import SvgPolyline from "../SvgPolyline";
-import Chunk from "../Chunk";
-import { distance } from "../../utils/polytools";
-import ComplexSvg from "../ComplexSvg";
-import { generateVegetate } from "../../utils/generateVegetate";
 import { config } from "../../config";
+import { distance } from "../../utils/polytools";
+import { generateVegetate } from "../../utils/generateVegetate";
 
 const BACKGROUNDFILLCOLOR = config.chunks.mountain.background.fillColor;
 const BACKGROUNDSTROKECOLOR = config.chunks.mountain.background.strokeColor;
@@ -47,21 +47,19 @@ export default class MountainChunk extends Chunk {
     /**
      * Constructor for generating a mountainous landscape with various elements.
      *
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
      * @param {number} [seed=DEFAULTSEED] - The seed for noise functions.
-     * @param {number} [height = prng.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX)] - The height of the mountain.
-     * @param {number} [width = prng.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)] - The width of the mountain.
+     * @param {number} [height =PRNG.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX)] - The height of the mountain.
+     * @param {number} [width =PRNG.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)] - The width of the mountain.
 
      */
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         seed: number = DEFAULTSEED,
-        height: number = prng.random(DEFAULTHEIGTHMIN, DEFAULTHEIGTHMAX),
-        width: number = prng.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)
+        height: number = PRNG.random(DEFAULTHEIGTHMIN, DEFAULTHEIGTHMAX),
+        width: number = PRNG.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)
     ) {
         super("mount", xOffset, yOffset);
 
@@ -71,13 +69,12 @@ export default class MountainChunk extends Chunk {
         let heightOffset = 0;
 
         for (let j = 0; j < reso[0]; j++) {
-            heightOffset += prng.random(0, yOffset / 100);
+            heightOffset += PRNG.random(0, yOffset / 100);
             pointArray.push([]);
 
             for (let i = 0; i < reso[1]; i++) {
                 const x = (i / reso[1] - 0.5) * Math.PI;
-                const y =
-                    Math.cos(x) * Perlin.noise(prng, x + 10, j * 0.15, seed);
+                const y = Math.cos(x) * Perlin.noise(x + 10, j * 0.15, seed);
 
                 const p = 1 - j / reso[0];
                 pointArray[pointArray.length - 1].push(
@@ -95,10 +92,9 @@ export default class MountainChunk extends Chunk {
             pointArray,
             function (x, y) {
                 const noise =
-                    Perlin.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5;
+                    Perlin.noise(0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5;
 
                 return new Tree02(
-                    prng,
                     x + xOffset,
                     y + yOffset - 5,
                     RIMCOLORNOALFA + noise.toFixed(3) + ")",
@@ -106,7 +102,7 @@ export default class MountainChunk extends Chunk {
                 );
             },
             function (i, j) {
-                const noise = Perlin.noise(prng, j * 0.1, seed);
+                const noise = Perlin.noise(j * 0.1, seed);
                 return (
                     i === 0 &&
                     noise * noise * noise < 0.1 &&
@@ -131,7 +127,6 @@ export default class MountainChunk extends Chunk {
         // OUTLINE
         this.add(
             new Stroke(
-                prng,
                 pointArray[0].map(function (p) {
                     return new Point(p.x + xOffset, p.y + yOffset);
                 }),
@@ -142,16 +137,15 @@ export default class MountainChunk extends Chunk {
             )
         );
 
-        this.add(new MountainFoot(prng, pointArray, xOffset, yOffset));
+        this.add(new MountainFoot(pointArray, xOffset, yOffset));
 
         this.add(
             new Texture(
-                prng,
                 pointArray,
                 xOffset,
                 yOffset,
                 TEXTURESIZE,
-                prng.randomChoice([2, 1, 3])
+                PRNG.randomChoice([2, 1, 3])
             )
         );
 
@@ -160,17 +154,16 @@ export default class MountainChunk extends Chunk {
             pointArray,
             function (x, y) {
                 const noise =
-                    Perlin.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5;
+                    Perlin.noise(0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5;
 
                 return new Tree02(
-                    prng,
                     x + xOffset,
                     y + yOffset,
                     TOPCOLORNOALFA + noise.toFixed(3) + ")"
                 );
             },
             function (i, j) {
-                const noise = Perlin.noise(prng, i * 0.1, j * 0.1, seed + 2);
+                const noise = Perlin.noise(i * 0.1, j * 0.1, seed + 2);
                 return (
                     Math.pow(noise, 3) < 0.1 &&
                     Math.abs(pointArray[i][j].y) / height > 0.5
@@ -187,22 +180,20 @@ export default class MountainChunk extends Chunk {
                 pointArray,
                 function (x, y) {
                     const treeHeight =
-                        ((height + y) / height) * 70 * prng.random(0.3, 1);
+                        ((height + y) / height) * 70 * PRNG.random(0.3, 1);
                     const noise =
-                        Perlin.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 +
-                        0.3;
+                        Perlin.noise(0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.3;
 
                     return new Tree01(
-                        prng,
                         x + xOffset,
                         y + yOffset,
                         treeHeight,
-                        prng.random(1, 4),
+                        PRNG.random(1, 4),
                         MIDDLECOLORNOALFA + noise.toFixed(3) + ")"
                     );
                 },
                 function (i, j): boolean {
-                    const noise = Perlin.noise(prng, i * 0.2, j * 0.05, seed);
+                    const noise = Perlin.noise(i * 0.2, j * 0.05, seed);
                     return (
                         j % 2 !== 0 &&
                         Math.pow(noise, 4) < 0.012 &&
@@ -227,15 +218,13 @@ export default class MountainChunk extends Chunk {
                 pointArray,
                 function (x, y) {
                     const treeHeight =
-                        ((height + y) / height) * prng.random(60, 120);
-                    const baseCurve = prng.random(0, 0.1);
+                        ((height + y) / height) * PRNG.random(60, 120);
+                    const baseCurve = PRNG.random(0, 0.1);
                     const basePower = 1;
                     const noise =
-                        Perlin.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 +
-                        0.3;
+                        Perlin.noise(0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.3;
 
                     return new Tree03(
-                        prng,
                         x + xOffset,
                         y + yOffset,
                         treeHeight,
@@ -244,7 +233,7 @@ export default class MountainChunk extends Chunk {
                     );
                 },
                 function (i, j) {
-                    const noise = Perlin.noise(prng, i * 0.2, j * 0.05, seed);
+                    const noise = Perlin.noise(i * 0.2, j * 0.05, seed);
                     return (
                         (j === 0 || j === pointArray[i].length - 1) &&
                         Math.pow(noise, 4) < 0.012
@@ -260,31 +249,29 @@ export default class MountainChunk extends Chunk {
         generateVegetate(
             pointArray,
             function (x, y): ComplexSvg {
-                const treeType = prng.randomChoice([0, 0, 1, 1, 1, 2]);
+                const treeType = PRNG.randomChoice([0, 0, 1, 1, 1, 2]);
 
                 if (treeType === 1) {
                     return new House(
-                        prng,
                         x + xOffset,
                         y + yOffset,
-                        prng.normalizedRandom(40, 70),
-                        prng.randomChoice([1, 2, 2, 3]),
-                        prng.random(),
-                        prng.randomChoice([1, 2, 3])
+                        PRNG.normalizedRandom(40, 70),
+                        PRNG.randomChoice([1, 2, 2, 3]),
+                        PRNG.random(),
+                        PRNG.randomChoice([1, 2, 3])
                     );
                 } else if (treeType === 2) {
                     return new generateTower(
-                        prng,
                         x + xOffset,
                         y + yOffset,
-                        prng.randomChoice([1, 1, 1, 2, 2])
+                        PRNG.randomChoice([1, 1, 1, 2, 2])
                     );
                 }
 
                 return new ComplexSvg();
             },
             function (i, j) {
-                const noise = Perlin.noise(prng, i * 0.2, j * 0.05, seed + 10);
+                const noise = Perlin.noise(i * 0.2, j * 0.05, seed + 10);
                 return (
                     i !== 0 &&
                     (j === 1 || j === pointArray[i].length - 2) &&
@@ -301,18 +288,17 @@ export default class MountainChunk extends Chunk {
             pointArray,
             function (x, y) {
                 return new Pagoda(
-                    prng,
                     x + xOffset,
                     y + yOffset,
-                    prng.random(40, 20),
-                    prng.randomChoice([5, 7])
+                    PRNG.random(40, 20),
+                    PRNG.randomChoice([5, 7])
                 );
             },
             function (i, j) {
                 return (
                     i === 1 &&
                     Math.abs(j - pointArray[i].length / 2) < 1 &&
-                    prng.random() < 0.02
+                    PRNG.random() < 0.02
                 );
             },
             () => true,
@@ -323,11 +309,10 @@ export default class MountainChunk extends Chunk {
         generateVegetate(
             pointArray,
             function (x, y) {
-                return new TransmissionTower(prng, x + xOffset, y + yOffset);
+                return new TransmissionTower(x + xOffset, y + yOffset);
             },
             function (i, j) {
                 const noise = Perlin.noise(
-                    prng,
                     i * 0.2,
                     j * 0.05,
                     seed + 20 * Math.PI
@@ -347,19 +332,18 @@ export default class MountainChunk extends Chunk {
             pointArray,
             function (x, y) {
                 return new Rock(
-                    prng,
                     x + xOffset,
                     y + yOffset,
                     seed,
-                    prng.random(20, 40),
+                    PRNG.random(20, 40),
                     2,
-                    prng.random(20, 40)
+                    PRNG.random(20, 40)
                 );
             },
             function (i, j) {
                 return (
                     (j === 0 || j === pointArray[i].length - 1) &&
-                    prng.random() < 0.1
+                    PRNG.random() < 0.1
                 );
             },
             () => true,

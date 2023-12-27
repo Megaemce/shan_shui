@@ -1,11 +1,11 @@
 import Chunk from "../Chunk";
 import FlatDecoration from "../complexSvgs/FlatDecoration";
 import PRNG from "../PRNG";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import Stroke from "../svgPolylines/Stroke";
 import SvgPolyline from "../SvgPolyline";
 import Texture from "../complexSvgs/Texture";
-import Perlin from "../Perlin";
 import { calculateBoundingBox } from "../../utils/polytools";
 import { config } from "../../config";
 import { lineDivider } from "../../utils/polytools";
@@ -39,22 +39,19 @@ const TEXTURESIZE = config.chunks.flatMountain.texture.size;
 export default class FlatMountainChunk extends Chunk {
     /**
      * Constructor for generating a flat mountain chunk with optional vegetation and textures.
-     *
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
      * @param {number} [seed=DEFAULTSEED] - The seed value for noise functions.
-     * @param {number} [height = prng.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX)] - The height of the mountain.
-     * @param {number} [width = prng.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)] - The width of the mountain.
+     * @param {number} [height =PRNG.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX)] - The height of the mountain.
+     * @param {number} [width =PRNG.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)] - The width of the mountain.
      * @param {number} [flatness=DEFAULTFLATNESS] - Parameter controlling the flatness of the mountain.
      */
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         seed: number = DEFAULTSEED,
-        height: number = prng.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX),
-        width: number = prng.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX),
+        height: number = PRNG.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX),
+        width: number = PRNG.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX),
         flatness: number = DEFAULTFLATNESS
     ) {
         super("flatmount", xOffset, yOffset);
@@ -66,15 +63,14 @@ export default class FlatMountainChunk extends Chunk {
         let heightOffset = 0;
 
         for (let j = 0; j < reso[0]; j++) {
-            heightOffset += prng.random(0, yOffset / 100);
+            heightOffset += PRNG.random(0, yOffset / 100);
             pointArray.push([]);
             flat.push([]);
 
             for (let i = 0; i < reso[1]; i++) {
                 const x = (i / reso[1] - 0.5) * Math.PI;
                 const y =
-                    (Math.cos(x * 2) + 1) *
-                    Perlin.noise(prng, x + 10, j * 0.1, seed);
+                    (Math.cos(x * 2) + 1) * Perlin.noise(x + 10, j * 0.1, seed);
                 const p = 1 - (j / reso[0]) * 0.6;
                 const newX = (x / Math.PI) * width * p;
                 let newY = -y * height * p + heightOffset;
@@ -113,7 +109,6 @@ export default class FlatMountainChunk extends Chunk {
         // OUTLINE
         this.add(
             new Stroke(
-                prng,
                 pointArray[0].map(
                     (p) => new Point(p.x + xOffset, p.y + yOffset)
                 ),
@@ -127,13 +122,12 @@ export default class FlatMountainChunk extends Chunk {
         // TEXTURE
         this.add(
             new Texture(
-                prng,
                 pointArray,
                 xOffset,
                 yOffset,
                 TEXTURESIZE,
                 TEXTURESHADOW,
-                () => 0.5 + prng.randomSign() * prng.random(0, 0.4)
+                () => 0.5 + PRNG.randomSign() * PRNG.random(0, 0.4)
             )
         );
 
@@ -182,7 +176,7 @@ export default class FlatMountainChunk extends Chunk {
 
         grlist.forEach((point, i) => {
             const v = (1 - Math.abs((i % d) - d / 2) / (d / 2)) * 0.12;
-            point.x *= 1 - v + Perlin.noise(prng, point.y * 0.5) * v;
+            point.x *= 1 - v + Perlin.noise(point.y * 0.5) * v;
         });
 
         this.add(
@@ -197,7 +191,6 @@ export default class FlatMountainChunk extends Chunk {
         );
         this.add(
             new Stroke(
-                prng,
                 grlist.map((p) => new Point(p.x + xOffset, p.y + yOffset)),
                 STROKEFILLCOLOR,
                 STROKECOLOR,
@@ -206,12 +199,7 @@ export default class FlatMountainChunk extends Chunk {
         );
 
         this.add(
-            new FlatDecoration(
-                prng,
-                xOffset,
-                yOffset,
-                calculateBoundingBox(grlist)
-            )
+            new FlatDecoration(xOffset, yOffset, calculateBoundingBox(grlist))
         );
     }
 }

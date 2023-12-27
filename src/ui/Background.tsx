@@ -8,14 +8,14 @@ const RESOLUTION = config.ui.resolution;
 export default class Background extends React.Component {
     canvasRef = React.createRef<HTMLCanvasElement>();
 
-    generateBackground(prng: PRNG): string | undefined {
+    generateBackground(): string | undefined {
         const ctx = this.canvasRef.current?.getContext("2d");
         if (!ctx) return undefined;
 
         for (let i = 0; i < RESOLUTION / 2 + 1; i++) {
             for (let j = 0; j < RESOLUTION / 2 + 1; j++) {
-                let color = 245 + Perlin.noise(prng, i * 0.1, j * 0.1) * 10;
-                color -= prng.random(0, 20);
+                let color = 245 + Perlin.noise(i * 0.1, j * 0.1) * 10;
+                color -= PRNG.random(0, 20);
 
                 const red = color.toFixed(0);
                 const green = (color * 0.95).toFixed(0);

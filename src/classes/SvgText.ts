@@ -1,5 +1,5 @@
-import ISvgElement from "../interfaces/ISvgElement";
 import ISvgAttributes from "../interfaces/ISvgAttributes";
+import ISvgElement from "../interfaces/ISvgElement";
 import { attributesToString } from "../utils/utils";
 
 /**

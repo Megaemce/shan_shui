@@ -19,7 +19,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     seed,
     currentPosition,
     windowWidth,
-    prng,
+
     chunkCache,
 }) => {
     /** The viewbox string for the SVG element. */
@@ -30,7 +30,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     const newRange = new Range(currentPosition, currentPosition + windowWidth);
 
     // Update the chunk cache based on the current view
-    chunkCache.update(prng, newRange, CANVASWIDTH);
+    chunkCache.update(newRange, CANVASWIDTH);
 
     return (
         <table id="SCROLLABLE_CANVAS">

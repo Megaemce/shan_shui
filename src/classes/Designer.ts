@@ -1,10 +1,10 @@
 import DesignChunk from "./DesignChunk";
 import IChunk from "../interfaces/IChunk";
+import PRNG from "./PRNG";
 import Perlin from "./Perlin";
 import Point from "./Point";
-import PRNG from "./PRNG";
-import { isLocalMaximum } from "../utils/utils";
 import { config } from "../config";
+import { isLocalMaximum } from "../utils/utils";
 
 const BOAT_PROBABILITY = config.designer.boatProbability;
 const DIST_MOUNTAIN_INTERVAL = config.designer.distanceMountainInterval;
@@ -19,25 +19,22 @@ const X_STEP = config.designer.xStep;
  */
 export default class Designer {
     regions: IChunk[] = [];
-    prng: PRNG;
     iMin: number;
     iMax: number;
     xOffset: number;
     /**
      * Generates terrain design chunks based on Perlin noise.
-     * @param {PRNG} prng - The pseudorandom number generator.
      * @param {number} xMin - The minimum x-coordinate for generation.
      * @param {number} xMax - The maximum x-coordinate for generation.
      */
-    constructor(prng: PRNG, xMin: number, xMax: number) {
-        this.prng = prng;
+    constructor(xMin: number, xMax: number) {
         this.iMin = Math.floor(xMin / X_STEP);
         this.iMax = Math.floor(xMax / X_STEP);
         this.xOffset = (xMin % X_STEP) + (xMin < 0 ? 1 : 0) * X_STEP;
 
-        const yRange = (x: number) => Perlin.noise(prng, x * 0.01, Math.PI);
+        const yRange = (x: number) => Perlin.noise(x * 0.01, Math.PI);
         const noiseFunction = (point: Point) =>
-            Math.max(Perlin.noise(prng, point.x * NOISE_SAMPLE) - 0.55, 0) * 2;
+            Math.max(Perlin.noise(point.x * NOISE_SAMPLE) - 0.55, 0) * 2;
 
         this.generateMountainChunks(noiseFunction, yRange);
         this.generateFlatMountainChunks();
@@ -52,12 +49,12 @@ export default class Designer {
         const localRegion: IChunk[] = [];
 
         for (let i = this.iMin; i < this.iMax; i++) {
-            if (this.prng.random() < BOAT_PROBABILITY) {
+            if (PRNG.random() < BOAT_PROBABILITY) {
                 const x = i * X_STEP + this.xOffset;
                 const boatChunk = new DesignChunk(
                     "boat",
                     x,
-                    this.prng.random(300, 690)
+                    PRNG.random(300, 690)
                 );
 
                 if (this.needsAdding(localRegion, boatChunk, 400)) {
@@ -94,7 +91,7 @@ export default class Designer {
                         MOUNTAIN_RADIUS
                     )
                 ) {
-                    const xOffset = x + this.prng.random(-500, 500);
+                    const xOffset = x + PRNG.random(-500, 500);
                     const yOffset = y + 300;
 
                     const mountainChunk = new DesignChunk(
@@ -116,7 +113,7 @@ export default class Designer {
                 const distMountainChunk = new DesignChunk(
                     "distmount",
                     x,
-                    this.prng.random(230, 280)
+                    PRNG.random(230, 280)
                 );
 
                 if (this.needsAdding(localRegion, distMountainChunk)) {
@@ -139,11 +136,11 @@ export default class Designer {
         for (let i = this.iMin; i < this.iMax; i++) {
             const x = i * X_STEP + this.xOffset;
 
-            if (this.prng.random() < FLAT_MOUNTAIN_PROBABILITY) {
-                for (let j = 0; j < this.prng.random(0, 4); j++) {
+            if (PRNG.random() < FLAT_MOUNTAIN_PROBABILITY) {
+                for (let j = 0; j < PRNG.random(0, 4); j++) {
                     const flatMountainChunk = new DesignChunk(
                         "flatmount",
-                        x + this.prng.random(-700, 700),
+                        x + PRNG.random(-700, 700),
                         700 - j * 50
                     );
 

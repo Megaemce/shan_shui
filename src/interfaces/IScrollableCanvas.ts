@@ -1,4 +1,3 @@
-import PRNG from "../classes/PRNG";
 import ChunkCache from "../classes/ChunkCache";
 
 /**
@@ -55,7 +54,6 @@ export interface IScrollableCanvas {
      *
      * @type {PRNG}
      */
-    prng: PRNG;
 
     /**
      * ChunkCache instance for caching and managing chunks.

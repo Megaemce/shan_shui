@@ -20,7 +20,6 @@ export const App: React.FC = () => {
 
     // Refs for accessing child components
     const backgroundRef = useRef<Background>(null);
-    const prngRef = useRef(new PRNG());
     const chunkCacheRef = useRef(new ChunkCache());
 
     // State variables
@@ -78,14 +77,14 @@ export const App: React.FC = () => {
      * Effect to handle changes in the PRNG seed.
      */
     useEffect(() => {
-        prngRef.current.seed = seed;
+        PRNG.seed = seed;
     }, [seed]);
 
     /**
      * Effect to update the background image and handle window resize events.
      */
     useEffect(() => {
-        const url = backgroundRef.current?.generateBackground(prngRef.current);
+        const url = backgroundRef.current?.generateBackground();
         setBackgroundImage(url);
 
         const resizeCallback = () => {
@@ -98,7 +97,7 @@ export const App: React.FC = () => {
         return () => {
             window.removeEventListener("resize", resizeCallback);
         };
-    }, [prngRef, seed]);
+    }, [seed]);
 
     /**
      * Callback function to handle horizontal scrolling.
@@ -167,7 +166,6 @@ export const App: React.FC = () => {
                     chunkCache={chunkCacheRef.current}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
-                    prng={prngRef.current}
                     saveRange={saveRange}
                     onChangeSaveRange={onChangeSaveRange}
                     toggleAutoLoad={toggleAutoLoad}
@@ -179,7 +177,6 @@ export const App: React.FC = () => {
                     seed={seed}
                     currentPosition={currentPosition}
                     windowWidth={windowWidth}
-                    prng={prngRef.current}
                     chunkCache={chunkCacheRef.current}
                 />
             </div>

@@ -1,8 +1,8 @@
 import Chunk from "../Chunk";
 import PRNG from "../PRNG";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import Stroke from "../svgPolylines/Stroke";
-import Perlin from "../Perlin";
 import { config } from "../../config";
 
 const COLORNOALFA = config.chunks.water.colorNoAlfa;
@@ -18,8 +18,6 @@ const DEFAULTWIDTH = config.chunks.water.defaultWidth;
 export default class WaterChunk extends Chunk {
     /**
      * Creates an instance of WaterChunk.
-     *
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - X-coordinate offset for the chunk.
      * @param {number} yOffset - Y-coordinate offset for the chunk.
      * @param {number} [height=DEFAULTHEIGTH] - Height of the waves.
@@ -28,7 +26,6 @@ export default class WaterChunk extends Chunk {
      */
 
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         height: number = DEFAULTHEIGTH,
@@ -44,18 +41,16 @@ export default class WaterChunk extends Chunk {
         for (let i = 0; i < waveClusters; i++) {
             pointArray.push([]);
 
-            const xk = (prng.random(-0.5, 0.5) * width) / 8;
-            const lk = width * prng.random(0.25, 0.5);
+            const xk = (PRNG.random(-0.5, 0.5) * width) / 8;
+            const lk = width * PRNG.random(0.25, 0.5);
 
-            yk += prng.random(0, 5);
+            yk += PRNG.random(0, 5);
 
             for (let j = -lk; j < lk; j += reso) {
                 pointArray[pointArray.length - 1].push(
                     new Point(
                         j + xk,
-                        Math.sin(j * 0.2) *
-                            height *
-                            Perlin.noise(prng, j * 0.1) -
+                        Math.sin(j * 0.2) * height * Perlin.noise(j * 0.1) -
                             20 +
                             yk
                     )
@@ -64,12 +59,12 @@ export default class WaterChunk extends Chunk {
         }
 
         for (let j = 1; j < pointArray.length; j += 1) {
-            const color = COLORNOALFA + prng.random(0.3, 0.6).toFixed(3) + ")";
+            const color = COLORNOALFA + PRNG.random(0.3, 0.6).toFixed(3) + ")";
             const translatedPoints = pointArray[j].map(
                 (point) => new Point(point.x + xOffset, point.y + yOffset)
             );
 
-            this.add(new Stroke(prng, translatedPoints, color, color));
+            this.add(new Stroke(translatedPoints, color, color));
         }
     }
 }

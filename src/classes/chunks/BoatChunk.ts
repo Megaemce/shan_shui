@@ -1,9 +1,8 @@
 import Chunk from "../Chunk";
-import Point from "../Point";
-import PRNG from "../PRNG";
-import SvgPolyline from "../SvgPolyline";
-import Stroke from "../svgPolylines/Stroke";
 import Man from "../complexSvgs/Man";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
 import { config } from "../../config";
 
 const BOATFILLCOLOR = config.chunks.boat.boat.fillColor;
@@ -25,15 +24,12 @@ const STROKEWIDTH = config.chunks.boat.stroke.width;
 export default class BoatChunk extends Chunk {
     /**
      * Constructor for the Boat class.
-     *
-     * @param {PRNG} prng - The PRNG object used for random number generation.
      * @param {number} xOffset - The x-coordinate offset for the boat.
      * @param {number} yOffset - The y-coordinate offset for the boat.
      * @param {number} [scale=DEFAULTSCALE] - The scale of the boat.
      * @param {boolean} [flip=DEFAULTFLIP] - Whether to flip the boat horizontally.
      */
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         scale: number = DEFAULTSCALE,
@@ -44,7 +40,6 @@ export default class BoatChunk extends Chunk {
         const direction = flip ? -1 : 1;
         this.add(
             new Man(
-                prng,
                 xOffset + 20 * scale * direction,
                 yOffset,
                 !flip,
@@ -76,7 +71,6 @@ export default class BoatChunk extends Chunk {
         this.add(new SvgPolyline(pointList, xOffset, yOffset, BOATFILLCOLOR));
         this.add(
             new Stroke(
-                prng,
                 pointList.map(
                     (point) => new Point(xOffset + point.x, yOffset + point.y)
                 ),

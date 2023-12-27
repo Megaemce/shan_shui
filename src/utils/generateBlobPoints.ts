@@ -17,7 +17,6 @@ import { normalizeNoise } from "./utils";
  */
 
 export function generateBlobPoints(
-    prng: PRNG,
     x: number,
     y: number,
     angle: number = 0,
@@ -42,10 +41,10 @@ export function generateBlobPoints(
     }
 
     let noiseArray = [];
-    const n0 = prng.random(0, 10);
+    const n0 = PRNG.random(0, 10);
 
     for (let i = 0; i < resolution + 1; i++) {
-        noiseArray.push(Perlin.noise(prng, i * 0.05, n0));
+        noiseArray.push(Perlin.noise(i * 0.05, n0));
     }
 
     noiseArray = normalizeNoise(noiseArray);

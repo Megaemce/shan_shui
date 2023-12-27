@@ -1,6 +1,6 @@
-import { IComplexSvg } from "../interfaces/IComplexSvg";
 import SvgPolyline from "./SvgPolyline";
 import SvgText from "./SvgText";
+import IComplexSvg from "../interfaces/IComplexSvg";
 
 /**
  * Represents a complex SVG.
