@@ -29,13 +29,6 @@ export interface IScrollableCanvas {
     background: string | undefined;
 
     /**
-     * The seed value for random number generation.
-     *
-     * @type {string}
-     */
-    seed: string;
-
-    /**
      * The current x-coordinate of the canvas.
      *
      * @type {number}

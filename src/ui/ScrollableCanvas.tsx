@@ -16,12 +16,23 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     horizontalScroll,
     windowHeight,
     background,
-    seed,
     currentPosition,
     windowWidth,
-
     chunkCache,
 }) => {
+    const renderChunks = () => {
+        const renderedChunks = chunkCache.chunkArray.map((chunk) => (
+            <g
+                key={`${chunk.tag} ${chunk.x} ${chunk.y}`}
+                transform="translate(0, 0)"
+                dangerouslySetInnerHTML={{
+                    __html: chunk.render(),
+                }}
+            ></g>
+        ));
+        return renderedChunks;
+    };
+
     /** The viewbox string for the SVG element. */
     const viewbox = `${currentPosition} 0 ${windowWidth / ZOOM} ${
         windowHeight / ZOOM
@@ -63,15 +74,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                                 height={windowHeight}
                                 viewBox={viewbox}
                             >
-                                {chunkCache.chunkArray.map((chunk) => (
-                                    <g
-                                        key={`${chunk.tag} ${chunk.x} ${chunk.y}`}
-                                        transform="translate(0, 0)"
-                                        dangerouslySetInnerHTML={{
-                                            __html: chunk.render(),
-                                        }}
-                                    ></g>
-                                ))}
+                                {renderChunks()}
                             </svg>
                         </div>
                     </td>
