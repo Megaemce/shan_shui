@@ -3,6 +3,16 @@ import Point from "../classes/Point";
 import Range from "../classes/Range";
 import ISvgAttributes from "../interfaces/ISvgAttributes";
 import ISvgStyles from "../interfaces/ISvgStyles";
+import { config } from "../config";
+
+/**
+ * Computes the scaled cosine of the given value.
+ * @param i - The input value.
+ * @returns The scaled cosine value.
+ */
+export function scaledCosine(i: number): number {
+    return 0.5 * (1.0 - Math.cos(i * Math.PI));
+}
 
 /**
  * Expands a given array of points using a width function.
@@ -165,16 +175,18 @@ export function unNan(pointArray: Point[]): Point[] {
  */
 export function normalizeNoise(noiseArray: number[]): number[] {
     const dif = noiseArray[noiseArray.length - 1] - noiseArray[0];
-    const boundaries: [number, number] = [100, -100];
+
+    let leftBoundary = 100;
+    let rightBoundary = -100;
 
     noiseArray.forEach((value, i) => {
         noiseArray[i] +=
             (dif * (noiseArray.length - 1 - i)) / (noiseArray.length - 1);
-        boundaries[0] = Math.min(boundaries[0], value);
-        boundaries[1] = Math.max(boundaries[1], value);
+        leftBoundary = Math.min(leftBoundary, value);
+        rightBoundary = Math.max(rightBoundary, value);
     });
 
-    const inputRange = Range.fromArray(boundaries);
+    const inputRange = new Range(leftBoundary, rightBoundary);
     const outputRange = new Range(0, 1);
 
     return noiseArray.map((value) => inputRange.mapValue(value, outputRange));
@@ -186,6 +198,8 @@ export function normalizeNoise(noiseArray: number[]): number[] {
  * @returns {Point[]} A list of points representing the Bezier curve.
  */
 export function generateBezierCurve(controlPoints: Point[]): Point[] {
+    const POINTCOUNT = config.utils.bezierCurvePoints;
+
     if (controlPoints.length === 2) {
         const midPointControl = midPoint(controlPoints);
         controlPoints = [controlPoints[0], midPointControl, controlPoints[1]];
@@ -204,11 +218,10 @@ export function generateBezierCurve(controlPoints: Point[]): Point[] {
                 ? controlPoints[j + 2]
                 : midPoint([controlPoints[j + 1], controlPoints[j + 2]]);
 
-        const pointCount = 20;
         const hasBuffer = j === controlPoints.length - 3 ? 1 : 0;
 
-        for (let i = 0; i < pointCount + hasBuffer; i += 1) {
-            const t = i / pointCount;
+        for (let i = 0; i < POINTCOUNT + hasBuffer; i += 1) {
+            const t = i / POINTCOUNT;
             const a0 = (1 - t) * (1 - t);
             const a1 = 2 * t * (1 - t);
             const a2 = t * t;
