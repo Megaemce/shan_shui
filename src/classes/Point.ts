@@ -30,15 +30,6 @@ export default class Point implements IPoint {
     }
 
     /**
-     * Creates a vector from the specified source point to this point.
-     * @param source - The source point.
-     * @returns The vector from the source point to this point.
-     */
-    from(source: Point): Vector {
-        return source.to(this);
-    }
-
-    /**
      * Moves the point by a given vector.
      * @param vector - The vector to move the point by.
      * @returns A new point after the move operation.
