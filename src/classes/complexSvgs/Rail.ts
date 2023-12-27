@@ -1,17 +1,16 @@
-import { Noise } from "../PerlinNoise";
-import Point from "../Point";
-import PRNG from "../PRNG";
-import SvgPolyline from "../SvgPolyline";
-import Stroke from "../svgPolylines/Stroke";
-import { lineDivider } from "../../utils/polytools";
 import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Perlin from "../Perlin";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
+import { lineDivider } from "../../utils/polytools";
 
 /**
  * Represents Rail SVG elements.
  */
 export default class Rail extends ComplexSvg {
     /**
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-coordinate offset.
      * @param {number} yOffset - The y-coordinate offset.
      * @param {number} [seed=0] - The seed for randomization.
@@ -25,7 +24,6 @@ export default class Rail extends ComplexSvg {
      * @param {number} [strokeWidth=1] - The stroke width of the rail.
      */
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         seed: number = 0,
@@ -104,7 +102,7 @@ export default class Rail extends ComplexSvg {
                 )
             );
 
-            const open = Math.floor(prng.random(0, pointArray.length));
+            const open = Math.floor(PRNG.random(0, pointArray.length));
             pointArray[open].pop();
 
             const wrappedIndex = (open + pointArray.length) % pointArray.length;
@@ -124,15 +122,14 @@ export default class Rail extends ComplexSvg {
 
                 const noiseI = i + j * 0.5;
                 const noiseJ = j * 0.5;
-                const yNoise1 = Noise.noise(prng, noiseI, noiseJ, seed) - 0.5;
-                const yNoise2 =
-                    Noise.noise(prng, noiseI + 0.5, noiseJ, seed) - 0.5;
+                const yNoise1 = Perlin.noise(noiseI, noiseJ, seed) - 0.5;
+                const yNoise2 = Perlin.noise(noiseI + 0.5, noiseJ, seed) - 0.5;
 
                 currentPoint.y += yNoise1 * height;
                 rotatedPoint.y += yNoise2 * height;
 
                 const ln = lineDivider([currentPoint, rotatedPoint], 2);
-                ln[0].x += prng.random(-0.25, 0.25) * height;
+                ln[0].x += PRNG.random(-0.25, 0.25) * height;
 
                 this.add(
                     new SvgPolyline(
@@ -150,7 +147,6 @@ export default class Rail extends ComplexSvg {
         for (let i = 0; i < pointArray.length; i++) {
             this.add(
                 new Stroke(
-                    prng,
                     pointArray[i].map(
                         (p) => new Point(p.x + xOffset, p.y + yOffset)
                     ),

@@ -1,9 +1,9 @@
-import ComplexSvg from "../ComplexSvg";
-import { Noise } from "../PerlinNoise";
-import Point from "../Point";
-import PRNG from "../PRNG";
-import SvgPolyline from "../SvgPolyline";
 import Blob from "../svgPolylines/Blob";
+import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Perlin from "../Perlin";
+import Point from "../Point";
+import SvgPolyline from "../SvgPolyline";
 
 /**
  * Generates a tree with undulating branches and leaves.
@@ -19,7 +19,6 @@ export default class Tree01 extends ComplexSvg {
      * @param color - Color of the tree.
      */
     constructor(
-        prng: PRNG,
         x: number,
         y: number,
         height: number = 50,
@@ -32,8 +31,8 @@ export default class Tree01 extends ComplexSvg {
         const noiseArray = [];
         for (let i = 0; i < reso; i++) {
             noiseArray.push([
-                Noise.noise(prng, i * 0.5),
-                Noise.noise(prng, i * 0.5, 0.5),
+                Perlin.noise(i * 0.5),
+                Perlin.noise(i * 0.5, 0.5),
             ]);
         }
 
@@ -53,21 +52,20 @@ export default class Tree01 extends ComplexSvg {
                 for (let j = 0; j < (reso - i) / 5; j++) {
                     const lcol = `rgba(${leafcol[0]},${leafcol[1]},${
                         leafcol[2]
-                    },${(prng.random(0, 0.2) + parseFloat(leafcol[3])).toFixed(
+                    },${(PRNG.random(0, 0.2) + parseFloat(leafcol[3])).toFixed(
                         1
                     )})`;
                     this.add(
                         new Blob(
-                            prng,
                             newX +
                                 strokeWidth *
-                                    prng.random(-0.6, 0.6) *
+                                    PRNG.random(-0.6, 0.6) *
                                     (reso - i),
-                            newY + prng.random(-0.5, 0.5) * strokeWidth,
-                            (Math.PI / 6) * prng.random(-0.5, 0.5),
+                            newY + PRNG.random(-0.5, 0.5) * strokeWidth,
+                            (Math.PI / 6) * PRNG.random(-0.5, 0.5),
                             lcol,
-                            prng.random(10, 10 + 4 * (reso - i)),
-                            prng.random(3, 9)
+                            PRNG.random(10, 10 + 4 * (reso - i)),
+                            PRNG.random(3, 9)
                         )
                     );
                 }

@@ -1,9 +1,9 @@
-import ISvgElement from "../interfaces/ISvgElement";
 import ISvgAttributes from "../interfaces/ISvgAttributes";
-import { attributesToString } from "../utils/utils";
+import ISvgElement from "../interfaces/ISvgElement";
 import Point from "./Point";
-import Vector from "./Vector";
 import SvgPoint from "./SvgPoint";
+import Vector from "./Vector";
+import { attributesToString } from "../utils/utils";
 import { config } from "../config";
 
 const DEFAULTFILLCOLOR = config.svgPolyline.defaultFillColor;

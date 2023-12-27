@@ -1,8 +1,7 @@
-import Point from "../Point";
-import PRNG from "../PRNG";
 import ComplexSvg from "../ComplexSvg";
-import SvgPolyline from "../SvgPolyline";
+import Point from "../Point";
 import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
 import { lineDivider } from "../../utils/polytools";
 
 /**
@@ -10,7 +9,6 @@ import { lineDivider } from "../../utils/polytools";
  */
 export default class Box extends ComplexSvg {
     /**
-     * @param {PRNG} prng - The pseudorandom number generator.
      * @param {number} xOffset - The x-coordinate offset for the box.
      * @param {number} yOffset - The y-coordinate offset for the box.
      * @param {number} [height=20] - The height of the box.
@@ -23,7 +21,6 @@ export default class Box extends ComplexSvg {
      * @param {(upperLeftPoint: Point, upperRightPoint: Point, bottomLeftPoint: Point, bottomRightPoint: Point) => Point[][]} [decorator=() => []] - The decorator function for additional features.
      */
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         height: number = 20,
@@ -132,7 +129,6 @@ export default class Box extends ComplexSvg {
         for (let i = 0; i < extendedPointList.length; i++) {
             this.add(
                 new Stroke(
-                    prng,
                     extendedPointList[i].map(function (p) {
                         return new Point(p.x + xOffset, p.y + yOffset);
                     }),

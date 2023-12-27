@@ -1,6 +1,5 @@
-import PRNG from "../classes/PRNG";
-import Range from "../classes/Range";
 import ChunkCache from "../classes/ChunkCache";
+import Range from "../classes/Range";
 
 /**
  * Represents an interface for a React Menu.
@@ -81,13 +80,6 @@ export interface IMenu {
      * @type {ChunkCache}
      */
     chunkCache: ChunkCache;
-
-    /**
-     * The pseudorandom number generator (PRNG) used by the menu.
-     *
-     * @type {PRNG}
-     */
-    prng: PRNG;
 
     /**
      * The range for saving menu state.

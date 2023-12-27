@@ -1,10 +1,10 @@
-import { Noise } from "../PerlinNoise";
-import Point from "../Point";
+import ComplexSvg from "../ComplexSvg";
 import PRNG from "../PRNG";
-import { midPoint, triangulate } from "../../utils/polytools";
+import Perlin from "../Perlin";
+import Point from "../Point";
 import SvgPolyline from "../SvgPolyline";
 import { generateBlobPoints } from "../../utils/generateBlobPoints";
-import ComplexSvg from "../ComplexSvg";
+import { midPoint, triangulate } from "../../utils/polytools";
 
 /**
  * Class representing a generator for a tree structure with a specific pattern.
@@ -17,7 +17,7 @@ export default class Tree07 extends ComplexSvg {
      * @param y - Y-coordinate offset.
      * @param height - Height of the tree.
      */
-    constructor(prng: PRNG, x: number, y: number, height: number = 60) {
+    constructor(x: number, y: number, height: number = 60) {
         super();
 
         const strokeWidth: number = 4;
@@ -27,8 +27,8 @@ export default class Tree07 extends ComplexSvg {
         const noiseArray = [];
         for (let i = 0; i < reso; i++) {
             noiseArray.push([
-                Noise.noise(prng, i * 0.5),
-                Noise.noise(prng, i * 0.5, 0.5),
+                Perlin.noise(i * 0.5),
+                Perlin.noise(i * 0.5, 0.5),
             ]);
         }
 
@@ -47,13 +47,12 @@ export default class Tree07 extends ComplexSvg {
                             : 2.75 * (x - 2) * Math.pow(x - 1, 1 / 1.8);
                     };
                     const bpl = generateBlobPoints(
-                        prng,
                         newX +
-                            prng.random(-0.3, 0.3) * strokeWidth * (reso - i),
-                        newY + prng.random(-0.25, 0.25) * strokeWidth,
-                        prng.random(0, -Math.PI / 6),
-                        prng.random(20, 70),
-                        prng.random(12, 24),
+                            PRNG.random(-0.3, 0.3) * strokeWidth * (reso - i),
+                        newY + PRNG.random(-0.25, 0.25) * strokeWidth,
+                        PRNG.random(0, -Math.PI / 6),
+                        PRNG.random(20, 70),
+                        PRNG.random(12, 24),
                         0.5,
                         bfunc
                     );
@@ -85,8 +84,7 @@ export default class Tree07 extends ComplexSvg {
 
         for (let k = 0; k < T.length; k++) {
             const m = midPoint(T[k]);
-            const c =
-                (Noise.noise(prng, m.x * 0.02, m.y * 0.02) * 200 + 50) | 0;
+            const c = (Perlin.noise(m.x * 0.02, m.y * 0.02) * 200 + 50) | 0;
             const co = `rgba(${c},${c},${c},0.8)`;
             this.add(new SvgPolyline(T[k], 0, 0, co, co));
         }

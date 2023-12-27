@@ -1,21 +1,18 @@
-import PRNG from "../PRNG";
 import Box from "./Box";
-import Rail from "./Rail";
-import PagodaRoof from "./PagodaRoof";
 import ComplexSvg from "../ComplexSvg";
+import PagodaRoof from "./PagodaRoof";
+import Rail from "./Rail";
 
 /**
  * Represents a series of arch structures with increasing size.
  */
 export default class Tower extends ComplexSvg {
     /**
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-coordinate offset for the arches.
      * @param {number} yOffset - The y-coordinate offset for the arches.
      * @param {number} stories - The number of arches to generate.
      */
     constructor(
-        private prng: PRNG,
         private xOffset: number,
         private yOffset: number,
         private stories: number = 2
@@ -32,7 +29,6 @@ export default class Tower extends ComplexSvg {
         for (let i = 0; i < this.stories; i++) {
             this.add(
                 new Box(
-                    this.prng,
                     this.xOffset,
                     this.yOffset - heightOffset,
                     height,
@@ -46,7 +42,6 @@ export default class Tower extends ComplexSvg {
             );
             this.add(
                 new Rail(
-                    this.prng,
                     this.xOffset,
                     this.yOffset - heightOffset,
                     i * 0.2,
@@ -62,7 +57,6 @@ export default class Tower extends ComplexSvg {
             );
             this.add(
                 new PagodaRoof(
-                    this.prng,
                     this.xOffset,
                     this.yOffset - heightOffset - height,
                     height * 1,

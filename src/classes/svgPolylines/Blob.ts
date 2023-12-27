@@ -1,7 +1,6 @@
-import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
-import { generateBlobPoints } from "../../utils/generateBlobPoints";
 import { config } from "../../config";
+import { generateBlobPoints } from "../../utils/generateBlobPoints";
 
 const DEFAULTFILLCOLOR = config.svgPolyline.blob.defaultFillColor;
 const DEFAULTLENGTH = config.svgPolyline.blob.defaultLength;
@@ -14,7 +13,6 @@ const DEFAULTNOISE = config.svgPolyline.blob.defaultNoise;
 export default class Blob extends SvgPolyline {
     /**
      * Constructor for the BlobGenerator class.
-     * @param {PRNG} prng - PRNG instance for random number generation.
      * @param {number} x - X-coordinate of the blob.
      * @param {number} y - Y-coordinate of the blob.
      * @param {number} [angle=0] - Angle of the blob.
@@ -25,7 +23,6 @@ export default class Blob extends SvgPolyline {
      * @param {Function} [strokeWidthFunction] - Function to modulate the blob's outline width (default is sin function).
      */
     constructor(
-        prng: PRNG,
         x: number,
         y: number,
         angle: number = 0,
@@ -39,7 +36,6 @@ export default class Blob extends SvgPolyline {
                 : -Math.pow(Math.sin((x + 1) * Math.PI), 0.5)
     ) {
         const pointArray = generateBlobPoints(
-            prng,
             x,
             y,
             angle,

@@ -1,11 +1,11 @@
-import ComplexSvg from "../ComplexSvg";
-import Point from "../Point";
-import PRNG from "../PRNG";
-import SvgPolyline from "../SvgPolyline";
-import Stroke from "../svgPolylines/Stroke";
-import generateBranch from "../svgPolylines/generateBranch";
-import Twig from "./Twig";
 import Barkify from "./Barkify";
+import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
+import Twig from "./Twig";
+import generateBranch from "../svgPolylines/generateBranch";
 
 /**
  * Generates a tree-like structure with branches, bark, and twigs.
@@ -17,15 +17,15 @@ export default class Tree04 extends ComplexSvg {
      * @param x - X-coordinate offset.
      * @param y - Y-coordinate offset.
      */
-    constructor(prng: PRNG, x: number, y: number) {
+    constructor(x: number, y: number) {
         super();
 
         const height: number = 300;
         const strokeWidth: number = 6;
         let color: string = "rgba(100,100,100,0.5)";
 
-        const _trlist = generateBranch(prng, height, strokeWidth, -Math.PI / 2);
-        this.add(new Barkify(prng, x, y, _trlist));
+        const _trlist = generateBranch(height, strokeWidth, -Math.PI / 2);
+        this.add(new Barkify(x, y, _trlist));
         const trlist: Point[] = _trlist[0].concat(_trlist[1].reverse());
 
         let trmlist: Point[] = [];
@@ -34,15 +34,14 @@ export default class Tree04 extends ComplexSvg {
             if (
                 (i >= trlist.length * 0.3 &&
                     i <= trlist.length * 0.7 &&
-                    prng.random() < 0.1) ||
+                    PRNG.random() < 0.1) ||
                 i === trlist.length / 2 - 1
             ) {
                 const ba =
                     Math.PI * 0.2 -
                     Math.PI * 1.4 * (i > trlist.length / 2 ? 1 : 0);
                 const _brlist: Point[][] = generateBranch(
-                    prng,
-                    height * prng.random(0.3, 0.6),
+                    height * PRNG.random(0.3, 0.6),
                     strokeWidth * 0.5,
                     ba
                 );
@@ -54,17 +53,16 @@ export default class Tree04 extends ComplexSvg {
                 };
 
                 this.add(
-                    new Barkify(prng, x, y, [
+                    new Barkify(x, y, [
                         _brlist[0].map(foff),
                         _brlist[1].map(foff),
                     ])
                 );
 
                 for (let j = 0; j < _brlist[0].length; j++) {
-                    if (prng.random() < 0.2 || j === _brlist[0].length - 1) {
+                    if (PRNG.random() < 0.2 || j === _brlist[0].length - 1) {
                         this.add(
                             new Twig(
-                                prng,
                                 _brlist[0][j].x + trlist[i].x + x,
                                 _brlist[0][j].y + trlist[i].y + y,
                                 1,
@@ -91,11 +89,10 @@ export default class Tree04 extends ComplexSvg {
 
         trmlist.splice(0, 1);
         trmlist.splice(trmlist.length - 1, 1);
-        color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
+        color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
 
         this.add(
             new Stroke(
-                prng,
                 trmlist.map(function (p: Point) {
                     return new Point(p.x + x, p.y + y);
                 }),

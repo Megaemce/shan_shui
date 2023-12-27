@@ -1,24 +1,20 @@
-import Point from "../Point";
-import PRNG from "../PRNG";
-import { generateBezierCurve } from "../../utils/utils";
-import SvgPolyline from "../SvgPolyline";
-import Stroke from "../svgPolylines/Stroke";
-import { expand } from "../../utils/utils";
 import ComplexSvg from "../ComplexSvg";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
+import { expand } from "../../utils/utils";
+import { generateBezierCurve } from "../../utils/utils";
 /**
  * Class representing a cloth SVG polyline.
  */
 export default class Cloth extends ComplexSvg {
     /**
      * Constructs a Cloth instance.
-     *
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {(p: Point) => Point} toGlobal - Function to convert local points to global points.
      * @param {Point[]} pointArray - Array of points defining the cloth shape.
      * @param {(v: number) => number} fun - The scaling function.
      */
     constructor(
-        prng: PRNG,
         toGlobal: (p: Point) => Point,
         pointArray: Point[],
         fun: (v: number) => number
@@ -33,7 +29,6 @@ export default class Cloth extends ComplexSvg {
 
         // Additional strokes
         const stroke1 = new Stroke(
-            prng,
             tlist1.map(toGlobal),
             "rgba(100,100,100,0.5)",
             "rgba(100,100,100,0.5)",
@@ -41,7 +36,6 @@ export default class Cloth extends ComplexSvg {
         );
 
         const stroke2 = new Stroke(
-            prng,
             tlist2.map(toGlobal),
             "rgba(100,100,100,0.6)",
             "rgba(100,100,100,0.6)",

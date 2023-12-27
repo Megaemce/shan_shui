@@ -1,8 +1,8 @@
-import Point from "../Point";
-import PRNG from "../PRNG";
-import Stroke from "../svgPolylines/Stroke";
 import Blob from "../svgPolylines/Blob";
 import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
 
 /**
  * Class representing a generator for a twig with branches and leaves.
@@ -22,7 +22,6 @@ export default class Twig extends ComplexSvg {
      * @param leaves - Tuple representing whether leaves should be generated and their number.
      */
     constructor(
-        prng: PRNG,
         tx: number,
         ty: number,
         depth: number,
@@ -35,9 +34,9 @@ export default class Twig extends ComplexSvg {
         super();
         const twlist: Point[] = [];
         const tl = 10;
-        const hs = prng.random(0.5, 1);
+        const hs = PRNG.random(0.5, 1);
         const fun2 = (x: number) => -1 / Math.pow(x / tl + 1, 5) + 1;
-        const a0 = ((prng.random() * Math.PI) / 6) * direction + angle;
+        const a0 = ((PRNG.random() * Math.PI) / 6) * direction + angle;
 
         for (let i = 0; i < tl; i++) {
             const mx = direction * fun2(i / tl) * 50 * scale * hs;
@@ -56,13 +55,12 @@ export default class Twig extends ComplexSvg {
             ) {
                 this.add(
                     new Twig(
-                        prng,
                         newX + tx,
                         newY + ty,
                         depth - 1,
                         angle,
                         scale * 0.8,
-                        direction * prng.randomChoice([-1, 1]),
+                        direction * PRNG.randomChoice([-1, 1]),
                         strokeWidth,
                         leaves
                     )
@@ -81,7 +79,6 @@ export default class Twig extends ComplexSvg {
                     };
                     this.add(
                         new Blob(
-                            prng,
                             newX + tx + Math.cos(angle) * dj * strokeWidth,
                             newY +
                                 ty +
@@ -90,12 +87,12 @@ export default class Twig extends ComplexSvg {
                                     strokeWidth,
                             angle / 2 +
                                 Math.PI / 2 +
-                                Math.PI * prng.random(-0.1, 0.1),
+                                Math.PI * PRNG.random(-0.1, 0.1),
                             `rgba(100,100,100,${(0.5 + depth * 0.2).toFixed(
                                 3
                             )})`,
-                            prng.random(15, 27) * strokeWidth,
-                            prng.random(6, 9) * strokeWidth,
+                            PRNG.random(15, 27) * strokeWidth,
+                            PRNG.random(6, 9) * strokeWidth,
                             0.5,
                             bfunc
                         )
@@ -105,7 +102,6 @@ export default class Twig extends ComplexSvg {
         }
         this.add(
             new Stroke(
-                prng,
                 twlist,
                 "rgba(100,100,100,0.5)",
                 "rgba(100,100,100,0.5)",

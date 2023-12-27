@@ -1,4 +1,3 @@
-import PRNG from "../classes/PRNG";
 import Range from "../classes/Range";
 import ChunkCache from "../classes/ChunkCache";
 
@@ -74,13 +73,6 @@ export interface ISettingPanel {
      * @type {number}
      */
     windowHeight: number;
-
-    /**
-     * PRNG (Pseudo-Random Number Generator) instance.
-     *
-     * @type {PRNG}
-     */
-    prng: PRNG;
 
     /**
      * Current range.

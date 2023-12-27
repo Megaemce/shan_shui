@@ -1,16 +1,15 @@
-import Point from "../Point";
-import Vector from "../Vector";
-import PRNG from "../PRNG";
-import Stroke from "../svgPolylines/Stroke";
-import { Noise } from "../PerlinNoise";
 import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Perlin from "../Perlin";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
+import Vector from "../Vector";
 
 /**
  * Represents textured polylines based on a grid of points.
  */
 export default class Texture extends ComplexSvg {
     /**
-     * @param {PRNG} prng - PRNG instance for random number generation.
      * @param {Point[][]} pointArray - 2D array of points representing the grid.
      * @param {number} [xOffset=0] - X-offset for the texture.
      * @param {number} [yOffset=0] - Y-offset for the texture.
@@ -21,14 +20,13 @@ export default class Texture extends ComplexSvg {
      * @param {number} [length=0.2] - Length factor for the textures.
      */
     constructor(
-        prng: PRNG,
         pointArray: Point[][],
         xOffset: number = 0,
         yOffset: number = 0,
         textureCount: number = 400,
         shadow: number = 0,
         displacementFunction: () => number = () =>
-            0.5 + (prng.random() > 0.5 ? -1 : 1) * prng.random(1 / 6, 0.5),
+            0.5 + (PRNG.random() > 0.5 ? -1 : 1) * PRNG.random(1 / 6, 0.5),
         noise: (x: number) => number = (x) => 30 / x,
         length: number = 0.2
     ) {
@@ -40,7 +38,7 @@ export default class Texture extends ComplexSvg {
 
         for (let i = 0; i < textureCount; i++) {
             const mid = (displacementFunction() * resolution[1]) | 0;
-            const hlen = Math.floor(prng.random(0, resolution[1] * length));
+            const hlen = Math.floor(PRNG.random(0, resolution[1] * length));
 
             let start = mid - hlen;
             let end = mid + hlen;
@@ -61,9 +59,9 @@ export default class Texture extends ComplexSvg {
                     pointArray[Math.ceil(layer)][j].y * (1 - p);
 
                 const newX =
-                    noise(layer + 1) * (Noise.noise(prng, x, j * 0.5) - 0.5);
+                    noise(layer + 1) * (Perlin.noise(x, j * 0.5) - 0.5);
                 const newY =
-                    noise(layer + 1) * (Noise.noise(prng, y, j * 0.5) - 0.5);
+                    noise(layer + 1) * (Perlin.noise(y, j * 0.5) - 0.5);
 
                 texlist[texlist.length - 1].push(new Point(x + newX, y + newY));
             }
@@ -76,7 +74,6 @@ export default class Texture extends ComplexSvg {
                 if (texlist[j].length > 0) {
                     this.add(
                         new Stroke(
-                            prng,
                             texlist[j].map((p) => p.move(offset)),
                             "rgba(100,100,100,0.1)",
                             "rgba(100,100,100,0.1)",

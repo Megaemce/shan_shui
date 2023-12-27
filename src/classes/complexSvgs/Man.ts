@@ -1,14 +1,14 @@
+import Cloth from "./Cloth";
+import ComplexSvg from "../ComplexSvg";
+import Hat01 from "./Hat01";
+import Hat02 from "./Hat02";
+import IPoint from "../../interfaces/IPoint";
 import PRNG from "../PRNG";
 import Point from "../Point";
+import Stick from "./Stick";
 import SvgPolyline from "../SvgPolyline";
 import Vector from "../Vector";
-import IPoint from "../../interfaces/IPoint";
 import { expand, generateBezierCurve } from "../../utils/utils";
-import Hat01 from "./Hat01";
-import Cloth from "./Cloth";
-import Stick from "./Stick";
-import Hat02 from "./Hat02";
-import ComplexSvg from "../ComplexSvg";
 
 /**
  * Class representing a man SVG complex structure.
@@ -16,8 +16,6 @@ import ComplexSvg from "../ComplexSvg";
 export default class Man extends ComplexSvg {
     /**
      * Constructs a Man instance.
-     *
-     * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - X-coordinate offset for the man.
      * @param {number} yOffset - Y-coordinate offset for the man.
      * @param {boolean} [horizontalFlip=true] - Indicates whether the man is flipped horizontally.
@@ -27,7 +25,6 @@ export default class Man extends ComplexSvg {
      * @param {number} [hatNumber=1] - Indicates whether the man has a hat and the hat version. 0 is no hat
      */
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         horizontalFlip: boolean = true,
@@ -41,12 +38,12 @@ export default class Man extends ComplexSvg {
         const ang: number[] = [
             0,
             -Math.PI / 2,
-            prng.normalizedRandom(0, 0),
-            prng.random(0, Math.PI / 4),
-            prng.random(0, (Math.PI * 3) / 4),
+            PRNG.normalizedRandom(0, 0),
+            PRNG.random(0, Math.PI / 4),
+            PRNG.random(0, (Math.PI * 3) / 4),
             (Math.PI * 3) / 4,
             -Math.PI / 4,
-            -Math.PI * prng.random(3 / 4, 1),
+            -Math.PI * PRNG.random(3 / 4, 1),
             -Math.PI / 4,
         ];
         const len = lengthArray.map((v) => v * scalling);
@@ -84,7 +81,6 @@ export default class Man extends ComplexSvg {
         ) =>
             this.add(
                 new Cloth(
-                    prng,
                     toGlobal,
                     vertices.map((vector) => vector.moveFrom(Point.O)),
                     scalingFunction
@@ -126,7 +122,6 @@ export default class Man extends ComplexSvg {
         if (hasStick) {
             this.add(
                 new Stick(
-                    prng,
                     toGlobal(vectorArray[8]),
                     toGlobal(vectorArray[6]),
                     horizontalFlip
@@ -136,7 +131,6 @@ export default class Man extends ComplexSvg {
 
         if (hatNumber) {
             let hatElements = new Hat01(
-                prng,
                 toGlobal(vectorArray[1]),
                 toGlobal(vectorArray[2]),
                 horizontalFlip
@@ -144,7 +138,6 @@ export default class Man extends ComplexSvg {
 
             if (hatNumber === 2) {
                 hatElements = new Hat02(
-                    prng,
                     toGlobal(vectorArray[1]),
                     toGlobal(vectorArray[2]),
                     horizontalFlip

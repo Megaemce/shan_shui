@@ -1,12 +1,12 @@
-import Point from "../Point";
-import Vector from "../Vector";
+import ComplexSvg from "../ComplexSvg";
 import PRNG from "../PRNG";
+import Point from "../Point";
 import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
+import Vector from "../Vector";
+import generateBranch from "../svgPolylines/generateBranch";
 import { distance } from "../../utils/polytools";
 import { lineDivider } from "../../utils/polytools";
-import ComplexSvg from "../ComplexSvg";
-import generateBranch from "../svgPolylines/generateBranch";
-import SvgPolyline from "../SvgPolyline";
 
 /**
  * Class representing a generator for a fractal tree-like structure.
@@ -19,18 +19,17 @@ export default class Tree08 extends ComplexSvg {
      * @param y - Y-coordinate of the base point.
      * @param height - Height of the tree.
      */
-    constructor(prng: PRNG, x: number, y: number, height: number = 80) {
+    constructor(x: number, y: number, height: number = 80) {
         super();
 
         const strokeWidth: number = 1;
         let color: string = "rgba(100,100,100,0.5)";
 
         // Generate a random angle to add variety to the tree structure
-        const angle = prng.normalizedRandom(-1, 1) * Math.PI * 0.2;
+        const angle = PRNG.normalizedRandom(-1, 1) * Math.PI * 0.2;
 
         // Generate the main trunk of the tree
         const _trlist = generateBranch(
-            prng,
             height,
             strokeWidth,
             -Math.PI / 2 + angle,
@@ -42,18 +41,16 @@ export default class Tree08 extends ComplexSvg {
         // Iterate over each point in the trunk
         for (let i = 0; i < trlist.length; i++) {
             // Randomly generate branches
-            if (prng.random() < 0.2) {
+            if (PRNG.random() < 0.2) {
                 this.generateFractalTree(
-                    prng,
                     x + trlist[i].x,
                     y + trlist[i].y,
-                    Math.floor(prng.random(0, 4)),
-                    -Math.PI / 2 + prng.random(-angle, 0)
+                    Math.floor(PRNG.random(0, 4)),
+                    -Math.PI / 2 + PRNG.random(-angle, 0)
                 );
             } else if (i === Math.floor(trlist.length / 2)) {
                 // Generate a specific branch at the middle of the trunk
                 this.generateFractalTree(
-                    prng,
                     x + trlist[i].x,
                     y + trlist[i].y,
                     3,
@@ -66,10 +63,9 @@ export default class Tree08 extends ComplexSvg {
         this.add(new SvgPolyline(trlist, x, y, "white", color));
 
         // Add a colored stroke to the main trunk
-        color = `rgba(100,100,100,${prng.random(0.6, 0.7).toFixed(3)})`;
+        color = `rgba(100,100,100,${PRNG.random(0.6, 0.7).toFixed(3)})`;
         this.add(
             new Stroke(
-                prng,
                 trlist.map(function (v) {
                     return new Point(v.x + x, v.y + y);
                 }),
@@ -94,7 +90,6 @@ export default class Tree08 extends ComplexSvg {
      * @param bendingAngle - Bending angle of the tree.
      */
     private generateFractalTree(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         depth: number,
@@ -114,7 +109,7 @@ export default class Tree08 extends ComplexSvg {
             new Point(xOffset + len, yOffset),
         ];
 
-        const bfun = prng.randomChoice([
+        const bfun = PRNG.randomChoice([
             (x: number) => Math.sin(x * Math.PI),
             (x: number) => -Math.sin(x * Math.PI),
         ]);
@@ -134,7 +129,6 @@ export default class Tree08 extends ComplexSvg {
 
         this.add(
             new Stroke(
-                prng,
                 trmlist,
                 "rgba(100,100,100,0.5)",
                 "rgba(100,100,100,0.5)",
@@ -148,48 +142,45 @@ export default class Tree08 extends ComplexSvg {
         if (depth !== 0) {
             const nben =
                 bendingAngle +
-                prng.randomChoice([-1, 1]) * Math.PI * 0.001 * depth * depth;
-            if (prng.random() < 0.5) {
+                PRNG.randomChoice([-1, 1]) * Math.PI * 0.001 * depth * depth;
+            if (PRNG.random() < 0.5) {
                 this.generateFractalTree(
-                    prng,
                     ept.x,
                     ept.y,
                     depth - 1,
                     angle +
                         bendingAngle +
                         Math.PI *
-                            prng.randomChoice([
-                                prng.normalizedRandom(-1, 0.5),
-                                prng.normalizedRandom(0.5, 1),
+                            PRNG.randomChoice([
+                                PRNG.normalizedRandom(-1, 0.5),
+                                PRNG.normalizedRandom(0.5, 1),
                             ]) *
                             0.2,
-                    len * prng.normalizedRandom(0.8, 0.9),
+                    len * PRNG.normalizedRandom(0.8, 0.9),
                     nben
                 );
                 this.generateFractalTree(
-                    prng,
                     ept.x,
                     ept.y,
                     depth - 1,
                     angle +
                         bendingAngle +
                         Math.PI *
-                            prng.randomChoice([
-                                prng.normalizedRandom(-1, -0.5),
-                                prng.normalizedRandom(0.5, 1),
+                            PRNG.randomChoice([
+                                PRNG.normalizedRandom(-1, -0.5),
+                                PRNG.normalizedRandom(0.5, 1),
                             ]) *
                             0.2,
-                    len * prng.normalizedRandom(0.8, 0.9),
+                    len * PRNG.normalizedRandom(0.8, 0.9),
                     nben
                 );
             } else {
                 this.generateFractalTree(
-                    prng,
                     ept.x,
                     ept.y,
                     depth - 1,
                     angle + bendingAngle,
-                    len * prng.normalizedRandom(0.8, 0.9),
+                    len * PRNG.normalizedRandom(0.8, 0.9),
                     nben
                 );
             }

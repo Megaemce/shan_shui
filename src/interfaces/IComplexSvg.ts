@@ -1,13 +1,13 @@
+import ComplexSvg from "../classes/ComplexSvg";
 import SvgPolyline from "../classes/SvgPolyline";
 import SvgText from "../classes/SvgText";
-import ComplexSvg from "../classes/ComplexSvg";
 
 /**
  * Represents an interface for a ComplexSvg.
  *
  * @interface
  */
-export interface IComplexSvg {
+export default interface IComplexSvg {
     /**
      * An array of SvgPolyline elements.
      *

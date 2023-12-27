@@ -1,6 +1,6 @@
-import Point from "../Point";
-import PRNG from "../PRNG";
 import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Point from "../Point";
 import SvgPolyline from "../SvgPolyline";
 import Texture from "./Texture";
 
@@ -9,7 +9,6 @@ import Texture from "./Texture";
  */
 export default class Hut extends ComplexSvg {
     /**
-     * @param {PRNG} prng - The pseudorandom number generator.
      * @param {number} xOffset - The x-coordinate offset for the hut.
      * @param {number} yOffset - The y-coordinate offset for the hut.
      * @param {number} [height=40] - The height of the hut.
@@ -17,7 +16,6 @@ export default class Hut extends ComplexSvg {
      * @param {number} [textureCount=300] - The number of textures in the hut.
      */
     constructor(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         height: number = 40,
@@ -31,7 +29,7 @@ export default class Hut extends ComplexSvg {
 
         for (let i = 0; i < resolution[0]; i++) {
             pointList.push([]);
-            const currentHeight = height * prng.random(1, 1.2);
+            const currentHeight = height * PRNG.random(1, 1.2);
             for (let j = 0; j < resolution[1]; j++) {
                 const newX =
                     width *
@@ -78,13 +76,12 @@ export default class Hut extends ComplexSvg {
 
         this.add(
             new Texture(
-                prng,
                 pointList,
                 xOffset,
                 yOffset,
                 textureCount,
                 2,
-                () => prng.weightedRandom((a) => a * a),
+                () => PRNG.weightedRandom((a) => a * a),
                 (x) => 5,
                 0.25
             )

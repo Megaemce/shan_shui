@@ -1,5 +1,5 @@
-import { ChunkTag } from "../types/ChunkTag";
 import IChunk from "../interfaces/IChunk";
+import { ChunkTag } from "../types/ChunkTag";
 
 /**
  * Represents a design chunk with tag, coordinates, and height information.

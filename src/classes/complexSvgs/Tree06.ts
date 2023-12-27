@@ -1,10 +1,10 @@
-import Point from "../Point";
-import PRNG from "../PRNG";
-import SvgPolyline from "../SvgPolyline";
-import Stroke from "../svgPolylines/Stroke";
-import Twig from "./Twig";
 import Barkify from "./Barkify";
 import ComplexSvg from "../ComplexSvg";
+import PRNG from "../PRNG";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
+import Twig from "./Twig";
 import generateBranch from "../svgPolylines/generateBranch";
 
 /**
@@ -19,14 +19,13 @@ export default class Tree06 extends ComplexSvg {
      * @param height - Height of the tree.
      * @returns An array of polylines representing the tree structure.
      */
-    constructor(prng: PRNG, x: number, y: number, height: number = 100) {
+    constructor(x: number, y: number, height: number = 100) {
         super();
 
         const strokeWidth: number = 6;
         let color: string = "rgba(100,100,100,0.5)";
 
         const trmlist = this.generateFractalTree06(
-            prng,
             x,
             y,
             3,
@@ -40,10 +39,9 @@ export default class Tree06 extends ComplexSvg {
 
         trmlist.splice(0, 1);
         trmlist.splice(trmlist.length - 1, 1);
-        color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
+        color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
         this.add(
             new Stroke(
-                prng,
                 trmlist.map(function (v) {
                     return new Point(v.x + x, v.y + y);
                 }),
@@ -73,7 +71,6 @@ export default class Tree06 extends ComplexSvg {
      * @notExported
      */
     private generateFractalTree06(
-        prng: PRNG,
         xOffset: number,
         yOffset: number,
         depth: number,
@@ -83,7 +80,6 @@ export default class Tree06 extends ComplexSvg {
         bendingAngle: number = 0.2 * Math.PI
     ): Point[] {
         const [leftBranches, rightBranches] = generateBranch(
-            prng,
             height,
             strokeWidth,
             angle,
@@ -91,23 +87,21 @@ export default class Tree06 extends ComplexSvg {
             height / 20
         );
 
-        this.add(
-            new Barkify(prng, xOffset, yOffset, [leftBranches, rightBranches])
-        );
+        this.add(new Barkify(xOffset, yOffset, [leftBranches, rightBranches]));
         const branches = leftBranches.concat(rightBranches.reverse());
 
         let result: Point[] = [];
 
         branches.forEach((branch, i) => {
             if (
-                ((prng.random() < 0.025 &&
+                ((PRNG.random() < 0.025 &&
                     i >= branches.length * 0.2 &&
                     i <= branches.length * 0.8) ||
                     i === ((branches.length / 2) | 0) - 1 ||
                     i === ((branches.length / 2) | 0) + 1) &&
                 depth > 0
             ) {
-                const branchRadian = prng.random(0.02, 0.1);
+                const branchRadian = PRNG.random(0.02, 0.1);
                 const branchAngle =
                     branchRadian * Math.PI -
                     branchRadian *
@@ -116,25 +110,23 @@ export default class Tree06 extends ComplexSvg {
                         (i > branches.length / 2 ? 1 : 0);
 
                 const brlist = this.generateFractalTree06(
-                    prng,
                     branch.x + xOffset,
                     branch.y + yOffset,
                     depth - 1,
-                    height * prng.random(0.7, 0.9),
+                    height * PRNG.random(0.7, 0.9),
                     strokeWidth * 0.6,
                     angle + branchAngle,
                     0.55
                 );
 
                 brlist.forEach((point) => {
-                    if (prng.random() < 0.03) {
+                    if (PRNG.random() < 0.03) {
                         this.add(
                             new Twig(
-                                prng,
                                 point.x + branch.x + xOffset,
                                 point.y + branch.y + yOffset,
                                 2,
-                                branchAngle * prng.random(0.75, 1.25),
+                                branchAngle * PRNG.random(0.75, 1.25),
                                 0.3,
                                 branchAngle > 0 ? 1 : -1,
                                 1,

@@ -1,6 +1,6 @@
+import Blob from "../svgPolylines/Blob";
 import ComplexSvg from "../ComplexSvg";
 import PRNG from "../PRNG";
-import Blob from "../svgPolylines/Blob";
 
 /**
  * Generates a tree with blob-like clusters of branches.
@@ -15,7 +15,6 @@ export default class Tree02 extends ComplexSvg {
      * @param clusters - Number of blob-like clusters.
      */
     constructor(
-        prng: PRNG,
         x: number,
         y: number,
         color: string = "rgba(100,100,100,0.5)",
@@ -34,13 +33,12 @@ export default class Tree02 extends ComplexSvg {
         for (let i = 0; i < clusters; i++) {
             this.add(
                 new Blob(
-                    prng,
-                    x + prng.gaussianRandom() * clusters * 4,
-                    y + prng.gaussianRandom() * clusters * 4,
+                    x + PRNG.gaussianRandom() * clusters * 4,
+                    y + PRNG.gaussianRandom() * clusters * 4,
                     Math.PI / 2,
                     color,
-                    prng.random(0.5, 1.25) * height,
-                    prng.random(0.5, 1.25) * strokeWidth,
+                    PRNG.random(0.5, 1.25) * height,
+                    PRNG.random(0.5, 1.25) * strokeWidth,
                     0.5,
                     bfunc
                 )
