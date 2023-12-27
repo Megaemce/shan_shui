@@ -1,4 +1,4 @@
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import PRNG from "../PRNG";
 import Stroke from "../svgPolylines/Stroke";
@@ -112,10 +112,10 @@ export default class Barkify extends ComplexSvg {
 
             result.forEach((point, j) => {
                 point.x +=
-                    (Noise.noise(prng, i, j * 0.1, 1) - 0.5) *
+                    (Perlin.noise(prng, i, j * 0.1, 1) - 0.5) *
                     (15 + 5 * prng.gaussianRandom());
                 point.y +=
-                    (Noise.noise(prng, i, j * 0.1, 2) - 0.5) *
+                    (Perlin.noise(prng, i, j * 0.1, 2) - 0.5) *
                     (15 + 5 * prng.gaussianRandom());
             });
 

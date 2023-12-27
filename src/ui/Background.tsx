@@ -1,20 +1,20 @@
 import React from "react";
-import { PerlinNoise } from "../classes/PerlinNoise";
+import Perlin from "../classes/Perlin";
 import PRNG from "../classes/PRNG";
 import { config } from "../config";
 
 const RESOLUTION = config.ui.resolution;
 
-export default class BackgroundRender extends React.Component {
+export default class Background extends React.Component {
     canvasRef = React.createRef<HTMLCanvasElement>();
 
-    generate(prng: PRNG, noise: PerlinNoise): string | undefined {
+    generateBackground(prng: PRNG): string | undefined {
         const ctx = this.canvasRef.current?.getContext("2d");
         if (!ctx) return undefined;
 
         for (let i = 0; i < RESOLUTION / 2 + 1; i++) {
             for (let j = 0; j < RESOLUTION / 2 + 1; j++) {
-                let color = 245 + noise.noise(prng, i * 0.1, j * 0.1) * 10;
+                let color = 245 + Perlin.noise(prng, i * 0.1, j * 0.1) * 10;
                 color -= prng.random(0, 20);
 
                 const red = color.toFixed(0);

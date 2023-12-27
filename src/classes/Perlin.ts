@@ -14,8 +14,8 @@ const PERLIN_ZWRAP = 1 << PERLIN_ZWRAPB; // Number of positions to wrap along th
 /**
  * Class representing Perlin noise generation.
  */
-export class PerlinNoise {
-    private perlin: number[] | undefined;
+export default class Perlin {
+    static perlin: number[] | undefined;
 
     /**
      * Generates Perlin noise at a given point.
@@ -25,7 +25,7 @@ export class PerlinNoise {
      * @param z - The z-coordinate.
      * @returns The Perlin noise value at the specified point.
      */
-    noise(prng: PRNG, x: number, y: number = 0, z: number = 0): number {
+    static noise(prng: PRNG, x: number, y: number = 0, z: number = 0): number {
         if (this.perlin === undefined) {
             this.perlin = new Array(PERLIN_SIZE + 1);
             for (let i = 0; i < PERLIN_SIZE + 1; i++) {
@@ -87,10 +87,3 @@ export class PerlinNoise {
         return r;
     }
 }
-
-/**
- * Instance of the PerlinNoise class for convenience.
- */
-const Noise = new PerlinNoise();
-
-export { Noise };

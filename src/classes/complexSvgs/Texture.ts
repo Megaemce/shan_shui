@@ -2,7 +2,7 @@ import Point from "../Point";
 import Vector from "../Vector";
 import PRNG from "../PRNG";
 import Stroke from "../svgPolylines/Stroke";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import ComplexSvg from "../ComplexSvg";
 
 /**
@@ -61,9 +61,9 @@ export default class Texture extends ComplexSvg {
                     pointArray[Math.ceil(layer)][j].y * (1 - p);
 
                 const newX =
-                    noise(layer + 1) * (Noise.noise(prng, x, j * 0.5) - 0.5);
+                    noise(layer + 1) * (Perlin.noise(prng, x, j * 0.5) - 0.5);
                 const newY =
-                    noise(layer + 1) * (Noise.noise(prng, y, j * 0.5) - 0.5);
+                    noise(layer + 1) * (Perlin.noise(prng, y, j * 0.5) - 0.5);
 
                 texlist[texlist.length - 1].push(new Point(x + newX, y + newY));
             }

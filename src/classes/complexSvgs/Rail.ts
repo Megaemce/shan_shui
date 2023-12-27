@@ -1,4 +1,4 @@
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
@@ -124,9 +124,9 @@ export default class Rail extends ComplexSvg {
 
                 const noiseI = i + j * 0.5;
                 const noiseJ = j * 0.5;
-                const yNoise1 = Noise.noise(prng, noiseI, noiseJ, seed) - 0.5;
+                const yNoise1 = Perlin.noise(prng, noiseI, noiseJ, seed) - 0.5;
                 const yNoise2 =
-                    Noise.noise(prng, noiseI + 0.5, noiseJ, seed) - 0.5;
+                    Perlin.noise(prng, noiseI + 0.5, noiseJ, seed) - 0.5;
 
                 currentPoint.y += yNoise1 * height;
                 rotatedPoint.y += yNoise2 * height;

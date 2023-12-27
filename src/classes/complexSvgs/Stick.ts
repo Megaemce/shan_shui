@@ -1,5 +1,5 @@
 import ComplexSvg from "../ComplexSvg";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
@@ -30,7 +30,7 @@ export default class Stick extends ComplexSvg {
         for (let i = 0; i < length; i++) {
             qlist1.push(
                 new Point(
-                    -Noise.noise(prng, i * 0.1, prng.random()) *
+                    -Perlin.noise(prng, i * 0.1, prng.random()) *
                         0.1 *
                         Math.sin((i / length) * Math.PI) *
                         5,

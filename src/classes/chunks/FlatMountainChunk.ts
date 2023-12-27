@@ -5,31 +5,31 @@ import Point from "../Point";
 import Stroke from "../svgPolylines/Stroke";
 import SvgPolyline from "../SvgPolyline";
 import Texture from "../complexSvgs/Texture";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import { calculateBoundingBox } from "../../utils/polytools";
 import { config } from "../../config";
 import { lineDivider } from "../../utils/polytools";
 
-const DEFAULTSEED = config.chunks.flatMountain.defaultSeed;
-const DEFAULTHEIGHTMIN = config.chunks.flatMountain.defaultHeight.min;
-const DEFAULTHEIGHTMAX = config.chunks.flatMountain.defaultHeight.max;
+const BACKGROUNDFILLCOLOR = config.chunks.flatMountain.background.fillColor;
+const BACKGROUNDSTROKECOLOR = config.chunks.flatMountain.background.color;
 const DEFAULTFLATNESS = config.chunks.flatMountain.defaultFlatness;
-const DEFAULTWIDTHMIN = config.chunks.flatMountain.defaultWidth.min;
+const DEFAULTHEIGHTMAX = config.chunks.flatMountain.defaultHeight.max;
+const DEFAULTHEIGHTMIN = config.chunks.flatMountain.defaultHeight.min;
+const DEFAULTSEED = config.chunks.flatMountain.defaultSeed;
 const DEFAULTWIDTHMAX = config.chunks.flatMountain.defaultWidth.max;
-const TEXTURESIZE = config.chunks.flatMountain.texture.size;
-const TEXTURESHADOW = config.chunks.flatMountain.texture.shadow;
+const DEFAULTWIDTHMIN = config.chunks.flatMountain.defaultWidth.min;
+const OUTLINEFILLCOLOR = config.chunks.flatMountain.outline.fillColor;
+const OUTLINESTROKECOLOR = config.chunks.flatMountain.outline.color;
+const OUTLINESTROKENOISE = config.chunks.flatMountain.outline.strokeNoise;
+const OUTLINESTROKEWIDTH = config.chunks.flatMountain.outline.strokeWidth;
 const POLYLINEFILLCOLOR = config.chunks.flatMountain.polyline.fillColor;
 const POLYLINESTROKECOLOR = config.chunks.flatMountain.polyline.color;
 const POLYLINESTROKEWIDTH = config.chunks.flatMountain.polyline.strokeWidth;
-const STROKEFILLCOLOR = config.chunks.flatMountain.stroke.fillColor;
 const STROKECOLOR = config.chunks.flatMountain.stroke.color;
+const STROKEFILLCOLOR = config.chunks.flatMountain.stroke.fillColor;
 const STROKEWIDTH = config.chunks.flatMountain.stroke.strokeWidth;
-const BACKGROUNDFILLCOLOR = config.chunks.flatMountain.background.fillColor;
-const BACKGROUNDSTROKECOLOR = config.chunks.flatMountain.background.color;
-const OUTLINEFILLCOLOR = config.chunks.flatMountain.outline.fillColor;
-const OUTLINESTROKECOLOR = config.chunks.flatMountain.outline.color;
-const OUTLINESTROKEWIDTH = config.chunks.flatMountain.outline.strokeWidth;
-const OUTLINESTROKENOISE = config.chunks.flatMountain.outline.strokeNoise;
+const TEXTURESHADOW = config.chunks.flatMountain.texture.shadow;
+const TEXTURESIZE = config.chunks.flatMountain.texture.size;
 
 /**
  * Represents a flat mountain chunk with optional vegetation and textures.
@@ -74,7 +74,7 @@ export default class FlatMountainChunk extends Chunk {
                 const x = (i / reso[1] - 0.5) * Math.PI;
                 const y =
                     (Math.cos(x * 2) + 1) *
-                    Noise.noise(prng, x + 10, j * 0.1, seed);
+                    Perlin.noise(prng, x + 10, j * 0.1, seed);
                 const p = 1 - (j / reso[0]) * 0.6;
                 const newX = (x / Math.PI) * width * p;
                 let newY = -y * height * p + heightOffset;
@@ -182,7 +182,7 @@ export default class FlatMountainChunk extends Chunk {
 
         grlist.forEach((point, i) => {
             const v = (1 - Math.abs((i % d) - d / 2) / (d / 2)) * 0.12;
-            point.x *= 1 - v + Noise.noise(prng, point.y * 0.5) * v;
+            point.x *= 1 - v + Perlin.noise(prng, point.y * 0.5) * v;
         });
 
         this.add(

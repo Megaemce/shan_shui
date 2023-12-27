@@ -1,5 +1,5 @@
 import { config } from "../../config";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
@@ -46,7 +46,7 @@ export default class Stroke extends SvgPolyline {
                 newWidth * (1 - noise) +
                 newWidth *
                     noise *
-                    Noise.noise(prng, i * 0.5, prng.random(0, 10));
+                    Perlin.noise(prng, i * 0.5, prng.random(0, 10));
 
             const a1 = Math.atan2(
                 pointArray[i].y - pointArray[i - 1].y,

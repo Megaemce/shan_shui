@@ -1,5 +1,5 @@
 import ComplexSvg from "../ComplexSvg";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
@@ -46,7 +46,7 @@ export default class Hat01 extends ComplexSvg {
         for (let i = 0; i < 10; i++) {
             qlist1.push(
                 new Point(
-                    -0.3 - Noise.noise(prng, i * 0.2, prng.random()) * i * 0.1,
+                    -0.3 - Perlin.noise(prng, i * 0.2, prng.random()) * i * 0.1,
                     0.5 - i * 0.3
                 )
             );

@@ -1,4 +1,4 @@
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import PRNG from "../PRNG";
 import { midPoint, triangulate } from "../../utils/polytools";
@@ -27,8 +27,8 @@ export default class Tree07 extends ComplexSvg {
         const noiseArray = [];
         for (let i = 0; i < reso; i++) {
             noiseArray.push([
-                Noise.noise(prng, i * 0.5),
-                Noise.noise(prng, i * 0.5, 0.5),
+                Perlin.noise(prng, i * 0.5),
+                Perlin.noise(prng, i * 0.5, 0.5),
             ]);
         }
 
@@ -86,7 +86,7 @@ export default class Tree07 extends ComplexSvg {
         for (let k = 0; k < T.length; k++) {
             const m = midPoint(T[k]);
             const c =
-                (Noise.noise(prng, m.x * 0.02, m.y * 0.02) * 200 + 50) | 0;
+                (Perlin.noise(prng, m.x * 0.02, m.y * 0.02) * 200 + 50) | 0;
             const co = `rgba(${c},${c},${c},0.8)`;
             this.add(new SvgPolyline(T[k], 0, 0, co, co));
         }

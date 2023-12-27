@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { SettingPanel } from "./ui/SettingPanel";
-import { ScrollableCanvas } from "./ui/ScrollableCanvas";
-import BackgroundRender from "./ui/BackgroundRender";
+import "./App.css";
+import Background from "./ui/Background";
+import ChunkCache from "./classes/ChunkCache";
 import PRNG from "./classes/PRNG";
 import Range from "./classes/Range";
-import { PerlinNoise } from "./classes/PerlinNoise";
-import ChunkCache from "./classes/ChunkCache";
-import "./App.css";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { ScrollableCanvas } from "./ui/ScrollableCanvas";
+import { SettingPanel } from "./ui/SettingPanel";
 
 /**
  * Main application component.
@@ -20,9 +19,8 @@ export const App: React.FC = () => {
     const currentDate = new Date().getTime().toString();
 
     // Refs for accessing child components
-    const bgRenderRef = useRef<BackgroundRender>(null);
+    const backgroundRef = useRef<Background>(null);
     const prngRef = useRef(new PRNG());
-    const noiseRef = useRef(new PerlinNoise());
     const chunkCacheRef = useRef(new ChunkCache());
 
     // State variables
@@ -87,10 +85,7 @@ export const App: React.FC = () => {
      * Effect to update the background image and handle window resize events.
      */
     useEffect(() => {
-        const url = bgRenderRef.current?.generate(
-            prngRef.current,
-            noiseRef.current
-        );
+        const url = backgroundRef.current?.generateBackground(prngRef.current);
         setBackgroundImage(url);
 
         const resizeCallback = () => {
@@ -103,7 +98,7 @@ export const App: React.FC = () => {
         return () => {
             window.removeEventListener("resize", resizeCallback);
         };
-    }, [prngRef, noiseRef, seed]);
+    }, [prngRef, seed]);
 
     /**
      * Callback function to handle horizontal scrolling.
@@ -188,7 +183,7 @@ export const App: React.FC = () => {
                     chunkCache={chunkCacheRef.current}
                 />
             </div>
-            <BackgroundRender ref={bgRenderRef} />
+            <Background ref={backgroundRef} />
         </>
     );
 };

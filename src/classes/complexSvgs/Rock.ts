@@ -1,6 +1,6 @@
 import Point from "../Point";
 import { normalizeNoise } from "../../utils/utils";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import Stroke from "../svgPolylines/Stroke";
 import Texture from "./Texture";
 import PRNG from "../PRNG";
@@ -40,7 +40,7 @@ export default class Rock extends ComplexSvg {
 
             const noiseArray = [];
             for (let j = 0; j < reso[1]; j++) {
-                noiseArray.push(Noise.noise(this.prng, i, j * 0.2, this.seed));
+                noiseArray.push(Perlin.noise(this.prng, i, j * 0.2, this.seed));
             }
             normalizeNoise(noiseArray);
 

@@ -1,5 +1,5 @@
 import Point from "../Point";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import PRNG from "../PRNG";
 import Tree01 from "../complexSvgs/Tree01";
 import Tree02 from "../complexSvgs/Tree02";
@@ -19,24 +19,24 @@ import ComplexSvg from "../ComplexSvg";
 import { generateVegetate } from "../../utils/generateVegetate";
 import { config } from "../../config";
 
-const DEFAULTSEED = config.chunks.mountain.defaultSeed;
-const DEFAULTHEIGTHMIN = config.chunks.mountain.defaultHeight.min;
-const DEFAULTHEIGTHMAX = config.chunks.mountain.defaultHeight.max;
-const DEFAULTWIDTHMIN = config.chunks.mountain.defaultWidth.min;
-const DEFAULTWIDTHMAX = config.chunks.mountain.defaultWidth.max;
-const DEFAULTMIDDLEVEGETATION = config.chunks.mountain.defaultMiddleVegetation;
-const TEXTURESIZE = config.chunks.mountain.texture.size;
-const RIMCOLORNOALFA = config.chunks.mountain.rim.colorNoAlfa;
-const RIMCLUSTERS = config.chunks.mountain.rim.clusters;
 const BACKGROUNDFILLCOLOR = config.chunks.mountain.background.fillColor;
 const BACKGROUNDSTROKECOLOR = config.chunks.mountain.background.strokeColor;
-const OUTLINEFILLCOLOR = config.chunks.mountain.outline.fillColor;
-const OUTLINECOLOR = config.chunks.mountain.outline.color;
-const OUTLINESTROKEWIDTH = config.chunks.mountain.outline.strokeWidth;
-const OUTLINESTROKENOISE = config.chunks.mountain.outline.strokeNoise;
-const TOPCOLORNOALFA = config.chunks.mountain.top.colorNoAlfa;
-const MIDDLECOLORNOALFA = config.chunks.mountain.middle.colorNoAlfa;
 const BOTTOMCOLORNOALFA = config.chunks.mountain.bottom.colorNoAlfa;
+const DEFAULTHEIGTHMAX = config.chunks.mountain.defaultHeight.max;
+const DEFAULTHEIGTHMIN = config.chunks.mountain.defaultHeight.min;
+const DEFAULTMIDDLEVEGETATION = config.chunks.mountain.defaultMiddleVegetation;
+const DEFAULTSEED = config.chunks.mountain.defaultSeed;
+const DEFAULTWIDTHMAX = config.chunks.mountain.defaultWidth.max;
+const DEFAULTWIDTHMIN = config.chunks.mountain.defaultWidth.min;
+const MIDDLECOLORNOALFA = config.chunks.mountain.middle.colorNoAlfa;
+const OUTLINECOLOR = config.chunks.mountain.outline.color;
+const OUTLINEFILLCOLOR = config.chunks.mountain.outline.fillColor;
+const OUTLINESTROKENOISE = config.chunks.mountain.outline.strokeNoise;
+const OUTLINESTROKEWIDTH = config.chunks.mountain.outline.strokeWidth;
+const RIMCLUSTERS = config.chunks.mountain.rim.clusters;
+const RIMCOLORNOALFA = config.chunks.mountain.rim.colorNoAlfa;
+const TEXTURESIZE = config.chunks.mountain.texture.size;
+const TOPCOLORNOALFA = config.chunks.mountain.top.colorNoAlfa;
 
 /**
  * Represents a mountainous landscape with various elements.
@@ -77,7 +77,7 @@ export default class MountainChunk extends Chunk {
             for (let i = 0; i < reso[1]; i++) {
                 const x = (i / reso[1] - 0.5) * Math.PI;
                 const y =
-                    Math.cos(x) * Noise.noise(prng, x + 10, j * 0.15, seed);
+                    Math.cos(x) * Perlin.noise(prng, x + 10, j * 0.15, seed);
 
                 const p = 1 - j / reso[0];
                 pointArray[pointArray.length - 1].push(
@@ -95,7 +95,7 @@ export default class MountainChunk extends Chunk {
             pointArray,
             function (x, y) {
                 const noise =
-                    Noise.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5;
+                    Perlin.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5;
 
                 return new Tree02(
                     prng,
@@ -106,7 +106,7 @@ export default class MountainChunk extends Chunk {
                 );
             },
             function (i, j) {
-                const noise = Noise.noise(prng, j * 0.1, seed);
+                const noise = Perlin.noise(prng, j * 0.1, seed);
                 return (
                     i === 0 &&
                     noise * noise * noise < 0.1 &&
@@ -160,7 +160,7 @@ export default class MountainChunk extends Chunk {
             pointArray,
             function (x, y) {
                 const noise =
-                    Noise.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5;
+                    Perlin.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5;
 
                 return new Tree02(
                     prng,
@@ -170,7 +170,7 @@ export default class MountainChunk extends Chunk {
                 );
             },
             function (i, j) {
-                const noise = Noise.noise(prng, i * 0.1, j * 0.1, seed + 2);
+                const noise = Perlin.noise(prng, i * 0.1, j * 0.1, seed + 2);
                 return (
                     Math.pow(noise, 3) < 0.1 &&
                     Math.abs(pointArray[i][j].y) / height > 0.5
@@ -189,7 +189,8 @@ export default class MountainChunk extends Chunk {
                     const treeHeight =
                         ((height + y) / height) * 70 * prng.random(0.3, 1);
                     const noise =
-                        Noise.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.3;
+                        Perlin.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 +
+                        0.3;
 
                     return new Tree01(
                         prng,
@@ -201,7 +202,7 @@ export default class MountainChunk extends Chunk {
                     );
                 },
                 function (i, j): boolean {
-                    const noise = Noise.noise(prng, i * 0.2, j * 0.05, seed);
+                    const noise = Perlin.noise(prng, i * 0.2, j * 0.05, seed);
                     return (
                         j % 2 !== 0 &&
                         Math.pow(noise, 4) < 0.012 &&
@@ -230,7 +231,8 @@ export default class MountainChunk extends Chunk {
                     const baseCurve = prng.random(0, 0.1);
                     const basePower = 1;
                     const noise =
-                        Noise.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.3;
+                        Perlin.noise(prng, 0.01 * x, 0.01 * y) * 0.5 * 0.3 +
+                        0.3;
 
                     return new Tree03(
                         prng,
@@ -242,7 +244,7 @@ export default class MountainChunk extends Chunk {
                     );
                 },
                 function (i, j) {
-                    const noise = Noise.noise(prng, i * 0.2, j * 0.05, seed);
+                    const noise = Perlin.noise(prng, i * 0.2, j * 0.05, seed);
                     return (
                         (j === 0 || j === pointArray[i].length - 1) &&
                         Math.pow(noise, 4) < 0.012
@@ -282,7 +284,7 @@ export default class MountainChunk extends Chunk {
                 return new ComplexSvg();
             },
             function (i, j) {
-                const noise = Noise.noise(prng, i * 0.2, j * 0.05, seed + 10);
+                const noise = Perlin.noise(prng, i * 0.2, j * 0.05, seed + 10);
                 return (
                     i !== 0 &&
                     (j === 1 || j === pointArray[i].length - 2) &&
@@ -324,7 +326,7 @@ export default class MountainChunk extends Chunk {
                 return new TransmissionTower(prng, x + xOffset, y + yOffset);
             },
             function (i, j) {
-                const noise = Noise.noise(
+                const noise = Perlin.noise(
                     prng,
                     i * 0.2,
                     j * 0.05,

@@ -3,7 +3,7 @@ import PRNG from "../PRNG";
 import ComplexSvg from "../ComplexSvg";
 import SvgPolyline from "../SvgPolyline";
 import Stroke from "../svgPolylines/Stroke";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 
 /**
  * Represents a mountain foot generated using procedural generation.
@@ -41,14 +41,15 @@ export default class MountainFoot extends ComplexSvg {
             for (let j = 0; j < Math.min(pointArray[i].length / 8, 10); j++) {
                 footArray[footArray.length - 2].push(
                     new Point(
-                        pointArray[i][j].x + Noise.noise(prng, j * 0.1, i) * 10,
+                        pointArray[i][j].x +
+                            Perlin.noise(prng, j * 0.1, i) * 10,
                         pointArray[i][j].y
                     )
                 );
                 footArray[footArray.length - 1].push(
                     new Point(
                         pointArray[i][pointArray[i].length - 1 - j].x -
-                            Noise.noise(prng, j * 0.1, i) * 10,
+                            Perlin.noise(prng, j * 0.1, i) * 10,
                         pointArray[i][pointArray[i].length - 1 - j].y
                     )
                 );
@@ -71,8 +72,8 @@ export default class MountainFoot extends ComplexSvg {
                     pointArray[ni][pointArray[i].length - 1].y * p;
 
                 const vib = -1.7 * (p - 1) * Math.pow(p, 1 / 5);
-                y1 += vib * 5 + Noise.noise(prng, xOffset * 0.05, i) * 5;
-                y2 += vib * 5 + Noise.noise(prng, xOffset * 0.05, i) * 5;
+                y1 += vib * 5 + Perlin.noise(prng, xOffset * 0.05, i) * 5;
+                y2 += vib * 5 + Perlin.noise(prng, xOffset * 0.05, i) * 5;
 
                 footArray[footArray.length - 2].push(new Point(x1, y1));
                 footArray[footArray.length - 1].push(new Point(x2, y2));

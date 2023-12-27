@@ -1,4 +1,4 @@
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import PRNG from "../PRNG";
 import { normalizeNoise } from "../../utils/utils";
@@ -51,7 +51,7 @@ export default class Bark extends ComplexSvg {
         }
 
         for (let i = 0; i < reso + 1; i++) {
-            noiseArray.push(Noise.noise(prng, i * 0.05, n0));
+            noiseArray.push(Perlin.noise(prng, i * 0.05, n0));
         }
 
         noiseArray = normalizeNoise(noiseArray);

@@ -1,4 +1,4 @@
-import { Noise } from "../classes/PerlinNoise";
+import Perlin from "../classes/Perlin";
 import Point from "../classes/Point";
 import PRNG from "../classes/PRNG";
 import { normalizeNoise } from "./utils";
@@ -45,7 +45,7 @@ export function generateBlobPoints(
     const n0 = prng.random(0, 10);
 
     for (let i = 0; i < resolution + 1; i++) {
-        noiseArray.push(Noise.noise(prng, i * 0.05, n0));
+        noiseArray.push(Perlin.noise(prng, i * 0.05, n0));
     }
 
     noiseArray = normalizeNoise(noiseArray);

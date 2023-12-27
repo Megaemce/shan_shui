@@ -1,6 +1,6 @@
 import DesignChunk from "./DesignChunk";
 import IChunk from "../interfaces/IChunk";
-import { Noise } from "./PerlinNoise";
+import Perlin from "./Perlin";
 import Point from "./Point";
 import PRNG from "./PRNG";
 import { isLocalMaximum } from "../utils/utils";
@@ -35,9 +35,9 @@ export default class Designer {
         this.iMax = Math.floor(xMax / X_STEP);
         this.xOffset = (xMin % X_STEP) + (xMin < 0 ? 1 : 0) * X_STEP;
 
-        const yRange = (x: number) => Noise.noise(prng, x * 0.01, Math.PI);
+        const yRange = (x: number) => Perlin.noise(prng, x * 0.01, Math.PI);
         const noiseFunction = (point: Point) =>
-            Math.max(Noise.noise(prng, point.x * NOISE_SAMPLE) - 0.55, 0) * 2;
+            Math.max(Perlin.noise(prng, point.x * NOISE_SAMPLE) - 0.55, 0) * 2;
 
         this.generateMountainChunks(noiseFunction, yRange);
         this.generateFlatMountainChunks();

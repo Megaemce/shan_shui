@@ -1,5 +1,5 @@
 import Point from "../Point";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import { midPoint, triangulate } from "../../utils/polytools";
 import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
@@ -54,7 +54,7 @@ export default class DistantMountainChunk extends Chunk {
                 xOffset + k * SPAN,
                 yOffset +
                     heightMultiplier *
-                        Noise.noise(prng, k * 0.05, seed) *
+                        Perlin.noise(prng, k * 0.05, seed) *
                         Math.pow(
                             Math.sin((Math.PI * k) / (width / SPAN)),
                             powerExponent
@@ -80,7 +80,7 @@ export default class DistantMountainChunk extends Chunk {
 
         const getColor = function (point: Point) {
             const color =
-                Noise.noise(prng, point.x * 0.02, point.y * 0.02, yOffset) *
+                Perlin.noise(prng, point.x * 0.02, point.y * 0.02, yOffset) *
                     55 +
                 200;
             return `rgb(${color},${color},${color})`;

@@ -1,5 +1,5 @@
 import ComplexSvg from "../ComplexSvg";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
@@ -34,8 +34,8 @@ export default class Tree03 extends ComplexSvg {
         const noiseArray = [];
         for (let i = 0; i < reso; i++) {
             noiseArray.push([
-                Noise.noise(prng, i * 0.5),
-                Noise.noise(prng, i * 0.5, 0.5),
+                Perlin.noise(prng, i * 0.5),
+                Perlin.noise(prng, i * 0.5, 0.5),
             ]);
         }
 

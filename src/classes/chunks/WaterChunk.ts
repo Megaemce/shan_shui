@@ -1,14 +1,14 @@
-import { config } from "../../config";
 import Chunk from "../Chunk";
-import { Noise } from "../PerlinNoise";
-import Point from "../Point";
 import PRNG from "../PRNG";
+import Point from "../Point";
 import Stroke from "../svgPolylines/Stroke";
+import Perlin from "../Perlin";
+import { config } from "../../config";
 
-const DEFAULTHEIGTH = config.chunks.water.defaultHeight;
-const DEFAULTWIDTH = config.chunks.water.defaultWidth;
-const DEFAULTWAVECLUSTERS = config.chunks.water.defaultWaveClusters;
 const COLORNOALFA = config.chunks.water.colorNoAlfa;
+const DEFAULTHEIGTH = config.chunks.water.defaultHeight;
+const DEFAULTWAVECLUSTERS = config.chunks.water.defaultWaveClusters;
+const DEFAULTWIDTH = config.chunks.water.defaultWidth;
 
 /**
  * Class representing a water chunk with undulating waves.
@@ -55,7 +55,7 @@ export default class WaterChunk extends Chunk {
                         j + xk,
                         Math.sin(j * 0.2) *
                             height *
-                            Noise.noise(prng, j * 0.1) -
+                            Perlin.noise(prng, j * 0.1) -
                             20 +
                             yk
                     )

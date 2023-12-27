@@ -1,5 +1,5 @@
 import { config } from "../../config";
-import { Noise } from "../PerlinNoise";
+import Perlin from "../Perlin";
 import Point from "../Point";
 import PRNG from "../PRNG";
 
@@ -74,7 +74,7 @@ export default function generateBranch(
             weightedPoint.x - prevPoint.x
         );
         const widthOffset =
-            ((Noise.noise(prng, i * 0.3) - 0.5) * strokeWidth * height) / 80;
+            ((Perlin.noise(prng, i * 0.3) - 0.5) * strokeWidth * height) / 80;
 
         let randomness = 0;
         if (p === 0) {
