@@ -2,7 +2,6 @@ import ISvgAttributes from "../interfaces/ISvgAttributes";
 import ISvgElement from "../interfaces/ISvgElement";
 import Point from "./Point";
 import SvgPoint from "./SvgPoint";
-import Vector from "./Vector";
 import { attributesToString } from "../utils/utils";
 import { config } from "../config";
 
@@ -22,7 +21,7 @@ export default class SvgPolyline implements ISvgElement {
 
     /**
      * Initializes a new instance of the SvgPolyline class.
-     * @param {Point[]} points - Array of SvgPoint objects defining the polyline.
+     * @param {Point[]} pointArray - Array of SvgPoint objects defining the polyline.
      * @param {number} [xOffset=0] - The x-axis offset.
      * @param {number} [yOffset=0] - The y-axis offset.
      * @param {string} [fillColor=DEFAULTFILLCOLOR] - The fill color.
@@ -30,7 +29,7 @@ export default class SvgPolyline implements ISvgElement {
      * @param {number} [strokeWidth=DEFAULTSTROKEWIDTH] - The stroke width.
      */
     constructor(
-        points: Point[],
+        pointArray: Point[],
         xOffset: number = 0,
         yOffset: number = 0,
         fillColor: string = DEFAULTFILLCOLOR,
@@ -42,8 +41,13 @@ export default class SvgPolyline implements ISvgElement {
          *
          * @type {SvgPoint[]}
          */
-        this.points = points.map((point) =>
-            SvgPoint.from(point.move(new Vector(xOffset, yOffset)))
+        this.points = Array<SvgPoint>(pointArray.length);
+        pointArray.forEach(
+            (point, index) =>
+                (this.points[index] = new SvgPoint(
+                    point.x + xOffset,
+                    point.y + yOffset
+                ))
         );
 
         /**
