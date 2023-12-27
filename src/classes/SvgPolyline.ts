@@ -4,6 +4,11 @@ import { attributesToString } from "../utils/utils";
 import Point from "./Point";
 import Vector from "./Vector";
 import SvgPoint from "./SvgPoint";
+import { config } from "../config";
+
+const DEFAULTFILLCOLOR = config.svgPolyline.defaultFillColor;
+const DEFAULTSTROKECOLOR = config.svgPolyline.defaultStrokeColor;
+const DEFAULTSTROKEWIDTH = config.svgPolyline.defaultStrokeWidth;
 
 /**
  * Represents a polyline in SVG.
@@ -20,17 +25,17 @@ export default class SvgPolyline implements ISvgElement {
      * @param {Point[]} points - Array of SvgPoint objects defining the polyline.
      * @param {number} [xOffset=0] - The x-axis offset.
      * @param {number} [yOffset=0] - The y-axis offset.
-     * @param {string} [fillColor='rgba(0,0,0,0)'] - The fill color.
-     * @param {string} [strokeColor='rgba(0,0,0,0)'] - The stroke color.
-     * @param {number} [strokeWidth=0] - The stroke width.
+     * @param {string} [fillColor=DEFAULTFILLCOLOR] - The fill color.
+     * @param {string} [strokeColor=DEFAULTSTROKECOLOR] - The stroke color.
+     * @param {number} [strokeWidth=DEFAULTSTROKEWIDTH] - The stroke width.
      */
     constructor(
         points: Point[],
         xOffset: number = 0,
         yOffset: number = 0,
-        fillColor: string = "rgba(0,0,0,0)",
-        strokeColor: string = "rgba(0,0,0,0)",
-        strokeWidth: number = 0
+        fillColor: string = DEFAULTFILLCOLOR,
+        strokeColor: string = DEFAULTSTROKECOLOR,
+        strokeWidth: number = DEFAULTSTROKEWIDTH
     ) {
         /**
          * Array of points defining the polyline.

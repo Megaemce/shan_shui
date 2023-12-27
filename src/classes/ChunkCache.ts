@@ -8,6 +8,16 @@ import MountainChunk from "./chunks/MountainChunk";
 import DistantMountainChunk from "./chunks/DistantMountainChunk";
 import FlatMountainChunk from "./chunks/FlatMountainChunk";
 import WaterChunk from "./chunks/WaterChunk";
+import { config } from "../config";
+
+const CHUNKWIDTH = config.ui.canvasWidth;
+const DISTANTMOUNTAINHEIGHT = config.chunkCache.distantMountainHeight;
+const FLATMOUNTAINFLATNESSMAX = config.chunkCache.flatMountainFlatness.max;
+const FLATMOUNTAINFLATNESSMIN = config.chunkCache.flatMountainFlatness.min;
+const FLATMOUNTAINHEIGHT = config.chunkCache.flatMountainHeight;
+const FLATMOUNTAINWIDTHMAX = config.chunkCache.flatMountainWidth.max;
+const FLATMOUNTAINWIDTHMIN = config.chunkCache.flatMountainWidth.min;
+const ZOOM = config.ui.zoom;
 
 /**
  * Class representing a ChunkCache used for generating and managing chunks of terrain.
@@ -19,29 +29,24 @@ export default class ChunkCache {
     visibleRange: Range = new Range();
     /** Array storing information about mountain coverage in each chunk. */
 
-    /** Width of each chunk. */
-    private static readonly CHUNK_WIDTH: number = 512;
-
     /**
      * Generates chunks based on the given PRNG and range.
      * @param prng - The pseudo-random number generator.
      * @param givenRange - The range for which to generate chunks.
      */
     private generateChunks(prng: PRNG, givenRange: Range): void {
-        const chunkWidth = ChunkCache.CHUNK_WIDTH;
-
         while (
-            givenRange.right > this.visibleRange.right - chunkWidth ||
-            givenRange.left < this.visibleRange.left + chunkWidth
+            givenRange.right > this.visibleRange.right - CHUNKWIDTH ||
+            givenRange.left < this.visibleRange.left + CHUNKWIDTH
         ) {
             const [start, end] =
-                givenRange.right > this.visibleRange.right - chunkWidth
+                givenRange.right > this.visibleRange.right - CHUNKWIDTH
                     ? [
                           this.visibleRange.right,
-                          (this.visibleRange.right += chunkWidth),
+                          (this.visibleRange.right += CHUNKWIDTH),
                       ]
                     : [
-                          (this.visibleRange.left -= chunkWidth),
+                          (this.visibleRange.left -= CHUNKWIDTH),
                           this.visibleRange.left,
                       ];
 
@@ -72,9 +77,12 @@ export default class ChunkCache {
                         x,
                         y,
                         prng.random(0, 2 * Math.PI),
-                        100,
-                        prng.random(0.5, 0.7),
-                        prng.random(600, 1000)
+                        FLATMOUNTAINHEIGHT,
+                        prng.random(FLATMOUNTAINWIDTHMIN, FLATMOUNTAINWIDTHMAX),
+                        prng.random(
+                            FLATMOUNTAINFLATNESSMIN,
+                            FLATMOUNTAINFLATNESSMAX
+                        )
                     )
                 );
             } else if (tag === "distmount") {
@@ -84,7 +92,7 @@ export default class ChunkCache {
                         x,
                         y,
                         prng.random(0, 100),
-                        150,
+                        DISTANTMOUNTAINHEIGHT,
                         prng.randomChoice([500, 1000, 1500])
                     )
                 );
@@ -106,12 +114,12 @@ export default class ChunkCache {
      * Updates the chunk cache based on the given PRNG and range.
      * @param prng - The pseudo-random number generator.
      * @param givenRange - The range for which to update the cache.
-     * @param chunkWidth - The width of each chunk (default is CHUNK_WIDTH).
+     * @param chunkWidth - The width of each chunk (default is CHUNKWIDTH).
      */
     public update(
         prng: PRNG,
         givenRange: Range,
-        chunkWidth: number = ChunkCache.CHUNK_WIDTH
+        chunkWidth: number = CHUNKWIDTH
     ): void {
         if (
             givenRange.right > this.visibleRange.right - chunkWidth ||
@@ -127,20 +135,19 @@ export default class ChunkCache {
      * @param seed - The seed for the terrain generation.
      * @param range - The range for which to generate the SVG.
      * @param windowHeight - The height of the SVG.
-     * @param chunkWidth - The width of each chunk (default is CHUNK_WIDTH).
+     * @param chunkWidth - The width of each chunk (default is CHUNKWIDTH).
      */
     public download(
         prng: PRNG,
         seed: string,
         range: Range,
         windowHeight: number,
-        chunkWidth: number = ChunkCache.CHUNK_WIDTH
+        chunkWidth: number = CHUNKWIDTH
     ): void {
         const filename: string = `${seed}-[${range.left}, ${range.right}].svg`;
         const windx: number = range.right - range.left;
-        const zoom: number = 1.142;
-        const viewbox = `${range.left} 0 ${windx / zoom} ${
-            windowHeight / zoom
+        const viewbox = `${range.left} 0 ${windx / ZOOM} ${
+            windowHeight / ZOOM
         }`;
 
         this.update(prng, range, chunkWidth);
@@ -161,7 +168,7 @@ export default class ChunkCache {
         const element = document.createElement("a");
         element.setAttribute(
             "href",
-            "data:text/plain;charset=utf-8," + encodeURIComponent(content)
+            `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`
         );
         element.setAttribute("download", filename);
         element.style.display = "none";

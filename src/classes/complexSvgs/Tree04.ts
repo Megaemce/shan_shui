@@ -22,7 +22,7 @@ export default class Tree04 extends ComplexSvg {
 
         const height: number = 300;
         const strokeWidth: number = 6;
-        const col: string = "rgba(100,100,100,0.5)";
+        let color: string = "rgba(100,100,100,0.5)";
 
         const _trlist = generateBranch(prng, height, strokeWidth, -Math.PI / 2);
         this.add(new Barkify(prng, x, y, _trlist));
@@ -87,11 +87,11 @@ export default class Tree04 extends ComplexSvg {
             }
         }
 
-        this.add(new SvgPolyline(trmlist, x, y, "white", col));
+        this.add(new SvgPolyline(trmlist, x, y, "white", color));
 
         trmlist.splice(0, 1);
         trmlist.splice(trmlist.length - 1, 1);
-        const color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
+        color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
 
         this.add(
             new Stroke(

@@ -64,24 +64,7 @@ export default class Point implements IPoint {
     }
 
     /**
-     * Creates a Point instance from an array of numbers [x, y].
-     * @param array - The array containing x and y values.
-     * @returns A new Point instance.
-     */
-    static fromArray(array: [number, number]): Point {
-        return new Point(array[0], array[1]);
-    }
-
-    /**
-     * Creates a Point instance representing the origin (0, 0).
-     * @returns A new Point instance at the origin.
-     */
-    static origin(): Point {
-        return new Point(0, 0);
-    }
-
-    /**
      * Constant Point instance representing the origin (0, 0).
      */
-    static readonly O: Point = Point.origin();
+    static readonly O: Point = new Point(0, 0);
 }

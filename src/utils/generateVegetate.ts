@@ -3,11 +3,12 @@ import ComplexSvg from "../classes/ComplexSvg";
 
 /**
  * Generate vegetation elements based on specified growth and proof rules.
- * @param {Point[][]} pointArray - 2D array of points representing the terrain.
- * @param {(x: number, y: number) => ComplexSvg} treeFunc - Function to generate vegetation elements at a given location.
- * @param {(i: number, j: number) => boolean} growthRule - Rule determining whether vegetation should grow at a specific point.
- * @param {(pointArray: Point[], i: number) => boolean} proofRule - Rule based upon the vegatation is added or not
- * @returns {void}.
+ * @param {Point[][]} pointArray - A 2D array of points representing the terrain.
+ * @param {(x: number, y: number) => ComplexSvg} treeFunc - A function that generates vegetation elements at a given location.
+ * @param {(i: number, j: number) => boolean} growthRule - A function that determines whether vegetation should grow at a specific point based on the indices.
+ * @param {(pointArray: Point[], i: number) => boolean} proofRule - A function that determines additional conditions for vegetation growth based on the array of potential vegetation points and an index.
+ * @param {ComplexSvg} target - The target ComplexSvg element where the generated vegetation elements are to be added.
+ * @returns {void}
  */
 export function generateVegetate(
     pointArray: Point[][],
@@ -19,18 +20,18 @@ export function generateVegetate(
     const vegList: Point[] = [];
 
     // Collect points where vegetation can potentially grow based on growthRule
-    for (let i = 0; i < pointArray.length; i += 1) {
-        for (let j = 0; j < pointArray[i].length; j += 1) {
+    pointArray.forEach((row, i) => {
+        row.forEach((point, j) => {
             if (growthRule(i, j)) {
-                vegList.push(pointArray[i][j].copy());
+                vegList.push(point.copy());
             }
-        }
-    }
+        });
+    });
 
     // Check additional proofRule conditions and generate vegetation elements
-    for (let i = 0; i < vegList.length; i++) {
+    vegList.forEach((vegElement, i) => {
         if (proofRule(vegList, i)) {
-            target.add(treeFunc(vegList[i].x, vegList[i].y));
+            target.add(treeFunc(vegElement.x, vegElement.y));
         }
-    }
+    });
 }

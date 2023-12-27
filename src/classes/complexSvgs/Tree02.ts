@@ -7,19 +7,19 @@ import Blob from "../svgPolylines/Blob";
  */
 export default class Tree02 extends ComplexSvg {
     /**
-     * Constructor for the Tree02Generator class.
+     * Constructor for the Tree02 class.
      * @param prng - The pseudo-random number generator.
      * @param x - X-coordinate of the tree base.
      * @param y - Y-coordinate of the tree base.
-     * @param col - Color of the tree.
-     * @param clu - Number of blob-like clusters.
+     * @param color - Color of the tree.
+     * @param clusters - Number of blob-like clusters.
      */
     constructor(
         prng: PRNG,
         x: number,
         y: number,
-        col: string = "rgba(100,100,100,0.5)",
-        clu: number = 5
+        color: string = "rgba(100,100,100,0.5)",
+        clusters: number = 5
     ) {
         super();
 
@@ -31,14 +31,14 @@ export default class Tree02 extends ComplexSvg {
                 ? Math.pow(Math.sin(x * Math.PI) * x, 0.5)
                 : -Math.pow(Math.sin((x - 2) * Math.PI * (x - 2)), 0.5);
 
-        for (let i = 0; i < clu; i++) {
+        for (let i = 0; i < clusters; i++) {
             this.add(
                 new Blob(
                     prng,
-                    x + prng.gaussianRandom() * clu * 4,
-                    y + prng.gaussianRandom() * clu * 4,
+                    x + prng.gaussianRandom() * clusters * 4,
+                    y + prng.gaussianRandom() * clusters * 4,
                     Math.PI / 2,
-                    col,
+                    color,
                     prng.random(0.5, 1.25) * height,
                     prng.random(0.5, 1.25) * strokeWidth,
                     0.5,

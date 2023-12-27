@@ -1,62 +1,68 @@
+import { config } from "../../config";
 import { Noise } from "../PerlinNoise";
 import Point from "../Point";
 import PRNG from "../PRNG";
+
+const DEFAULTHEIGHT = config.svgPolyline.branch.defaultHeight;
+const DEFAULTSTROKEWIDTH = config.svgPolyline.branch.defaultStrokeWidth;
+const DEFAULTANGLE = config.svgPolyline.branch.defaultAngle;
+const DEFAULTBENDINGANGLE = config.svgPolyline.branch.defaultBendingAngle;
+const DEFAULTDETAILS = config.svgPolyline.branch.defaultDetails;
 
 /**
  * Generates a list of points representing a branch structure.
  *
  * @param {PRNG} prng - The pseudo-random number generator.
- * @param {number} [height=360] - Height of the branch.
- * @param {number} [strokeWidth=6] - Width of the branch.
- * @param {number} [angle=0] - Initial angle of the branch.
- * @param {number} [bendingAngle=0.2 * Math.PI] - Bending angle of the branch.
- * @param {number} [details=10] - Number of details in the branch.
- * @returns {Point[][]} An array of two lists of points representing the branch structure.
+ * @param {number} [height=DEFAULTHEIGHT] - Height of the branch.
+ * @param {number} [strokeWidth=DEFAULTSTROKEWIDTH] - Width of the branch.
+ * @param {number} [angle=DEFAULTANGLE] - Initial angle of the branch.
+ * @param {number} [bendingAngle=DEFAULTBENDINGANGLE] - Bending angle of the branch.
+ * @param {number} [details=DEFAULTDETAILS] - Number of details in the branch.
+ * @returns {[Point[], Point[]]} An array of two lists of points representing the branch structure.
  */
 
 export default function generateBranch(
     prng: PRNG,
-    height: number = 360,
-    strokeWidth: number = 6,
-    angle: number = 0,
-    bendingAngle: number = 0.2 * Math.PI,
-    details: number = 10
-): Point[][] {
-    const tlist: Point[] = [];
+    height: number = DEFAULTHEIGHT,
+    strokeWidth: number = DEFAULTSTROKEWIDTH,
+    angle: number = DEFAULTANGLE,
+    bendingAngle: number = DEFAULTBENDINGANGLE,
+    details: number = DEFAULTDETAILS
+): [Point[], Point[]] {
+    const branches: Point[] = [];
+    const leftBranches: Point[] = [];
+    const rightBranches: Point[] = [];
     const g = 3;
 
     let newPoint = new Point(0, 0);
+    let prevPoint = new Point(0, 0);
     let angle0 = 0;
 
     for (let i = 0; i < g; i++) {
-        i === 0 && tlist.push(new Point(0, 0));
+        i === 0 && branches.push(new Point(0, 0));
         angle0 += ((prng.random(1, 2) * bendingAngle) / 2) * prng.randomSign();
         newPoint.x += (Math.cos(angle0) * height) / g;
         newPoint.y -= (Math.sin(angle0) * height) / g;
-        tlist.push(new Point(newPoint.x, newPoint.y));
+        branches.push(new Point(newPoint.x, newPoint.y));
     }
 
     const rotationAngle = Math.atan2(
-        tlist[tlist.length - 1].y,
-        tlist[tlist.length - 1].x
+        branches[branches.length - 1].y,
+        branches[branches.length - 1].x
     );
 
-    tlist.forEach((point) => {
+    branches.forEach((point) => {
         const a = Math.atan2(point.y, point.x);
         const distance = Math.sqrt(point.x * point.x + point.y * point.y);
         point.x = distance * Math.cos(a - rotationAngle + angle);
         point.y = distance * Math.sin(a - rotationAngle + angle);
     });
 
-    const trlist1: Point[] = [];
-    const trlist2: Point[] = [];
-    const totalPoints = (tlist.length - 1) * details;
-
-    let prevPoint = new Point(0, 0);
+    const totalPoints = (branches.length - 1) * details;
 
     for (let i = 0; i < totalPoints; i += 1) {
-        const lastPoint = tlist[Math.floor(i / details)];
-        const nextPoint = tlist[Math.ceil(i / details)];
+        const lastPoint = branches[Math.floor(i / details)];
+        const nextPoint = branches[Math.ceil(i / details)];
         const p = (i % details) / details;
         const weightedPoint = new Point(
             lastPoint.x * (1 - p) + nextPoint.x * p,
@@ -77,7 +83,7 @@ export default function generateBranch(
 
         const newWidth =
             strokeWidth * (((totalPoints - i) / totalPoints) * 0.5 + 0.5);
-        trlist1.push(
+        leftBranches.push(
             new Point(
                 weightedPoint.x +
                     Math.cos(angle + Math.PI / 2) *
@@ -87,7 +93,7 @@ export default function generateBranch(
                         (newWidth + widthOffset + randomness)
             )
         );
-        trlist2.push(
+        rightBranches.push(
             new Point(
                 weightedPoint.x +
                     Math.cos(angle - Math.PI / 2) *
@@ -100,5 +106,5 @@ export default function generateBranch(
         prevPoint = weightedPoint;
     }
 
-    return [trlist1, trlist2];
+    return [leftBranches, rightBranches];
 }

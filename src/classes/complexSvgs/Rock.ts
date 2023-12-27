@@ -38,11 +38,11 @@ export default class Rock extends ComplexSvg {
         for (let i = 0; i < reso[0]; i++) {
             pointArray.push([]);
 
-            const nslist = [];
+            const noiseArray = [];
             for (let j = 0; j < reso[1]; j++) {
-                nslist.push(Noise.noise(this.prng, i, j * 0.2, this.seed));
+                noiseArray.push(Noise.noise(this.prng, i, j * 0.2, this.seed));
             }
-            normalizeNoise(nslist);
+            normalizeNoise(noiseArray);
 
             for (let j = 0; j < reso[1]; j++) {
                 const a = (j / reso[1]) * Math.PI * 2 - Math.PI / 2;
@@ -53,7 +53,7 @@ export default class Rock extends ComplexSvg {
                             Math.pow(this.strokeWidth * Math.sin(a), 2)
                     );
 
-                l *= 0.7 + 0.3 * nslist[j];
+                l *= 0.7 + 0.3 * noiseArray[j];
 
                 const p = 1 - i / reso[0];
 

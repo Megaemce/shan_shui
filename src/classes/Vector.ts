@@ -64,13 +64,4 @@ export default class Vector implements IPoint {
     static unit(angle: number = 0): Vector {
         return new Vector(Math.cos(angle), Math.sin(angle));
     }
-
-    /**
-     * Creates a Vector instance from an array of numbers [x, y].
-     * @param array - The array containing x and y values.
-     * @returns A new Vector instance.
-     */
-    static fromArray(array: [number, number]): Vector {
-        return new Vector(array[0], array[1]);
-    }
 }

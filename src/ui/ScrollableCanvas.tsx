@@ -3,6 +3,11 @@ import Range from "../classes/Range";
 import "./styles.css";
 import { ScrollBar } from "./ScrollBar";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
+import { config } from "../config";
+
+const ZOOM = config.ui.zoom;
+const CANVASWIDTH = config.ui.canvasWidth;
+const SCROLLVALUE = config.ui.scrollValue;
 
 /**
  * ScrollableCanvas component for rendering a scrollable canvas with ScrollBars.
@@ -17,20 +22,15 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     prng,
     chunkCache,
 }) => {
-    /** The width of the canvas. */
-    const CWID = 512;
-    /** The zoom factor for the canvas. */
-    const ZOOM = 1.142;
-
     /** The viewbox string for the SVG element. */
     const viewbox = `${currentPosition} 0 ${windowWidth / ZOOM} ${
         windowHeight / ZOOM
     }`;
     /** Range instance for representing a range of x-coordinates. */
-    const nr = new Range(currentPosition, currentPosition + windowWidth);
+    const newRange = new Range(currentPosition, currentPosition + windowWidth);
 
     // Update the chunk cache based on the current view
-    chunkCache.update(prng, nr, CWID);
+    chunkCache.update(prng, newRange, CANVASWIDTH);
 
     return (
         <table id="SCROLLABLE_CANVAS">
@@ -39,7 +39,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     <td>
                         <ScrollBar
                             id="L"
-                            onClick={() => horizontalScroll(-200)}
+                            onClick={() => horizontalScroll(-SCROLLVALUE)}
                             height={windowHeight - 8}
                             icon="&#x3008;"
                         />
@@ -78,7 +78,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     <td>
                         <ScrollBar
                             id="R"
-                            onClick={() => horizontalScroll(200)}
+                            onClick={() => horizontalScroll(SCROLLVALUE)}
                             height={windowHeight - 8}
                             icon="&#x3009;"
                         />

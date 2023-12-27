@@ -1,13 +1,35 @@
-import Point from "../Point";
-import { Noise } from "../PerlinNoise";
-import Stroke from "../svgPolylines/Stroke";
-import Texture from "../complexSvgs/Texture";
-import { lineDivider } from "../../utils/polytools";
-import PRNG from "../PRNG";
-import SvgPolyline from "../SvgPolyline";
 import Chunk from "../Chunk";
-import { calculateBoundingBox } from "../../utils/polytools";
 import FlatDecoration from "../complexSvgs/FlatDecoration";
+import PRNG from "../PRNG";
+import Point from "../Point";
+import Stroke from "../svgPolylines/Stroke";
+import SvgPolyline from "../SvgPolyline";
+import Texture from "../complexSvgs/Texture";
+import { Noise } from "../PerlinNoise";
+import { calculateBoundingBox } from "../../utils/polytools";
+import { config } from "../../config";
+import { lineDivider } from "../../utils/polytools";
+
+const DEFAULTSEED = config.chunks.flatMountain.defaultSeed;
+const DEFAULTHEIGHTMIN = config.chunks.flatMountain.defaultHeight.min;
+const DEFAULTHEIGHTMAX = config.chunks.flatMountain.defaultHeight.max;
+const DEFAULTFLATNESS = config.chunks.flatMountain.defaultFlatness;
+const DEFAULTWIDTHMIN = config.chunks.flatMountain.defaultWidth.min;
+const DEFAULTWIDTHMAX = config.chunks.flatMountain.defaultWidth.max;
+const TEXTURESIZE = config.chunks.flatMountain.texture.size;
+const TEXTURESHADOW = config.chunks.flatMountain.texture.shadow;
+const POLYLINEFILLCOLOR = config.chunks.flatMountain.polyline.fillColor;
+const POLYLINESTROKECOLOR = config.chunks.flatMountain.polyline.color;
+const POLYLINESTROKEWIDTH = config.chunks.flatMountain.polyline.strokeWidth;
+const STROKEFILLCOLOR = config.chunks.flatMountain.stroke.fillColor;
+const STROKECOLOR = config.chunks.flatMountain.stroke.color;
+const STROKEWIDTH = config.chunks.flatMountain.stroke.strokeWidth;
+const BACKGROUNDFILLCOLOR = config.chunks.flatMountain.background.fillColor;
+const BACKGROUNDSTROKECOLOR = config.chunks.flatMountain.background.color;
+const OUTLINEFILLCOLOR = config.chunks.flatMountain.outline.fillColor;
+const OUTLINESTROKECOLOR = config.chunks.flatMountain.outline.color;
+const OUTLINESTROKEWIDTH = config.chunks.flatMountain.outline.strokeWidth;
+const OUTLINESTROKENOISE = config.chunks.flatMountain.outline.strokeNoise;
 
 /**
  * Represents a flat mountain chunk with optional vegetation and textures.
@@ -21,26 +43,25 @@ export default class FlatMountainChunk extends Chunk {
      * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
-     * @param {number} [seed=0] - The seed value for noise functions.
-     * @param {number} [height] - The height of the mountain.
-     * @param {number} [flatness=0.5] - Parameter controlling the flatness of the mountain.
-     * @param {number} [strokeWidth] - The stroke width of the mountain outline.
+     * @param {number} [seed=DEFAULTSEED] - The seed value for noise functions.
+     * @param {number} [height = prng.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX)] - The height of the mountain.
+     * @param {number} [width = prng.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)] - The width of the mountain.
+     * @param {number} [flatness=DEFAULTFLATNESS] - Parameter controlling the flatness of the mountain.
      */
     constructor(
         prng: PRNG,
         xOffset: number,
         yOffset: number,
-        seed: number = 0,
-        height: number = prng.random(40, 440),
-        flatness: number = 0.5,
-        strokeWidth: number = prng.random(400, 600)
+        seed: number = DEFAULTSEED,
+        height: number = prng.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX),
+        width: number = prng.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX),
+        flatness: number = DEFAULTFLATNESS
     ) {
         super("flatmount", xOffset, yOffset);
 
-        const textureCount: number = 80;
         const pointArray: Point[][] = [];
-        const reso = [5, 50];
         const flat: Point[][] = [];
+        const reso = [5, 50];
 
         let heightOffset = 0;
 
@@ -55,7 +76,7 @@ export default class FlatMountainChunk extends Chunk {
                     (Math.cos(x * 2) + 1) *
                     Noise.noise(prng, x + 10, j * 0.1, seed);
                 const p = 1 - (j / reso[0]) * 0.6;
-                const newX = (x / Math.PI) * strokeWidth * p;
+                const newX = (x / Math.PI) * width * p;
                 let newY = -y * height * p + heightOffset;
                 const h = 100;
 
@@ -84,8 +105,8 @@ export default class FlatMountainChunk extends Chunk {
                 pointArray[0].concat([new Point(0, reso[0] * 4)]),
                 xOffset,
                 yOffset,
-                "white",
-                "none"
+                BACKGROUNDFILLCOLOR,
+                BACKGROUNDSTROKECOLOR
             )
         );
 
@@ -96,10 +117,10 @@ export default class FlatMountainChunk extends Chunk {
                 pointArray[0].map(
                     (p) => new Point(p.x + xOffset, p.y + yOffset)
                 ),
-                "rgba(100,100,100,0.3)",
-                "rgba(100,100,100,0.3)",
-                3,
-                1
+                OUTLINEFILLCOLOR,
+                OUTLINESTROKECOLOR,
+                OUTLINESTROKEWIDTH,
+                OUTLINESTROKENOISE
             )
         );
 
@@ -110,8 +131,8 @@ export default class FlatMountainChunk extends Chunk {
                 pointArray,
                 xOffset,
                 yOffset,
-                textureCount,
-                0,
+                TEXTURESIZE,
+                TEXTURESHADOW,
                 () => 0.5 + prng.randomSign() * prng.random(0, 0.4)
             )
         );
@@ -159,19 +180,28 @@ export default class FlatMountainChunk extends Chunk {
 
         const grlist = grlist1.reverse().concat(grlist2.concat([grlist1[0]]));
 
-        for (let i = 0; i < grlist.length; i++) {
+        grlist.forEach((point, i) => {
             const v = (1 - Math.abs((i % d) - d / 2) / (d / 2)) * 0.12;
-            grlist[i].x *= 1 - v + Noise.noise(prng, grlist[i].y * 0.5) * v;
-        }
+            point.x *= 1 - v + Noise.noise(prng, point.y * 0.5) * v;
+        });
 
-        this.add(new SvgPolyline(grlist, xOffset, yOffset, "white", "none", 2));
+        this.add(
+            new SvgPolyline(
+                grlist,
+                xOffset,
+                yOffset,
+                POLYLINEFILLCOLOR,
+                POLYLINESTROKECOLOR,
+                POLYLINESTROKEWIDTH
+            )
+        );
         this.add(
             new Stroke(
                 prng,
                 grlist.map((p) => new Point(p.x + xOffset, p.y + yOffset)),
-                "rgba(100,100,100,0.2)",
-                "rgba(100,100,100,0.2)",
-                3
+                STROKEFILLCOLOR,
+                STROKECOLOR,
+                STROKEWIDTH
             )
         );
 

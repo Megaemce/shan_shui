@@ -15,7 +15,7 @@ export default class Tree03 extends ComplexSvg {
      * @param x - X-coordinate of the tree base.
      * @param y - Y-coordinate of the tree base.
      * @param height - Height of the tree.
-     * @param col - Color of the tree.
+     * @param color - Color of the tree.
      * @param bendingAngle - Custom bending function.
      */
     constructor(
@@ -23,7 +23,7 @@ export default class Tree03 extends ComplexSvg {
         x: number,
         y: number,
         height: number = 16,
-        col: string = "rgba(100,100,100,0.5)",
+        color: string = "rgba(100,100,100,0.5)",
         bendingAngle: (x: number) => number = (_) => 0
     ) {
         super();
@@ -31,17 +31,17 @@ export default class Tree03 extends ComplexSvg {
         const strokeWidth: number = 5;
 
         const reso = 10;
-        const nslist = [];
+        const noiseArray = [];
         for (let i = 0; i < reso; i++) {
-            nslist.push([
+            noiseArray.push([
                 Noise.noise(prng, i * 0.5),
                 Noise.noise(prng, i * 0.5, 0.5),
             ]);
         }
 
         let leafcol;
-        if (col.includes("rgba(")) {
-            leafcol = col.replace("rgba(", "").replace(")", "").split(",");
+        if (color.includes("rgba(")) {
+            leafcol = color.replace("rgba(", "").replace(")", "").split(",");
         } else {
             leafcol = ["100", "100", "100", "0.5"];
         }
@@ -78,7 +78,7 @@ export default class Tree03 extends ComplexSvg {
             line1.push(
                 new Point(
                     newX +
-                        (((nslist[i][0] - 0.5) * strokeWidth -
+                        (((noiseArray[i][0] - 0.5) * strokeWidth -
                             strokeWidth / 2) *
                             (reso - i)) /
                             reso,
@@ -88,7 +88,7 @@ export default class Tree03 extends ComplexSvg {
             line2.push(
                 new Point(
                     newX +
-                        (((nslist[i][1] - 0.5) * strokeWidth +
+                        (((noiseArray[i][1] - 0.5) * strokeWidth +
                             strokeWidth / 2) *
                             (reso - i)) /
                             reso,
@@ -97,6 +97,6 @@ export default class Tree03 extends ComplexSvg {
             );
         }
         const lc = line1.concat(line2.reverse());
-        this.add(new SvgPolyline(lc, 0, 0, "white", col, 1.5));
+        this.add(new SvgPolyline(lc, 0, 0, "white", color, 1.5));
     }
 }

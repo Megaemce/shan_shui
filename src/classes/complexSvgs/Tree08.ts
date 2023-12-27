@@ -23,7 +23,7 @@ export default class Tree08 extends ComplexSvg {
         super();
 
         const strokeWidth: number = 1;
-        const col: string = "rgba(100,100,100,0.5)";
+        let color: string = "rgba(100,100,100,0.5)";
 
         // Generate a random angle to add variety to the tree structure
         const angle = prng.normalizedRandom(-1, 1) * Math.PI * 0.2;
@@ -63,10 +63,10 @@ export default class Tree08 extends ComplexSvg {
         }
 
         // Add the main trunk to the polyline array
-        this.add(new SvgPolyline(trlist, x, y, "white", col));
+        this.add(new SvgPolyline(trlist, x, y, "white", color));
 
         // Add a colored stroke to the main trunk
-        const color = `rgba(100,100,100,${prng.random(0.6, 0.7).toFixed(3)})`;
+        color = `rgba(100,100,100,${prng.random(0.6, 0.7).toFixed(3)})`;
         this.add(
             new Stroke(
                 prng,

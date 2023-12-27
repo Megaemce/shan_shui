@@ -24,9 +24,9 @@ export default class Tree07 extends ComplexSvg {
         const bendingAngle: (x: number) => number = (x: number) =>
             0.2 * Math.sqrt(x);
         const reso = 10;
-        const nslist = [];
+        const noiseArray = [];
         for (let i = 0; i < reso; i++) {
-            nslist.push([
+            noiseArray.push([
                 Noise.noise(prng, i * 0.5),
                 Noise.noise(prng, i * 0.5, 0.5),
             ]);
@@ -63,13 +63,17 @@ export default class Tree07 extends ComplexSvg {
             }
             line1.push(
                 new Point(
-                    newX + (nslist[i][0] - 0.5) * strokeWidth - strokeWidth / 2,
+                    newX +
+                        (noiseArray[i][0] - 0.5) * strokeWidth -
+                        strokeWidth / 2,
                     newY
                 )
             );
             line2.push(
                 new Point(
-                    newX + (nslist[i][1] - 0.5) * strokeWidth + strokeWidth / 2,
+                    newX +
+                        (noiseArray[i][1] - 0.5) * strokeWidth +
+                        strokeWidth / 2,
                     newY
                 )
             );

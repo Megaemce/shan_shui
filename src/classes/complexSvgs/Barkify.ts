@@ -9,30 +9,38 @@ import ComplexSvg from "../ComplexSvg";
 
 /**
  * Generates a bark-like structure by combining two sets of points and adding details.
+ * @extends ComplexSvg
  */
 export default class Barkify extends ComplexSvg {
     /**
-     * Constructor for the BarkifyGenerator class.
-     * @param prng - The pseudo-random number generator.
-     * @param x - X-coordinate offset.
-     * @param y - Y-coordinate offset.
-     * @param trlist - Two lists of points representing the structure to be combined.
+     * Creates an instance of the Barkify class.
+     * @param {PRNG} prng - The pseudo-random number generator to use for randomness.
+     * @param {number} x - The x-coordinate offset for the SVG structure.
+     * @param {number} y - The y-coordinate offset for the SVG structure.
+     * @param {[Point[], Point[]]} branches - A tuple containing two arrays of points representing the left and right branches.
      */
-    constructor(prng: PRNG, x: number, y: number, trlist: Point[][]) {
+    constructor(
+        prng: PRNG,
+        x: number,
+        y: number,
+        [leftBranches, rightBranches]: [Point[], Point[]]
+    ) {
         super();
 
-        for (let i = 2; i < trlist[0].length - 1; i++) {
+        const randomGroupArray: Point[][] = [[]];
+
+        for (let i = 2; i < leftBranches.length - 1; i++) {
             const angle0 = Math.atan2(
-                trlist[0][i].y - trlist[0][i - 1].y,
-                trlist[0][i].x - trlist[0][i - 1].x
+                leftBranches[i].y - leftBranches[i - 1].y,
+                leftBranches[i].x - leftBranches[i - 1].x
             );
             const angle1 = Math.atan2(
-                trlist[1][i].y - trlist[1][i - 1].y,
-                trlist[1][i].x - trlist[1][i - 1].x
+                rightBranches[i].y - rightBranches[i - 1].y,
+                rightBranches[i].x - rightBranches[i - 1].x
             );
             const p = prng.random();
-            const newX = trlist[0][i].x * (1 - p) + trlist[1][i].x * p;
-            const newY = trlist[0][i].y * (1 - p) + trlist[1][i].y * p;
+            const newX = leftBranches[i].x * (1 - p) + rightBranches[i].x * p;
+            const newY = leftBranches[i].y * (1 - p) + rightBranches[i].y * p;
 
             // Add Blob or Bark based on random probability
             if (prng.random() < 0.2) {
@@ -63,8 +71,8 @@ export default class Barkify extends ComplexSvg {
             if (prng.random() < 0.05) {
                 const blobLength = prng.random(2, 4);
                 const [blobX, blobY, blobAngle] = prng.randomChoice([
-                    [trlist[0][i].x, trlist[0][i].y, angle0],
-                    [trlist[1][i].x, trlist[1][i].y, angle1],
+                    [leftBranches[i].x, leftBranches[i].y, angle0],
+                    [rightBranches[i].x, rightBranches[i].y, angle1],
                 ]);
 
                 for (let j = 0; j < blobLength; j++) {
@@ -87,11 +95,9 @@ export default class Barkify extends ComplexSvg {
             }
         }
 
-        const trflist = trlist[0].concat(trlist[1].slice().reverse());
+        const trflist = leftBranches.concat(rightBranches.slice().reverse());
 
         // Generate random groups of points
-        const randomGroupArray: Point[][] = [[]];
-
         trflist.forEach((point) => {
             if (prng.random() < 0.5) {
                 randomGroupArray.push([]);

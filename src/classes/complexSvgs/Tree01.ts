@@ -16,7 +16,7 @@ export default class Tree01 extends ComplexSvg {
      * @param y - Y-coordinate of the tree base.
      * @param height - Height of the tree.
      * @param strokeWidth - Width of the tree branches.
-     * @param col - Color of the tree.
+     * @param color - Color of the tree.
      */
     constructor(
         prng: PRNG,
@@ -24,22 +24,22 @@ export default class Tree01 extends ComplexSvg {
         y: number,
         height: number = 50,
         strokeWidth: number = 3,
-        col: string = "rgba(100,100,100,0.5)"
+        color: string = "rgba(100,100,100,0.5)"
     ) {
         super();
 
         const reso = 10;
-        const nslist = [];
+        const noiseArray = [];
         for (let i = 0; i < reso; i++) {
-            nslist.push([
+            noiseArray.push([
                 Noise.noise(prng, i * 0.5),
                 Noise.noise(prng, i * 0.5, 0.5),
             ]);
         }
 
         let leafcol;
-        if (col.includes("rgba(")) {
-            leafcol = col.replace("rgba(", "").replace(")", "").split(",");
+        if (color.includes("rgba(")) {
+            leafcol = color.replace("rgba(", "").replace(")", "").split(",");
         } else {
             leafcol = ["100", "100", "100", "0.5"];
         }
@@ -74,19 +74,23 @@ export default class Tree01 extends ComplexSvg {
             }
             line1.push(
                 new Point(
-                    newX + (nslist[i][0] - 0.5) * strokeWidth - strokeWidth / 2,
+                    newX +
+                        (noiseArray[i][0] - 0.5) * strokeWidth -
+                        strokeWidth / 2,
                     newY
                 )
             );
             line2.push(
                 new Point(
-                    newX + (nslist[i][1] - 0.5) * strokeWidth + strokeWidth / 2,
+                    newX +
+                        (noiseArray[i][1] - 0.5) * strokeWidth +
+                        strokeWidth / 2,
                     newY
                 )
             );
         }
 
-        this.add(new SvgPolyline(line1, 0, 0, "none", col, 1.5));
-        this.add(new SvgPolyline(line2, 0, 0, "none", col, 1.5));
+        this.add(new SvgPolyline(line1, 0, 0, "none", color, 1.5));
+        this.add(new SvgPolyline(line2, 0, 0, "none", color, 1.5));
     }
 }

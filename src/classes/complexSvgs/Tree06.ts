@@ -23,7 +23,7 @@ export default class Tree06 extends ComplexSvg {
         super();
 
         const strokeWidth: number = 6;
-        const col: string = "rgba(100,100,100,0.5)";
+        let color: string = "rgba(100,100,100,0.5)";
 
         const trmlist = this.generateFractalTree06(
             prng,
@@ -36,11 +36,11 @@ export default class Tree06 extends ComplexSvg {
             0
         );
 
-        this.add(new SvgPolyline(trmlist, x, y, "white", col, 0));
+        this.add(new SvgPolyline(trmlist, x, y, "white", color, 0));
 
         trmlist.splice(0, 1);
         trmlist.splice(trmlist.length - 1, 1);
-        const color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
+        color = `rgba(100,100,100,${prng.random(0.4, 0.5).toFixed(3)})`;
         this.add(
             new Stroke(
                 prng,
@@ -82,7 +82,7 @@ export default class Tree06 extends ComplexSvg {
         angle: number = 0,
         bendingAngle: number = 0.2 * Math.PI
     ): Point[] {
-        const _trlist = generateBranch(
+        const [leftBranches, rightBranches] = generateBranch(
             prng,
             height,
             strokeWidth,
@@ -91,64 +91,70 @@ export default class Tree06 extends ComplexSvg {
             height / 20
         );
 
-        this.add(new Barkify(prng, xOffset, yOffset, _trlist));
-        const trlist = _trlist[0].concat(_trlist[1].reverse());
+        this.add(
+            new Barkify(prng, xOffset, yOffset, [leftBranches, rightBranches])
+        );
+        const branches = leftBranches.concat(rightBranches.reverse());
 
-        let trmlist: Point[] = [];
+        let result: Point[] = [];
 
-        for (let i = 0; i < trlist.length; i++) {
+        branches.forEach((branch, i) => {
             if (
                 ((prng.random() < 0.025 &&
-                    i >= trlist.length * 0.2 &&
-                    i <= trlist.length * 0.8) ||
-                    i === ((trlist.length / 2) | 0) - 1 ||
-                    i === ((trlist.length / 2) | 0) + 1) &&
+                    i >= branches.length * 0.2 &&
+                    i <= branches.length * 0.8) ||
+                    i === ((branches.length / 2) | 0) - 1 ||
+                    i === ((branches.length / 2) | 0) + 1) &&
                 depth > 0
             ) {
-                const bar = prng.random(0.02, 0.1);
-                const ba =
-                    bar * Math.PI -
-                    bar * 2 * Math.PI * (i > trlist.length / 2 ? 1 : 0);
+                const branchRadian = prng.random(0.02, 0.1);
+                const branchAngle =
+                    branchRadian * Math.PI -
+                    branchRadian *
+                        2 *
+                        Math.PI *
+                        (i > branches.length / 2 ? 1 : 0);
 
                 const brlist = this.generateFractalTree06(
                     prng,
-                    trlist[i].x + xOffset,
-                    trlist[i].y + yOffset,
+                    branch.x + xOffset,
+                    branch.y + yOffset,
                     depth - 1,
                     height * prng.random(0.7, 0.9),
                     strokeWidth * 0.6,
-                    angle + ba,
+                    angle + branchAngle,
                     0.55
                 );
 
-                for (let j = 0; j < brlist.length; j++) {
+                brlist.forEach((point) => {
                     if (prng.random() < 0.03) {
                         this.add(
                             new Twig(
                                 prng,
-                                brlist[j].x + trlist[i].x + xOffset,
-                                brlist[j].y + trlist[i].y + yOffset,
+                                point.x + branch.x + xOffset,
+                                point.y + branch.y + yOffset,
                                 2,
-                                ba * prng.random(0.75, 1.25),
+                                branchAngle * prng.random(0.75, 1.25),
                                 0.3,
-                                ba > 0 ? 1 : -1,
+                                branchAngle > 0 ? 1 : -1,
                                 1,
                                 [false, 0]
                             )
                         );
                     }
-                }
+                });
 
-                trmlist = trmlist.concat(
-                    brlist.map(function (v) {
-                        return new Point(v.x + trlist[i].x, v.y + trlist[i].y);
-                    })
+                result = result.concat(
+                    brlist.map(
+                        (point) =>
+                            new Point(point.x + branch.x, point.y + branch.y)
+                    )
                 );
             } else {
-                trmlist.push(trlist[i]);
+                result.push(branch);
             }
-        }
+        });
 
-        return trmlist;
+        return result;
     }
 }

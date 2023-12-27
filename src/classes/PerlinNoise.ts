@@ -1,49 +1,15 @@
 // Modified from https://raw.githubusercontent.com/processing/p5.js/master/src/math/noise.js
+import { config } from "../config";
+import { scaledCosine } from "../utils/utils";
 import PRNG from "./PRNG";
 
-/**
- * Number of bits to wrap along the y-axis.
- */
-const PERLIN_YWRAPB = 4;
-
-/**
- * Number of positions to wrap along the y-axis.
- */
-const PERLIN_YWRAP = 1 << PERLIN_YWRAPB;
-
-/**
- * Number of bits to wrap along the z-axis.
- */
-const PERLIN_ZWRAPB = 8;
-
-/**
- * Number of positions to wrap along the z-axis.
- */
-const PERLIN_ZWRAP = 1 << PERLIN_ZWRAPB;
-
-/**
- * Size of the perlin array.
- */
-const PERLIN_SIZE = 4095;
-
-/**
- * Number of octaves used in the Perlin noise generation.
- */
-const PERLIN_OCTAVES = 4;
-
-/**
- * Amplitude falloff factor for each octave in the Perlin noise.
- */
-const PERLIN_AMP_FALLOFF = 0.5;
-
-/**
- * Computes the scaled cosine of the given value.
- * @param i - The input value.
- * @returns The scaled cosine value.
- */
-function scaledCosine(i: number): number {
-    return 0.5 * (1.0 - Math.cos(i * Math.PI));
-}
+const PERLIN_AMP_FALLOFF = config.perlin.ampFalloff;
+const PERLIN_OCTAVES = config.perlin.octaves;
+const PERLIN_SIZE = config.perlin.size;
+const PERLIN_YWRAPB = config.perlin.yWrapb;
+const PERLIN_ZWRAPB = config.perlin.zWrapb;
+const PERLIN_YWRAP = 1 << PERLIN_YWRAPB; // Number of positions to wrap along the y-axis.
+const PERLIN_ZWRAP = 1 << PERLIN_ZWRAPB; // Number of positions to wrap along the z-axis.
 
 /**
  * Class representing Perlin noise generation.

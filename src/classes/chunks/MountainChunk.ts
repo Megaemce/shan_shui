@@ -17,6 +17,26 @@ import Chunk from "../Chunk";
 import { distance } from "../../utils/polytools";
 import ComplexSvg from "../ComplexSvg";
 import { generateVegetate } from "../../utils/generateVegetate";
+import { config } from "../../config";
+
+const DEFAULTSEED = config.chunks.mountain.defaultSeed;
+const DEFAULTHEIGTHMIN = config.chunks.mountain.defaultHeight.min;
+const DEFAULTHEIGTHMAX = config.chunks.mountain.defaultHeight.max;
+const DEFAULTWIDTHMIN = config.chunks.mountain.defaultWidth.min;
+const DEFAULTWIDTHMAX = config.chunks.mountain.defaultWidth.max;
+const DEFAULTMIDDLEVEGETATION = config.chunks.mountain.defaultMiddleVegetation;
+const TEXTURESIZE = config.chunks.mountain.texture.size;
+const RIMCOLORNOALFA = config.chunks.mountain.rim.colorNoAlfa;
+const RIMCLUSTERS = config.chunks.mountain.rim.clusters;
+const BACKGROUNDFILLCOLOR = config.chunks.mountain.background.fillColor;
+const BACKGROUNDSTROKECOLOR = config.chunks.mountain.background.strokeColor;
+const OUTLINEFILLCOLOR = config.chunks.mountain.outline.fillColor;
+const OUTLINECOLOR = config.chunks.mountain.outline.color;
+const OUTLINESTROKEWIDTH = config.chunks.mountain.outline.strokeWidth;
+const OUTLINESTROKENOISE = config.chunks.mountain.outline.strokeNoise;
+const TOPCOLORNOALFA = config.chunks.mountain.top.colorNoAlfa;
+const MIDDLECOLORNOALFA = config.chunks.mountain.middle.colorNoAlfa;
+const BOTTOMCOLORNOALFA = config.chunks.mountain.bottom.colorNoAlfa;
 
 /**
  * Represents a mountainous landscape with various elements.
@@ -30,20 +50,20 @@ export default class MountainChunk extends Chunk {
      * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
-     * @param {number} [seed=0] - The seed for noise functions.
+     * @param {number} [seed=DEFAULTSEED] - The seed for noise functions.
+     * @param {number} [height = prng.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX)] - The height of the mountain.
+     * @param {number} [width = prng.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)] - The width of the mountain.
+
      */
     constructor(
         prng: PRNG,
         xOffset: number,
         yOffset: number,
-        seed: number = 0
+        seed: number = DEFAULTSEED,
+        height: number = prng.random(DEFAULTHEIGTHMIN, DEFAULTHEIGTHMAX),
+        width: number = prng.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)
     ) {
         super("mount", xOffset, yOffset);
-
-        const height: number = prng.random(100, 500);
-        const strokeWidth: number = prng.random(400, 600);
-        const textureSize: number = 200;
-        const vegetation: boolean = true;
 
         const pointArray: Point[][] = [];
         const reso = [10, 50];
@@ -62,7 +82,7 @@ export default class MountainChunk extends Chunk {
                 const p = 1 - j / reso[0];
                 pointArray[pointArray.length - 1].push(
                     new Point(
-                        (x / Math.PI) * strokeWidth * p,
+                        (x / Math.PI) * width * p,
                         -y * height * p + heightOffset
                     )
                 );
@@ -81,8 +101,8 @@ export default class MountainChunk extends Chunk {
                     prng,
                     x + xOffset,
                     y + yOffset - 5,
-                    `rgba(100,100,100,${noise.toFixed(3)})`,
-                    2
+                    RIMCOLORNOALFA + noise.toFixed(3) + ")",
+                    RIMCLUSTERS
                 );
             },
             function (i, j) {
@@ -103,8 +123,8 @@ export default class MountainChunk extends Chunk {
                 pointArray[0].concat([new Point(0, reso[0] * 4)]),
                 xOffset,
                 yOffset,
-                "white",
-                "none"
+                BACKGROUNDFILLCOLOR,
+                BACKGROUNDSTROKECOLOR
             )
         );
 
@@ -115,10 +135,10 @@ export default class MountainChunk extends Chunk {
                 pointArray[0].map(function (p) {
                     return new Point(p.x + xOffset, p.y + yOffset);
                 }),
-                "rgba(100,100,100,0.3)",
-                "rgba(100,100,100,0.3)",
-                3,
-                1
+                OUTLINEFILLCOLOR,
+                OUTLINECOLOR,
+                OUTLINESTROKEWIDTH,
+                OUTLINESTROKENOISE
             )
         );
 
@@ -130,8 +150,8 @@ export default class MountainChunk extends Chunk {
                 pointArray,
                 xOffset,
                 yOffset,
-                textureSize,
-                prng.randomChoice([0, 0, 0, 0, 5])
+                TEXTURESIZE,
+                prng.randomChoice([2, 1, 3])
             )
         );
 
@@ -146,7 +166,7 @@ export default class MountainChunk extends Chunk {
                     prng,
                     x + xOffset,
                     y + yOffset,
-                    `rgba(100,100,100,${noise.toFixed(3)})`
+                    TOPCOLORNOALFA + noise.toFixed(3) + ")"
                 );
             },
             function (i, j) {
@@ -160,7 +180,7 @@ export default class MountainChunk extends Chunk {
             this
         );
 
-        if (vegetation) {
+        if (DEFAULTMIDDLEVEGETATION) {
             // MIDDLE
 
             generateVegetate(
@@ -177,7 +197,7 @@ export default class MountainChunk extends Chunk {
                         y + yOffset,
                         treeHeight,
                         prng.random(1, 4),
-                        `rgba(100,100,100,${noise.toFixed(3)})`
+                        MIDDLECOLORNOALFA + noise.toFixed(3) + ")"
                     );
                 },
                 function (i, j): boolean {
@@ -217,7 +237,7 @@ export default class MountainChunk extends Chunk {
                         x + xOffset,
                         y + yOffset,
                         treeHeight,
-                        `rgba(100,100,100,${noise.toFixed(3)})`,
+                        BOTTOMCOLORNOALFA + noise.toFixed(3) + ")",
                         (x) => Math.pow(x * baseCurve, basePower)
                     );
                 },

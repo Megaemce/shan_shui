@@ -26,51 +26,54 @@ export default class Bark extends ComplexSvg {
     ) {
         super();
 
-        const len = prng.random(10, 20);
-        const noi = 0.5;
         const fun = function (x: number) {
             return x <= 1
                 ? Math.pow(Math.sin(x * Math.PI), 0.5)
                 : -Math.pow(Math.sin((x + 1) * Math.PI), 0.5);
         };
+        const barkArray: Point[] = [];
+        const lengthAngleArray: Array<[number, number]> = [];
+        const n0 = prng.random() * 10;
+        const width = prng.random(10, 20);
+        const noise = 0.5;
         const reso = 20;
 
-        const lalist: number[][] = [];
+        let noiseArray: number[] = [];
+
         for (let i = 0; i < reso + 1; i++) {
             const p = (i / reso) * 2;
-            const xo = len / 2 - Math.abs(p - 1) * len;
+            const xo = width / 2 - Math.abs(p - 1) * width;
             const yo = (fun(p) * strokeWidth) / 2;
             const a = Math.atan2(yo, xo);
             const l = Math.sqrt(xo * xo + yo * yo);
-            lalist.push([l, a]);
+
+            lengthAngleArray.push([l, a]);
         }
 
-        let nslist: number[] = [];
-        const n0 = prng.random() * 10;
         for (let i = 0; i < reso + 1; i++) {
-            nslist.push(Noise.noise(prng, i * 0.05, n0));
+            noiseArray.push(Noise.noise(prng, i * 0.05, n0));
         }
 
-        nslist = normalizeNoise(nslist);
-        const brklist: Point[] = [];
-        for (let i = 0; i < lalist.length; i++) {
-            const ns = nslist[i] * noi + (1 - noi);
-            const newX = x + Math.cos(lalist[i][1] + angle) * lalist[i][0] * ns;
-            const newY = y + Math.sin(lalist[i][1] + angle) * lalist[i][0] * ns;
-            brklist.push(new Point(newX, newY));
-        }
+        noiseArray = normalizeNoise(noiseArray);
 
-        const fr = prng.random();
+        lengthAngleArray.forEach(([l, a], i) => {
+            const localNoise = noiseArray[i] * noise + (1 - noise);
+            const newX = x + Math.cos(a + angle) * l * localNoise;
+            const newY = y + Math.sin(a + angle) * l * localNoise;
+
+            barkArray.push(new Point(newX, newY));
+        });
+
         this.add(
             new Stroke(
                 prng,
-                brklist,
+                barkArray,
                 "rgba(100,100,100,0.4)",
                 "rgba(100,100,100,0.4)",
                 0.8,
                 0,
                 0,
-                (x) => Math.sin((x + fr) * Math.PI * 3)
+                (x) => Math.sin((x + prng.random()) * Math.PI * 3)
             )
         );
     }

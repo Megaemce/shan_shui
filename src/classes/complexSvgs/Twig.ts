@@ -37,12 +37,10 @@ export default class Twig extends ComplexSvg {
         const tl = 10;
         const hs = prng.random(0.5, 1);
         const fun2 = (x: number) => -1 / Math.pow(x / tl + 1, 5) + 1;
-
-        const tfun = prng.randomChoice([fun2]);
         const a0 = ((prng.random() * Math.PI) / 6) * direction + angle;
 
         for (let i = 0; i < tl; i++) {
-            const mx = direction * tfun(i / tl) * 50 * scale * hs;
+            const mx = direction * fun2(i / tl) * 50 * scale * hs;
             const my = -i * 5 * scale;
 
             const a = Math.atan2(my, mx);

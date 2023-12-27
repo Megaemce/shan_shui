@@ -4,6 +4,15 @@ import { midPoint, triangulate } from "../../utils/polytools";
 import PRNG from "../PRNG";
 import SvgPolyline from "../SvgPolyline";
 import Chunk from "../Chunk";
+import { config } from "../../config";
+
+const DEFAULTHEIGHT = config.chunks.distantMountain.defaultHeight;
+const DEFAULTSEED = config.chunks.distantMountain.defaultSeed;
+const DEFAULTWIDTH = config.chunks.distantMountain.defaultWidth;
+const SEGMENTS = config.chunks.distantMountain.segments;
+const SPAN = config.chunks.distantMountain.span;
+const STROKECOLOR = config.chunks.distantMountain.color;
+const STROKEWIDTH = config.chunks.distantMountain.strokeWidth;
 
 /**
  * Represents a distant mountain chunk with varying heights and colors.
@@ -17,22 +26,20 @@ export default class DistantMountainChunk extends Chunk {
      * @param {PRNG} prng - The pseudo-random number generator.
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
-     * @param {number} [seed=0] - The seed for the noise function. Default is 0.
-     * @param {number} [height=300] - The overall height of the mountain. Default is 300.
-     * @param {number} [length=2000] - The length of the mountain. Default is 2000.
+     * @param {number} [seed=DEFAULTSEED] - The seed for the noise function.
+     * @param {number} [height=DEFAULTHEIGHT] - The overall height of the mountain.
+     * @param {number} [width=DEFAULTWIDTH] - The width of the mountain.
      */
     constructor(
         prng: PRNG,
         xOffset: number,
         yOffset: number,
-        seed: number = 0,
-        height: number = 300,
-        length: number = 2000
+        seed: number = DEFAULTSEED,
+        height: number = DEFAULTHEIGHT,
+        width: number = DEFAULTWIDTH
     ) {
         super("distmount", xOffset, yOffset);
 
-        const seg = 5;
-        const span = 10;
         const pointArray: Point[][] = [];
 
         const generatePoints = (
@@ -42,29 +49,29 @@ export default class DistantMountainChunk extends Chunk {
             powerExponent: number,
             seed: number
         ) => {
-            const k = i * seg + j;
+            const k = i * SEGMENTS + j;
             return new Point(
-                xOffset + k * span,
+                xOffset + k * SPAN,
                 yOffset +
                     heightMultiplier *
                         Noise.noise(prng, k * 0.05, seed) *
                         Math.pow(
-                            Math.sin((Math.PI * k) / (length / span)),
+                            Math.sin((Math.PI * k) / (width / SPAN)),
                             powerExponent
                         )
             );
         };
 
-        for (let i = 0; i < length / span / seg; i++) {
+        for (let i = 0; i < width / SPAN / SEGMENTS; i++) {
             pointArray.push([]);
 
-            for (let j = 0; j < seg + 1; j++) {
+            for (let j = 0; j < SEGMENTS + 1; j++) {
                 pointArray[pointArray.length - 1].push(
                     generatePoints(i, j, -height, 0.5, seed)
                 );
             }
 
-            for (let j = 0; j < seg / 2 + 1; j++) {
+            for (let j = 0; j < SEGMENTS / 2 + 1; j++) {
                 pointArray[pointArray.length - 1].unshift(
                     generatePoints(i, j * 2, 24, 1, 2)
                 );
@@ -89,8 +96,8 @@ export default class DistantMountainChunk extends Chunk {
                     0,
                     0,
                     getColor(lastPoint),
-                    "none",
-                    1
+                    STROKECOLOR,
+                    STROKEWIDTH
                 )
             );
 
@@ -101,7 +108,9 @@ export default class DistantMountainChunk extends Chunk {
             for (const triangle of triangles) {
                 const midPointOfTriangle = midPoint(triangle);
                 const color = getColor(midPointOfTriangle);
-                this.add(new SvgPolyline(triangle, 0, 0, color, color, 1));
+                this.add(
+                    new SvgPolyline(triangle, 0, 0, color, color, STROKEWIDTH)
+                );
             }
         }
     }

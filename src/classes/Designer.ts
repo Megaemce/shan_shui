@@ -4,41 +4,15 @@ import { Noise } from "./PerlinNoise";
 import Point from "./Point";
 import PRNG from "./PRNG";
 import { isLocalMaximum } from "../utils/utils";
+import { config } from "../config";
 
-/**
- * Threshold value for determining mountain coverage in the design.
- */
-const MOUNTAIN_COVER_THRESHOLD = 0.3;
-
-/**
- * Radius of the circular area used to check for local maxima.
- */
-const MOUNTAIN_RADIUS = 2; //
-
-/**
- * Interval at which distant mountains are generated.
- */
-const DIST_MOUNTAIN_INTERVAL = 1000;
-
-/**
- * Probability of generating a flat mountain chunk.
- */
-const FLAT_MOUNTAIN_PROBABILITY = 0.01;
-
-/**
- * Probability of generating a boat chunk.
- */
-const BOAT_PROBABILITY = 0.2;
-
-/**
- * Step size along the x-axis for generating terrain.
- */
-const X_STEP = 5;
-
-/**
- * Sample value for the noise function.
- */
-const NOISE_SAMPLE = 0.03;
+const BOAT_PROBABILITY = config.designer.boatProbability;
+const DIST_MOUNTAIN_INTERVAL = config.designer.distanceMountainInterval;
+const FLAT_MOUNTAIN_PROBABILITY = config.designer.flatMountainProbability;
+const MOUNTAIN_COVER_THRESHOLD = config.designer.mountainCoverThreshold;
+const MOUNTAIN_RADIUS = config.designer.mountainRadius;
+const NOISE_SAMPLE = config.designer.noiseSample;
+const X_STEP = config.designer.xStep;
 
 /**
  * Class for generating terrain design chunks based on Perlin noise.
@@ -157,7 +131,6 @@ export default class Designer {
     /**
      * Adds flat mountain chunks to the regions.
      * @private
-     * @param {Function} noiseFunction - The noise function.
      * @returns {IChunk[]} An array of generated chunks.
      */
     private generateFlatMountainChunks(): void {
