@@ -24,6 +24,8 @@ export const App: React.FC = () => {
 
     // State variables
     const [seed, setSeed] = useState<string>(currentSeed || currentDate);
+    PRNG.seed = seed;
+
     const [currentPosition, setCurrentPosition] = useState<number>(0);
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
     const [windowHeight, setWindowHeight] = useState<number>(
@@ -74,16 +76,10 @@ export const App: React.FC = () => {
     };
 
     /**
-     * Effect to handle changes in the PRNG seed.
+     * Effect to update the background image and handle window resize events when seed change
      */
     useEffect(() => {
         PRNG.seed = seed;
-    }, [seed]);
-
-    /**
-     * Effect to update the background image and handle window resize events.
-     */
-    useEffect(() => {
         const url = backgroundRef.current?.generateBackground();
         setBackgroundImage(url);
 
