@@ -29,7 +29,10 @@ export function generateBlobPoints(
             : -Math.pow(Math.sin((x + 1) * Math.PI), 0.5)
 ): Point[] {
     const resolution = 20;
-    const lalist = [];
+    const lalist = new Array<[number, number]>(resolution + 1);
+    const pointArray = new Array<Point>(resolution + 1);
+
+    let noiseArray = new Array<number>(resolution + 1);
 
     for (let i = 0; i < resolution + 1; i++) {
         const p = (i / resolution) * 2;
@@ -37,25 +40,19 @@ export function generateBlobPoints(
         const yo = (strokeWidthFunction(p) * strokeWidth) / 2;
         const a = Math.atan2(yo, xo);
         const l = Math.sqrt(xo * xo + yo * yo);
-        lalist.push([l, a]);
-    }
 
-    let noiseArray = [];
-    const n0 = PRNG.random(0, 10);
-
-    for (let i = 0; i < resolution + 1; i++) {
-        noiseArray.push(Perlin.noise(i * 0.05, n0));
+        lalist[i] = [l, a];
+        noiseArray[i] = Perlin.noise(i * 0.05, PRNG.random(0, 10));
     }
 
     noiseArray = normalizeNoise(noiseArray);
-    const pointArray = [];
 
-    for (let i = 0; i < lalist.length; i++) {
+    lalist.forEach(([l, a], i) => {
         const ns = noiseArray[i] * noise + (1 - noise);
-        const newX = x + Math.cos(lalist[i][1] + angle) * lalist[i][0] * ns;
-        const newY = y + Math.sin(lalist[i][1] + angle) * lalist[i][0] * ns;
-        pointArray.push(new Point(newX, newY));
-    }
+        const newX = x + Math.cos(a + angle) * l * ns;
+        const newY = y + Math.sin(a + angle) * l * ns;
+        pointArray[i] = new Point(newX, newY);
+    });
 
     return pointArray;
 }
