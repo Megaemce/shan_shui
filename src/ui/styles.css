@@ -80,22 +80,3 @@ table#SCROLLABLE_CANVAS {
     display: table-cell;
     font-size: 32px;
 }
-
-@keyframes drawPolyline {
-    to {
-        stroke-dashoffset: 0;
-    }
-}
-
-svg {
-    mix-blend-mode: multiply;
-}
-
-/* polyline {
-    fill: none;
-    stroke: black;
-    stroke-width: 3;
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    animation: drawPolyline 8s ease-in-out forwards;
-} */
