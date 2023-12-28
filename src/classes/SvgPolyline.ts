@@ -41,7 +41,7 @@ export default class SvgPolyline implements ISvgElement {
          *
          * @type {SvgPoint[]}
          */
-        this.points = Array<SvgPoint>(pointArray.length);
+        this.points = new Array<SvgPoint>(pointArray.length);
         pointArray.forEach(
             (point, index) =>
                 (this.points[index] = new SvgPoint(
