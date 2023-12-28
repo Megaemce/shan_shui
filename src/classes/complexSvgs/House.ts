@@ -1,6 +1,5 @@
 import Box from "./Box";
 import ComplexSvg from "../ComplexSvg";
-import PRNG from "../PRNG";
 import Point from "../Point";
 import Rail from "./Rail";
 import Roof from "./Roof";
@@ -71,8 +70,6 @@ export default class House extends ComplexSvg {
                     )
                 );
 
-            const text =
-                stories === 1 && PRNG.random() < 1 / 3 ? "Pizza Hut" : "";
             this.add(
                 new Roof(
                     xOffset,
@@ -81,8 +78,7 @@ export default class House extends ComplexSvg {
                     strokeWidth * Math.pow(0.9, i),
                     rotation,
                     1.5,
-                    perspective,
-                    text
+                    perspective
                 )
             );
 

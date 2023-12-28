@@ -1,6 +1,5 @@
 import ComplexSvg from "../classes/ComplexSvg";
 import SvgPolyline from "../classes/SvgPolyline";
-import SvgText from "../classes/SvgText";
 
 /**
  * Represents an interface for a ComplexSvg.
@@ -11,9 +10,9 @@ export default interface IComplexSvg {
     /**
      * An array of SvgPolyline elements.
      *
-     * @type {Array<SvgPolyline | SvgText>}
+     * @type {Array<SvgPolyline>}
      */
-    elements: Array<SvgPolyline | SvgText>;
+    elements: Array<SvgPolyline>;
 
     /**
      * Renders the ComplexSvg and returns the resulting SVG string.
@@ -24,10 +23,10 @@ export default interface IComplexSvg {
     render: () => string;
 
     /**
-     * Adds an SvgPolyline, ComplexSvg, or SvgText to the ComplexSvg.
+     * Adds an SvgPolyline or ComplexSvg to the ComplexSvg.
      *
      * @function
-     * @param {SvgPolyline | ComplexSvg | SvgText} object - The object to be added.
+     * @param {SvgPolyline | ComplexSvg} object - The object to be added.
      */
-    add: (object: SvgPolyline | ComplexSvg | SvgText) => void;
+    add: (object: SvgPolyline | ComplexSvg) => void;
 }

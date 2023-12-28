@@ -1,5 +1,4 @@
 import SvgPolyline from "./SvgPolyline";
-import SvgText from "./SvgText";
 import IComplexSvg from "../interfaces/IComplexSvg";
 
 /**
@@ -7,20 +6,18 @@ import IComplexSvg from "../interfaces/IComplexSvg";
  * @implements {IComplexSvg}
  */
 export default class ComplexSvg implements IComplexSvg {
-    elements: Array<SvgPolyline | SvgText> = [];
+    elements: Array<SvgPolyline> = [];
 
     /**
      * Adds an object to the elements array.
      *
-     * @param {SvgPolyline | ComplexSvg | SvgText} object - The object to be added to this.elements
+     * @param {SvgPolyline | ComplexSvg} object - The object to be added to this.elements
      */
-    add(object: SvgPolyline | ComplexSvg | SvgText) {
+    add(object: SvgPolyline | ComplexSvg) {
         if (object instanceof SvgPolyline) {
             this.elements = this.elements.concat(object);
-        } else if (object instanceof ComplexSvg) {
-            this.elements = this.elements.concat(object.elements);
         } else {
-            this.elements = this.elements.concat(object);
+            this.elements = this.elements.concat(object.elements);
         }
     }
 

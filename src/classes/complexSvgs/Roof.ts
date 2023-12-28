@@ -2,11 +2,25 @@ import ComplexSvg from "../ComplexSvg";
 import Point from "../Point";
 import Stroke from "../svgPolylines/Stroke";
 import SvgPolyline from "../SvgPolyline";
-import SvgText from "../SvgText";
 import { lineDivider } from "../../utils/polytools";
-import { midPoint } from "../../utils/polytools";
-
+/**
+ * Represents a Roof element.
+ * @extends {ComplexSvg}
+ */
 export default class Roof extends ComplexSvg {
+    /**
+     * Constructor for the class.
+     *
+     * @param {number} xOffset - The x offset value.
+     * @param {number} yOffset - The y offset value.
+     * @param {number} [height = 20] - The height value.
+     * @param {number} [width = 120] - The width value.
+     * @param {number} [rotation = 0.7] - The rotation value.
+     * @param {number} [strokeWidth = 3] - The stroke width value.
+     * @param {number} [perspective = 4] - The perspective value.
+     * @param {number} [cor = 5] - The corner radius value.
+     * @return {void}
+     */
     constructor(
         xOffset: number,
         yOffset: number,
@@ -15,7 +29,6 @@ export default class Roof extends ComplexSvg {
         rotation: number = 0.7,
         strokeWidth: number = 3,
         perspective: number = 4,
-        text: string = "",
         cor: number = 5
     ) {
         super();
@@ -120,36 +133,6 @@ export default class Roof extends ComplexSvg {
                     (_) => 1
                 )
             );
-        }
-
-        if (text) {
-            let pp = opf([
-                new Point(mid + quat / 2, -height / 2 + perspective / 2),
-                new Point(
-                    -strokeWidth * 0.5 + quat * 0.5,
-                    -height / 2 - perspective / 4
-                ),
-            ]);
-            if (pp[0].x > pp[1].x) {
-                pp = [pp[1], pp[0]];
-            }
-            const mp = midPoint(pp);
-            const a = Math.atan2(pp[1].y - pp[0].y, pp[1].x - pp[0].x);
-            const adeg = (a * 180) / Math.PI;
-
-            const newText = new SvgText(text, {
-                fontSize: height * 0.6,
-                fontFamily: "Verdana",
-                textAnchor: "middle",
-                transform: `translate(${mp.x + xOffset},${
-                    mp.y + yOffset
-                }) rotate(${adeg})`,
-                style: {
-                    fill: "rgba(100, 100, 100, 0.9)",
-                },
-            });
-
-            this.add(newText);
         }
     }
 }

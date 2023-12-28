@@ -50,6 +50,7 @@ export default class SvgPoint implements ISvgElement, IPoint {
      * @returns {string} The string representation of the point.
      */
     render(): string {
+        // remove object after 1 second to save memory
         return `${this.x.toFixed(1)},${this.y.toFixed(1)}`;
     }
 }
