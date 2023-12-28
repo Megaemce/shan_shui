@@ -3,8 +3,6 @@ import PRNG from "../PRNG";
 import Perlin from "../Perlin";
 import Point from "../Point";
 import Stroke from "../svgPolylines/Stroke";
-import Vector from "../Vector";
-
 /**
  * Represents textured polylines based on a grid of points.
  */
@@ -32,56 +30,62 @@ export default class Texture extends ComplexSvg {
     ) {
         super();
 
-        const offset = new Vector(xOffset, yOffset);
         const resolution = [pointArray.length, pointArray[0].length];
-        const texlist: Point[][] = [];
+        const textureArray: Point[][] = [];
 
         for (let i = 0; i < textureCount; i++) {
-            const mid = (displacementFunction() * resolution[1]) | 0;
+            const mid = Math.floor(displacementFunction() * resolution[1]);
             const hlen = Math.floor(PRNG.random(0, resolution[1] * length));
+            const start = Math.max(mid - hlen, 0);
+            const end = Math.min(mid + hlen, resolution[1]);
+            const layerIndex = i / textureCount;
+            const layer = layerIndex * (resolution[0] - 1);
+            const floorLayer = Math.floor(layer);
+            const ceilLayer = Math.ceil(layer);
+            const layerFraction = layer - floorLayer;
 
-            let start = mid - hlen;
-            let end = mid + hlen;
-            start = Math.min(Math.max(start, 0), resolution[1]);
-            end = Math.min(Math.max(end, 0), resolution[1]);
+            const currentTexture = [];
 
-            const layer = (i / textureCount) * (resolution[0] - 1);
-
-            texlist.push([]);
             for (let j = start; j < end; j++) {
-                const p = layer - Math.floor(layer);
-                const x =
-                    pointArray[Math.floor(layer)][j].x * p +
-                    pointArray[Math.ceil(layer)][j].x * (1 - p);
+                const xInterpolated =
+                    pointArray[floorLayer][j].x * layerFraction +
+                    pointArray[ceilLayer][j].x * (1 - layerFraction);
 
-                const y =
-                    pointArray[Math.floor(layer)][j].y * p +
-                    pointArray[Math.ceil(layer)][j].y * (1 - p);
+                const yInterpolated =
+                    pointArray[floorLayer][j].y * layerFraction +
+                    pointArray[ceilLayer][j].y * (1 - layerFraction);
 
+                const noiseScale = noise(layer + 1);
                 const newX =
-                    noise(layer + 1) * (Perlin.noise(x, j * 0.5) - 0.5);
+                    noiseScale * (Perlin.noise(xInterpolated, j * 0.5) - 0.5);
                 const newY =
-                    noise(layer + 1) * (Perlin.noise(y, j * 0.5) - 0.5);
+                    noiseScale * (Perlin.noise(yInterpolated, j * 0.5) - 0.5);
 
-                texlist[texlist.length - 1].push(new Point(x + newX, y + newY));
+                currentTexture.push(
+                    new Point(
+                        xInterpolated + newX + xOffset,
+                        yInterpolated + newY + yOffset
+                    )
+                );
             }
+
+            textureArray.push(currentTexture);
         }
 
         // SHADE
-        if (shadow) {
-            const step = 1 + (shadow !== 0 ? 1 : 0);
-            for (let j = 0; j < texlist.length; j += step) {
-                if (texlist[j].length > 0) {
-                    this.add(
-                        new Stroke(
-                            texlist[j].map((p) => p.move(offset)),
-                            "rgba(100,100,100,0.1)",
-                            "rgba(100,100,100,0.1)",
-                            shadow
-                        )
-                    );
-                }
+        const step = shadow !== 0 ? 2 : 1;
+
+        textureArray.forEach((texture, i) => {
+            if (i % step === 0 && texture.length > 0) {
+                this.add(
+                    new Stroke(
+                        texture,
+                        "rgba(100,100,100,0.1)",
+                        "rgba(100,100,100,0.1)",
+                        shadow
+                    )
+                );
             }
-        }
+        });
     }
 }
