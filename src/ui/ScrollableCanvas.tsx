@@ -4,7 +4,6 @@ import "./styles.css";
 import { ScrollBar } from "./ScrollBar";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
 import { config } from "../config";
-import PRNG from "../classes/PRNG";
 
 const ZOOM = config.ui.zoom;
 const CANVASWIDTH = config.ui.canvasWidth;
@@ -24,7 +23,6 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
         const renderedChunks = chunkCache.chunkArray.map((chunk) => (
             <g
                 key={`${chunk.tag} ${chunk.x} ${chunk.y}`}
-                transform="translate(0, 0)"
                 dangerouslySetInnerHTML={{
                     __html: chunk.render(),
                 }}
@@ -32,11 +30,6 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
         ));
         return renderedChunks;
     };
-
-    const color = PRNG.random(225, 245);
-    const red = Math.round(color);
-    const green = Math.round(color * 0.95);
-    const blue = Math.round(color * 0.85);
 
     /** The viewbox string for the SVG element. */
     const viewbox = `${currentPosition} 0 ${windowWidth / ZOOM} ${
@@ -78,45 +71,36 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                                 height={windowHeight}
                                 viewBox={viewbox}
                             >
-                                <filter
-                                    id="roughpaper"
-                                    width={windowWidth}
-                                    height={windowHeight}
-                                >
-                                    <feTurbulence
-                                        type="fractalNoise"
-                                        baseFrequency="0.034"
-                                        numOctaves="5"
-                                        result="noise"
-                                    />
-                                    <feDiffuseLighting
-                                        in="noise"
-                                        lighting-color={
-                                            "rgb(" +
-                                            red +
-                                            "," +
-                                            green +
-                                            "," +
-                                            blue +
-                                            ")"
-                                        }
-                                        surfaceScale="1.5"
-                                        result="diffLight"
+                                <defs>
+                                    <filter
+                                        id="roughpaper"
+                                        width={windowWidth}
+                                        height={windowHeight}
                                     >
-                                        <feDistantLight
-                                            azimuth="45"
-                                            elevation="35"
+                                        <feTurbulence
+                                            type="fractalNoise"
+                                            baseFrequency="0.02"
+                                            numOctaves="5"
+                                            result="noise"
                                         />
-                                    </feDiffuseLighting>
-                                    <feComponentTransfer>
-                                        <feFuncA type="linear" slope="0.5" />
-                                    </feComponentTransfer>
-                                </filter>
-
-                                {renderChunks()}
+                                        <feDiffuseLighting
+                                            in="noise"
+                                            lightingColor="#F0E7D0"
+                                            surfaceScale="2"
+                                            result="diffLight"
+                                        >
+                                            <feDistantLight
+                                                azimuth="45"
+                                                elevation="60"
+                                            />
+                                        </feDiffuseLighting>
+                                    </filter>
+                                </defs>
+                                <g id="mainRenderGroup"> {renderChunks()}</g>
                                 <rect
                                     id="background"
                                     filter="url(#roughpaper)"
+                                    style={{ mixBlendMode: "multiply" }}
                                     width={windowWidth}
                                     height={windowHeight}
                                 />
