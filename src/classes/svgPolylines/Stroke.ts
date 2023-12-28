@@ -34,53 +34,50 @@ export default class Stroke extends SvgPolyline {
         strokeWidthFunction: (x: number) => number = (x: number) =>
             Math.sin(x * Math.PI)
     ) {
-        const vtxlist0 = [];
-        const vtxlist1 = [];
+        /**
+         * For inital pointArray = [0,1,2,3] creates vtxArray = [0,(1),(2),3,(2),(1),0]
+         * where (values) are modified by the main for loop
+         **/
 
-        for (let i = 1; i < pointArray.length - 1; i++) {
+        const vtxArray = new Array<Point>(pointArray.length * 2);
+        const lastPointIndex = pointArray.length - 1;
+        const lastVtxIndex = vtxArray.length - 1;
+
+        vtxArray[0] = pointArray[0];
+        vtxArray[lastPointIndex] = pointArray[lastPointIndex];
+        vtxArray[lastVtxIndex] = pointArray[0];
+
+        for (let i = 1; i < lastPointIndex; i++) {
             let newWidth = width * strokeWidthFunction(i / pointArray.length);
             newWidth =
                 newWidth * (1 - noise) +
                 newWidth * noise * Perlin.noise(i * 0.5, PRNG.random(0, 10));
 
-            const a1 = Math.atan2(
+            const lastAngle = Math.atan2(
                 pointArray[i].y - pointArray[i - 1].y,
                 pointArray[i].x - pointArray[i - 1].x
             );
-            const a2 = Math.atan2(
+            const nextAngle = Math.atan2(
                 pointArray[i].y - pointArray[i + 1].y,
                 pointArray[i].x - pointArray[i + 1].x
             );
-            let a = (a1 + a2) / 2;
+            let avgAngle = (lastAngle + nextAngle) / 2;
 
-            if (a < a2) {
-                a += Math.PI;
+            if (avgAngle < nextAngle) {
+                avgAngle += Math.PI;
             }
 
-            vtxlist0.push(
-                new Point(
-                    pointArray[i].x + newWidth * Math.cos(a),
-                    pointArray[i].y + newWidth * Math.sin(a)
-                )
+            vtxArray[i] = new Point(
+                pointArray[i].x + newWidth * Math.cos(avgAngle),
+                pointArray[i].y + newWidth * Math.sin(avgAngle)
             );
-            vtxlist1.push(
-                new Point(
-                    pointArray[i].x - newWidth * Math.cos(a),
-                    pointArray[i].y - newWidth * Math.sin(a)
-                )
+
+            vtxArray[lastVtxIndex - i] = new Point(
+                pointArray[i].x - newWidth * Math.cos(avgAngle),
+                pointArray[i].y - newWidth * Math.sin(avgAngle)
             );
         }
 
-        const vtxlist = [pointArray[0]]
-            .concat(
-                vtxlist0.concat(
-                    vtxlist1
-                        .concat([pointArray[pointArray.length - 1]])
-                        .reverse()
-                )
-            )
-            .concat([pointArray[0]]);
-
-        super(vtxlist, 0, 0, fillColor, color, strokeWidth);
+        super(vtxArray, 0, 0, fillColor, color, strokeWidth);
     }
 }
