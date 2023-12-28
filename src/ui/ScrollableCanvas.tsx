@@ -4,6 +4,7 @@ import "./styles.css";
 import { ScrollBar } from "./ScrollBar";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
 import { config } from "../config";
+import PRNG from "../classes/PRNG";
 
 const ZOOM = config.ui.zoom;
 const CANVASWIDTH = config.ui.canvasWidth;
@@ -15,7 +16,6 @@ const SCROLLVALUE = config.ui.scrollValue;
 export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     horizontalScroll,
     windowHeight,
-    background,
     currentPosition,
     windowWidth,
     chunkCache,
@@ -32,6 +32,11 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
         ));
         return renderedChunks;
     };
+
+    const color = PRNG.random(225, 245);
+    const red = Math.round(color);
+    const green = Math.round(color * 0.95);
+    const blue = Math.round(color * 0.85);
 
     /** The viewbox string for the SVG element. */
     const viewbox = `${currentPosition} 0 ${windowWidth / ZOOM} ${
@@ -59,7 +64,6 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                         <div
                             id="BG"
                             style={{
-                                backgroundImage: `url(${background})`,
                                 width: windowWidth,
                                 height: windowHeight,
                                 left: 0,
@@ -74,7 +78,48 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                                 height={windowHeight}
                                 viewBox={viewbox}
                             >
+                                <filter
+                                    id="roughpaper"
+                                    width={windowWidth}
+                                    height={windowHeight}
+                                >
+                                    <feTurbulence
+                                        type="fractalNoise"
+                                        baseFrequency="0.034"
+                                        numOctaves="5"
+                                        result="noise"
+                                    />
+                                    <feDiffuseLighting
+                                        in="noise"
+                                        lighting-color={
+                                            "rgb(" +
+                                            red +
+                                            "," +
+                                            green +
+                                            "," +
+                                            blue +
+                                            ")"
+                                        }
+                                        surfaceScale="1.5"
+                                        result="diffLight"
+                                    >
+                                        <feDistantLight
+                                            azimuth="45"
+                                            elevation="35"
+                                        />
+                                    </feDiffuseLighting>
+                                    <feComponentTransfer>
+                                        <feFuncA type="linear" slope="0.5" />
+                                    </feComponentTransfer>
+                                </filter>
+
                                 {renderChunks()}
+                                <rect
+                                    id="background"
+                                    filter="url(#roughpaper)"
+                                    width={windowWidth}
+                                    height={windowHeight}
+                                />
                             </svg>
                         </div>
                     </td>

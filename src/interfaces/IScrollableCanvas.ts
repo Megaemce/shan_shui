@@ -22,13 +22,6 @@ export interface IScrollableCanvas {
     windowHeight: number;
 
     /**
-     * The background image URL for the canvas.
-     *
-     * @type {string | undefined}
-     */
-    background: string | undefined;
-
-    /**
      * The current x-coordinate of the canvas.
      *
      * @type {number}

@@ -1,5 +1,4 @@
 import "./App.css";
-import Background from "./ui/Background";
 import ChunkCache from "./classes/ChunkCache";
 import PRNG from "./classes/PRNG";
 import Range from "./classes/Range";
@@ -19,7 +18,6 @@ export const App: React.FC = () => {
     const currentDate = new Date().getTime().toString();
 
     // Refs for accessing child components
-    const backgroundRef = useRef<Background>(null);
     const chunkCacheRef = useRef(new ChunkCache());
 
     // State variables
@@ -36,9 +34,6 @@ export const App: React.FC = () => {
         new Range(0, window.innerWidth)
     );
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
-    const [backgroundImage, setBackgroundImage] = useState<string | undefined>(
-        undefined
-    );
 
     /**
      * Callback function to handle changes in the PRNG seed.
@@ -80,8 +75,6 @@ export const App: React.FC = () => {
      */
     useEffect(() => {
         PRNG.seed = seed;
-        const url = backgroundRef.current?.generateBackground();
-        setBackgroundImage(url);
 
         const resizeCallback = () => {
             setWindowWidth(window.innerWidth);
@@ -169,13 +162,11 @@ export const App: React.FC = () => {
                 <ScrollableCanvas
                     horizontalScroll={horizontalScroll}
                     windowHeight={windowHeight}
-                    background={backgroundImage}
                     currentPosition={currentPosition}
                     windowWidth={windowWidth}
                     chunkCache={chunkCacheRef.current}
                 />
             </div>
-            <Background ref={backgroundRef} />
         </>
     );
 };
