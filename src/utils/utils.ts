@@ -17,18 +17,19 @@ export function scaledCosine(i: number): number {
 /**
  * Expands a given array of points using a width function.
  * @param {Point[]} pointArray - The array of points to be expanded.
- * @param {(v: number) => number} wfun - The width function.
+ * @param {(v: number) => number} scalingFunction - The scaling function
  * @returns {Point[][]} An array containing two sets of expanded points.
  */
 export function expand(
     pointArray: Point[],
-    wfun: (v: number) => number
+    scalingFunction: (v: number) => number
 ): Point[][] {
-    const vtxlist0: Point[] = [];
-    const vtxlist1: Point[] = [];
+    const vtxlist0 = new Array<Point>(pointArray.length);
+    const vtxlist1 = new Array<Point>(pointArray.length);
+    const lastIndex = pointArray.length - 1;
 
-    for (let i = 1; i < pointArray.length - 1; i++) {
-        const w = wfun(i / pointArray.length);
+    for (let i = 1; i < lastIndex; i++) {
+        const w = scalingFunction(i / pointArray.length);
         const a1 = Math.atan2(
             pointArray[i].y - pointArray[i - 1].y,
             pointArray[i].x - pointArray[i - 1].x
@@ -41,20 +42,18 @@ export function expand(
         if (a < a2) {
             a += Math.PI;
         }
-        vtxlist0.push(
-            new Point(
-                pointArray[i].x + w * Math.cos(a),
-                pointArray[i].y + w * Math.sin(a)
-            )
+
+        vtxlist0[i] = new Point(
+            pointArray[i].x + w * Math.cos(a),
+            pointArray[i].y + w * Math.sin(a)
         );
-        vtxlist1.push(
-            new Point(
-                pointArray[i].x - w * Math.cos(a),
-                pointArray[i].y - w * Math.sin(a)
-            )
+
+        vtxlist1[i] = new Point(
+            pointArray[i].x - w * Math.cos(a),
+            pointArray[i].y - w * Math.sin(a)
         );
     }
-    const l = pointArray.length - 1;
+    // Calculate the angle perpendicular to the line connecting pointArray[0] and pointArray[1]
     const a0 =
         Math.atan2(
             pointArray[1].y - pointArray[0].y,
@@ -63,36 +62,31 @@ export function expand(
         Math.PI / 2;
     const a1 =
         Math.atan2(
-            pointArray[l].y - pointArray[l - 1].y,
-            pointArray[l].x - pointArray[l - 1].x
+            pointArray[lastIndex].y - pointArray[lastIndex - 1].y,
+            pointArray[lastIndex].x - pointArray[lastIndex - 1].x
         ) -
         Math.PI / 2;
-    const w0 = wfun(0);
-    const w1 = wfun(1);
-    vtxlist0.unshift(
-        new Point(
-            pointArray[0].x + w0 * Math.cos(a0),
-            pointArray[0].y + w0 * Math.sin(a0)
-        )
+    const w0 = scalingFunction(0);
+    const w1 = scalingFunction(1);
+
+    vtxlist0[0] = new Point(
+        pointArray[0].x + w0 * Math.cos(a0),
+        pointArray[0].y + w0 * Math.sin(a0)
     );
-    vtxlist1.unshift(
-        new Point(
-            pointArray[0].x - w0 * Math.cos(a0),
-            pointArray[0].y - w0 * Math.sin(a0)
-        )
+    vtxlist1[0] = new Point(
+        pointArray[0].x - w0 * Math.cos(a0),
+        pointArray[0].y - w0 * Math.sin(a0)
     );
-    vtxlist0.push(
-        new Point(
-            pointArray[l].x + w1 * Math.cos(a1),
-            pointArray[l].y + w1 * Math.sin(a1)
-        )
+
+    vtxlist0[lastIndex] = new Point(
+        pointArray[lastIndex].x + w1 * Math.cos(a1),
+        pointArray[lastIndex].y + w1 * Math.sin(a1)
     );
-    vtxlist1.push(
-        new Point(
-            pointArray[l].x - w1 * Math.cos(a1),
-            pointArray[l].y - w1 * Math.sin(a1)
-        )
+    vtxlist1[lastIndex] = new Point(
+        pointArray[lastIndex].x - w1 * Math.cos(a1),
+        pointArray[lastIndex].y - w1 * Math.sin(a1)
     );
+
     return [vtxlist0, vtxlist1];
 }
 
@@ -157,15 +151,6 @@ export function attributesToString(attr: Partial<ISvgAttributes>): string {
         return `${camelToKebab(key)}='${vstr}'`;
     });
     return strlist.join(" ");
-}
-
-/**
- * Replace NaN points in a list with a new Point.
- * @param {Point[]} pointArray - The list of points.
- * @returns {Point[]} A new list with NaN points replaced.
- */
-export function unNan(pointArray: Point[]): Point[] {
-    return pointArray.map((p) => (p.isFinite() ? p : new Point()));
 }
 
 /**
