@@ -1,5 +1,4 @@
 import IPoint from "../interfaces/IPoint";
-import Vector from "./Vector";
 
 /**
  * Class representing a 2D point with x and y coordinates.
@@ -11,51 +10,4 @@ export default class Point implements IPoint {
      * @param y - The y-coordinate.
      */
     constructor(public x: number = 0, public y: number = 0) {}
-
-    /**
-     * Converts the point to an array of numbers [x, y].
-     * @returns The point as an array.
-     */
-    toArray(): number[] {
-        return [this.x, this.y];
-    }
-
-    /**
-     * Creates a vector from this point to the specified destination point.
-     * @param destination - The destination point.
-     * @returns The vector from this point to the destination point.
-     */
-    to(destination: Point): Vector {
-        return new Vector(destination.x - this.x, destination.y - this.y);
-    }
-
-    /**
-     * Moves the point by a given vector.
-     * @param vector - The vector to move the point by.
-     * @returns A new point after the move operation.
-     */
-    move(vector: Vector): Point {
-        return new Point(this.x + vector.x, this.y + vector.y);
-    }
-
-    /**
-     * Checks if both x and y coordinates are finite numbers.
-     * @returns `true` if both x and y are finite, `false` otherwise.
-     */
-    isFinite(): boolean {
-        return isFinite(this.x) && isFinite(this.y);
-    }
-
-    /**
-     * Creates a copy of this point.
-     * @returns A new point with the same x and y coordinates.
-     */
-    copy(): Point {
-        return new Point(this.x, this.y);
-    }
-
-    /**
-     * Constant Point instance representing the origin (0, 0).
-     */
-    static readonly O: Point = new Point(0, 0);
 }
