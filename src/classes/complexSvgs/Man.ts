@@ -7,7 +7,6 @@ import PRNG from "../PRNG";
 import Point from "../Point";
 import Stick from "./Stick";
 import SvgPolyline from "../SvgPolyline";
-import Vector from "../Vector";
 import { expand, generateBezierCurve } from "../../utils/utils";
 
 /**
@@ -19,8 +18,8 @@ export default class Man extends ComplexSvg {
      * @param {number} xOffset - X-coordinate offset for the man.
      * @param {number} yOffset - Y-coordinate offset for the man.
      * @param {boolean} [horizontalFlip=true] - Indicates whether the man is flipped horizontally.
-     * @param {number} [scalling=0.5] - Scaling factor for the man.
-     * @param {number[]} [lengthArray=[0, 30, 20, 30, 30, 30, 30, 30, 30]] - Array representing the lengths of different body parts.
+     * @param {number} [scaling=0.5] - Scaling factor for the man.
+     * @param {number[]} [bodyPartLengths=[0, 30, 20, 30, 30, 30, 30, 30, 30]] - Array representing the lengths of different body parts.
      * @param {boolean} hasStick - Indicates whether the man has a stick.
      * @param {number} [hatNumber=1] - Indicates whether the man has a hat and the hat version. 0 is no hat
      */
@@ -28,14 +27,16 @@ export default class Man extends ComplexSvg {
         xOffset: number,
         yOffset: number,
         horizontalFlip: boolean = true,
-        scalling: number = 0.5,
-        lengthArray: number[] = [0, 30, 20, 30, 30, 30, 30, 30, 30],
+        scaling: number = 0.5,
+        bodyPartLengths: number[] = [0, 30, 20, 30, 30, 30, 30, 30, 30],
         hasStick: boolean = false,
         hatNumber: number = 1
     ) {
         super();
 
-        const ang: number[] = [
+        const pointArray: Point[] = [];
+        const lengthArray = bodyPartLengths.map((length) => length * scaling);
+        const angleArray: number[] = [
             0,
             -Math.PI / 2,
             PRNG.normalizedRandom(0, 0),
@@ -46,8 +47,6 @@ export default class Man extends ComplexSvg {
             -Math.PI * PRNG.random(3 / 4, 1),
             -Math.PI / 4,
         ];
-        const len = lengthArray.map((v) => v * scalling);
-
         const struct = [
             [0],
             [0, 1],
@@ -65,35 +64,49 @@ export default class Man extends ComplexSvg {
                 (horizontalFlip ? -1 : 1) * point.x + xOffset,
                 point.y + yOffset
             );
+        const scalingSleeve = (value: number) =>
+            scaling *
+            8 *
+            (Math.sin(0.5 * value * Math.PI) *
+                Math.pow(Math.sin(value * Math.PI), 0.1) +
+                (1 - value) * 0.4);
 
-        const vectorArray: Vector[] = struct.map((_, i) =>
-            struct[i].reduce<Vector>((pos, par) => {
-                const rot = struct[par].reduce((s, j) => s + ang[j], 0);
-                return pos.move(Vector.unit(rot).scale(len[par]));
-            }, new Vector(0, 0))
-        );
+        const scalingHead = (value: number) =>
+            scaling * 7 * Math.pow(0.25 - Math.pow(value - 0.5, 2), 0.3);
 
-        yOffset -= vectorArray[4].y;
-
-        const cloth = (
-            vertices: Vector[],
+        const scalingBody = (value: number) =>
+            scaling *
+            11 *
+            (Math.sin(0.5 * value * Math.PI) *
+                Math.pow(Math.sin(value * Math.PI), 0.1) +
+                (1 - value) * 0.5);
+        const addCloth = (
+            points: Point[],
             scalingFunction: (value: number) => number
-        ) =>
-            this.add(
-                new Cloth(
-                    toGlobal,
-                    vertices.map((vector) => vector.moveFrom(Point.O)),
-                    scalingFunction
-                )
-            );
+        ) => this.add(new Cloth(toGlobal, points, scalingFunction));
 
-        const hlist = generateBezierCurve(
-            [vectorArray[1], vectorArray[2]].map((vector) =>
-                vector.moveFrom(Point.O)
-            )
-        );
+        struct.forEach((_, i) => {
+            let pos = new Point(0, 0);
 
-        const [hlist1, hlist2] = expand(hlist, this.fhead.bind(this, scalling));
+            struct[i].forEach((par) => {
+                let rot = 0;
+
+                struct[par].forEach((j) => {
+                    rot += angleArray[j];
+                });
+
+                pos.x += Math.cos(rot) * lengthArray[par];
+                pos.y += Math.sin(rot) * lengthArray[par];
+            });
+
+            pointArray.push(pos);
+        });
+
+        yOffset -= pointArray[4].y;
+
+        const hlist = generateBezierCurve([pointArray[1], pointArray[2]]);
+
+        const [hlist1, hlist2] = expand(hlist, scalingHead);
         hlist1.splice(0, Math.floor(hlist1.length * 0.1));
         hlist2.splice(0, Math.floor(hlist2.length * 0.95));
 
@@ -106,24 +119,18 @@ export default class Man extends ComplexSvg {
             )
         );
 
-        cloth(
-            [vectorArray[1], vectorArray[7], vectorArray[8]],
-            this.fsleeve.bind(this, scalling)
+        addCloth([pointArray[1], pointArray[7], pointArray[8]], scalingHead);
+        addCloth(
+            [pointArray[1], pointArray[0], pointArray[3], pointArray[4]],
+            scalingBody
         );
-        cloth(
-            [vectorArray[1], vectorArray[0], vectorArray[3], vectorArray[4]],
-            this.fbody.bind(this, scalling)
-        );
-        cloth(
-            [vectorArray[1], vectorArray[5], vectorArray[6]],
-            this.fsleeve.bind(this, scalling)
-        );
+        addCloth([pointArray[1], pointArray[5], pointArray[6]], scalingSleeve);
 
         if (hasStick) {
             this.add(
                 new Stick(
-                    toGlobal(vectorArray[8]),
-                    toGlobal(vectorArray[6]),
+                    toGlobal(pointArray[8]),
+                    toGlobal(pointArray[6]),
                     horizontalFlip
                 )
             );
@@ -131,56 +138,20 @@ export default class Man extends ComplexSvg {
 
         if (hatNumber) {
             let hatElements = new Hat01(
-                toGlobal(vectorArray[1]),
-                toGlobal(vectorArray[2]),
+                toGlobal(pointArray[1]),
+                toGlobal(pointArray[2]),
                 horizontalFlip
             );
 
             if (hatNumber === 2) {
                 hatElements = new Hat02(
-                    toGlobal(vectorArray[1]),
-                    toGlobal(vectorArray[2]),
+                    toGlobal(pointArray[1]),
+                    toGlobal(pointArray[2]),
                     horizontalFlip
                 );
             }
 
             this.add(hatElements);
         }
-    }
-
-    /**
-     * Scaling function for sleeve.
-     * @private
-     */
-    private fsleeve(scaling: number, value: number): number {
-        return (
-            scaling *
-            8 *
-            (Math.sin(0.5 * value * Math.PI) *
-                Math.pow(Math.sin(value * Math.PI), 0.1) +
-                (1 - value) * 0.4)
-        );
-    }
-
-    /**
-     * Scaling function for body.
-     * @private
-     */
-    private fbody(scaling: number, value: number): number {
-        return (
-            scaling *
-            11 *
-            (Math.sin(0.5 * value * Math.PI) *
-                Math.pow(Math.sin(value * Math.PI), 0.1) +
-                (1 - value) * 0.5)
-        );
-    }
-
-    /**
-     * Scaling function for head.
-     * @private
-     */
-    private fhead(scaling: number, value: number): number {
-        return scaling * 7 * Math.pow(0.25 - Math.pow(value - 0.5, 2), 0.3);
     }
 }
