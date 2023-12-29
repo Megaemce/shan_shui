@@ -64,7 +64,7 @@ export default class Tree05 extends ComplexSvg {
                                 (0.2 * height) / 300,
                                 ba > -Math.PI / 2 ? 1 : -1,
                                 height / 300,
-                                [true, 5]
+                                5
                             )
                         );
                     }

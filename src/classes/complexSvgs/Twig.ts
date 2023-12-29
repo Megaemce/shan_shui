@@ -11,9 +11,8 @@ export default class Twig extends ComplexSvg {
     /**
      * Generates a twig with branches and leaves.
      *
-     * @param prng - The pseudo-random number generator.
-     * @param tx - X-coordinate of the twig base.
-     * @param ty - Y-coordinate of the twig base.
+     * @param x - X-coordinate of the twig base.
+     * @param y - Y-coordinate of the twig base.
      * @param depth - Depth of the twig branches.
      * @param angle - Initial angle of the twig.
      * @param scale - Scale factor of the twig.
@@ -22,41 +21,41 @@ export default class Twig extends ComplexSvg {
      * @param leaves - Tuple representing whether leaves should be generated and their number.
      */
     constructor(
-        tx: number,
-        ty: number,
+        x: number,
+        y: number,
         depth: number,
         angle: number = 0,
         scale: number = 1,
         direction: number = 1,
         strokeWidth: number = 1,
-        leaves: [boolean, number] = [true, 12]
+        leaves: number = 12
     ) {
         super();
-        const twlist: Point[] = [];
-        const tl = 10;
+        const length = 10;
+        const pointArray = new Array<Point>(length);
+        const startAngle = ((PRNG.random() * Math.PI) / 6) * direction + angle;
         const hs = PRNG.random(0.5, 1);
-        const fun2 = (x: number) => -1 / Math.pow(x / tl + 1, 5) + 1;
-        const a0 = ((PRNG.random() * Math.PI) / 6) * direction + angle;
+        const fun2 = (x: number) => -1 / Math.pow(x / length + 1, 5) + 1;
 
-        for (let i = 0; i < tl; i++) {
-            const mx = direction * fun2(i / tl) * 50 * scale * hs;
+        for (let i = 0; i < length; i++) {
+            const mx = direction * fun2(i / length) * 50 * scale * hs;
             const my = -i * 5 * scale;
-
             const a = Math.atan2(my, mx);
-            const d = Math.pow(mx * mx + my * my, 0.5);
+            const distance = Math.sqrt(mx * mx + my * my);
+            const newX = Math.cos(a + startAngle) * distance + x;
+            const newY = Math.sin(a + startAngle) * distance + y;
 
-            const newX = Math.cos(a + a0) * d;
-            const newY = Math.sin(a + a0) * d;
+            pointArray[i] = new Point(newX, newY);
 
-            twlist.push(new Point(newX + tx, newY + ty));
             if (
-                (i === ((tl / 3) | 0) || i === (((tl * 2) / 3) | 0)) &&
+                (i === Math.floor(length / 3) ||
+                    i === Math.floor((length * 2) / 3)) &&
                 depth > 0
             ) {
                 this.add(
                     new Twig(
-                        newX + tx,
-                        newY + ty,
+                        newX,
+                        newY,
                         depth - 1,
                         angle,
                         scale * 0.8,
@@ -66,7 +65,7 @@ export default class Twig extends ComplexSvg {
                     )
                 );
             }
-            if (i === tl - 1 && leaves[0]) {
+            if (i === length - 1 && leaves > 0) {
                 for (let j = 0; j < 5; j++) {
                     const dj = (j - 2.5) * 5;
                     const bfunc = function (x: number) {
@@ -79,11 +78,9 @@ export default class Twig extends ComplexSvg {
                     };
                     this.add(
                         new Blob(
-                            newX + tx + Math.cos(angle) * dj * strokeWidth,
+                            newX + Math.cos(angle) * dj * strokeWidth,
                             newY +
-                                ty +
-                                (Math.sin(angle) * dj -
-                                    leaves[1] / (depth + 1)) *
+                                (Math.sin(angle) * dj - leaves / (depth + 1)) *
                                     strokeWidth,
                             angle / 2 +
                                 Math.PI / 2 +
@@ -102,7 +99,7 @@ export default class Twig extends ComplexSvg {
         }
         this.add(
             new Stroke(
-                twlist,
+                pointArray,
                 "rgba(100,100,100,0.5)",
                 "rgba(100,100,100,0.5)",
                 1,

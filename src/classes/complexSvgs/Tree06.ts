@@ -130,7 +130,7 @@ export default class Tree06 extends ComplexSvg {
                                 0.3,
                                 branchAngle > 0 ? 1 : -1,
                                 1,
-                                [false, 0]
+                                0
                             )
                         );
                     }
