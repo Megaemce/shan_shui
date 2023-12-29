@@ -49,9 +49,8 @@ export default class Stroke extends SvgPolyline {
 
         for (let i = 1; i < lastPointIndex; i++) {
             let newWidth = width * strokeWidthFunction(i / pointArray.length);
-            newWidth =
-                newWidth * (1 - noise) +
-                newWidth * noise * Perlin.noise(i * 0.5, PRNG.random(0, 10));
+            newWidth *=
+                1 - noise + noise * Perlin.noise(i * 0.5, PRNG.random(0, 10));
 
             const lastAngle = Math.atan2(
                 pointArray[i].y - pointArray[i - 1].y,
