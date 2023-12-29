@@ -20,25 +20,18 @@ export default class Tree07 extends ComplexSvg {
     constructor(x: number, y: number, height: number = 60) {
         super();
 
+        const reso = 10;
         const strokeWidth: number = 4;
+        const lines = new Array<Point>(reso * 2);
         const bendingAngle: (x: number) => number = (x: number) =>
             0.2 * Math.sqrt(x);
-        const reso = 10;
-        const noiseArray = [];
-        for (let i = 0; i < reso; i++) {
-            noiseArray.push([
-                Perlin.noise(i * 0.5),
-                Perlin.noise(i * 0.5, 0.5),
-            ]);
-        }
 
-        const line1: Point[] = [];
-        const line2: Point[] = [];
         let T: Point[][] = [];
 
         for (let i = 0; i < reso; i++) {
             const newX = x + bendingAngle(i / reso) * 100;
             const newY = y - (i * height) / reso;
+
             if (i >= reso / 4) {
                 for (let j = 0; j < 1; j++) {
                     const bfunc = function (x: number) {
@@ -57,30 +50,25 @@ export default class Tree07 extends ComplexSvg {
                         bfunc
                     );
 
-                    T = T.concat(triangulate(bpl as Point[], 50, true, false));
+                    T = T.concat(triangulate(bpl, 50, true, false));
                 }
             }
-            line1.push(
-                new Point(
-                    newX +
-                        (noiseArray[i][0] - 0.5) * strokeWidth -
-                        strokeWidth / 2,
-                    newY
-                )
+
+            lines[i] = new Point(
+                newX +
+                    (Perlin.noise(i * 0.5) - 0.5) * strokeWidth -
+                    strokeWidth / 2,
+                newY
             );
-            line2.push(
-                new Point(
-                    newX +
-                        (noiseArray[i][1] - 0.5) * strokeWidth +
-                        strokeWidth / 2,
-                    newY
-                )
+            lines[lines.length - 1 - i] = new Point(
+                newX +
+                    (Perlin.noise(i * 0.5, 0.5) - 0.5) * strokeWidth +
+                    strokeWidth / 2,
+                newY
             );
         }
 
-        T = triangulate(line1.concat(line2.reverse()), 50, true, true).concat(
-            T
-        );
+        T = triangulate(lines, 50, true, true).concat(T);
 
         for (let k = 0; k < T.length; k++) {
             const m = midPoint(T[k]);
