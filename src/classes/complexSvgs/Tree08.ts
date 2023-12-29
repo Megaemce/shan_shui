@@ -3,7 +3,6 @@ import PRNG from "../PRNG";
 import Point from "../Point";
 import Stroke from "../svgPolylines/Stroke";
 import SvgPolyline from "../SvgPolyline";
-import Vector from "../Vector";
 import generateBranch from "../svgPolylines/generateBranch";
 import { distance } from "../../utils/polytools";
 import { lineDivider } from "../../utils/polytools";
@@ -98,7 +97,6 @@ export default class Tree08 extends ComplexSvg {
         bendingAngle: number = 0
     ): void {
         const fun = (x: number) => (depth ? 1 : Math.cos(0.5 * Math.PI * x));
-        const spt = new Vector(xOffset, yOffset);
         const ept = new Point(
             xOffset + Math.cos(angle) * len,
             yOffset + Math.sin(angle) * len
@@ -121,10 +119,13 @@ export default class Tree08 extends ComplexSvg {
         }
 
         for (let i = 0; i < trmlist.length; i++) {
-            const d = distance(trmlist[i], spt.moveFrom(Point.O));
-            const a = Math.atan2(trmlist[i].y - spt.y, trmlist[i].x - spt.x);
-            trmlist[i].x = spt.x + d * Math.cos(a + angle);
-            trmlist[i].y = spt.y + d * Math.sin(a + angle);
+            const d = distance(trmlist[i], new Point(xOffset, yOffset));
+            const a = Math.atan2(
+                trmlist[i].y - yOffset,
+                trmlist[i].x - xOffset
+            );
+            trmlist[i].x = xOffset + d * Math.cos(a + angle);
+            trmlist[i].y = yOffset + d * Math.sin(a + angle);
         }
 
         this.add(

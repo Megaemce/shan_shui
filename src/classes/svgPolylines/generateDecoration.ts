@@ -4,7 +4,7 @@ import { lineDivider } from "../../utils/polytools";
 /**
  * Generates decorative elements based on the specified style.
  * @param {number} style - The style of decoration to generate.
- * @param {Point} [upperLeftPoint=Point.O] - The upper-left point of the bounding box.
+ * @param {Point} [upperLeftPoint=new Point(0,0)] - The upper-left point of the bounding box.
  * @param {Point} [upperRightPoint=new Point(0, 100)] - The upper-right point of the bounding box.
  * @param {Point} [bottomLeftPoint=new Point(100, 0)] - The lower-left point of the bounding box.
  * @param {Point} [bottomRightPoint=new Point(100, 100)] - The lower-right point of the bounding box.
@@ -14,7 +14,7 @@ import { lineDivider } from "../../utils/polytools";
  */
 export default function generateDecoration(
     style: number,
-    upperLeftPoint: Point = Point.O,
+    upperLeftPoint: Point = new Point(0, 0),
     upperRightPoint: Point = new Point(0, 100),
     bottomLeftPoint: Point = new Point(100, 0),
     bottomRightPoint: Point = new Point(100, 100),

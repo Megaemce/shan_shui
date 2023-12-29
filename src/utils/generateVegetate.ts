@@ -23,7 +23,7 @@ export function generateVegetate(
     pointArray.forEach((row, i) => {
         row.forEach((point, j) => {
             if (growthRule(i, j)) {
-                vegList.push(point.copy());
+                vegList.push(point);
             }
         });
     });
