@@ -1,6 +1,5 @@
 import { midPoint } from "./polytools";
 import Point from "../classes/Point";
-import Range from "../classes/Range";
 import ISvgAttributes from "../interfaces/ISvgAttributes";
 import ISvgStyles from "../interfaces/ISvgStyles";
 import { config } from "../config";
@@ -171,10 +170,10 @@ export function normalizeNoise(noiseArray: number[]): number[] {
         rightBoundary = Math.max(rightBoundary, value);
     });
 
-    const inputRange = new Range(leftBoundary, rightBoundary);
-    const outputRange = new Range(0, 1);
-
-    return noiseArray.map((value) => inputRange.mapValue(value, outputRange));
+    // Maps a value from range (leftBoundary,rightBoundary) to (0,1).
+    return noiseArray.map(
+        (value) => (value - leftBoundary) / (rightBoundary - leftBoundary)
+    );
 }
 
 /**

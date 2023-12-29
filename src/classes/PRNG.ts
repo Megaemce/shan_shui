@@ -1,4 +1,3 @@
-import Range from "./Range";
 import { config } from "../config";
 
 const DEFAULTSEED = config.prng.defaultSeed;
@@ -111,9 +110,8 @@ export default class PRNG {
      * @returns {number} A normalized random number within the specified range.
      */
     static normalizedRandom(minValue: number, maxValue: number): number {
-        const inputRange = new Range(0, 1);
-        const outputRange = new Range(minValue, maxValue);
-        return inputRange.mapValue(this.random(), outputRange);
+        // Maps value from [0, 1] to [minValue, maxValue]
+        return this.random() * (maxValue - minValue) + minValue;
     }
 
     /**

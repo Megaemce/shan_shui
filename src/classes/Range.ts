@@ -17,18 +17,4 @@ export default class Range implements IRange {
     get length(): number {
         return this.right - this.left;
     }
-
-    /**
-     * Maps a value from one range to another.
-     *
-     * @param {number} value - The value to map.
-     * @param {Range} outputRange - The output range.
-     * @returns {number} The mapped value.
-     */
-    mapValue(value: number, outputRange: Range): number {
-        return (
-            ((value - this.left) / this.length) * outputRange.length +
-            outputRange.left
-        );
-    }
 }
