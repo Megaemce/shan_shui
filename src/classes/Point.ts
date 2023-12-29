@@ -10,4 +10,8 @@ export default class Point implements IPoint {
      * @param y - The y-coordinate.
      */
     constructor(public x: number = 0, public y: number = 0) {}
+
+    render(): string {
+        return `${this.x.toFixed(1)},${this.y.toFixed(1)}`;
+    }
 }
