@@ -34,37 +34,31 @@ export default class WaterChunk extends Chunk {
     ) {
         super("water", xOffset, yOffset - 10000);
 
-        const pointArray: Point[][] = [];
-        const reso = 5;
+        const resolution = 5;
         let yk = 0;
 
         for (let i = 0; i < waveClusters; i++) {
-            pointArray.push([]);
-
             const xk = (PRNG.random(-0.5, 0.5) * width) / 8;
-            const lk = width * PRNG.random(0.25, 0.5);
+            const lk = Math.floor(width * PRNG.random(0.25, 0.5));
+            const pointNum = Math.floor((2 * lk) / resolution);
+            const currentCluster = new Array<Point>(pointNum);
+            const color = COLORNOALFA + PRNG.random(0.3, 0.6).toFixed(3) + ")";
 
             yk += PRNG.random(0, 5);
 
-            for (let j = -lk; j < lk; j += reso) {
-                pointArray[pointArray.length - 1].push(
-                    new Point(
-                        j + xk,
-                        Math.sin(j * 0.2) * height * Perlin.noise(j * 0.1) -
-                            20 +
-                            yk
-                    )
+            for (let j = 0; j < pointNum; j++) {
+                const step = -lk + j * resolution;
+
+                currentCluster[j] = new Point(
+                    step + xk + xOffset,
+                    Math.sin(step * 0.2) * height * Perlin.noise(step * 0.1) -
+                        20 +
+                        yk +
+                        yOffset
                 );
             }
-        }
 
-        for (let j = 1; j < pointArray.length; j += 1) {
-            const color = COLORNOALFA + PRNG.random(0.3, 0.6).toFixed(3) + ")";
-            const translatedPoints = pointArray[j].map(
-                (point) => new Point(point.x + xOffset, point.y + yOffset)
-            );
-
-            this.add(new Stroke(translatedPoints, color, color));
+            this.add(new Stroke(currentCluster, color, color));
         }
     }
 }
