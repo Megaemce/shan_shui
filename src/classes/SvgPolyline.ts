@@ -35,9 +35,13 @@ export default class SvgPolyline implements ISvgElement {
         strokeColor: string = DEFAULTSTROKECOLOR,
         strokeWidth: number = DEFAULTSTROKEWIDTH
     ) {
-        this.points = pointArray.map(
-            (point) => new Point(point.x + xOffset, point.y + yOffset)
-        );
+        if (xOffset === 0 && yOffset === 0) {
+            this.points = pointArray;
+        } else {
+            this.points = pointArray.map(
+                (point) => new Point(point.x + xOffset, point.y + yOffset)
+            );
+        }
 
         /**
          * Attribute object for additional SVG attributes.

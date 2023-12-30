@@ -37,7 +37,27 @@ export default class BoatChunk extends Chunk {
     ) {
         super("boat", xOffset, yOffset);
 
+        const pointNum = DEFAULTLENGTH / 5;
+        const pointArray = new Array<Point>(2 * pointNum);
         const direction = flip ? -1 : 1;
+        const function1 = (x: number) =>
+            Math.pow(Math.sin(x * Math.PI), 0.5) * 7 * scale;
+        const function2 = (x: number) =>
+            Math.pow(Math.sin(x * Math.PI), 0.5) * 10 * scale;
+
+        for (let i = 0; i < pointNum; i++) {
+            const xPoint = i * 5 * scale * direction + xOffset;
+            const yPoint = (i * 5 * scale) / DEFAULTLENGTH + yOffset;
+
+            pointArray[i] = new Point(xPoint, function1(yPoint));
+            // reverse order for the other side
+            pointArray[2 * pointNum - 1 - i] = new Point(
+                xPoint,
+                function2(yPoint)
+            );
+        }
+
+        // Man on the boat
         this.add(
             new Man(
                 xOffset + 20 * scale * direction,
@@ -49,31 +69,11 @@ export default class BoatChunk extends Chunk {
                 MANHATNUMBER
             )
         );
-
-        const pointList1: Point[] = [];
-        const pointList2: Point[] = [];
-        const function1 = (x: number) =>
-            Math.pow(Math.sin(x * Math.PI), 0.5) * 7 * scale;
-        const function2 = (x: number) =>
-            Math.pow(Math.sin(x * Math.PI), 0.5) * 10 * scale;
-
-        for (let i = 0; i < DEFAULTLENGTH * scale; i += 5 * scale) {
-            pointList1.push(
-                new Point(i * direction, function1(i / DEFAULTLENGTH))
-            );
-            pointList2.push(
-                new Point(i * direction, function2(i / DEFAULTLENGTH))
-            );
-        }
-        const pointList: Point[] = pointList1.concat(pointList2.reverse());
-
         // boat
-        this.add(new SvgPolyline(pointList, xOffset, yOffset, BOATFILLCOLOR));
+        this.add(new SvgPolyline(pointArray, 0, 0, BOATFILLCOLOR));
         this.add(
             new Stroke(
-                pointList.map(
-                    (point) => new Point(xOffset + point.x, yOffset + point.y)
-                ),
+                pointArray,
                 STROKEFILLCOLOR,
                 STROKECOLOR,
                 STROKEWIDTH,
