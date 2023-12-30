@@ -37,23 +37,24 @@ export default class BoatChunk extends Chunk {
     ) {
         super("boat", xOffset, yOffset);
 
+        const direction = flip ? -1 : 1;
         const pointNum = DEFAULTLENGTH / 5;
         const pointArray = new Array<Point>(2 * pointNum);
-        const direction = flip ? -1 : 1;
+        const lastIndex = 2 * pointNum - 1;
         const function1 = (x: number) =>
             Math.pow(Math.sin(x * Math.PI), 0.5) * 7 * scale;
         const function2 = (x: number) =>
             Math.pow(Math.sin(x * Math.PI), 0.5) * 10 * scale;
 
         for (let i = 0; i < pointNum; i++) {
-            const xPoint = i * 5 * scale * direction + xOffset;
-            const yPoint = (i * 5 * scale) / DEFAULTLENGTH + yOffset;
+            const hop = i * 5 * scale;
+            const xPoint = hop * direction + xOffset;
+            const yPoint = hop / DEFAULTLENGTH;
 
-            pointArray[i] = new Point(xPoint, function1(yPoint));
-            // reverse order for the other side
-            pointArray[2 * pointNum - 1 - i] = new Point(
+            pointArray[i] = new Point(xPoint, function1(yPoint) + yOffset);
+            pointArray[lastIndex - i] = new Point(
                 xPoint,
-                function2(yPoint)
+                function2(yPoint) + yOffset
             );
         }
 
