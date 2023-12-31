@@ -4,6 +4,8 @@ import "./styles.css";
 import { ScrollBar } from "./ScrollBar";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
 import { config } from "../config";
+import ChunkGroup from "./ChunkGroup";
+import ChunkCache from "../classes/ChunkCache";
 
 const ZOOM = config.ui.zoom;
 const CANVASWIDTH = config.ui.canvasWidth;
@@ -19,18 +21,6 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     windowWidth,
     chunkCache,
 }) => {
-    const renderChunks = () => {
-        const renderedChunks = chunkCache.chunkArray.map((chunk) => (
-            <g
-                key={`${chunk.tag} ${chunk.x} ${chunk.y}`}
-                dangerouslySetInnerHTML={{
-                    __html: chunk.render(),
-                }}
-            ></g>
-        ));
-        return renderedChunks;
-    };
-
     /** The viewbox string for the SVG element. */
     const viewbox = `${currentPosition} 0 ${windowWidth / ZOOM} ${
         windowHeight / ZOOM
@@ -96,7 +86,20 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                                         </feDiffuseLighting>
                                     </filter>
                                 </defs>
-                                <g id="mainRenderGroup"> {renderChunks()}</g>
+                                <g
+                                    id="mainRenderGroup"
+                                    width={windowWidth}
+                                    height={windowHeight}
+                                >
+                                    {chunkCache.chunkArray.map((chunks) => {
+                                        return (
+                                            <ChunkGroup
+                                                key={ChunkCache.id}
+                                                chunkArray={chunks}
+                                            />
+                                        );
+                                    })}
+                                </g>
                                 <rect
                                     id="background"
                                     filter="url(#roughpaper)"

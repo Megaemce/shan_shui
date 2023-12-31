@@ -24,24 +24,25 @@ const ZOOM = config.ui.zoom;
  */
 export default class ChunkCache {
     /** Array to store generated chunks. */
-    chunkArray: Chunk[] = [];
+    chunkArray: Chunk[][] = [];
     /** Range representing the visible area. */
     visibleRange: Range = new Range();
-    /** Array storing information about mountain coverage in each chunk. */
-
+    static id: number = 0;
     /**
      * Processes the generated chunk plan and adds corresponding chunks to the cache.
      * @param plan - The generated chunk plan.
      */
     private processChunk(plan: IChunk[]): void {
+        console.log(ChunkCache.id);
+        console.log(this.chunkArray);
         plan.forEach(({ tag, x, y }, i) => {
             if (tag === "mount") {
-                this.chunkArray.push(
+                this.chunkArray[ChunkCache.id].push(
                     new MountainChunk(x, y, PRNG.random(0, 2 * i))
                 );
-                this.chunkArray.push(new WaterChunk(x, y));
+                this.chunkArray[ChunkCache.id].push(new WaterChunk(x, y));
             } else if (tag === "flatmount") {
-                this.chunkArray.push(
+                this.chunkArray[ChunkCache.id].push(
                     new FlatMountainChunk(
                         x,
                         y,
@@ -55,7 +56,7 @@ export default class ChunkCache {
                     )
                 );
             } else if (tag === "distmount") {
-                this.chunkArray.push(
+                this.chunkArray[ChunkCache.id].push(
                     new DistantMountainChunk(
                         x,
                         y,
@@ -65,7 +66,7 @@ export default class ChunkCache {
                     )
                 );
             } else if (tag === "boat") {
-                this.chunkArray.push(
+                this.chunkArray[ChunkCache.id].push(
                     new BoatChunk(
                         x,
                         y,
@@ -86,23 +87,23 @@ export default class ChunkCache {
             givenRange.right > this.visibleRange.right - CHUNKWIDTH ||
             givenRange.left < this.visibleRange.left + CHUNKWIDTH
         ) {
-            const [start, end] =
-                givenRange.right > this.visibleRange.right - CHUNKWIDTH
-                    ? [
-                          this.visibleRange.right,
-                          (this.visibleRange.right += CHUNKWIDTH),
-                      ]
-                    : [
-                          (this.visibleRange.left -= CHUNKWIDTH),
-                          this.visibleRange.left,
-                      ];
+            let start, end;
+
+            if (givenRange.right > this.visibleRange.right - CHUNKWIDTH) {
+                start = this.visibleRange.right;
+                end = this.visibleRange.right += CHUNKWIDTH;
+            } else {
+                start = this.visibleRange.left -= CHUNKWIDTH;
+                end = this.visibleRange.left;
+            }
 
             const plan = new Designer(start, end);
             this.processChunk(plan.regions);
         }
 
         // render the chunks in the background first
-        this.chunkArray.sort((a, b) => a.y - b.y);
+        this.chunkArray[ChunkCache.id].sort((a, b) => a.y - b.y);
+        ChunkCache.id++;
     }
 
     /**
@@ -144,14 +145,55 @@ export default class ChunkCache {
         const left = range.left - chunkWidth;
         const right = range.right + chunkWidth;
 
-        const content: string = `<svg id="SVG" xmlns="http://www.w3.org/2000/svg" width="${
-            range.right - range.left
-        }" height="${windowHeight}" viewBox="${viewbox}"><defs><filter width="${windx}" height="${windowHeight}" id="roughpaper"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="5" result="noise"></feTurbulence><feDiffuseLighting in="noise" lighting-color="#F0E7D0" surfaceScale="2" result="diffLight"><feDistantLight azimuth="45" elevation="60"></feDistantLight></feDiffuseLighting></filter></defs><g>${this.chunkArray
-            .filter((chunk) => chunk.x >= left && chunk.x < right)
-            .map((chunk) => `<g>${chunk.render()}</g>`)
-            .join(
-                "\n"
-            )} </g><rect id="background" width="${windx}" height="${windowHeight}" filter="url(#roughpaper)" style="mix-blend-mode:multiply"></rect></svg>`;
+        const content: string = `
+        <svg 
+            id="SVG" 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="${range.right - range.left}" 
+            height="${windowHeight}" 
+            viewBox="${viewbox}">
+            <defs>
+                <filter 
+                    width="${windx}" 
+                    height="${windowHeight}" 
+                    id="roughpaper">
+                        <feTurbulence 
+                            type="fractalNoise" 
+                            baseFrequency="0.02" 
+                            numOctaves="5" 
+                            result="noise">
+                        </feTurbulence>
+                        <feDiffuseLighting 
+                            in="noise" 
+                            lighting-color="#F0E7D0" 
+                            surfaceScale="2" 
+                            result="diffLight">
+                                <feDistantLight 
+                                    azimuth="45" 
+                                    elevation="60">
+                                </feDistantLight>
+                        </feDiffuseLighting>
+                </filter>
+            </defs>
+            <g 
+                id="${ChunkCache.id}">
+                    ${this.chunkArray.forEach((chunks) =>
+                        chunks
+                            .filter(
+                                (chunks) => chunks.x >= left && chunks.x < right
+                            )
+                            .map((chunk) => chunk.render())
+                            .join("\n")
+                    )} 
+                </g>
+            <rect 
+                id="background" 
+                width="${windx}" 
+                height="${windowHeight}" 
+                filter="url(#roughpaper)" 
+                style="mix-blend-mode:multiply">
+            </rect>
+        </svg>`;
 
         const element = document.createElement("a");
         element.setAttribute(
