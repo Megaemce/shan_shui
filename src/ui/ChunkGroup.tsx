@@ -1,23 +1,18 @@
 import React, { ReactElement } from "react";
-import Chunk from "../classes/Chunk";
-
-interface Props {
-    chunkId: string;
-    chunkArray: Chunk[];
-}
+import { IChunkGroup } from "../interfaces/IChunkGroup";
 
 export default function ChunkGroup({
     chunkId,
     chunkArray,
-}: Props): ReactElement {
+}: IChunkGroup): ReactElement {
     return (
         <g id={chunkId}>
-            {chunkArray.map((element) => (
+            {chunkArray.map((chunk) => (
                 <g
-                    id={`${element.tag}: ${element.x} ${element.y}`}
-                    key={`${element.tag} ${element.x} ${element.y}`}
+                    id={`${chunk.tag}: ${chunk.x} ${chunk.y}`}
+                    key={`${chunk.tag} ${chunk.x} ${chunk.y}`}
                     dangerouslySetInnerHTML={{
-                        __html: element.render(),
+                        __html: chunk.render(),
                     }}
                 ></g>
             ))}

@@ -85,7 +85,6 @@ export default class ChunkCache {
      * @param givenRange - The range for which to generate chunks.
      */
     private generateChunks(givenRange: Range): void {
-        console.log("ChunkId before generating", ChunkCache.id);
         while (
             givenRange.right > this.visibleRange.right - CHUNKWIDTH ||
             givenRange.left < this.visibleRange.left + CHUNKWIDTH
@@ -107,8 +106,6 @@ export default class ChunkCache {
         // render the chunks in the background first
         this.chunkArray[ChunkCache.id].sort((a, b) => a.y - b.y);
         ChunkCache.id++;
-
-        console.log("ChunkId after generating", ChunkCache.id);
     }
 
     /**
