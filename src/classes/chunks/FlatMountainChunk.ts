@@ -56,22 +56,23 @@ export default class FlatMountainChunk extends Chunk {
     ) {
         super("flatmount", xOffset, yOffset);
 
+        const elementNumber = 5;
+        const elementDetails = 50;
         const pointArray: Point[][] = [];
         const flat: Point[][] = [];
-        const reso = [5, 50];
 
         let heightOffset = 0;
 
-        for (let j = 0; j < reso[0]; j++) {
+        for (let j = 0; j < elementNumber; j++) {
             heightOffset += PRNG.random(0, yOffset / 100);
             pointArray.push([]);
             flat.push([]);
 
-            for (let i = 0; i < reso[1]; i++) {
-                const x = (i / reso[1] - 0.5) * Math.PI;
+            for (let i = 0; i < elementDetails; i++) {
+                const x = (i / elementDetails - 0.5) * Math.PI;
                 const y =
                     (Math.cos(x * 2) + 1) * Perlin.noise(x + 10, j * 0.1, seed);
-                const p = 1 - (j / reso[0]) * 0.6;
+                const p = 1 - (j / elementNumber) * 0.6;
                 const newX = (x / Math.PI) * width * p;
                 let newY = -y * height * p + heightOffset;
                 const h = 100;
@@ -98,7 +99,7 @@ export default class FlatMountainChunk extends Chunk {
         // WHITE BG
         this.add(
             new SvgPolyline(
-                pointArray[0].concat([new Point(0, reso[0] * 4)]),
+                pointArray[0].concat([new Point(0, elementNumber * 4)]),
                 xOffset,
                 yOffset,
                 BACKGROUNDFILLCOLOR,

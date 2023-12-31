@@ -8,7 +8,7 @@ import Stroke from "../svgPolylines/Stroke";
  */
 export default class Texture extends ComplexSvg {
     /**
-     * @param {Point[][]} pointArray - 2D array of points representing the grid.
+     * @param {Point[][]} elements - 2D array of points representing the grid.
      * @param {number} [xOffset=0] - X-offset for the texture.
      * @param {number} [yOffset=0] - Y-offset for the texture.
      * @param {number} [textureCount=400] - Number of textures to generate.
@@ -18,7 +18,7 @@ export default class Texture extends ComplexSvg {
      * @param {number} [length=0.2] - Length factor for the textures.
      */
     constructor(
-        pointArray: Point[][],
+        elements: Point[][],
         xOffset: number = 0,
         yOffset: number = 0,
         textureCount: number = 400,
@@ -30,30 +30,33 @@ export default class Texture extends ComplexSvg {
     ) {
         super();
 
-        const resolution = [pointArray.length, pointArray[0].length];
-        const textureArray: Point[][] = [];
+        const elementNumber = elements.length;
+        const elementDetails = elements[0].length; // all elements had the same amount of details
+        const textureArray = new Array<Point[]>(textureCount);
+        const step = shadow !== 0 ? 2 : 1;
 
         for (let i = 0; i < textureCount; i++) {
-            const mid = Math.floor(displacementFunction() * resolution[1]);
-            const hlen = Math.floor(PRNG.random(0, resolution[1] * length));
+            const mid = Math.floor(displacementFunction() * elementDetails);
+            const hlen = Math.floor(PRNG.random(0, elementDetails * length));
             const start = Math.max(mid - hlen, 0);
-            const end = Math.min(mid + hlen, resolution[1]);
+            const end = Math.min(mid + hlen, elementDetails);
             const layerIndex = i / textureCount;
-            const layer = layerIndex * (resolution[0] - 1);
+            const layer = layerIndex * (elementNumber - 1);
             const floorLayer = Math.floor(layer);
             const ceilLayer = Math.ceil(layer);
             const layerFraction = layer - floorLayer;
 
-            const currentTexture = [];
+            let currentTexture = new Array<Point>(end - start);
+            let counter = 0; // as the below for loop starts from start
 
             for (let j = start; j < end; j++) {
                 const xInterpolated =
-                    pointArray[floorLayer][j].x * layerFraction +
-                    pointArray[ceilLayer][j].x * (1 - layerFraction);
+                    elements[floorLayer][j].x * layerFraction +
+                    elements[ceilLayer][j].x * (1 - layerFraction);
 
                 const yInterpolated =
-                    pointArray[floorLayer][j].y * layerFraction +
-                    pointArray[ceilLayer][j].y * (1 - layerFraction);
+                    elements[floorLayer][j].y * layerFraction +
+                    elements[ceilLayer][j].y * (1 - layerFraction);
 
                 const noiseScale = noise(layer + 1);
                 const newX =
@@ -61,19 +64,18 @@ export default class Texture extends ComplexSvg {
                 const newY =
                     noiseScale * (Perlin.noise(yInterpolated, j * 0.5) - 0.5);
 
-                currentTexture.push(
-                    new Point(
-                        xInterpolated + newX + xOffset,
-                        yInterpolated + newY + yOffset
-                    )
+                currentTexture[counter] = new Point(
+                    xInterpolated + newX + xOffset,
+                    yInterpolated + newY + yOffset
                 );
+
+                counter++;
             }
 
-            textureArray.push(currentTexture);
+            textureArray[i] = currentTexture;
         }
 
         // SHADE
-        const step = shadow !== 0 ? 2 : 1;
 
         textureArray.forEach((texture, i) => {
             if (i % step === 0 && texture.length > 0) {
