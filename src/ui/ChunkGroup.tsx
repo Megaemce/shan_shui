@@ -2,16 +2,16 @@ import React, { ReactElement } from "react";
 import Chunk from "../classes/Chunk";
 
 interface Props {
-    key: number;
+    chunkId: string;
     chunkArray: Chunk[];
 }
 
 export default function ChunkGroup({
-    key,
+    chunkId,
     chunkArray,
-}: Props): ReactElement | null {
+}: Props): ReactElement {
     return (
-        <g id={String(key)}>
+        <g id={chunkId}>
             {chunkArray.map((element) => (
                 <g
                     id={`${element.tag}: ${element.x} ${element.y}`}

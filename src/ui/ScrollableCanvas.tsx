@@ -5,7 +5,6 @@ import { ScrollBar } from "./ScrollBar";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
 import { config } from "../config";
 import ChunkGroup from "./ChunkGroup";
-import ChunkCache from "../classes/ChunkCache";
 
 const ZOOM = config.ui.zoom;
 const CANVASWIDTH = config.ui.canvasWidth;
@@ -91,10 +90,11 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                                     width={windowWidth}
                                     height={windowHeight}
                                 >
-                                    {chunkCache.chunkArray.map((chunks) => {
+                                    {chunkCache.chunkArray.map((chunks, i) => {
                                         return (
                                             <ChunkGroup
-                                                key={ChunkCache.id}
+                                                key={i}
+                                                chunkId={`chunk${i}`}
                                                 chunkArray={chunks}
                                             />
                                         );

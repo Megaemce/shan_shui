@@ -33,8 +33,10 @@ export default class ChunkCache {
      * @param plan - The generated chunk plan.
      */
     private processChunk(plan: IChunk[]): void {
-        console.log(ChunkCache.id);
-        console.log(this.chunkArray);
+        if (!this.chunkArray[ChunkCache.id]) {
+            this.chunkArray[ChunkCache.id] = [];
+        }
+
         plan.forEach(({ tag, x, y }, i) => {
             if (tag === "mount") {
                 this.chunkArray[ChunkCache.id].push(
@@ -83,6 +85,7 @@ export default class ChunkCache {
      * @param givenRange - The range for which to generate chunks.
      */
     private generateChunks(givenRange: Range): void {
+        console.log("ChunkId before generating", ChunkCache.id);
         while (
             givenRange.right > this.visibleRange.right - CHUNKWIDTH ||
             givenRange.left < this.visibleRange.left + CHUNKWIDTH
@@ -104,6 +107,8 @@ export default class ChunkCache {
         // render the chunks in the background first
         this.chunkArray[ChunkCache.id].sort((a, b) => a.y - b.y);
         ChunkCache.id++;
+
+        console.log("ChunkId after generating", ChunkCache.id);
     }
 
     /**
