@@ -115,8 +115,8 @@ export default class ChunkCache {
      */
     public update(givenRange: Range, chunkWidth: number = CHUNKWIDTH): void {
         if (
-            givenRange.right > this.visibleRange.right - chunkWidth ||
-            givenRange.left < this.visibleRange.left + chunkWidth
+            givenRange.right > this.visibleRange.right + chunkWidth ||
+            givenRange.left < this.visibleRange.left - chunkWidth
         ) {
             this.generateChunks(givenRange);
         }
