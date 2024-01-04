@@ -16,7 +16,6 @@ export const Menu: React.FC<IMenu> = ({
     windowWidth,
     windowHeight,
     chunkCache,
-
     saveRange,
     onChangeSaveRange,
     toggleAutoLoad,
@@ -61,148 +60,101 @@ export const Menu: React.FC<IMenu> = ({
 
     return (
         <div id="MENU" style={{ display }}>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <pre>SEED</pre>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <DebounceInput
-                                id="INP_SEED"
-                                className="ROWITEM"
-                                title="random seed"
-                                value={seed}
-                                debounceTimeout={500}
-                                onChange={(e) => changeSeed(e.target.value)}
-                                style={{ width: 120 }}
-                            />
-                            <button onClick={reloadWindowSeed}>Generate</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <hr />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <pre>
-                                VIEW [{currentPosition},{" "}
-                                {currentPosition + windowWidth}]
-                            </pre>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button
-                                title="view left"
-                                onClick={horizonalScrollLeft}
-                            >
-                                &lt;
-                            </button>
-                            <input
-                                id="INC_STEP"
-                                title="increment step"
-                                type="number"
-                                value={step}
-                                min={0}
-                                max={10000}
-                                step={20}
-                                onChange={changeStep}
-                            />
-                            <button
-                                title="view right"
-                                onClick={horizonalScrollRight}
-                            >
-                                &gt;
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <pre>
-                                <input
-                                    id="AUTO_SCROLL"
-                                    type="checkbox"
-                                    onChange={toggleAutoScrollHandler}
-                                />
-                                Auto-scroll
-                            </pre>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <hr />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <pre>SAVE</pre>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <pre className="ROWITEM">from</pre>
-                            <input
-                                className="ROWITEM"
-                                type="number"
-                                value={saveRange.left}
-                                onChange={onChangeSaveRangeL}
-                                style={{ width: 60 }}
-                            />
-                            <pre className="ROWITEM">to</pre>
-                            <input
-                                className="ROWITEM"
-                                type="number"
-                                value={saveRange.right}
-                                onChange={onChangeSaveRangeR}
-                                style={{ width: 60 }}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <pre>
-                                <input
-                                    id="AUTO_LOAD"
-                                    type="checkbox"
-                                    onChange={toggleAutoLoadHandler}
-                                />
-                                Auto-load
-                            </pre>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button
-                                title="load current range"
-                                type="button"
-                                id="loadrange-btn"
-                                value="Load Range"
-                                onClick={loadCurrentRange}
-                            >
-                                Load Current Range
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button
-                                title="WARNING: This may take a while..."
-                                type="button"
-                                id="dwn-btn"
-                                value="Download as SVG"
-                                onClick={downloadSvg}
-                            >
-                                Download as .SVG
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div>
+                <h4>Current seed</h4>
+                <DebounceInput
+                    id="INP_SEED"
+                    className="ROWITEM"
+                    title="random seed"
+                    value={seed}
+                    debounceTimeout={500}
+                    onChange={(e) => changeSeed(e.target.value)}
+                    style={{ width: 120 }}
+                />
+                <button onClick={reloadWindowSeed}>Generate</button>
+            </div>
+            <div>
+                <h4>Current view:</h4>
+                <p>
+                    [{currentPosition}, {currentPosition + windowWidth}]
+                </p>
+                <button title="Scroll left" onClick={horizonalScrollLeft}>
+                    &lt;
+                </button>
+                <input
+                    id="INC_STEP"
+                    title="increment step"
+                    type="number"
+                    value={step}
+                    min={0}
+                    max={10000}
+                    step={20}
+                    onChange={changeStep}
+                />
+                <button title="Scroll right" onClick={horizonalScrollRight}>
+                    &gt;
+                </button>
+            </div>
+            <div>
+                <input
+                    name="Auto-scrol"
+                    id="AUTO_SCROLL"
+                    type="checkbox"
+                    onChange={toggleAutoScrollHandler}
+                />
+                <label htmlFor="AUTO_SCROLL">Auto-scroll</label>
+            </div>
+            <div>
+                <h4>Save view</h4>
+                From
+                <input
+                    className="ROWITEM"
+                    type="number"
+                    value={saveRange.left}
+                    onChange={onChangeSaveRangeL}
+                    style={{ width: 60 }}
+                />
+                to
+                <input
+                    className="ROWITEM"
+                    type="number"
+                    value={saveRange.right}
+                    onChange={onChangeSaveRangeR}
+                    style={{ width: 60 }}
+                />
+            </div>
+
+            <div>
+                <input
+                    id="AUTO_LOAD"
+                    type="checkbox"
+                    onChange={toggleAutoLoadHandler}
+                />
+                <label htmlFor="AUTO_LOAD">Auto-load</label>
+            </div>
+
+            <div>
+                <button
+                    title="Import current range"
+                    type="button"
+                    id="loadrange-btn"
+                    value="Import current range"
+                    onClick={loadCurrentRange}
+                >
+                    Import current range
+                </button>
+            </div>
+            <div>
+                <button
+                    title="Download as SVG"
+                    type="button"
+                    id="dwn-btn"
+                    value="Download as SVG"
+                    onClick={downloadSvg}
+                >
+                    Download as .SVG
+                </button>
+            </div>
         </div>
     );
 };
