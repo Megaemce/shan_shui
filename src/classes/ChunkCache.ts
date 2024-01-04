@@ -24,7 +24,7 @@ const ZOOM = config.ui.zoom;
  */
 export default class ChunkCache {
     /** Array to store generated chunks. */
-    chunkArray: Chunk[][] = [];
+    layers: Chunk[][] = [];
     /** Range representing the visible area. */
     visibleRange: Range = new Range();
     static id: number = 0;
@@ -33,18 +33,18 @@ export default class ChunkCache {
      * @param plan - The generated chunk plan.
      */
     private processChunk(plan: IChunk[]): void {
-        if (!this.chunkArray[ChunkCache.id]) {
-            this.chunkArray[ChunkCache.id] = [];
+        if (!this.layers[ChunkCache.id]) {
+            this.layers[ChunkCache.id] = [];
         }
 
         plan.forEach(({ tag, x, y }, i) => {
             if (tag === "mount") {
-                this.chunkArray[ChunkCache.id].push(
+                this.layers[ChunkCache.id].push(
                     new MountainChunk(x, y, PRNG.random(0, 2 * i))
                 );
-                this.chunkArray[ChunkCache.id].push(new WaterChunk(x, y));
+                this.layers[ChunkCache.id].push(new WaterChunk(x, y));
             } else if (tag === "flatmount") {
-                this.chunkArray[ChunkCache.id].push(
+                this.layers[ChunkCache.id].push(
                     new FlatMountainChunk(
                         x,
                         y,
@@ -58,7 +58,7 @@ export default class ChunkCache {
                     )
                 );
             } else if (tag === "distmount") {
-                this.chunkArray[ChunkCache.id].push(
+                this.layers[ChunkCache.id].push(
                     new DistantMountainChunk(
                         x,
                         y,
@@ -68,7 +68,7 @@ export default class ChunkCache {
                     )
                 );
             } else if (tag === "boat") {
-                this.chunkArray[ChunkCache.id].push(
+                this.layers[ChunkCache.id].push(
                     new BoatChunk(
                         x,
                         y,
@@ -104,7 +104,7 @@ export default class ChunkCache {
         }
 
         // render the chunks in the background first
-        this.chunkArray[ChunkCache.id].sort((a, b) => a.y - b.y);
+        this.layers[ChunkCache.id].sort((a, b) => a.y - b.y);
         ChunkCache.id++;
     }
 
@@ -179,7 +179,7 @@ export default class ChunkCache {
             </defs>
             <g 
                 id="${ChunkCache.id}">
-                    ${this.chunkArray.forEach((chunks) =>
+                    ${this.layers.forEach((chunks) =>
                         chunks
                             .filter(
                                 (chunks) => chunks.x >= left && chunks.x < right

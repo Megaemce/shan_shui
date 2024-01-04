@@ -3,16 +3,16 @@ import { IChunkGroup } from "../interfaces/IChunkGroup";
 
 export default function ChunkGroup({
     chunkId,
-    chunkArray,
+    layer,
 }: IChunkGroup): ReactElement {
     return (
-        <g id={chunkId}>
-            {chunkArray.map((chunk) => (
+        <g id={`chunk${chunkId}`} z={`${chunkId}`}>
+            {layer.map((element, index) => (
                 <g
-                    id={`${chunk.tag}: ${chunk.x} ${chunk.y}`}
-                    key={`${chunk.tag} ${chunk.x} ${chunk.y}`}
+                    id={`chunk${chunkId}-element${index}-${element.tag}`}
+                    key={`chunk${chunkId}-element${index}-${element.tag}`}
                     dangerouslySetInnerHTML={{
-                        __html: chunk.render(),
+                        __html: element.render(),
                     }}
                 ></g>
             ))}
