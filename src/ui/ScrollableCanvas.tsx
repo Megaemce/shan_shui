@@ -31,95 +31,66 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     chunkCache.update(newRange, CANVASWIDTH);
 
     return (
-        <table id="SCROLLABLE_CANVAS">
-            <tbody>
-                <tr>
-                    <td>
-                        <ScrollBar
-                            id="L"
-                            onClick={() => horizontalScroll(-SCROLLVALUE)}
-                            height={windowHeight - 8}
-                            icon="&#x3008;"
+        <div id="SCROLLABLE_CANVAS">
+            <ScrollBar
+                id="L"
+                onClick={() => horizontalScroll(-SCROLLVALUE)}
+                height={windowHeight - 8}
+                icon="&#x3008;"
+            />
+            <svg
+                id="SVG"
+                xmlns="http://www.w3.org/2000/svg"
+                width={windowWidth}
+                height={windowHeight}
+                viewBox={viewbox}
+                style={{
+                    left: 0,
+                    position: "fixed",
+                    top: 0,
+                }}
+            >
+                <defs>
+                    <filter
+                        id="roughpaper"
+                        width={windowWidth}
+                        height={windowHeight}
+                    >
+                        <feTurbulence
+                            type="fractalNoise"
+                            baseFrequency="0.02"
+                            numOctaves="5"
+                            result="noise"
                         />
-                    </td>
-                    <td>
-                        <div
-                            id="BG"
-                            style={{
-                                width: windowWidth,
-                                height: windowHeight,
-                                left: 0,
-                                position: "fixed",
-                                top: 0,
-                            }}
+                        <feDiffuseLighting
+                            in="noise"
+                            lightingColor="#F0E7D0"
+                            surfaceScale="2"
+                            result="diffLight"
                         >
-                            <svg
-                                id="SVG"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width={windowWidth}
-                                height={windowHeight}
-                                viewBox={viewbox}
-                            >
-                                <defs>
-                                    <filter
-                                        id="roughpaper"
-                                        width={windowWidth}
-                                        height={windowHeight}
-                                    >
-                                        <feTurbulence
-                                            type="fractalNoise"
-                                            baseFrequency="0.02"
-                                            numOctaves="5"
-                                            result="noise"
-                                        />
-                                        <feDiffuseLighting
-                                            in="noise"
-                                            lightingColor="#F0E7D0"
-                                            surfaceScale="2"
-                                            result="diffLight"
-                                        >
-                                            <feDistantLight
-                                                azimuth="45"
-                                                elevation="60"
-                                            />
-                                        </feDiffuseLighting>
-                                    </filter>
-                                </defs>
-                                <g
-                                    id="mainRenderGroup"
-                                    width={windowWidth}
-                                    height={windowHeight}
-                                >
-                                    {chunkCache.chunkArray.map((chunks, i) => {
-                                        return (
-                                            <ChunkGroup
-                                                key={i}
-                                                chunkId={`chunk${i}`}
-                                                chunkArray={chunks}
-                                            />
-                                        );
-                                    })}
-                                </g>
-                                <rect
-                                    id="background"
-                                    filter="url(#roughpaper)"
-                                    style={{ mixBlendMode: "multiply" }}
-                                    width={windowWidth}
-                                    height={windowHeight}
-                                />
-                            </svg>
-                        </div>
-                    </td>
-                    <td>
-                        <ScrollBar
-                            id="R"
-                            onClick={() => horizontalScroll(SCROLLVALUE)}
-                            height={windowHeight - 8}
-                            icon="&#x3009;"
-                        />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                            <feDistantLight azimuth="45" elevation="60" />
+                        </feDiffuseLighting>
+                    </filter>
+                </defs>
+                <g id="main" width={windowWidth} height={windowHeight}>
+                    {chunkCache.layers.map((layer, i) => {
+                        return <ChunkGroup key={i} chunkId={i} layer={layer} />;
+                    })}
+                </g>
+                <rect
+                    id="background"
+                    filter="url(#roughpaper)"
+                    style={{ mixBlendMode: "multiply" }}
+                    width={windowWidth}
+                    height={windowHeight}
+                />
+            </svg>
+            <ScrollBar
+                id="R"
+                onClick={() => horizontalScroll(SCROLLVALUE)}
+                height={windowHeight - 8}
+                icon="&#x3009;"
+            />
+        </div>
     );
 };
