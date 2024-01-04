@@ -5,7 +5,6 @@ import { normalizeNoise } from "./utils";
 
 /**
  * Generates a list of points for a blob with a stylized outline.
- * @param prng - PRNG instance for random number generation.
  * @param x - X-coordinate of the blob.
  * @param y - Y-coordinate of the blob.
  * @param angle - Angle of the blob.
@@ -28,13 +27,13 @@ export function generateBlobPoints(
             ? Math.pow(Math.sin(x * Math.PI), 0.5)
             : -Math.pow(Math.sin((x + 1) * Math.PI), 0.5)
 ): Point[] {
-    const resolution = 20;
-    const lalist = new Array<[number, number]>(resolution + 1);
-    const pointArray = new Array<Point>(resolution + 1);
+    const resolution = 15;
+    const lalist = new Array<[number, number]>(resolution);
+    const pointArray = new Array<Point>(resolution);
 
-    let noiseArray = new Array<number>(resolution + 1);
+    let noiseArray = new Array<number>(resolution);
 
-    for (let i = 0; i <= resolution; i++) {
+    for (let i = 0; i < resolution; i++) {
         const p = (i / resolution) * 2;
         const xo = length / 2 - Math.abs(p - 1) * length;
         const yo = (strokeWidthFunction(p) * strokeWidth) / 2;
