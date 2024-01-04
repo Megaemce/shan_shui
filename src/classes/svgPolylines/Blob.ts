@@ -1,6 +1,9 @@
+import PRNG from "../PRNG";
+import Perlin from "../Perlin";
+import Point from "../Point";
 import SvgPolyline from "../SvgPolyline";
 import { config } from "../../config";
-import { generateBlobPoints } from "../../utils/generateBlobPoints";
+import { normalizeNoise } from "../../utils/utils";
 
 const DEFAULTFILLCOLOR = config.svgPolyline.blob.defaultFillColor;
 const DEFAULTLENGTH = config.svgPolyline.blob.defaultLength;
@@ -35,15 +38,32 @@ export default class Blob extends SvgPolyline {
                 ? Math.pow(Math.sin(x * Math.PI), 0.5)
                 : -Math.pow(Math.sin((x + 1) * Math.PI), 0.5)
     ) {
-        const pointArray = generateBlobPoints(
-            x,
-            y,
-            angle,
-            length,
-            strokeWidth,
-            noise,
-            strokeWidthFunction
-        );
+        const resolution = 15;
+        const lalist = new Array<[number, number]>(resolution);
+        const pointArray = new Array<Point>(resolution);
+
+        let noiseArray = new Array<number>(resolution);
+
+        for (let i = 0; i < resolution; i++) {
+            const p = (i / resolution) * 2;
+            const xo = length / 2 - Math.abs(p - 1) * length;
+            const yo = (strokeWidthFunction(p) * strokeWidth) / 2;
+            const a = Math.atan2(yo, xo);
+            const l = Math.sqrt(xo * xo + yo * yo);
+
+            lalist[i] = [l, a];
+            noiseArray[i] = Perlin.noise(i * 0.05, PRNG.random(0, 10));
+        }
+
+        noiseArray = normalizeNoise(noiseArray);
+
+        lalist.forEach(([l, a], i) => {
+            const ns = noiseArray[i] * noise + (1 - noise);
+            const newX = x + Math.cos(a + angle) * l * ns;
+            const newY = y + Math.sin(a + angle) * l * ns;
+            pointArray[i] = new Point(newX, newY);
+        });
+
         super(pointArray, 0, 0, fillColor, fillColor);
     }
 }

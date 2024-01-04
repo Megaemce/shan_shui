@@ -1,11 +1,10 @@
+import Blob from "../svgPolylines/Blob";
 import ComplexSvg from "../ComplexSvg";
 import PRNG from "../PRNG";
 import Perlin from "../Perlin";
 import Point from "../Point";
 import SvgPolyline from "../SvgPolyline";
-import { generateBlobPoints } from "../../utils/generateBlobPoints";
 import { midPoint, triangulate } from "../../utils/polytools";
-
 /**
  * Class representing a generator for a tree structure with a specific pattern.
  */
@@ -39,18 +38,19 @@ export default class Tree07 extends ComplexSvg {
                             ? 2.75 * x * Math.pow(1 - x, 1 / 1.8)
                             : 2.75 * (x - 2) * Math.pow(x - 1, 1 / 1.8);
                     };
-                    const bpl = generateBlobPoints(
+                    const bpl = new Blob(
                         newX +
                             PRNG.random(-0.3, 0.3) * strokeWidth * (reso - i),
                         newY + PRNG.random(-0.25, 0.25) * strokeWidth,
                         PRNG.random(0, -Math.PI / 6),
+                        undefined,
                         PRNG.random(20, 70),
                         PRNG.random(12, 24),
                         0.5,
                         bfunc
                     );
 
-                    T = T.concat(triangulate(bpl, 50, true, false));
+                    T = T.concat(triangulate(bpl.points, 50, true, false));
                 }
             }
 
