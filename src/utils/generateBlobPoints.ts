@@ -34,7 +34,7 @@ export function generateBlobPoints(
 
     let noiseArray = new Array<number>(resolution + 1);
 
-    for (let i = 0; i < resolution + 1; i++) {
+    for (let i = 0; i <= resolution; i++) {
         const p = (i / resolution) * 2;
         const xo = length / 2 - Math.abs(p - 1) * length;
         const yo = (strokeWidthFunction(p) * strokeWidth) / 2;
