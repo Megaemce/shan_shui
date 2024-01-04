@@ -6,13 +6,16 @@ import Point from "./Point";
 import { config } from "../config";
 import { isLocalMaximum } from "../utils/utils";
 
-const BOAT_PROBABILITY = config.designer.boatProbability;
-const DIST_MOUNTAIN_INTERVAL = config.designer.distanceMountainInterval;
-const FLAT_MOUNTAIN_PROBABILITY = config.designer.flatMountainProbability;
-const MOUNTAIN_COVER_THRESHOLD = config.designer.mountainCoverThreshold;
-const MOUNTAIN_RADIUS = config.designer.mountainRadius;
+const BOAT_PROBABILITY = config.designer.boat.probability;
+const DIST_MOUNTAIN_INTERVAL = config.designer.distanceMountain.interval;
+const FLAT_MOUNTAIN_PROBABILITY = config.designer.flatMountain.probability;
+const MOUNTAIN_COVER_THRESHOLD = config.designer.mountain.coverThreshold;
+const MOUNTAIN_RADIUS = config.designer.mountain.radius;
 const NOISE_SAMPLE = config.designer.noiseSample;
 const X_STEP = config.designer.xStep;
+const MIN_BOAT_Y = config.designer.boat.y.min;
+const MAX_BOAT_Y = config.designer.boat.y.max;
+const BOAT_RADIUS_THRESHOLD = config.designer.boat.radiusThreshold;
 
 /**
  * Class for generating terrain design chunks based on Perlin noise.
@@ -27,6 +30,7 @@ export default class Designer {
      * @param {number} xMin - The minimum x-coordinate for generation.
      * @param {number} xMax - The maximum x-coordinate for generation.
      */
+
     constructor(xMin: number, xMax: number) {
         this.iMin = Math.floor(xMin / X_STEP);
         this.iMax = Math.floor(xMax / X_STEP);
@@ -51,18 +55,20 @@ export default class Designer {
         for (let i = this.iMin; i < this.iMax; i++) {
             if (PRNG.random() < BOAT_PROBABILITY) {
                 const x = i * X_STEP + this.xOffset;
-                const boatChunk = new DesignChunk(
-                    "boat",
-                    x,
-                    PRNG.random(300, 690)
-                );
+                const y = PRNG.random(MIN_BOAT_Y, MAX_BOAT_Y);
+                const boatChunk = new DesignChunk("boat", x, y);
 
-                if (this.needsAdding(localRegion, boatChunk, 400)) {
+                if (
+                    this.needsAdding(
+                        localRegion,
+                        boatChunk,
+                        BOAT_RADIUS_THRESHOLD
+                    )
+                ) {
                     localRegion.push(boatChunk);
                 }
             }
         }
-
         this.regions = this.regions.concat(localRegion);
     }
 
@@ -91,7 +97,7 @@ export default class Designer {
                         MOUNTAIN_RADIUS
                     )
                 ) {
-                    const xOffset = x + PRNG.random(-500, 500);
+                    const xOffset = x + PRNG.random(0, 500);
                     const yOffset = y + 300;
 
                     const mountainChunk = new DesignChunk(
@@ -140,7 +146,7 @@ export default class Designer {
                 for (let j = 0; j < PRNG.random(0, 4); j++) {
                     const flatMountainChunk = new DesignChunk(
                         "flatmount",
-                        x + PRNG.random(-700, 700),
+                        x + PRNG.random(0, 700),
                         700 - j * 50
                     );
 
@@ -167,8 +173,14 @@ export default class Designer {
         chunk: IChunk,
         radius: number = 10
     ): boolean {
-        return regions.every(
+        const localCheck = regions.every(
             (existingChunk) => Math.abs(existingChunk.x - chunk.x) >= radius
         );
+
+        const globalCheck = this.regions.every(
+            (existingChunk) => Math.abs(existingChunk.x - chunk.x) >= radius
+        );
+
+        return localCheck && globalCheck;
     }
 }

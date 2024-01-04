@@ -125,13 +125,30 @@ export const config = {
         bezierCurvePoints: 20,
     },
     designer: {
-        mountainCoverThreshold: 0.3, // Threshold value for determining mountain coverage in the design.
-        mountainRadius: 2, // Radius of the circular area used to check for local maxima.
-        distanceMountainInterval: 1000, // Interval at which distant mountains are generated.
-        flatMountainProbability: 0.01, // Probability of generating a flat mountain chunk.
-        boatProbability: 0.2, // Probability of generating a boat chunk.
         xStep: 5, // Step size along the x-axis for generating terrain.
         noiseSample: 0.03, // Sample value for the noise function.
+        boatY: {
+            min: 300,
+            max: 690,
+        },
+        boat: {
+            probability: 0.2, // Probability of generating a boat chunk.
+            y: {
+                min: 300,
+                max: 690,
+            },
+            radiusThreshold: 400,
+        },
+        mountain: {
+            coverThreshold: 0.3, // Threshold value for determining mountain coverage in the design.
+            radius: 2, // Radius of the circular area used to check for local maxima.
+        },
+        flatMountain: {
+            probability: 0.01, // Probability of generating a flat mountain chunk.
+        },
+        distanceMountain: {
+            interval: 1000, // Interval at which distant mountains are generated.
+        },
     },
     perlin: {
         yWrapb: 4, // Number of bits to wrap along the y-axis.
