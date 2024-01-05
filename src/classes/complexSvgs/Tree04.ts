@@ -13,10 +13,10 @@ import generateBranch from "../svgPolylines/generateBranch";
 export default class Tree04 extends ComplexSvg {
     /**
      * Constructor for the Tree04Generator class.
-     * @param x - X-coordinate offset.
-     * @param y - Y-coordinate offset.
+     * @param xOffset - X-coordinate offset.
+     * @param yOffset - Y-coordinate offset.
      */
-    constructor(x: number, y: number) {
+    constructor(xOffset: number, yOffset: number) {
         super();
 
         const height: number = 300;
@@ -55,7 +55,7 @@ export default class Tree04 extends ComplexSvg {
                     new Point(p.x + point.x, p.y + point.y);
 
                 this.add(
-                    new Barkify(x, y, [
+                    new Barkify(xOffset, yOffset, [
                         leftBranches.map(offset),
                         rightBranches.map(offset),
                     ])
@@ -71,8 +71,8 @@ export default class Tree04 extends ComplexSvg {
 
                         this.add(
                             new Twig(
-                                p.x + point.x + x,
-                                p.y + point.y + y,
+                                p.x + point.x + xOffset,
+                                p.y + point.y + yOffset,
                                 1,
                                 twigAngle,
                                 twigHeight,
@@ -92,18 +92,26 @@ export default class Tree04 extends ComplexSvg {
             }
         });
 
-        this.add(new SvgPolyline(pointArrayModified, x, y, "white", color));
+        this.add(
+            new SvgPolyline(
+                pointArrayModified,
+                xOffset,
+                yOffset,
+                "white",
+                color
+            )
+        );
 
         pointArrayModified.shift();
         pointArrayModified.pop();
         color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
 
-        this.add(new Barkify(x, y, branches));
+        this.add(new Barkify(xOffset, yOffset, branches));
 
         this.add(
             new Stroke(
                 pointArrayModified.map(function (p: Point) {
-                    return new Point(p.x + x, p.y + y);
+                    return new Point(p.x + xOffset, p.y + yOffset);
                 }),
                 color,
                 color,

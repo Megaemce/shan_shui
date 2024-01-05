@@ -11,15 +11,15 @@ import SvgPolyline from "../SvgPolyline";
 export default class Tree03 extends ComplexSvg {
     /**
      * Constructor for the Tree03Generator class.
-     * @param x - X-coordinate of the tree base.
-     * @param y - Y-coordinate of the tree base.
+     * @param xOffset - X-coordinate offset of the tree base.
+     * @param yOffset - Y-coordinate offset  of the tree base.
      * @param height - Height of the tree.
      * @param color - Color of the tree.
      * @param bendingAngle - Custom bending function.
      */
     constructor(
-        x: number,
-        y: number,
+        xOffset: number,
+        yOffset: number,
         height: number = 16,
         color: string = "rgba(100,100,100,0.5)",
         bendingAngle: (x: number) => number = (_) => 0
@@ -38,8 +38,8 @@ export default class Tree03 extends ComplexSvg {
         }
 
         for (let i = 0; i < resolution; i++) {
-            const newX = x + bendingAngle(i / resolution) * 100;
-            const newY = y - (i * height) / resolution;
+            const newX = xOffset + bendingAngle(i / resolution) * 100;
+            const newY = yOffset - (i * height) / resolution;
 
             if (i >= resolution / 5) {
                 for (let j = 0; j < (resolution - i) * 2; j++) {

@@ -11,11 +11,11 @@ import { midPoint, triangulate } from "../../utils/polytools";
 export default class Tree07 extends ComplexSvg {
     /**
      * Generates a tree structure with a specific pattern.
-     * @param x - X-coordinate offset.
-     * @param y - Y-coordinate offset.
+     * @param xOffset - X-coordinate offset.
+     * @param yOffset - Y-coordinate offset.
      * @param height - Height of the tree.
      */
-    constructor(x: number, y: number, height: number = 60) {
+    constructor(xOffset: number, yOffset: number, height: number = 60) {
         super();
 
         const resolution = 10;
@@ -27,8 +27,8 @@ export default class Tree07 extends ComplexSvg {
         let T: Point[][] = [];
 
         for (let i = 0; i < resolution; i++) {
-            const newX = x + bendingAngle(i / resolution) * 100;
-            const newY = y - (i * height) / resolution;
+            const newX = xOffset + bendingAngle(i / resolution) * 100;
+            const newY = yOffset - (i * height) / resolution;
 
             if (i >= resolution / 4) {
                 for (let j = 0; j < 1; j++) {

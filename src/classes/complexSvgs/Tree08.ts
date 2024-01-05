@@ -13,11 +13,11 @@ import { lineDivider } from "../../utils/polytools";
 export default class Tree08 extends ComplexSvg {
     /**
      * Constructor for the Tree08 class.
-     * @param x - X-coordinate of the base point.
-     * @param y - Y-coordinate of the base point.
+     * @param xOffset - X-coordinate offset of tree08.
+     * @param yOffset - Y-coordinate offset of tree08.
      * @param height - Height of the tree.
      */
-    constructor(x: number, y: number, height: number = 80) {
+    constructor(xOffset: number, yOffset: number, height: number = 80) {
         super();
 
         const strokeWidth: number = 1;
@@ -41,16 +41,16 @@ export default class Tree08 extends ComplexSvg {
             // Randomly generate branches
             if (PRNG.random() < 0.2) {
                 this.generateFractalTree(
-                    x + pointArray[i].x,
-                    y + pointArray[i].y,
+                    xOffset + pointArray[i].x,
+                    yOffset + pointArray[i].y,
                     Math.floor(PRNG.random(0, 4)),
                     -Math.PI / 2 + PRNG.random(-angle, 0)
                 );
             } else if (i === Math.floor(pointArray.length / 2)) {
                 // Generate a specific branch at the middle of the trunk
                 this.generateFractalTree(
-                    x + pointArray[i].x,
-                    y + pointArray[i].y,
+                    xOffset + pointArray[i].x,
+                    yOffset + pointArray[i].y,
                     3,
                     -Math.PI / 2 + angle
                 );
@@ -58,15 +58,15 @@ export default class Tree08 extends ComplexSvg {
         }
 
         // Add the main trunk to the polyline array
-        this.add(new SvgPolyline(pointArray, x, y, "white", color));
+        this.add(new SvgPolyline(pointArray, xOffset, yOffset, "white", color));
 
         // Add a colored stroke to the main trunk
         color = `rgba(100,100,100,${PRNG.random(0.6, 0.7).toFixed(3)})`;
         this.add(
             new Stroke(
-                pointArray.map(function (v) {
-                    return new Point(v.x + x, v.y + y);
-                }),
+                pointArray.map(
+                    (point) => new Point(point.x + xOffset, point.y + yOffset)
+                ),
                 color,
                 color,
                 2.5,

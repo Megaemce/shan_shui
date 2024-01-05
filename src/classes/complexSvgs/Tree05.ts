@@ -13,11 +13,11 @@ import generateBranch from "../svgPolylines/generateBranch";
 export default class Tree05 extends ComplexSvg {
     /**
      * Constructor for the Tree05Generator class.
-     * @param x - X-coordinate offset.
-     * @param y - Y-coordinate offset.
+     * @param xOffset - X-coordinate offset.
+     * @param yOffset - Y-coordinate offset.
      * @param height - The height of the tree.
      */
-    constructor(x: number, y: number, height: number = 300) {
+    constructor(xOffset: number, yOffset: number, height: number = 300) {
         super();
 
         const strokeWidth: number = 5;
@@ -59,8 +59,8 @@ export default class Tree05 extends ComplexSvg {
                     if (j % 20 === 0 || j === _brlist[0].length - 1) {
                         this.add(
                             new Twig(
-                                _brlist[0][j].x + pointArray[i].x + x,
-                                _brlist[0][j].y + pointArray[i].y + y,
+                                _brlist[0][j].x + pointArray[i].x + xOffset,
+                                _brlist[0][j].y + pointArray[i].y + yOffset,
                                 0,
                                 angle > -Math.PI / 2 ? angle : angle + Math.PI,
                                 (0.2 * height) / 300,
@@ -85,19 +85,27 @@ export default class Tree05 extends ComplexSvg {
             }
         }
 
-        this.add(new SvgPolyline(pointArrayModified, x, y, "white", color));
+        this.add(
+            new SvgPolyline(
+                pointArrayModified,
+                xOffset,
+                yOffset,
+                "white",
+                color
+            )
+        );
 
         pointArrayModified.shift();
         pointArrayModified.pop();
         color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
 
-        this.add(new Barkify(x, y, branches));
+        this.add(new Barkify(xOffset, yOffset, branches));
 
         // Tree trunk
         this.add(
             new Stroke(
-                pointArrayModified.map(function (p: Point) {
-                    return new Point(p.x + x, p.y + y);
+                pointArrayModified.map((point: Point) => {
+                    return new Point(point.x + xOffset, point.y + yOffset);
                 }),
                 color,
                 color,

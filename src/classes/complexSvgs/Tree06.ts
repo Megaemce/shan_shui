@@ -13,20 +13,20 @@ import generateBranch from "../svgPolylines/generateBranch";
 export default class Tree06 extends ComplexSvg {
     /**
      * Generates a tree structure using fractal patterns.
-     * @param x - X-coordinate offset.
-     * @param y - Y-coordinate offset.
+     * @param xOffset - X-coordinate offset.
+     * @param yOffset - Y-coordinate offset.
      * @param height - Height of the tree.
      * @returns An array of polylines representing the tree structure.
      */
-    constructor(x: number, y: number, height: number = 100) {
+    constructor(xOffset: number, yOffset: number, height: number = 100) {
         super();
 
         const strokeWidth: number = 6;
         let color: string = "rgba(100,100,100,0.5)";
 
         const pointArray = this.generateFractalTree06(
-            x,
-            y,
+            xOffset,
+            yOffset,
             3,
             height,
             strokeWidth,
@@ -34,16 +34,18 @@ export default class Tree06 extends ComplexSvg {
             0
         );
 
-        this.add(new SvgPolyline(pointArray, x, y, "white", color, 0));
+        this.add(
+            new SvgPolyline(pointArray, xOffset, yOffset, "white", color, 0)
+        );
 
         pointArray.shift();
         pointArray.pop();
         color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
         this.add(
             new Stroke(
-                pointArray.map(function (v) {
-                    return new Point(v.x + x, v.y + y);
-                }),
+                pointArray.map(
+                    (point) => new Point(point.x + xOffset, point.y + yOffset)
+                ),
                 color,
                 color,
                 2.5,

@@ -8,14 +8,14 @@ import PRNG from "../PRNG";
 export default class Tree02 extends ComplexSvg {
     /**
      * Constructor for the Tree02 class.
-     * @param x - X-coordinate of the tree base.
-     * @param y - Y-coordinate of the tree base.
+     * @param xOffset - X-coordinate offset of the tree base.
+     * @param yOffset - Y-coordinate offset of the tree base.
      * @param color - Color of the tree.
      * @param clusters - Number of blob-like clusters.
      */
     constructor(
-        x: number,
-        y: number,
+        xOffset: number,
+        yOffset: number,
         color: string = "rgba(100,100,100,0.5)",
         clusters: number = 5
     ) {
@@ -32,8 +32,8 @@ export default class Tree02 extends ComplexSvg {
         for (let i = 0; i < clusters; i++) {
             this.add(
                 new Blob(
-                    x + PRNG.gaussianRandom() * clusters * 4,
-                    y + PRNG.gaussianRandom() * clusters * 4,
+                    xOffset + PRNG.gaussianRandom() * clusters * 4,
+                    yOffset + PRNG.gaussianRandom() * clusters * 4,
                     Math.PI / 2,
                     color,
                     PRNG.random(0.5, 1.25) * height,

@@ -11,15 +11,15 @@ import SvgPolyline from "../SvgPolyline";
 export default class Tree01 extends ComplexSvg {
     /**
      * Constructor for the TreeGenerator class.
-     * @param x - X-coordinate of the tree base.
-     * @param y - Y-coordinate of the tree base.
+     * @param xOffset - X-coordinate offset of the tree base.
+     * @param yOffset - Y-coordinate offset of the tree base.
      * @param height - Height of the tree.
      * @param strokeWidth - Width of the tree branches.
      * @param color - Color of the tree.
      */
     constructor(
-        x: number,
-        y: number,
+        xOffset: number,
+        yOffset: number,
         height: number = 50,
         strokeWidth: number = 3,
         color: string = "rgba(100,100,100,0.5)"
@@ -39,7 +39,7 @@ export default class Tree01 extends ComplexSvg {
         }
 
         for (let i = 0; i < resolution; i++) {
-            const newY = y - (i * height) / resolution;
+            const newY = yOffset - (i * height) / resolution;
 
             if (i >= resolution / 4) {
                 for (let j = 0; j < (resolution - i) / 5; j++) {
@@ -51,7 +51,7 @@ export default class Tree01 extends ComplexSvg {
 
                     this.add(
                         new Blob(
-                            x +
+                            xOffset +
                                 strokeWidth *
                                     PRNG.random(-0.6, 0.6) *
                                     (resolution - i),
@@ -65,13 +65,13 @@ export default class Tree01 extends ComplexSvg {
                 }
             }
             leftLines[i] = new Point(
-                x +
+                xOffset +
                     (Perlin.noise(i * 0.5) - 0.5) * strokeWidth -
                     strokeWidth / 2,
                 newY
             );
             rightLines[i] = new Point(
-                x +
+                xOffset +
                     (Perlin.noise(i * 0.5, 0.5) - 0.5) * strokeWidth +
                     strokeWidth / 2,
                 newY
