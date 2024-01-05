@@ -27,9 +27,9 @@ export default class Tree01 extends ComplexSvg {
     ) {
         super();
 
-        const reso = 10;
+        const resolution = 10;
         const noiseArray = [];
-        for (let i = 0; i < reso; i++) {
+        for (let i = 0; i < resolution; i++) {
             noiseArray.push([
                 Perlin.noise(i * 0.5),
                 Perlin.noise(i * 0.5, 0.5),
@@ -45,11 +45,11 @@ export default class Tree01 extends ComplexSvg {
 
         const line1 = [];
         const line2 = [];
-        for (let i = 0; i < reso; i++) {
+        for (let i = 0; i < resolution; i++) {
             const newX = x;
-            const newY = y - (i * height) / reso;
-            if (i >= reso / 4) {
-                for (let j = 0; j < (reso - i) / 5; j++) {
+            const newY = y - (i * height) / resolution;
+            if (i >= resolution / 4) {
+                for (let j = 0; j < (resolution - i) / 5; j++) {
                     const lcol = `rgba(${leafcol[0]},${leafcol[1]},${
                         leafcol[2]
                     },${(PRNG.random(0, 0.2) + parseFloat(leafcol[3])).toFixed(
@@ -60,11 +60,11 @@ export default class Tree01 extends ComplexSvg {
                             newX +
                                 strokeWidth *
                                     PRNG.random(-0.6, 0.6) *
-                                    (reso - i),
+                                    (resolution - i),
                             newY + PRNG.random(-0.5, 0.5) * strokeWidth,
                             (Math.PI / 6) * PRNG.random(-0.5, 0.5),
                             lcol,
-                            PRNG.random(10, 10 + 4 * (reso - i)),
+                            PRNG.random(10, 10 + 4 * (resolution - i)),
                             PRNG.random(3, 9)
                         )
                     );

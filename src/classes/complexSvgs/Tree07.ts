@@ -19,19 +19,19 @@ export default class Tree07 extends ComplexSvg {
     constructor(x: number, y: number, height: number = 60) {
         super();
 
-        const reso = 10;
+        const resolution = 10;
         const strokeWidth: number = 4;
-        const lines = new Array<Point>(reso * 2);
+        const lines = new Array<Point>(resolution * 2);
         const bendingAngle: (x: number) => number = (x: number) =>
             0.2 * Math.sqrt(x);
 
         let T: Point[][] = [];
 
-        for (let i = 0; i < reso; i++) {
-            const newX = x + bendingAngle(i / reso) * 100;
-            const newY = y - (i * height) / reso;
+        for (let i = 0; i < resolution; i++) {
+            const newX = x + bendingAngle(i / resolution) * 100;
+            const newY = y - (i * height) / resolution;
 
-            if (i >= reso / 4) {
+            if (i >= resolution / 4) {
                 for (let j = 0; j < 1; j++) {
                     const bfunc = function (x: number) {
                         return x <= 1
@@ -40,7 +40,9 @@ export default class Tree07 extends ComplexSvg {
                     };
                     const bpl = new Blob(
                         newX +
-                            PRNG.random(-0.3, 0.3) * strokeWidth * (reso - i),
+                            PRNG.random(-0.3, 0.3) *
+                                strokeWidth *
+                                (resolution - i),
                         newY + PRNG.random(-0.25, 0.25) * strokeWidth,
                         PRNG.random(0, -Math.PI / 6),
                         undefined,

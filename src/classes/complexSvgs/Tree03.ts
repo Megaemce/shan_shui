@@ -27,10 +27,10 @@ export default class Tree03 extends ComplexSvg {
         super();
 
         const strokeWidth: number = 5;
-        const reso = 10;
+        const resolution = 10;
         const noiseArray = [];
 
-        for (let i = 0; i < reso; i++) {
+        for (let i = 0; i < resolution; i++) {
             noiseArray.push([
                 Perlin.noise(i * 0.5),
                 Perlin.noise(i * 0.5, 0.5),
@@ -45,16 +45,16 @@ export default class Tree03 extends ComplexSvg {
         }
         const line1: Point[] = [];
         const line2: Point[] = [];
-        for (let i = 0; i < reso; i++) {
-            const newX = x + bendingAngle(i / reso) * 100;
-            const newY = y - (i * height) / reso;
-            if (i >= reso / 5) {
-                for (let j = 0; j < (reso - i) * 2; j++) {
+        for (let i = 0; i < resolution; i++) {
+            const newX = x + bendingAngle(i / resolution) * 100;
+            const newY = y - (i * height) / resolution;
+            if (i >= resolution / 5) {
+                for (let j = 0; j < (resolution - i) * 2; j++) {
                     const shape = (x: number) => Math.log(50 * x + 1) / 3.95;
                     const ox =
                         PRNG.random(0, 2) *
                         strokeWidth *
-                        shape((reso - i) / reso);
+                        shape((resolution - i) / resolution);
                     const lcol = `rgba(${leafcol[0]},${leafcol[1]},${
                         leafcol[2]
                     },${(PRNG.random(0, 0.2) + parseFloat(leafcol[3])).toFixed(
@@ -77,8 +77,8 @@ export default class Tree03 extends ComplexSvg {
                     newX +
                         (((noiseArray[i][0] - 0.5) * strokeWidth -
                             strokeWidth / 2) *
-                            (reso - i)) /
-                            reso,
+                            (resolution - i)) /
+                            resolution,
                     newY
                 )
             );
@@ -87,8 +87,8 @@ export default class Tree03 extends ComplexSvg {
                     newX +
                         (((noiseArray[i][1] - 0.5) * strokeWidth +
                             strokeWidth / 2) *
-                            (reso - i)) /
-                            reso,
+                            (resolution - i)) /
+                            resolution,
                     newY
                 )
             );

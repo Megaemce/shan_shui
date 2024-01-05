@@ -30,20 +30,20 @@ export default class Rock extends ComplexSvg {
         super();
 
         const textureCount = 40;
-        const reso = [10, 50];
+        const resolution = [10, 50];
         const pointArray: Point[][] = [];
 
-        for (let i = 0; i < reso[0]; i++) {
+        for (let i = 0; i < resolution[0]; i++) {
             pointArray.push([]);
 
             const noiseArray = [];
-            for (let j = 0; j < reso[1]; j++) {
+            for (let j = 0; j < resolution[1]; j++) {
                 noiseArray.push(Perlin.noise(i, j * 0.2, this.seed));
             }
             normalizeNoise(noiseArray);
 
-            for (let j = 0; j < reso[1]; j++) {
-                const a = (j / reso[1]) * Math.PI * 2 - Math.PI / 2;
+            for (let j = 0; j < resolution[1]; j++) {
+                const a = (j / resolution[1]) * Math.PI * 2 - Math.PI / 2;
                 let l =
                     (this.strokeWidth * this.height) /
                     Math.sqrt(
@@ -53,7 +53,7 @@ export default class Rock extends ComplexSvg {
 
                 l *= 0.7 + 0.3 * noiseArray[j];
 
-                const p = 1 - i / reso[0];
+                const p = 1 - i / resolution[0];
 
                 const newX = Math.cos(a) * l * p;
                 let newY = -Math.sin(a) * l * p;
@@ -62,7 +62,7 @@ export default class Rock extends ComplexSvg {
                     newY *= 0.2;
                 }
 
-                newY += this.height * (i / reso[0]) * 0.2;
+                newY += this.height * (i / resolution[0]) * 0.2;
 
                 pointArray[pointArray.length - 1].push(new Point(newX, newY));
             }
