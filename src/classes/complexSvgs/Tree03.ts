@@ -28,14 +28,7 @@ export default class Tree03 extends ComplexSvg {
 
         const strokeWidth: number = 5;
         const resolution = 10;
-        const noiseArray = [];
-
-        for (let i = 0; i < resolution; i++) {
-            noiseArray.push([
-                Perlin.noise(i * 0.5),
-                Perlin.noise(i * 0.5, 0.5),
-            ]);
-        }
+        const pointArray = new Array<Point>(resolution * 2);
 
         let leafcol;
         if (color.includes("rgba(")) {
@@ -43,11 +36,11 @@ export default class Tree03 extends ComplexSvg {
         } else {
             leafcol = ["100", "100", "100", "0.5"];
         }
-        const line1: Point[] = [];
-        const line2: Point[] = [];
+
         for (let i = 0; i < resolution; i++) {
             const newX = x + bendingAngle(i / resolution) * 100;
             const newY = y - (i * height) / resolution;
+
             if (i >= resolution / 5) {
                 for (let j = 0; j < (resolution - i) * 2; j++) {
                     const shape = (x: number) => Math.log(50 * x + 1) / 3.95;
@@ -72,28 +65,23 @@ export default class Tree03 extends ComplexSvg {
                     );
                 }
             }
-            line1.push(
-                new Point(
-                    newX +
-                        (((noiseArray[i][0] - 0.5) * strokeWidth -
-                            strokeWidth / 2) *
-                            (resolution - i)) /
-                            resolution,
-                    newY
-                )
+            pointArray[i] = new Point(
+                newX +
+                    (((Perlin.noise(i * 0.5) - 0.5) * strokeWidth -
+                        strokeWidth / 2) *
+                        (resolution - i)) /
+                        resolution,
+                newY
             );
-            line2.push(
-                new Point(
-                    newX +
-                        (((noiseArray[i][1] - 0.5) * strokeWidth +
-                            strokeWidth / 2) *
-                            (resolution - i)) /
-                            resolution,
-                    newY
-                )
+            pointArray[resolution * 2 - 1 - i] = new Point(
+                newX +
+                    (((Perlin.noise(i * 0.5, 0.5) - 0.5) * strokeWidth +
+                        strokeWidth / 2) *
+                        (resolution - i)) /
+                        resolution,
+                newY
             );
         }
-        const lc = line1.concat(line2.reverse());
-        this.add(new SvgPolyline(lc, 0, 0, "white", color, 1.5));
+        this.add(new SvgPolyline(pointArray, 0, 0, "white", color, 1.5));
     }
 }
