@@ -25,23 +25,27 @@ export default class Tree05 extends ComplexSvg {
 
         const _trlist = generateBranch(height, strokeWidth, -Math.PI / 2, 0);
         this.add(new Barkify(x, y, _trlist));
-        const trlist = _trlist[0].concat(_trlist[1].reverse());
+        const pointArray = _trlist[0].concat(_trlist[1].reverse());
 
-        let trmlist: Point[] = [];
+        let pointArrayModified: Point[] = [];
 
-        for (let i = 0; i < trlist.length; i++) {
-            const p = Math.abs(i - trlist.length * 0.5) / (trlist.length * 0.5);
+        for (let i = 0; i < pointArray.length; i++) {
+            const p =
+                Math.abs(i - pointArray.length * 0.5) /
+                (pointArray.length * 0.5);
             if (
-                (i >= trlist.length * 0.2 &&
-                    i <= trlist.length * 0.8 &&
+                (i >= pointArray.length * 0.2 &&
+                    i <= pointArray.length * 0.8 &&
                     i % 3 === 0 &&
                     PRNG.random() > p) ||
-                i === trlist.length / 2 - 1
+                i === pointArray.length / 2 - 1
             ) {
                 const bar = PRNG.random(0, 0.2);
                 const angle =
                     -bar * Math.PI -
-                    (1 - bar * 2) * Math.PI * (i > trlist.length / 2 ? 1 : 0);
+                    (1 - bar * 2) *
+                        Math.PI *
+                        (i > pointArray.length / 2 ? 1 : 0);
                 const _brlist = generateBranch(
                     height * (0.3 * p - PRNG.random(0, 0.05)),
                     strokeWidth * 0.5,
@@ -56,8 +60,8 @@ export default class Tree05 extends ComplexSvg {
                     if (j % 20 === 0 || j === _brlist[0].length - 1) {
                         this.add(
                             new Twig(
-                                _brlist[0][j].x + trlist[i].x + x,
-                                _brlist[0][j].y + trlist[i].y + y,
+                                _brlist[0][j].x + pointArray[i].x + x,
+                                _brlist[0][j].y + pointArray[i].y + y,
                                 0,
                                 angle > -Math.PI / 2 ? angle : angle + Math.PI,
                                 (0.2 * height) / 300,
@@ -69,26 +73,29 @@ export default class Tree05 extends ComplexSvg {
                     }
                 }
                 const brlist = _brlist[0].concat(_brlist[1].reverse());
-                trmlist = trmlist.concat(
+                pointArrayModified = pointArrayModified.concat(
                     brlist.map(function (p) {
-                        return new Point(p.x + trlist[i].x, p.y + trlist[i].y);
+                        return new Point(
+                            p.x + pointArray[i].x,
+                            p.y + pointArray[i].y
+                        );
                     })
                 );
             } else {
-                trmlist.push(trlist[i]);
+                pointArrayModified.push(pointArray[i]);
             }
         }
 
-        this.add(new SvgPolyline(trmlist, x, y, "white", color));
+        this.add(new SvgPolyline(pointArrayModified, x, y, "white", color));
 
-        trmlist.splice(0, 1);
-        trmlist.splice(trmlist.length - 1, 1);
+        pointArrayModified.splice(0, 1);
+        pointArrayModified.splice(pointArrayModified.length - 1, 1);
         color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
 
         // Tree trunk
         this.add(
             new Stroke(
-                trmlist.map(function (p: Point) {
+                pointArrayModified.map(function (p: Point) {
                     return new Point(p.x + x, p.y + y);
                 }),
                 color,

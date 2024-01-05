@@ -34,23 +34,23 @@ export default class Tree08 extends ComplexSvg {
             Math.PI * 0.2,
             height / 20
         );
-        const trlist = _trlist[0].concat(_trlist[1].reverse());
+        const pointArray = _trlist[0].concat(_trlist[1].reverse());
 
         // Iterate over each point in the trunk
-        for (let i = 0; i < trlist.length; i++) {
+        for (let i = 0; i < pointArray.length; i++) {
             // Randomly generate branches
             if (PRNG.random() < 0.2) {
                 this.generateFractalTree(
-                    x + trlist[i].x,
-                    y + trlist[i].y,
+                    x + pointArray[i].x,
+                    y + pointArray[i].y,
                     Math.floor(PRNG.random(0, 4)),
                     -Math.PI / 2 + PRNG.random(-angle, 0)
                 );
-            } else if (i === Math.floor(trlist.length / 2)) {
+            } else if (i === Math.floor(pointArray.length / 2)) {
                 // Generate a specific branch at the middle of the trunk
                 this.generateFractalTree(
-                    x + trlist[i].x,
-                    y + trlist[i].y,
+                    x + pointArray[i].x,
+                    y + pointArray[i].y,
                     3,
                     -Math.PI / 2 + angle
                 );
@@ -58,13 +58,13 @@ export default class Tree08 extends ComplexSvg {
         }
 
         // Add the main trunk to the polyline array
-        this.add(new SvgPolyline(trlist, x, y, "white", color));
+        this.add(new SvgPolyline(pointArray, x, y, "white", color));
 
         // Add a colored stroke to the main trunk
         color = `rgba(100,100,100,${PRNG.random(0.6, 0.7).toFixed(3)})`;
         this.add(
             new Stroke(
-                trlist.map(function (v) {
+                pointArray.map(function (v) {
                     return new Point(v.x + x, v.y + y);
                 }),
                 color,
@@ -110,25 +110,28 @@ export default class Tree08 extends ComplexSvg {
             (x: number) => -Math.sin(x * Math.PI),
         ]);
 
-        const trmlist = lineDivider(_trmlist, 10);
+        const pointArrayModified = lineDivider(_trmlist, 10);
 
-        for (let i = 0; i < trmlist.length; i++) {
-            trmlist[i].y += bfun(i / trmlist.length) * 2;
+        for (let i = 0; i < pointArrayModified.length; i++) {
+            pointArrayModified[i].y += bfun(i / pointArrayModified.length) * 2;
         }
 
-        for (let i = 0; i < trmlist.length; i++) {
-            const d = distance(trmlist[i], new Point(xOffset, yOffset));
-            const a = Math.atan2(
-                trmlist[i].y - yOffset,
-                trmlist[i].x - xOffset
+        for (let i = 0; i < pointArrayModified.length; i++) {
+            const d = distance(
+                pointArrayModified[i],
+                new Point(xOffset, yOffset)
             );
-            trmlist[i].x = xOffset + d * Math.cos(a + angle);
-            trmlist[i].y = yOffset + d * Math.sin(a + angle);
+            const a = Math.atan2(
+                pointArrayModified[i].y - yOffset,
+                pointArrayModified[i].x - xOffset
+            );
+            pointArrayModified[i].x = xOffset + d * Math.cos(a + angle);
+            pointArrayModified[i].y = yOffset + d * Math.sin(a + angle);
         }
 
         this.add(
             new Stroke(
-                trmlist,
+                pointArrayModified,
                 "rgba(100,100,100,0.5)",
                 "rgba(100,100,100,0.5)",
                 0.8,

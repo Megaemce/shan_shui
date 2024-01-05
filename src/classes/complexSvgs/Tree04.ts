@@ -25,31 +25,32 @@ export default class Tree04 extends ComplexSvg {
 
         const _trlist = generateBranch(height, strokeWidth, -Math.PI / 2);
         this.add(new Barkify(x, y, _trlist));
-        const trlist: Point[] = _trlist[0].concat(_trlist[1].reverse());
+        const pointArray: Point[] = _trlist[0].concat(_trlist[1].reverse());
 
-        let trmlist: Point[] = [];
+        let pointArrayModified: Point[] = [];
 
-        for (let i = 0; i < trlist.length; i++) {
+        pointArray.forEach((tr, i) => {
             if (
-                (i >= trlist.length * 0.3 &&
-                    i <= trlist.length * 0.7 &&
+                (i >= pointArray.length * 0.3 &&
+                    i <= pointArray.length * 0.7 &&
                     PRNG.random() < 0.1) ||
-                i === trlist.length / 2 - 1
+                i === pointArray.length / 2 - 1
             ) {
                 const angle =
                     Math.PI * 0.2 -
-                    Math.PI * 1.4 * (i > trlist.length / 2 ? 1 : 0);
-                const _brlist: Point[][] = generateBranch(
-                    height * PRNG.random(0.3, 0.6),
-                    strokeWidth * 0.5,
+                    Math.PI * 1.4 * (i > pointArray.length / 2 ? 1 : 0);
+                const heightFactor = PRNG.random(0.3, 0.6);
+                const strokeWidthFactor = 0.5;
+                const _brlist = generateBranch(
+                    height * heightFactor,
+                    strokeWidth * strokeWidthFactor,
                     angle
                 );
 
-                _brlist[0].splice(0, 1);
-                _brlist[1].splice(0, 1);
-                const foff = function (p: Point) {
-                    return new Point(p.x + trlist[i].x, p.y + trlist[i].y);
-                };
+                _brlist[0].shift();
+                _brlist[1].shift();
+
+                const foff = (p: Point) => new Point(p.x + tr.x, p.y + tr.y);
 
                 this.add(
                     new Barkify(x, y, [
@@ -58,41 +59,46 @@ export default class Tree04 extends ComplexSvg {
                     ])
                 );
 
-                for (let j = 0; j < _brlist[0].length; j++) {
+                _brlist[0].forEach((p, j) => {
                     if (PRNG.random() < 0.2 || j === _brlist[0].length - 1) {
+                        const twigAngle =
+                            angle > -Math.PI / 2 ? angle : angle + Math.PI;
+                        const twigDirection = angle > -Math.PI / 2 ? 1 : -1;
+                        const twigHeight = (0.5 * height) / 300;
+                        const twigWidth = height / 300;
+
                         this.add(
                             new Twig(
-                                _brlist[0][j].x + trlist[i].x + x,
-                                _brlist[0][j].y + trlist[i].y + y,
+                                p.x + tr.x + x,
+                                p.y + tr.y + y,
                                 1,
-                                angle > -Math.PI / 2 ? angle : angle + Math.PI,
-                                (0.5 * height) / 300,
-                                angle > -Math.PI / 2 ? 1 : -1,
-                                height / 300
+                                twigAngle,
+                                twigHeight,
+                                twigDirection,
+                                twigWidth
                             )
                         );
                     }
-                }
+                });
+
                 const brlist = _brlist[0].concat(_brlist[1].reverse());
-                trmlist = trmlist.concat(
-                    brlist.map(function (p: Point) {
-                        return new Point(p.x + trlist[i].x, p.y + trlist[i].y);
-                    })
+                pointArrayModified = pointArrayModified.concat(
+                    brlist.map((p) => new Point(p.x + tr.x, p.y + tr.y))
                 );
             } else {
-                trmlist.push(trlist[i]);
+                pointArrayModified.push(tr);
             }
-        }
+        });
 
-        this.add(new SvgPolyline(trmlist, x, y, "white", color));
+        this.add(new SvgPolyline(pointArrayModified, x, y, "white", color));
 
-        trmlist.splice(0, 1);
-        trmlist.splice(trmlist.length - 1, 1);
+        pointArrayModified.splice(0, 1);
+        pointArrayModified.splice(pointArrayModified.length - 1, 1);
         color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
 
         this.add(
             new Stroke(
-                trmlist.map(function (p: Point) {
+                pointArrayModified.map(function (p: Point) {
                     return new Point(p.x + x, p.y + y);
                 }),
                 color,

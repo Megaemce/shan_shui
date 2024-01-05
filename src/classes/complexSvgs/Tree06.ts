@@ -24,7 +24,7 @@ export default class Tree06 extends ComplexSvg {
         const strokeWidth: number = 6;
         let color: string = "rgba(100,100,100,0.5)";
 
-        const trmlist = this.generateFractalTree06(
+        const pointArrayModified = this.generateFractalTree06(
             x,
             y,
             3,
@@ -34,14 +34,14 @@ export default class Tree06 extends ComplexSvg {
             0
         );
 
-        this.add(new SvgPolyline(trmlist, x, y, "white", color, 0));
+        this.add(new SvgPolyline(pointArrayModified, x, y, "white", color, 0));
 
-        trmlist.splice(0, 1);
-        trmlist.splice(trmlist.length - 1, 1);
+        pointArrayModified.splice(0, 1);
+        pointArrayModified.splice(pointArrayModified.length - 1, 1);
         color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
         this.add(
             new Stroke(
-                trmlist.map(function (v) {
+                pointArrayModified.map(function (v) {
                     return new Point(v.x + x, v.y + y);
                 }),
                 color,
