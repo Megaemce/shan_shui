@@ -27,14 +27,14 @@ export default class Tree08 extends ComplexSvg {
         const angle = PRNG.normalizedRandom(-1, 1) * Math.PI * 0.2;
 
         // Generate the main trunk of the tree
-        const _trlist = generateBranch(
+        const [leftBranches, rightBranches] = generateBranch(
             height,
             strokeWidth,
             -Math.PI / 2 + angle,
             Math.PI * 0.2,
             height / 20
         );
-        const pointArray = _trlist[0].concat(_trlist[1].reverse());
+        const pointArray = leftBranches.concat(rightBranches.reverse());
 
         // Iterate over each point in the trunk
         for (let i = 0; i < pointArray.length; i++) {
@@ -112,22 +112,15 @@ export default class Tree08 extends ComplexSvg {
 
         const pointArrayModified = lineDivider(_trmlist, 10);
 
-        for (let i = 0; i < pointArrayModified.length; i++) {
-            pointArrayModified[i].y += bfun(i / pointArrayModified.length) * 2;
-        }
+        pointArrayModified.forEach((point, i) => {
+            point.y += bfun(i / pointArrayModified.length) * 2;
 
-        for (let i = 0; i < pointArrayModified.length; i++) {
-            const d = distance(
-                pointArrayModified[i],
-                new Point(xOffset, yOffset)
-            );
-            const a = Math.atan2(
-                pointArrayModified[i].y - yOffset,
-                pointArrayModified[i].x - xOffset
-            );
-            pointArrayModified[i].x = xOffset + d * Math.cos(a + angle);
-            pointArrayModified[i].y = yOffset + d * Math.sin(a + angle);
-        }
+            const d = distance(point, new Point(xOffset, yOffset));
+            const a = Math.atan2(point.y - yOffset, point.x - xOffset);
+
+            point.x = xOffset + d * Math.cos(a + angle);
+            point.y = yOffset + d * Math.sin(a + angle);
+        });
 
         this.add(
             new Stroke(
