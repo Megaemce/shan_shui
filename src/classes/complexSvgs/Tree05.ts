@@ -39,13 +39,13 @@ export default class Tree05 extends ComplexSvg {
                 i === trlist.length / 2 - 1
             ) {
                 const bar = PRNG.random(0, 0.2);
-                const ba =
+                const angle =
                     -bar * Math.PI -
                     (1 - bar * 2) * Math.PI * (i > trlist.length / 2 ? 1 : 0);
                 const _brlist = generateBranch(
                     height * (0.3 * p - PRNG.random(0, 0.05)),
                     strokeWidth * 0.5,
-                    ba,
+                    angle,
                     0.5
                 );
 
@@ -59,9 +59,9 @@ export default class Tree05 extends ComplexSvg {
                                 _brlist[0][j].x + trlist[i].x + x,
                                 _brlist[0][j].y + trlist[i].y + y,
                                 0,
-                                ba > -Math.PI / 2 ? ba : ba + Math.PI,
+                                angle > -Math.PI / 2 ? angle : angle + Math.PI,
                                 (0.2 * height) / 300,
-                                ba > -Math.PI / 2 ? 1 : -1,
+                                angle > -Math.PI / 2 ? 1 : -1,
                                 height / 300,
                                 5
                             )

@@ -36,13 +36,13 @@ export default class Tree04 extends ComplexSvg {
                     PRNG.random() < 0.1) ||
                 i === trlist.length / 2 - 1
             ) {
-                const ba =
+                const angle =
                     Math.PI * 0.2 -
                     Math.PI * 1.4 * (i > trlist.length / 2 ? 1 : 0);
                 const _brlist: Point[][] = generateBranch(
                     height * PRNG.random(0.3, 0.6),
                     strokeWidth * 0.5,
-                    ba
+                    angle
                 );
 
                 _brlist[0].splice(0, 1);
@@ -65,9 +65,9 @@ export default class Tree04 extends ComplexSvg {
                                 _brlist[0][j].x + trlist[i].x + x,
                                 _brlist[0][j].y + trlist[i].y + y,
                                 1,
-                                ba > -Math.PI / 2 ? ba : ba + Math.PI,
+                                angle > -Math.PI / 2 ? angle : angle + Math.PI,
                                 (0.5 * height) / 300,
-                                ba > -Math.PI / 2 ? 1 : -1,
+                                angle > -Math.PI / 2 ? 1 : -1,
                                 height / 300
                             )
                         );
