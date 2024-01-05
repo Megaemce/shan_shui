@@ -8,7 +8,6 @@ import PRNG from "../PRNG";
 export default class Tree02 extends ComplexSvg {
     /**
      * Constructor for the Tree02 class.
-     * @param prng - The pseudo-random number generator.
      * @param x - X-coordinate of the tree base.
      * @param y - Y-coordinate of the tree base.
      * @param color - Color of the tree.

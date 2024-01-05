@@ -11,7 +11,6 @@ import { midPoint, triangulate } from "../../utils/polytools";
 export default class Tree07 extends ComplexSvg {
     /**
      * Generates a tree structure with a specific pattern.
-     * @param prng - The pseudo-random number generator.
      * @param x - X-coordinate offset.
      * @param y - Y-coordinate offset.
      * @param height - Height of the tree.

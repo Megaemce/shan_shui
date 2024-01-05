@@ -124,7 +124,6 @@ export default class ChunkCache {
 
     /**
      * Downloads the terrain SVG based on the given parameters.
-     * @param prng - The pseudo-random number generator.
      * @param seed - The seed for the terrain generation.
      * @param range - The range for which to generate the SVG.
      * @param windowHeight - The height of the SVG.

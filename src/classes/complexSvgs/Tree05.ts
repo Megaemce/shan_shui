@@ -13,7 +13,6 @@ import generateBranch from "../svgPolylines/generateBranch";
 export default class Tree05 extends ComplexSvg {
     /**
      * Constructor for the Tree05Generator class.
-     * @param prng - The pseudo-random number generator.
      * @param x - X-coordinate offset.
      * @param y - Y-coordinate offset.
      * @param height - The height of the tree.

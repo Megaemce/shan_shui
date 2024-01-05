@@ -11,7 +11,6 @@ import SvgPolyline from "../SvgPolyline";
 export default class Tree01 extends ComplexSvg {
     /**
      * Constructor for the TreeGenerator class.
-     * @param prng - The pseudo-random number generator.
      * @param x - X-coordinate of the tree base.
      * @param y - Y-coordinate of the tree base.
      * @param height - Height of the tree.

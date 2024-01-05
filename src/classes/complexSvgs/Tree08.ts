@@ -13,7 +13,6 @@ import { lineDivider } from "../../utils/polytools";
 export default class Tree08 extends ComplexSvg {
     /**
      * Constructor for the Tree08 class.
-     * @param prng - The pseudo-random number generator.
      * @param x - X-coordinate of the base point.
      * @param y - Y-coordinate of the base point.
      * @param height - Height of the tree.
@@ -80,7 +79,6 @@ export default class Tree08 extends ComplexSvg {
 
     /**
      * Recursive function to generate a fractal tree-like structure.
-     * @param prng - The pseudo-random number generator.
      * @param xOffset - X-coordinate offset.
      * @param yOffset - Y-coordinate offset.
      * @param depth - Current depth of recursion.

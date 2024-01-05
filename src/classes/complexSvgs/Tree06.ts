@@ -13,7 +13,6 @@ import generateBranch from "../svgPolylines/generateBranch";
 export default class Tree06 extends ComplexSvg {
     /**
      * Generates a tree structure using fractal patterns.
-     * @param prng - The pseudo-random number generator.
      * @param x - X-coordinate offset.
      * @param y - Y-coordinate offset.
      * @param height - Height of the tree.
@@ -57,7 +56,6 @@ export default class Tree06 extends ComplexSvg {
 
     /**
      * Recursive function to generate a fractal tree-like structure.
-     * @param prng - The pseudo-random number generator.
      * @param txpolylinelists - Lists to store trunk and bark polylines.
      * @param twpolylinelists - Lists to store twig polylines.
      * @param xOffset - X-coordinate offset.
