@@ -10,7 +10,14 @@ import Tree06 from "./Tree06";
 import Tree07 from "./Tree07";
 import Tree08 from "./Tree08";
 
-export default class FlatDecoration extends ComplexSvg {
+export default class FlatMountainDecoration extends ComplexSvg {
+    /**
+     * Constructs a flat decoration.
+     *
+     * @param {number} xOffset - The x offset.
+     * @param {number} yOffset - The y offset.
+     * @param {Bound} bounding - The bounding object.
+     */
     constructor(xOffset: number, yOffset: number, bounding: Bound) {
         super();
 

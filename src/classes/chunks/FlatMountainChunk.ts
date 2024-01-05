@@ -1,5 +1,5 @@
 import Chunk from "../Chunk";
-import FlatDecoration from "../complexSvgs/FlatDecoration";
+import FlatMountainDecoration from "../complexSvgs/FlatMountainDecoration";
 import PRNG from "../PRNG";
 import Perlin from "../Perlin";
 import Point from "../Point";
@@ -200,7 +200,11 @@ export default class FlatMountainChunk extends Chunk {
         );
 
         this.add(
-            new FlatDecoration(xOffset, yOffset, calculateBoundingBox(grlist))
+            new FlatMountainDecoration(
+                xOffset,
+                yOffset,
+                calculateBoundingBox(grlist)
+            )
         );
     }
 }
