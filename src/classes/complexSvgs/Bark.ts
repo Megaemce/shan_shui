@@ -24,37 +24,33 @@ export default class Bark extends ComplexSvg {
                 ? Math.pow(Math.sin(x * Math.PI), 0.5)
                 : -Math.pow(Math.sin((x + 1) * Math.PI), 0.5);
         };
-        const barkArray: Point[] = [];
-        const lengthAngleArray: Array<[number, number]> = [];
         const n0 = PRNG.random() * 10;
         const width = PRNG.random(10, 20);
         const noise = 0.5;
-        const reso = 20;
+        const resolution = 20;
+        const lengthAngleArray = Array<[number, number]>(resolution + 1);
 
-        let noiseArray: number[] = [];
+        let noiseArray = Array<number>(resolution + 1);
 
-        for (let i = 0; i < reso + 1; i++) {
-            const p = (i / reso) * 2;
+        for (let i = 0; i <= resolution; i++) {
+            const p = (i / resolution) * 2;
             const xo = width / 2 - Math.abs(p - 1) * width;
             const yo = (fun(p) * strokeWidth) / 2;
             const a = Math.atan2(yo, xo);
             const l = Math.sqrt(xo * xo + yo * yo);
 
-            lengthAngleArray.push([l, a]);
-        }
-
-        for (let i = 0; i < reso + 1; i++) {
-            noiseArray.push(Perlin.noise(i * 0.05, n0));
+            lengthAngleArray[i] = [l, a];
+            noiseArray[i] = Perlin.noise(i * 0.05, n0);
         }
 
         noiseArray = normalizeNoise(noiseArray);
 
-        lengthAngleArray.forEach(([l, a], i) => {
+        const barkArray = lengthAngleArray.map(([l, a], i) => {
             const localNoise = noiseArray[i] * noise + (1 - noise);
             const newX = x + Math.cos(a + angle) * l * localNoise;
             const newY = y + Math.sin(a + angle) * l * localNoise;
 
-            barkArray.push(new Point(newX, newY));
+            return new Point(newX, newY);
         });
 
         this.add(
