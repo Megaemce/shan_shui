@@ -27,26 +27,20 @@ export default class Tree01 extends ComplexSvg {
         super();
 
         const resolution = 10;
-        const noiseArray = [];
-        for (let i = 0; i < resolution; i++) {
-            noiseArray.push([
-                Perlin.noise(i * 0.5),
-                Perlin.noise(i * 0.5, 0.5),
-            ]);
-        }
+        const leftLines = new Array<Point>(resolution);
+        const rightLines = new Array<Point>(resolution);
 
         let leafcol;
+
         if (color.includes("rgba(")) {
             leafcol = color.replace("rgba(", "").replace(")", "").split(",");
         } else {
             leafcol = ["100", "100", "100", "0.5"];
         }
 
-        const line1 = [];
-        const line2 = [];
         for (let i = 0; i < resolution; i++) {
-            const newX = x;
             const newY = y - (i * height) / resolution;
+
             if (i >= resolution / 4) {
                 for (let j = 0; j < (resolution - i) / 5; j++) {
                     const lcol = `rgba(${leafcol[0]},${leafcol[1]},${
@@ -54,9 +48,10 @@ export default class Tree01 extends ComplexSvg {
                     },${(PRNG.random(0, 0.2) + parseFloat(leafcol[3])).toFixed(
                         1
                     )})`;
+
                     this.add(
                         new Blob(
-                            newX +
+                            x +
                                 strokeWidth *
                                     PRNG.random(-0.6, 0.6) *
                                     (resolution - i),
@@ -69,25 +64,21 @@ export default class Tree01 extends ComplexSvg {
                     );
                 }
             }
-            line1.push(
-                new Point(
-                    newX +
-                        (noiseArray[i][0] - 0.5) * strokeWidth -
-                        strokeWidth / 2,
-                    newY
-                )
+            leftLines[i] = new Point(
+                x +
+                    (Perlin.noise(i * 0.5) - 0.5) * strokeWidth -
+                    strokeWidth / 2,
+                newY
             );
-            line2.push(
-                new Point(
-                    newX +
-                        (noiseArray[i][1] - 0.5) * strokeWidth +
-                        strokeWidth / 2,
-                    newY
-                )
+            rightLines[i] = new Point(
+                x +
+                    (Perlin.noise(i * 0.5, 0.5) - 0.5) * strokeWidth +
+                    strokeWidth / 2,
+                newY
             );
         }
 
-        this.add(new SvgPolyline(line1, 0, 0, "none", color, 1.5));
-        this.add(new SvgPolyline(line2, 0, 0, "none", color, 1.5));
+        this.add(new SvgPolyline(leftLines, 0, 0, "none", color, 1.5));
+        this.add(new SvgPolyline(rightLines, 0, 0, "none", color, 1.5));
     }
 }
