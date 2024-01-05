@@ -43,31 +43,39 @@ export const flipPolyline = function (
     pointArray: Point[],
     horizontalFlip: boolean
 ): Point[] {
-    return pointArray.map(function (v) {
-        return horizontalFlip ? new Point(-v.x, v.y) : v;
-    });
+    return pointArray.map((point) =>
+        horizontalFlip ? new Point(-point.x, point.y) : point
+    );
 };
 
 /**
- * Transforms a polygon defined by a point array using a line segment.
+ * Transforming array of points by rotating them around a line defined
+ * by p0 and p1 and scaling them based on the distance between p0 and p1.
+ * The resulting transformed points are returned as a new array.
+ *
  * @param {Point} p0 - The starting point of the line segment.
  * @param {Point} p1 - The ending point of the line segment.
  * @param {Point[]} pointArray - The array of points defining the polygon.
  * @returns {Point[]} The transformed polygon.
  */
-export function transformPolyline(
+export function transformPointsAlongLine(
     p0: Point,
     p1: Point,
     pointArray: Point[]
 ): Point[] {
-    const array = pointArray.map(function (v) {
-        return new Point(-v.x, v.y);
-    });
+    /**
+     * Calculates the angle between the line formed by p0 and p1 and the x-axis,
+     * then subtracts π/2 from it. This effectively rotates the angle 90 degrees counterclockwise.
+     */
     const ang = Math.atan2(p1.y - p0.y, p1.x - p0.x) - Math.PI / 2;
     const scl = distance(p0, p1);
-    const qlist = array.map(function (v) {
-        const d = distance(v, new Point(0, 0));
-        const a = Math.atan2(v.y, v.x);
+    /**
+     * Applies the transformation to each point in the pointArray based on the calculated angle and distance
+     */
+    const qlist = pointArray.map((point) => {
+        point.x *= -1;
+        const d = distance(point, new Point(0, 0));
+        const a = Math.atan2(point.y, point.x);
         return new Point(
             p0.x + d * scl * Math.cos(ang + a),
             p0.y + d * scl * Math.sin(ang + a)

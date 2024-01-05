@@ -3,7 +3,7 @@ import PRNG from "../PRNG";
 import Perlin from "../Perlin";
 import Point from "../Point";
 import SvgPolyline from "../SvgPolyline";
-import { transformPolyline, flipPolyline } from "../../utils/polytools";
+import { transformPointsAlongLine, flipPolyline } from "../../utils/polytools";
 
 /**
  * Class representing a hat (version 01) using procedural generation.
@@ -26,7 +26,7 @@ export default class Hat01 extends ComplexSvg {
             new Point(-0.55, 1),
             new Point(-0.65, 0.5),
         ];
-        const hatShape = transformPolyline(
+        const hatShape = transformPointsAlongLine(
             p0,
             p1,
             flipPolyline(shapePoint, horizontalFlip)
@@ -45,7 +45,7 @@ export default class Hat01 extends ComplexSvg {
             );
         }
 
-        const noiseShape = transformPolyline(
+        const noiseShape = transformPointsAlongLine(
             p0,
             p1,
             flipPolyline(qlist1, horizontalFlip)

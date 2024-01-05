@@ -3,7 +3,7 @@ import PRNG from "../PRNG";
 import Perlin from "../Perlin";
 import Point from "../Point";
 import SvgPolyline from "../SvgPolyline";
-import { transformPolyline, flipPolyline } from "../../utils/polytools";
+import { transformPointsAlongLine, flipPolyline } from "../../utils/polytools";
 
 /**
  * Class for generating stick SVG polylines.
@@ -34,7 +34,11 @@ export default class Stick extends ComplexSvg {
 
         this.add(
             new SvgPolyline(
-                transformPolyline(p0, p1, flipPolyline(qlist1, horizontalFlip)),
+                transformPointsAlongLine(
+                    p0,
+                    p1,
+                    flipPolyline(qlist1, horizontalFlip)
+                ),
                 0,
                 0,
                 "rgba(0,0,0,0)",
