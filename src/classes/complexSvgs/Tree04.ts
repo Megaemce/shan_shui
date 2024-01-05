@@ -23,13 +23,14 @@ export default class Tree04 extends ComplexSvg {
         const strokeWidth: number = 6;
         let color: string = "rgba(100,100,100,0.5)";
 
-        const _trlist = generateBranch(height, strokeWidth, -Math.PI / 2);
-        this.add(new Barkify(x, y, _trlist));
-        const pointArray: Point[] = _trlist[0].concat(_trlist[1].reverse());
+        const branches = generateBranch(height, strokeWidth, -Math.PI / 2);
+        const pointArray: Point[] = [...branches[0]].concat(
+            [...branches[1]].reverse()
+        );
 
         let pointArrayModified: Point[] = [];
 
-        pointArray.forEach((tr, i) => {
+        pointArray.forEach((point, i) => {
             if (
                 (i >= pointArray.length * 0.3 &&
                     i <= pointArray.length * 0.7 &&
@@ -41,26 +42,27 @@ export default class Tree04 extends ComplexSvg {
                     Math.PI * 1.4 * (i > pointArray.length / 2 ? 1 : 0);
                 const heightFactor = PRNG.random(0.3, 0.6);
                 const strokeWidthFactor = 0.5;
-                const _brlist = generateBranch(
+                const [leftBranches, rightBranches] = generateBranch(
                     height * heightFactor,
                     strokeWidth * strokeWidthFactor,
                     angle
                 );
 
-                _brlist[0].shift();
-                _brlist[1].shift();
+                leftBranches.shift();
+                rightBranches.shift();
 
-                const foff = (p: Point) => new Point(p.x + tr.x, p.y + tr.y);
+                const offset = (p: Point) =>
+                    new Point(p.x + point.x, p.y + point.y);
 
                 this.add(
                     new Barkify(x, y, [
-                        _brlist[0].map(foff),
-                        _brlist[1].map(foff),
+                        leftBranches.map(offset),
+                        rightBranches.map(offset),
                     ])
                 );
 
-                _brlist[0].forEach((p, j) => {
-                    if (PRNG.random() < 0.2 || j === _brlist[0].length - 1) {
+                leftBranches.forEach((p, j) => {
+                    if (PRNG.random() < 0.2 || j === leftBranches.length - 1) {
                         const twigAngle =
                             angle > -Math.PI / 2 ? angle : angle + Math.PI;
                         const twigDirection = angle > -Math.PI / 2 ? 1 : -1;
@@ -69,8 +71,8 @@ export default class Tree04 extends ComplexSvg {
 
                         this.add(
                             new Twig(
-                                p.x + tr.x + x,
-                                p.y + tr.y + y,
+                                p.x + point.x + x,
+                                p.y + point.y + y,
                                 1,
                                 twigAngle,
                                 twigHeight,
@@ -81,20 +83,22 @@ export default class Tree04 extends ComplexSvg {
                     }
                 });
 
-                const brlist = _brlist[0].concat(_brlist[1].reverse());
+                const brlist = leftBranches.concat(rightBranches.reverse());
                 pointArrayModified = pointArrayModified.concat(
-                    brlist.map((p) => new Point(p.x + tr.x, p.y + tr.y))
+                    brlist.map((p) => new Point(p.x + point.x, p.y + point.y))
                 );
             } else {
-                pointArrayModified.push(tr);
+                pointArrayModified.push(point);
             }
         });
 
         this.add(new SvgPolyline(pointArrayModified, x, y, "white", color));
 
-        pointArrayModified.splice(0, 1);
-        pointArrayModified.splice(pointArrayModified.length - 1, 1);
+        pointArrayModified.shift();
+        pointArrayModified.pop();
         color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
+
+        this.add(new Barkify(x, y, branches));
 
         this.add(
             new Stroke(

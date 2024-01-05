@@ -24,7 +24,7 @@ export default class Tree06 extends ComplexSvg {
         const strokeWidth: number = 6;
         let color: string = "rgba(100,100,100,0.5)";
 
-        const pointArrayModified = this.generateFractalTree06(
+        const pointArray = this.generateFractalTree06(
             x,
             y,
             3,
@@ -34,14 +34,14 @@ export default class Tree06 extends ComplexSvg {
             0
         );
 
-        this.add(new SvgPolyline(pointArrayModified, x, y, "white", color, 0));
+        this.add(new SvgPolyline(pointArray, x, y, "white", color, 0));
 
-        pointArrayModified.splice(0, 1);
-        pointArrayModified.splice(pointArrayModified.length - 1, 1);
+        pointArray.shift();
+        pointArray.pop();
         color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
         this.add(
             new Stroke(
-                pointArrayModified.map(function (v) {
+                pointArray.map(function (v) {
                     return new Point(v.x + x, v.y + y);
                 }),
                 color,
@@ -56,8 +56,6 @@ export default class Tree06 extends ComplexSvg {
 
     /**
      * Recursive function to generate a fractal tree-like structure.
-     * @param txpolylinelists - Lists to store trunk and bark polylines.
-     * @param twpolylinelists - Lists to store twig polylines.
      * @param xOffset - X-coordinate offset.
      * @param yOffset - Y-coordinate offset.
      * @param depth - Current depth of recursion.

@@ -23,9 +23,8 @@ export default class Tree05 extends ComplexSvg {
         const strokeWidth: number = 5;
         let color: string = "rgba(100,100,100,0.5)";
 
-        const _trlist = generateBranch(height, strokeWidth, -Math.PI / 2, 0);
-        this.add(new Barkify(x, y, _trlist));
-        const pointArray = _trlist[0].concat(_trlist[1].reverse());
+        const branches = generateBranch(height, strokeWidth, -Math.PI / 2, 0);
+        const pointArray = [...branches[0]].concat([...branches[1]].reverse());
 
         let pointArrayModified: Point[] = [];
 
@@ -53,8 +52,8 @@ export default class Tree05 extends ComplexSvg {
                     0.5
                 );
 
-                _brlist[0].splice(0, 1);
-                _brlist[1].splice(0, 1);
+                _brlist[0].shift();
+                _brlist[1].shift();
 
                 for (let j = 0; j < _brlist[0].length; j++) {
                     if (j % 20 === 0 || j === _brlist[0].length - 1) {
@@ -88,9 +87,11 @@ export default class Tree05 extends ComplexSvg {
 
         this.add(new SvgPolyline(pointArrayModified, x, y, "white", color));
 
-        pointArrayModified.splice(0, 1);
-        pointArrayModified.splice(pointArrayModified.length - 1, 1);
+        pointArrayModified.shift();
+        pointArrayModified.pop();
         color = `rgba(100,100,100,${PRNG.random(0.4, 0.5).toFixed(3)})`;
+
+        this.add(new Barkify(x, y, branches));
 
         // Tree trunk
         this.add(
