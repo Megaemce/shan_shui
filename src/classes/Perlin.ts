@@ -19,7 +19,6 @@ export default class Perlin {
 
     /**
      * Generates Perlin noise at a given point.
-     * @param prng - The pseudorandom number generator.
      * @param x - The x-coordinate.
      * @param y - The y-coordinate.
      * @param z - The z-coordinate.
