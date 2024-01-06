@@ -183,7 +183,7 @@ export default class ChunkCache {
                             .filter(
                                 (chunks) => chunks.x >= left && chunks.x < right
                             )
-                            .map((chunk) => chunk.render())
+                            .map((chunk) => chunk.stringify())
                             .join("\n")
                     )} 
                 </g>

@@ -40,7 +40,7 @@ export default class ComplexSvg implements IComplexSvg {
      *
      * @returns {string} The SVG string.
      */
-    render(): string {
-        return this.elements.map((element) => element.render()).join("\n");
+    stringify(): string {
+        return this.elements.map((element) => element.stringify).join("\n");
     }
 }

@@ -9,9 +9,9 @@ const DEFAULTSTROKEWIDTH = config.svgPolyline.defaultStrokeWidth;
  * Represents a polyline in SVG.
  */
 export default class SvgPolyline {
-    style: string = "";
+    /** String representation of the polyline. */
+    stringify: string = "";
     /** Array of points defining the polyline. */
-    points: Point[];
 
     /**
      * Initializes a new instance of the SvgPolyline class.
@@ -30,15 +30,22 @@ export default class SvgPolyline {
         strokeColor: string = DEFAULTSTROKECOLOR,
         strokeWidth: number = DEFAULTSTROKEWIDTH
     ) {
-        if (xOffset === 0 && yOffset === 0) {
-            this.points = pointArray;
-        } else {
-            this.points = pointArray.map(
-                (point) => new Point(point.x + xOffset, point.y + yOffset)
-            );
-        }
+        const style = `style='
+            fill:${fillColor};
+            stroke:${strokeColor};
+            stroke-width:${strokeWidth}
+        '`;
 
-        this.style = `style='fill:${fillColor};stroke:${strokeColor};stroke-width:${strokeWidth}'`;
+        this.stringify = `<polyline points='
+            ${pointArray
+                .map(
+                    (point) =>
+                        (point.x + xOffset).toFixed(1) +
+                        "," +
+                        (point.y + yOffset).toFixed(1)
+                )
+                .join(" ")}
+            '${style}/>`;
     }
 
     /**
@@ -46,8 +53,6 @@ export default class SvgPolyline {
      * @returns {string} The string representation of the polyline.
      */
     render(): string {
-        return `<polyline points='${this.points
-            .map((point) => point.render())
-            .join(" ")}' ${this.style}/>`;
+        return this.stringify;
     }
 }

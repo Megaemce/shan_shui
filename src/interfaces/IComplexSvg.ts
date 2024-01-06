@@ -15,12 +15,12 @@ export default interface IComplexSvg {
     elements: Array<SvgPolyline>;
 
     /**
-     * Renders the ComplexSvg and returns the resulting SVG string.
+     * Returns the ComplexSvg string representation.
      *
      * @function
      * @returns {string} The SVG string representation.
      */
-    render: () => string;
+    stringify: () => string;
 
     /**
      * Adds an SvgPolyline or ComplexSvg to the ComplexSvg.

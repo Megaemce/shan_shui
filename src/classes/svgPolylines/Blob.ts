@@ -66,4 +66,8 @@ export default class Blob extends SvgPolyline {
 
         super(pointArray, 0, 0, fillColor, fillColor);
     }
+    // TODO: Used for Tree07. Need to be fixed somehow to return pointArray without blowing SvgPolyline again
+    get points() {
+        return [];
+    }
 }

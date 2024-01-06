@@ -12,7 +12,7 @@ export default function ChunkGroup({
                     id={`chunk${chunkId}-element${index}-${element.tag}`}
                     key={`chunk${chunkId}-element${index}-${element.tag}`}
                     dangerouslySetInnerHTML={{
-                        __html: element.render(),
+                        __html: element.stringify(),
                     }}
                 ></g>
             ))}
