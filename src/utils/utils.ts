@@ -1,8 +1,6 @@
-import { midPoint } from "./polytools";
 import Point from "../classes/Point";
-import ISvgAttributes from "../interfaces/ISvgAttributes";
-import ISvgStyles from "../interfaces/ISvgStyles";
 import { config } from "../config";
+import { midPoint } from "./polytools";
 
 /**
  * Computes the scaled cosine of the given value.
@@ -114,42 +112,6 @@ export function isLocalMaximum(
     }
 
     return true;
-}
-
-/**
- * Converts a camelCase string to kebab-case.
- * @param key - The input camelCase string.
- * @returns The converted kebab-case string.
- */
-function camelToKebab(key: string): string {
-    const result = key.replace(/([A-Z])/g, " $1");
-    return result.split(" ").join("-").toLowerCase();
-}
-
-/**
- * Converts a style attribute object to a string.
- * @param attr - The style attribute object.
- * @returns The string representation of the style attributes.
- */
-function styleToString(attr: Partial<ISvgStyles>): string {
-    const strlist = Object.entries(attr).map(
-        ([key, value]) => `${camelToKebab(key)}:${value}`
-    );
-    return `${strlist.join(";")}`;
-}
-
-/**
- * Converts an attribute object to a string.
- * @param attr - The attribute object.
- * @returns The string representation of the attributes.
- */
-export function attributesToString(attr: Partial<ISvgAttributes>): string {
-    const strlist = Object.entries(attr).map(([key, value]) => {
-        const vstr =
-            key === "style" && attr.style ? styleToString(attr.style) : value;
-        return `${camelToKebab(key)}='${vstr}'`;
-    });
-    return strlist.join(" ");
 }
 
 /**

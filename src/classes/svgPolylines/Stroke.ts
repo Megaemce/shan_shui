@@ -34,11 +34,13 @@ export default class Stroke extends SvgPolyline {
         strokeWidthFunction: (x: number) => number = (x: number) =>
             Math.sin(x * Math.PI)
     ) {
+        if (strokeWidth === 0) {
+            console.trace("stroke width is zero");
+        }
         /**
          * For inital pointArray = [0,1,2,3] creates vtxArray = [0,(1),(2),3,(2),(1),0]
          * where (values) are modified by the main for loop
          **/
-
         const vtxArray = new Array<Point>(pointArray.length * 2);
         const lastPointIndex = pointArray.length - 1;
         const lastVtxIndex = vtxArray.length - 1;

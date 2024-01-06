@@ -48,10 +48,10 @@ export default class Tree06 extends ComplexSvg {
                 ),
                 color,
                 color,
-                1.5,
+                2,
                 0.9,
                 0,
-                (_) => Math.sin(1)
+                () => Math.sin(1)
             )
         );
     }
