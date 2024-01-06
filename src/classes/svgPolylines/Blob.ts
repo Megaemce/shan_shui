@@ -14,6 +14,7 @@ const DEFAULTNOISE = config.svgPolyline.blob.defaultNoise;
  * Represents a blob with a stylized outline as an SvgPolyline.
  */
 export default class Blob extends SvgPolyline {
+    _points: Point[] = []; // used by Tree07 only
     /**
      * Constructor for the BlobGenerator class.
      * @param {number} x - X-coordinate of the blob.
@@ -24,6 +25,7 @@ export default class Blob extends SvgPolyline {
      * @param {number} [strokeWidth=DEFAULTSTROKEWIDTH] - Width of the blob's outline.
      * @param {number} [noise=DEFAULTNOISE] - Amount of noise applied to the blob's outline.
      * @param {Function} [strokeWidthFunction] - Function to modulate the blob's outline width (default is sin function).
+     * @param {boolean} [returnPoints] - Whether to return the points of the blob or not. Used by Tree07 only.
      */
     constructor(
         x: number,
@@ -36,7 +38,8 @@ export default class Blob extends SvgPolyline {
         strokeWidthFunction: (x: number) => number = (x: number) =>
             x <= 1
                 ? Math.pow(Math.sin(x * Math.PI), 0.5)
-                : -Math.pow(Math.sin((x + 1) * Math.PI), 0.5)
+                : -Math.pow(Math.sin((x + 1) * Math.PI), 0.5),
+        returnPoints?: boolean
     ) {
         const resolution = 15;
         const lalist = new Array<[number, number]>(resolution);
@@ -65,9 +68,12 @@ export default class Blob extends SvgPolyline {
         });
 
         super(pointArray, 0, 0, fillColor, fillColor);
+
+        if (returnPoints) {
+            this._points = pointArray;
+        }
     }
-    // TODO: Used for Tree07. Need to be fixed somehow to return pointArray without blowing SvgPolyline again
     get points() {
-        return [];
+        return this._points;
     }
 }

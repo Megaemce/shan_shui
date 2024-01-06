@@ -48,7 +48,8 @@ export default class Tree07 extends ComplexSvg {
                         PRNG.random(20, 70),
                         PRNG.random(12, 24),
                         0.5,
-                        bfunc
+                        bfunc,
+                        true
                     );
 
                     T = T.concat(triangulate(bpl.points, 50, true, false));

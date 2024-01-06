@@ -69,7 +69,7 @@ export default class Tree04 extends ComplexSvg {
                         const twigHeight = (0.5 * height) / 300;
                         const twigWidth = height / 300;
 
-                        this.add(
+                        this.addAtStart(
                             new Twig(
                                 p.x + point.x + xOffset,
                                 p.y + point.y + yOffset,
@@ -92,7 +92,7 @@ export default class Tree04 extends ComplexSvg {
             }
         });
 
-        this.add(
+        this.addAtStart(
             new SvgPolyline(
                 pointArrayModified,
                 xOffset,
