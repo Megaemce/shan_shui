@@ -14,16 +14,17 @@ import { SettingPanel } from "./ui/SettingPanel";
 
 export const App: React.FC = () => {
     const FPS = 60;
-    const currentSeed = new URLSearchParams(window.location.search).get("seed");
+    const currentURLSeed = new URLSearchParams(window.location.search).get(
+        "seed"
+    );
     const currentDate = new Date().getTime().toString();
-
-    // Refs for accessing child components
+    const currentSeed = currentURLSeed || currentDate;
     const chunkCacheRef = useRef(new ChunkCache());
+    PRNG.seed = currentSeed;
 
     // State variables
-    const [seed, setSeed] = useState<string>(currentSeed || currentDate);
-    PRNG.seed = seed;
-
+    const [seed, setSeed] = useState<string>(currentSeed);
+    const [step, setStep] = useState(100);
     const [currentPosition, setCurrentPosition] = useState<number>(0);
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
     const [windowHeight, setWindowHeight] = useState<number>(
@@ -36,21 +37,12 @@ export const App: React.FC = () => {
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
 
     /**
-     * Callback function to handle changes in the PRNG seed.
-     * @param {string} newSeed - The new seed value.
-     */
-    const changeSeed = (newSeed: string) => {
-        setSeed(newSeed);
-    };
-
-    /**
      * Callback function to handle changes in the save range.
      * @param {Range} newSaveRange - The new save range.
      */
     const onChangeSaveRange = (newSaveRange: Range) => {
         setSaveRange(newSaveRange);
     };
-
     /**
      * Callback function to toggle auto-scrolling.
      * @param {boolean} isEnabled - Indicates whether auto-scroll is enabled.
@@ -58,7 +50,7 @@ export const App: React.FC = () => {
      */
     const toggleAutoScroll = (isEnabled: boolean, step: number) => {
         setAutoScroll(isEnabled);
-        horizonalAutoScroll(step);
+        horizontalAutoScroll(step);
     };
 
     /**
@@ -71,11 +63,9 @@ export const App: React.FC = () => {
     };
 
     /**
-     * Effect to update the background image and handle window resize events when seed change
+     * Add hooks for window resize events.
      */
     useEffect(() => {
-        PRNG.seed = seed;
-
         const resizeCallback = () => {
             setWindowWidth(window.innerWidth);
             setWindowHeight(window.innerHeight);
@@ -86,7 +76,7 @@ export const App: React.FC = () => {
         return () => {
             window.removeEventListener("resize", resizeCallback);
         };
-    }, [seed]);
+    }, []);
 
     /**
      * Callback function to handle horizontal scrolling.
@@ -108,18 +98,18 @@ export const App: React.FC = () => {
 
     /**
      * Callback function to handle horizontal auto-scrolling.
-     * @param {number} value - The scroll value.
+     * @param {number} step - The step value for auto-scrolling.
      */
-    const horizonalAutoScroll = useCallback(
-        (value: number) => {
+    const horizontalAutoScroll = useCallback(
+        (step: number) => {
             if (!autoScroll) return;
 
             const autoScrollCallback = () => {
-                horizontalScroll(value / FPS);
+                horizontalScroll(step);
                 requestAnimationFrame(autoScrollCallback);
             };
 
-            const interval = FPS;
+            const interval = 1000 / FPS;
             const autoScrollTimeout = setTimeout(autoScrollCallback, interval);
 
             return () => clearTimeout(autoScrollTimeout);
@@ -131,8 +121,8 @@ export const App: React.FC = () => {
      * Effect to initiate horizontal auto-scrolling.
      */
     useEffect(() => {
-        horizonalAutoScroll(FPS);
-    }, [horizonalAutoScroll, FPS]);
+        horizontalAutoScroll(FPS);
+    }, [horizontalAutoScroll, FPS]);
 
     /**
      * Callback function to reload the page with a new seed.
@@ -147,7 +137,9 @@ export const App: React.FC = () => {
             <div className="App">
                 <SettingPanel
                     seed={seed}
-                    changeSeed={changeSeed}
+                    setSeed={setSeed}
+                    step={step}
+                    setStep={setStep}
                     reloadWindowSeed={reloadWindowSeed}
                     horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}
@@ -160,6 +152,7 @@ export const App: React.FC = () => {
                     toggleAutoLoad={toggleAutoLoad}
                 />
                 <ScrollableCanvas
+                    step={step}
                     horizontalScroll={horizontalScroll}
                     windowHeight={windowHeight}
                     currentPosition={currentPosition}

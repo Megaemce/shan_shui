@@ -1,13 +1,15 @@
+import "./styles.css";
 import React, { useState } from "react";
 import { ButtonMenu } from "./ButtonMenu";
 import { ButtonSource } from "./ButtonSource";
-import { Menu } from "./Menu";
-import "./styles.css";
 import { ISettingPanel } from "../interfaces/ISettingPanel";
+import { Menu } from "./Menu";
 
 export const SettingPanel: React.FC<ISettingPanel> = ({
     seed,
-    changeSeed,
+    setSeed,
+    step,
+    setStep,
     reloadWindowSeed,
     horizontalScroll,
     toggleAutoScroll,
@@ -40,7 +42,9 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                 <Menu
                     display="block"
                     seed={seed}
-                    changeSeed={changeSeed}
+                    setSeed={setSeed}
+                    step={step}
+                    setStep={setStep}
                     reloadWindowSeed={reloadWindowSeed}
                     horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}

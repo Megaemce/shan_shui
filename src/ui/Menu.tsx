@@ -1,14 +1,16 @@
-import React from "react";
-import { ChangeEvent, useState } from "react";
-import Range from "../classes/Range";
-import { DebounceInput } from "react-debounce-input";
 import "./styles.css";
+import Range from "../classes/Range";
+import React from "react";
+import { ChangeEvent } from "react";
+import { DebounceInput } from "react-debounce-input";
 import { IMenu } from "../interfaces/IMenu";
 
 export const Menu: React.FC<IMenu> = ({
     display,
     seed,
-    changeSeed,
+    setSeed,
+    step,
+    setStep,
     reloadWindowSeed,
     horizontalScroll,
     toggleAutoScroll,
@@ -20,20 +22,12 @@ export const Menu: React.FC<IMenu> = ({
     onChangeSaveRange,
     toggleAutoLoad,
 }) => {
-    const [step, setStep] = useState(100);
-
-    const changeStep = (event: ChangeEvent<HTMLInputElement>) =>
-        setStep(event.target.valueAsNumber);
-
-    const horizonalScrollLeft = () => horizontalScroll(-1 * step);
+    const horizonalScrollLeft = () => horizontalScroll(-step);
     const horizonalScrollRight = () => horizontalScroll(step);
-
     const toggleAutoScrollHandler = (event: ChangeEvent<HTMLInputElement>) =>
         toggleAutoScroll(event.target.checked, step);
-
     const toggleAutoLoadHandler = (event: ChangeEvent<HTMLInputElement>) =>
         toggleAutoLoad(event.target.checked);
-
     const downloadSvg = () => {
         if (saveRange.length > 0) {
             chunkCache.download(seed, saveRange, windowHeight);
@@ -41,18 +35,15 @@ export const Menu: React.FC<IMenu> = ({
             alert("Range length must be above zero");
         }
     };
-
     const loadCurrentRange = () => {
         onChangeSaveRange(
             new Range(currentPosition, currentPosition + windowWidth)
         );
     };
-
     const onChangeSaveRangeL = (event: ChangeEvent<HTMLInputElement>) =>
         onChangeSaveRange(
             new Range(event.target.valueAsNumber, saveRange.right)
         );
-
     const onChangeSaveRangeR = (event: ChangeEvent<HTMLInputElement>) =>
         onChangeSaveRange(
             new Range(saveRange.left, event.target.valueAsNumber)
@@ -68,7 +59,7 @@ export const Menu: React.FC<IMenu> = ({
                     title="random seed"
                     value={seed}
                     debounceTimeout={500}
-                    onChange={(e) => changeSeed(e.target.value)}
+                    onChange={(e) => setSeed(e.target.value)}
                     style={{ width: 120 }}
                 />
                 <button onClick={reloadWindowSeed}>Generate</button>
@@ -81,15 +72,16 @@ export const Menu: React.FC<IMenu> = ({
                 <button title="Scroll left" onClick={horizonalScrollLeft}>
                     &lt;
                 </button>
-                <input
+                <DebounceInput
                     id="INC_STEP"
                     title="increment step"
                     type="number"
                     value={step}
                     min={0}
                     max={10000}
-                    step={20}
-                    onChange={changeStep}
+                    debounceTimeout={500}
+                    step={step}
+                    onChange={(e) => setStep(Number(e.target.value))}
                 />
                 <button title="Scroll right" onClick={horizonalScrollRight}>
                     &gt;
@@ -107,17 +99,19 @@ export const Menu: React.FC<IMenu> = ({
             <div>
                 <h4>Save view</h4>
                 From
-                <input
+                <DebounceInput
                     className="ROWITEM"
                     type="number"
+                    debounceTimeout={500}
                     value={saveRange.left}
                     onChange={onChangeSaveRangeL}
                     style={{ width: 60 }}
                 />
                 to
-                <input
+                <DebounceInput
                     className="ROWITEM"
                     type="number"
+                    debounceTimeout={500}
                     value={saveRange.right}
                     onChange={onChangeSaveRangeR}
                     style={{ width: 60 }}

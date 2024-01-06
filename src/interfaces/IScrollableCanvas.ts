@@ -7,6 +7,13 @@ import ChunkCache from "../classes/ChunkCache";
  */
 export interface IScrollableCanvas {
     /**
+     * The step value used in the settings.
+     *
+     * @type {number}
+     */
+    step: number;
+
+    /**
      * Function to scroll the canvas horizontally by a specified value.
      *
      * @function

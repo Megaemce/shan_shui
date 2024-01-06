@@ -1,19 +1,19 @@
-import React from "react";
-import Range from "../classes/Range";
 import "./styles.css";
-import { ScrollBar } from "./ScrollBar";
-import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
-import { config } from "../config";
 import ChunkGroup from "./ChunkGroup";
+import Range from "../classes/Range";
+import React from "react";
+import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
+import { ScrollBar } from "./ScrollBar";
+import { config } from "../config";
 
 const ZOOM = config.ui.zoom;
 const CANVASWIDTH = config.ui.canvasWidth;
-const SCROLLVALUE = config.ui.scrollValue;
 
 /**
  * ScrollableCanvas component for rendering a scrollable canvas with ScrollBars.
  */
 export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
+    step,
     horizontalScroll,
     windowHeight,
     currentPosition,
@@ -34,7 +34,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
         <div id="SCROLLABLE_CANVAS">
             <ScrollBar
                 id="L"
-                onClick={() => horizontalScroll(-SCROLLVALUE)}
+                onClick={() => horizontalScroll(-step)}
                 height={windowHeight - 8}
                 icon="&#x3008;"
             />
@@ -87,7 +87,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
             </svg>
             <ScrollBar
                 id="R"
-                onClick={() => horizontalScroll(SCROLLVALUE)}
+                onClick={() => horizontalScroll(step)}
                 height={windowHeight - 8}
                 icon="&#x3009;"
             />

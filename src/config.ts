@@ -193,6 +193,5 @@ export const config = {
         defaultTimeout: 10,
         canvasWidth: 512,
         zoom: 1.142,
-        scrollValue: 200,
     },
 };

@@ -27,7 +27,22 @@ export interface IMenu {
      * @function
      * @param {string} seed - The new seed value.
      */
-    changeSeed: (seed: string) => void;
+    setSeed: (seed: string) => void;
+
+    /**
+     * The step value used in the settings.
+     *
+     * @type {number}
+     */
+    step: number;
+
+    /**
+     * Function to change the step value.
+     *
+     * @function
+     * @param {number} step - The new step value.
+     */
+    setStep: (step: number) => void;
 
     /**
      * Reloads the window based on the current seed value.
