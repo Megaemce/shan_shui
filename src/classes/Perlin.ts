@@ -32,6 +32,9 @@ export default class Perlin {
             }
         }
 
+        x = Math.abs(x);
+        y = Math.abs(y);
+        z = Math.abs(z);
         let xi = Math.floor(x);
         let yi = Math.floor(y);
         let zi = Math.floor(z);
