@@ -5,10 +5,10 @@ import SvgPolyline from "../SvgPolyline";
 import { config } from "../../config";
 import { normalizeNoise } from "../../utils/utils";
 
-const DEFAULTFILLCOLOR = config.svgPolyline.blob.defaultFillColor;
-const DEFAULTLENGTH = config.svgPolyline.blob.defaultLength;
-const DEFAULTSTROKEWIDTH = config.svgPolyline.blob.defaultStrokeWidth;
-const DEFAULTNOISE = config.svgPolyline.blob.defaultNoise;
+const DEFAULT_FILL_COLOR = config.svgPolyline.blob.defaultFillColor;
+const DEFAULT_LENGTH = config.svgPolyline.blob.defaultLength;
+const DEFAULT_STROKE_WIDTH = config.svgPolyline.blob.defaultStrokeWidth;
+const DEFAULT_NOISE = config.svgPolyline.blob.defaultNoise;
 
 /**
  * Represents a blob with a stylized outline as an SvgPolyline.
@@ -20,10 +20,10 @@ export default class Blob extends SvgPolyline {
      * @param {number} x - X-coordinate of the blob.
      * @param {number} y - Y-coordinate of the blob.
      * @param {number} [angle=0] - Angle of the blob.
-     * @param {string} [fillColor=DEFAULTFILLCOLOR] - Fill fillColor of the blob.
-     * @param {number} [length=DEFAULTLENGTH] - Length of the blob.
-     * @param {number} [strokeWidth=DEFAULTSTROKEWIDTH] - Width of the blob's outline.
-     * @param {number} [noise=DEFAULTNOISE] - Amount of noise applied to the blob's outline.
+     * @param {string} [fillColor=DEFAULT_FILL_COLOR] - Fill fillColor of the blob.
+     * @param {number} [length=DEFAULT_LENGTH] - Length of the blob.
+     * @param {number} [strokeWidth=DEFAULT_STROKE_WIDTH] - Width of the blob's outline.
+     * @param {number} [noise=DEFAULT_NOISE] - Amount of noise applied to the blob's outline.
      * @param {Function} [strokeWidthFunction] - Function to modulate the blob's outline width (default is sin function).
      * @param {boolean} [returnPoints] - Whether to return the points of the blob or not. Used by Tree07 only.
      */
@@ -31,10 +31,10 @@ export default class Blob extends SvgPolyline {
         x: number,
         y: number,
         angle: number = 0,
-        fillColor: string = DEFAULTFILLCOLOR,
-        length: number = DEFAULTLENGTH,
-        strokeWidth: number = DEFAULTSTROKEWIDTH,
-        noise: number = DEFAULTNOISE,
+        fillColor: string = DEFAULT_FILL_COLOR,
+        length: number = DEFAULT_LENGTH,
+        strokeWidth: number = DEFAULT_STROKE_WIDTH,
+        noise: number = DEFAULT_NOISE,
         strokeWidthFunction: (x: number) => number = (x: number) =>
             x <= 1
                 ? Math.pow(Math.sin(x * Math.PI), 0.5)

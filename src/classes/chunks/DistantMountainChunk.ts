@@ -5,13 +5,13 @@ import SvgPolyline from "../SvgPolyline";
 import { config } from "../../config";
 import { midPoint, triangulate } from "../../utils/polytools";
 
-const DEFAULTHEIGHT = config.chunks.distantMountain.defaultHeight;
-const DEFAULTSEED = config.chunks.distantMountain.defaultSeed;
-const DEFAULTWIDTH = config.chunks.distantMountain.defaultWidth;
+const DEFAULT_HEIGHT = config.chunks.distantMountain.defaultHeight;
+const DEFAULT_SEED = config.chunks.distantMountain.defaultSeed;
+const DEFAULT_WIDTH = config.chunks.distantMountain.defaultWidth;
 const SEGMENTS = config.chunks.distantMountain.segments;
 const SPAN = config.chunks.distantMountain.span;
-const STROKECOLOR = config.chunks.distantMountain.color;
-const STROKEWIDTH = config.chunks.distantMountain.strokeWidth;
+const STROKE_COLOR = config.chunks.distantMountain.color;
+const STROKE_WIDTH = config.chunks.distantMountain.strokeWidth;
 
 /**
  * Represents a distant mountain chunk with varying heights and colors.
@@ -23,16 +23,16 @@ export default class DistantMountainChunk extends Chunk {
      * Constructor for generating a distant mountain chunk with varying heights and colors.
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
-     * @param {number} [seed=DEFAULTSEED] - The seed for the noise function.
-     * @param {number} [height=DEFAULTHEIGHT] - The overall height of the mountain.
-     * @param {number} [width=DEFAULTWIDTH] - The width of the mountain.
+     * @param {number} [seed=DEFAULT_SEED] - The seed for the noise function.
+     * @param {number} [height=DEFAULT_HEIGHT] - The overall height of the mountain.
+     * @param {number} [width=DEFAULT_WIDTH] - The width of the mountain.
      */
     constructor(
         xOffset: number,
         yOffset: number,
-        seed: number = DEFAULTSEED,
-        height: number = DEFAULTHEIGHT,
-        width: number = DEFAULTWIDTH
+        seed: number = DEFAULT_SEED,
+        height: number = DEFAULT_HEIGHT,
+        width: number = DEFAULT_WIDTH
     ) {
         super("distmount", xOffset, yOffset);
 
@@ -91,8 +91,8 @@ export default class DistantMountainChunk extends Chunk {
                     0,
                     0,
                     getColor(lastPoint),
-                    STROKECOLOR,
-                    STROKEWIDTH
+                    STROKE_COLOR,
+                    STROKE_WIDTH
                 )
             );
 
@@ -104,7 +104,7 @@ export default class DistantMountainChunk extends Chunk {
                 const midPointOfTriangle = midPoint(triangle);
                 const color = getColor(midPointOfTriangle);
                 this.add(
-                    new SvgPolyline(triangle, 0, 0, color, color, STROKEWIDTH)
+                    new SvgPolyline(triangle, 0, 0, color, color, STROKE_WIDTH)
                 );
             }
         }

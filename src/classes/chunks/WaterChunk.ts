@@ -6,9 +6,9 @@ import Stroke from "../svgPolylines/Stroke";
 import { config } from "../../config";
 
 const COLORNOALFA = config.chunks.water.colorNoAlfa;
-const DEFAULTHEIGTH = config.chunks.water.defaultHeight;
-const DEFAULTWAVECLUSTERS = config.chunks.water.defaultWaveClusters;
-const DEFAULTWIDTH = config.chunks.water.defaultWidth;
+const DEFAULT_HEIGTH = config.chunks.water.defaultHeight;
+const DEFAULT_WAVECLUSTERS = config.chunks.water.defaultWaveClusters;
+const DEFAULT_WIDTH = config.chunks.water.defaultWidth;
 
 /**
  * Class representing a water chunk with undulating waves.
@@ -20,17 +20,17 @@ export default class WaterChunk extends Chunk {
      * Creates an instance of WaterChunk.
      * @param {number} xOffset - X-coordinate offset for the chunk.
      * @param {number} yOffset - Y-coordinate offset for the chunk.
-     * @param {number} [height=DEFAULTHEIGTH] - Height of the waves.
-     * @param {number} [width=DEFAULTWIDTH] - Width of the waves.
-     * @param {number} [waveClusters=DEFAULTWAVECLUSTERS] - Number of clusters of waves.
+     * @param {number} [height=DEFAULT_HEIGTH] - Height of the waves.
+     * @param {number} [width=DEFAULT_WIDTH] - Width of the waves.
+     * @param {number} [waveClusters=DEFAULT_WAVECLUSTERS] - Number of clusters of waves.
      */
 
     constructor(
         xOffset: number,
         yOffset: number,
-        height: number = DEFAULTHEIGTH,
-        width: number = DEFAULTWIDTH,
-        waveClusters: number = DEFAULTWAVECLUSTERS
+        height: number = DEFAULT_HEIGTH,
+        width: number = DEFAULT_WIDTH,
+        waveClusters: number = DEFAULT_WAVECLUSTERS
     ) {
         super("water", xOffset, yOffset - 10000);
 

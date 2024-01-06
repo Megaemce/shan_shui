@@ -11,12 +11,12 @@ import WaterChunk from "./chunks/WaterChunk";
 import { config } from "../config";
 
 const CHUNKWIDTH = config.ui.canvasWidth;
-const DISTANTMOUNTAINHEIGHT = config.chunkCache.distantMountainHeight;
-const FLATMOUNTAINFLATNESSMAX = config.chunkCache.flatMountainFlatness.max;
-const FLATMOUNTAINFLATNESSMIN = config.chunkCache.flatMountainFlatness.min;
-const FLATMOUNTAINHEIGHT = config.chunkCache.flatMountainHeight;
-const FLATMOUNTAINWIDTHMAX = config.chunkCache.flatMountainWidth.max;
-const FLATMOUNTAINWIDTHMIN = config.chunkCache.flatMountainWidth.min;
+const DISTANT_MOUNTAIN_HEIGHT = config.chunkCache.distantMountainHeight;
+const FLAT_MOUNTAIN_FLATNESS_MAX = config.chunkCache.flatMountainFlatness.max;
+const FLAT_MOUNTAIN_FLATNESS_MIN = config.chunkCache.flatMountainFlatness.min;
+const FLAT_MOUNTAIN_HEIGHT = config.chunkCache.flatMountainHeight;
+const FLAT_MOUNTAIN_WIDTH_MAX = config.chunkCache.flatMountainWidth.max;
+const FLAT_MOUNTAIN_WIDTH_MIN = config.chunkCache.flatMountainWidth.min;
 const ZOOM = config.ui.zoom;
 
 /**
@@ -49,11 +49,14 @@ export default class ChunkCache {
                         x,
                         y,
                         PRNG.random(0, 2 * Math.PI),
-                        FLATMOUNTAINHEIGHT,
-                        PRNG.random(FLATMOUNTAINWIDTHMIN, FLATMOUNTAINWIDTHMAX),
+                        FLAT_MOUNTAIN_HEIGHT,
                         PRNG.random(
-                            FLATMOUNTAINFLATNESSMIN,
-                            FLATMOUNTAINFLATNESSMAX
+                            FLAT_MOUNTAIN_WIDTH_MIN,
+                            FLAT_MOUNTAIN_WIDTH_MAX
+                        ),
+                        PRNG.random(
+                            FLAT_MOUNTAIN_FLATNESS_MIN,
+                            FLAT_MOUNTAIN_FLATNESS_MAX
                         )
                     )
                 );
@@ -63,7 +66,7 @@ export default class ChunkCache {
                         x,
                         y,
                         PRNG.random(0, 100),
-                        DISTANTMOUNTAINHEIGHT,
+                        DISTANT_MOUNTAIN_HEIGHT,
                         PRNG.randomChoice([500, 1000, 1500])
                     )
                 );

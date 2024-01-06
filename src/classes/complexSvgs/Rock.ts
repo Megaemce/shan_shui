@@ -79,7 +79,7 @@ export default class Rock extends ComplexSvg {
             )
         );
 
-        // OUTLINE
+        // OUTLINE_
         this.add(
             new Stroke(
                 pointArray[0].map(
@@ -92,7 +92,7 @@ export default class Rock extends ComplexSvg {
             )
         );
 
-        // TEXTURE
+        // TEXTURE_
         this.add(
             new Texture(
                 pointArray,

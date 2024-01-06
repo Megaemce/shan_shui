@@ -3,29 +3,29 @@ import Perlin from "../Perlin";
 import Point from "../Point";
 import { config } from "../../config";
 
-const DEFAULTHEIGHT = config.svgPolyline.branch.defaultHeight;
-const DEFAULTSTROKEWIDTH = config.svgPolyline.branch.defaultStrokeWidth;
-const DEFAULTANGLE = config.svgPolyline.branch.defaultAngle;
-const DEFAULTBENDINGANGLE = config.svgPolyline.branch.defaultBendingAngle;
-const DEFAULTDETAILS = config.svgPolyline.branch.defaultDetails;
+const DEFAULT_HEIGHT = config.svgPolyline.branch.defaultHeight;
+const DEFAULT_STROKE_WIDTH = config.svgPolyline.branch.defaultStrokeWidth;
+const DEFAULT_ANGLE = config.svgPolyline.branch.defaultAngle;
+const DEFAULT_BENDING_ANGLE = config.svgPolyline.branch.defaultBendingAngle;
+const DEFAULT_DETAILS = config.svgPolyline.branch.defaultDetails;
 
 /**
  * Generates a list of points representing a branch structure.
  *
- * @param {number} [height=DEFAULTHEIGHT] - Height of the branch.
- * @param {number} [strokeWidth=DEFAULTSTROKEWIDTH] - Width of the branch.
- * @param {number} [angle=DEFAULTANGLE] - Initial angle of the branch.
- * @param {number} [bendingAngle=DEFAULTBENDINGANGLE] - Bending angle of the branch.
- * @param {number} [details=DEFAULTDETAILS] - Number of details in the branch.
+ * @param {number} [height=DEFAULT_HEIGHT] - Height of the branch.
+ * @param {number} [strokeWidth=DEFAULT_STROKE_WIDTH] - Width of the branch.
+ * @param {number} [angle=DEFAULT_ANGLE] - Initial angle of the branch.
+ * @param {number} [bendingAngle=DEFAULT_BENDING_ANGLE] - Bending angle of the branch.
+ * @param {number} [details=DEFAULT_DETAILS] - Number of details in the branch.
  * @returns {[Point[], Point[]]} An array of two lists of points representing the branch structure.
  */
 
 export default function generateBranch(
-    height: number = DEFAULTHEIGHT,
-    strokeWidth: number = DEFAULTSTROKEWIDTH,
-    angle: number = DEFAULTANGLE,
-    bendingAngle: number = DEFAULTBENDINGANGLE,
-    details: number = DEFAULTDETAILS
+    height: number = DEFAULT_HEIGHT,
+    strokeWidth: number = DEFAULT_STROKE_WIDTH,
+    angle: number = DEFAULT_ANGLE,
+    bendingAngle: number = DEFAULT_BENDING_ANGLE,
+    details: number = DEFAULT_DETAILS
 ): [Point[], Point[]] {
     const branches: Point[] = [];
     const leftBranches: Point[] = [];

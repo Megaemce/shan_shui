@@ -10,26 +10,26 @@ import { calculateBoundingBox } from "../../utils/polytools";
 import { config } from "../../config";
 import { lineDivider } from "../../utils/polytools";
 
-const BACKGROUNDFILLCOLOR = config.chunks.flatMountain.background.fillColor;
-const BACKGROUNDSTROKECOLOR = config.chunks.flatMountain.background.color;
-const DEFAULTFLATNESS = config.chunks.flatMountain.defaultFlatness;
-const DEFAULTHEIGHTMAX = config.chunks.flatMountain.defaultHeight.max;
-const DEFAULTHEIGHTMIN = config.chunks.flatMountain.defaultHeight.min;
-const DEFAULTSEED = config.chunks.flatMountain.defaultSeed;
-const DEFAULTWIDTHMAX = config.chunks.flatMountain.defaultWidth.max;
-const DEFAULTWIDTHMIN = config.chunks.flatMountain.defaultWidth.min;
-const OUTLINEFILLCOLOR = config.chunks.flatMountain.outline.fillColor;
-const OUTLINESTROKECOLOR = config.chunks.flatMountain.outline.color;
-const OUTLINESTROKENOISE = config.chunks.flatMountain.outline.strokeNoise;
-const OUTLINESTROKEWIDTH = config.chunks.flatMountain.outline.strokeWidth;
-const POLYLINEFILLCOLOR = config.chunks.flatMountain.polyline.fillColor;
-const POLYLINESTROKECOLOR = config.chunks.flatMountain.polyline.color;
-const POLYLINESTROKEWIDTH = config.chunks.flatMountain.polyline.strokeWidth;
-const STROKECOLOR = config.chunks.flatMountain.stroke.color;
-const STROKEFILLCOLOR = config.chunks.flatMountain.stroke.fillColor;
-const STROKEWIDTH = config.chunks.flatMountain.stroke.strokeWidth;
-const TEXTURESHADOW = config.chunks.flatMountain.texture.shadow;
-const TEXTURESIZE = config.chunks.flatMountain.texture.size;
+const BACKGROUND_FILL_COLOR = config.chunks.flatMountain.background.fillColor;
+const BACKGROUND_STROKE_COLOR = config.chunks.flatMountain.background.color;
+const DEFAULT_FLATNESS = config.chunks.flatMountain.defaultFlatness;
+const DEFAULT_HEIGHT_MAX = config.chunks.flatMountain.defaultHeight.max;
+const DEFAULT_HEIGHT_MIN = config.chunks.flatMountain.defaultHeight.min;
+const DEFAULT_SEED = config.chunks.flatMountain.defaultSeed;
+const DEFAULT_WIDTH_MAX = config.chunks.flatMountain.defaultWidth.max;
+const DEFAULT_WIDTH_MIN = config.chunks.flatMountain.defaultWidth.min;
+const OUTLINE_FILL_COLOR = config.chunks.flatMountain.outline.fillColor;
+const OUTLINE_STROKE_COLOR = config.chunks.flatMountain.outline.color;
+const OUTLINE_STROKE_NOISE = config.chunks.flatMountain.outline.strokeNoise;
+const OUTLINE_STROKE_WIDTH = config.chunks.flatMountain.outline.strokeWidth;
+const POLYLINE_FILL_COLOR = config.chunks.flatMountain.polyline.fillColor;
+const POLYLINE_STROKE_COLOR = config.chunks.flatMountain.polyline.color;
+const POLYLINE_STROKE_WIDTH = config.chunks.flatMountain.polyline.strokeWidth;
+const STROKE_COLOR = config.chunks.flatMountain.stroke.color;
+const STROKE_FILL_COLOR = config.chunks.flatMountain.stroke.fillColor;
+const STROKE_WIDTH = config.chunks.flatMountain.stroke.strokeWidth;
+const TEXTURE_SHADOW = config.chunks.flatMountain.texture.shadow;
+const TEXTURE_SIZE = config.chunks.flatMountain.texture.size;
 
 /**
  * Represents a flat mountain chunk with optional vegetation and textures.
@@ -41,18 +41,18 @@ export default class FlatMountainChunk extends Chunk {
      * Constructor for generating a flat mountain chunk with optional vegetation and textures.
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
-     * @param {number} [seed=DEFAULTSEED] - The seed value for noise functions.
-     * @param {number} [height =PRNG.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX)] - The height of the mountain.
-     * @param {number} [width =PRNG.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)] - The width of the mountain.
-     * @param {number} [flatness=DEFAULTFLATNESS] - Parameter controlling the flatness of the mountain.
+     * @param {number} [seed=DEFAULT_SEED] - The seed value for noise functions.
+     * @param {number} [height=PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX)] - The height of the mountain.
+     * @param {number} [width=PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX)] - The width of the mountain.
+     * @param {number} [flatness=DEFAULT_FLATNESS] - Parameter controlling the flatness of the mountain.
      */
     constructor(
         xOffset: number,
         yOffset: number,
-        seed: number = DEFAULTSEED,
-        height: number = PRNG.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX),
-        width: number = PRNG.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX),
-        flatness: number = DEFAULTFLATNESS
+        seed: number = DEFAULT_SEED,
+        height: number = PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX),
+        width: number = PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX),
+        flatness: number = DEFAULT_FLATNESS
     ) {
         super("flatmount", xOffset, yOffset);
 
@@ -102,32 +102,32 @@ export default class FlatMountainChunk extends Chunk {
                 pointArray[0].concat([new Point(0, elementNumber * 4)]),
                 xOffset,
                 yOffset,
-                BACKGROUNDFILLCOLOR,
-                BACKGROUNDSTROKECOLOR
+                BACKGROUND_FILL_COLOR,
+                BACKGROUND_STROKE_COLOR
             )
         );
 
-        // OUTLINE
+        // OUTLINE_
         this.add(
             new Stroke(
                 pointArray[0].map(
                     (p) => new Point(p.x + xOffset, p.y + yOffset)
                 ),
-                OUTLINEFILLCOLOR,
-                OUTLINESTROKECOLOR,
-                OUTLINESTROKEWIDTH,
-                OUTLINESTROKENOISE
+                OUTLINE_FILL_COLOR,
+                OUTLINE_STROKE_COLOR,
+                OUTLINE_STROKE_WIDTH,
+                OUTLINE_STROKE_NOISE
             )
         );
 
-        // TEXTURE
+        // TEXTURE_
         this.add(
             new Texture(
                 pointArray,
                 xOffset,
                 yOffset,
-                TEXTURESIZE,
-                TEXTURESHADOW,
+                TEXTURE_SIZE,
+                TEXTURE_SHADOW,
                 () => 0.5 + PRNG.randomSign() * PRNG.random(0, 0.4)
             )
         );
@@ -185,17 +185,17 @@ export default class FlatMountainChunk extends Chunk {
                 grlist,
                 xOffset,
                 yOffset,
-                POLYLINEFILLCOLOR,
-                POLYLINESTROKECOLOR,
-                POLYLINESTROKEWIDTH
+                POLYLINE_FILL_COLOR,
+                POLYLINE_STROKE_COLOR,
+                POLYLINE_STROKE_WIDTH
             )
         );
         this.add(
             new Stroke(
                 grlist.map((p) => new Point(p.x + xOffset, p.y + yOffset)),
-                STROKEFILLCOLOR,
-                STROKECOLOR,
-                STROKEWIDTH
+                STROKE_FILL_COLOR,
+                STROKE_COLOR,
+                STROKE_WIDTH
             )
         );
 

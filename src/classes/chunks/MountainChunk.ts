@@ -19,24 +19,25 @@ import { config } from "../../config";
 import { distance } from "../../utils/polytools";
 import { generateVegetate } from "../../utils/generateVegetate";
 
-const BACKGROUNDFILLCOLOR = config.chunks.mountain.background.fillColor;
-const BACKGROUNDSTROKECOLOR = config.chunks.mountain.background.strokeColor;
-const BOTTOMCOLORNOALFA = config.chunks.mountain.bottom.colorNoAlfa;
-const DEFAULTHEIGTHMAX = config.chunks.mountain.defaultHeight.max;
-const DEFAULTHEIGTHMIN = config.chunks.mountain.defaultHeight.min;
-const DEFAULTMIDDLEVEGETATION = config.chunks.mountain.defaultMiddleVegetation;
-const DEFAULTSEED = config.chunks.mountain.defaultSeed;
-const DEFAULTWIDTHMAX = config.chunks.mountain.defaultWidth.max;
-const DEFAULTWIDTHMIN = config.chunks.mountain.defaultWidth.min;
-const MIDDLECOLORNOALFA = config.chunks.mountain.middle.colorNoAlfa;
-const OUTLINECOLOR = config.chunks.mountain.outline.color;
-const OUTLINEFILLCOLOR = config.chunks.mountain.outline.fillColor;
-const OUTLINESTROKENOISE = config.chunks.mountain.outline.strokeNoise;
-const OUTLINESTROKEWIDTH = config.chunks.mountain.outline.strokeWidth;
-const RIMCLUSTERS = config.chunks.mountain.rim.clusters;
-const RIMCOLORNOALFA = config.chunks.mountain.rim.colorNoAlfa;
-const TEXTURESIZE = config.chunks.mountain.texture.size;
-const TOPCOLORNOALFA = config.chunks.mountain.top.colorNoAlfa;
+const BACKGROUND_FILL_COLOR = config.chunks.mountain.background.fillColor;
+const BACKGROUND_STROKE_COLOR = config.chunks.mountain.background.strokeColor;
+const BOTTOM_COLORNOALFA = config.chunks.mountain.bottom.colorNoAlfa;
+const DEFAULT_HEIGHT_MAX = config.chunks.mountain.defaultHeight.max;
+const DEFAULT_HEIGHT_MIN = config.chunks.mountain.defaultHeight.min;
+const DEFAULT_MIDDLE_VEGETATION =
+    config.chunks.mountain.defaultMiddleVegetation;
+const DEFAULT_SEED = config.chunks.mountain.defaultSeed;
+const DEFAULT_WIDTH_MAX = config.chunks.mountain.defaultWidth.max;
+const DEFAULT_WIDTH_MIN = config.chunks.mountain.defaultWidth.min;
+const MIDDLE_COLORNOALFA = config.chunks.mountain.middle.colorNoAlfa;
+const OUTLINE_COLOR = config.chunks.mountain.outline.color;
+const OUTLINE_FILL_COLOR = config.chunks.mountain.outline.fillColor;
+const OUTLINE_STROKE_NOISE = config.chunks.mountain.outline.strokeNoise;
+const OUTLINE_STROKE_WIDTH = config.chunks.mountain.outline.strokeWidth;
+const RIM_CLUSTERS = config.chunks.mountain.rim.clusters;
+const RIM_COLORNOALFA = config.chunks.mountain.rim.colorNoAlfa;
+const TEXTURE_SIZE = config.chunks.mountain.texture.size;
+const TOP_COLORNOALFA = config.chunks.mountain.top.colorNoAlfa;
 
 /**
  * Represents a mountainous landscape with various elements.
@@ -49,17 +50,17 @@ export default class MountainChunk extends Chunk {
      *
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
-     * @param {number} [seed=DEFAULTSEED] - The seed for noise functions.
-     * @param {number} [height =PRNG.random(DEFAULTHEIGHTMIN, DEFAULTHEIGHTMAX)] - The height of the mountain.
-     * @param {number} [width =PRNG.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)] - The width of the mountain.
+     * @param {number} [seed=DEFAULT_SEED] - The seed for noise functions.
+     * @param {number} [height =PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX)] - The height of the mountain.
+     * @param {number} [width =PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX)] - The width of the mountain.
 
      */
     constructor(
         xOffset: number,
         yOffset: number,
-        seed: number = DEFAULTSEED,
-        height: number = PRNG.random(DEFAULTHEIGTHMIN, DEFAULTHEIGTHMAX),
-        width: number = PRNG.random(DEFAULTWIDTHMIN, DEFAULTWIDTHMAX)
+        seed: number = DEFAULT_SEED,
+        height: number = PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX),
+        width: number = PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX)
     ) {
         super("mount", xOffset, yOffset);
 
@@ -86,7 +87,7 @@ export default class MountainChunk extends Chunk {
             }
         }
 
-        // RIM
+        // RIM_
 
         generateVegetate(
             elementArray,
@@ -97,8 +98,8 @@ export default class MountainChunk extends Chunk {
                 return new Tree02(
                     x + xOffset,
                     y + yOffset - 5,
-                    RIMCOLORNOALFA + noise.toFixed(3) + ")",
-                    RIMCLUSTERS
+                    RIM_COLORNOALFA + noise.toFixed(3) + ")",
+                    RIM_CLUSTERS
                 );
             },
             function (i, j) {
@@ -119,21 +120,21 @@ export default class MountainChunk extends Chunk {
                 elementArray[0].concat([new Point(0, elementNumber * 4)]),
                 xOffset,
                 yOffset,
-                BACKGROUNDFILLCOLOR,
-                BACKGROUNDSTROKECOLOR
+                BACKGROUND_FILL_COLOR,
+                BACKGROUND_STROKE_COLOR
             )
         );
 
-        // OUTLINE
+        // OUTLINE_
         this.add(
             new Stroke(
                 elementArray[0].map(function (p) {
                     return new Point(p.x + xOffset, p.y + yOffset);
                 }),
-                OUTLINEFILLCOLOR,
-                OUTLINECOLOR,
-                OUTLINESTROKEWIDTH,
-                OUTLINESTROKENOISE
+                OUTLINE_FILL_COLOR,
+                OUTLINE_COLOR,
+                OUTLINE_STROKE_WIDTH,
+                OUTLINE_STROKE_NOISE
             )
         );
 
@@ -144,12 +145,12 @@ export default class MountainChunk extends Chunk {
                 elementArray,
                 xOffset,
                 yOffset,
-                TEXTURESIZE,
+                TEXTURE_SIZE,
                 PRNG.randomChoice([2, 1, 3])
             )
         );
 
-        // TOP
+        // TOP_
         generateVegetate(
             elementArray,
             function (x, y) {
@@ -159,7 +160,7 @@ export default class MountainChunk extends Chunk {
                 return new Tree02(
                     x + xOffset,
                     y + yOffset,
-                    TOPCOLORNOALFA + noise.toFixed(3) + ")"
+                    TOP_COLORNOALFA + noise.toFixed(3) + ")"
                 );
             },
             function (i, j) {
@@ -173,8 +174,8 @@ export default class MountainChunk extends Chunk {
             this
         );
 
-        if (DEFAULTMIDDLEVEGETATION) {
-            // MIDDLE
+        if (DEFAULT_MIDDLE_VEGETATION) {
+            // MIDDLE_
 
             generateVegetate(
                 elementArray,
@@ -189,7 +190,7 @@ export default class MountainChunk extends Chunk {
                         y + yOffset,
                         treeHeight,
                         PRNG.random(1, 4),
-                        MIDDLECOLORNOALFA + noise.toFixed(3) + ")"
+                        MIDDLE_COLORNOALFA + noise.toFixed(3) + ")"
                     );
                 },
                 function (i, j): boolean {
@@ -212,7 +213,7 @@ export default class MountainChunk extends Chunk {
                 this
             );
 
-            // BOTTOM
+            // BOTTOM_
 
             generateVegetate(
                 elementArray,
@@ -228,7 +229,7 @@ export default class MountainChunk extends Chunk {
                         x + xOffset,
                         y + yOffset,
                         treeHeight,
-                        BOTTOMCOLORNOALFA + noise.toFixed(3) + ")",
+                        BOTTOM_COLORNOALFA + noise.toFixed(3) + ")",
                         (x) => Math.pow(x * baseCurve, basePower)
                     );
                 },
@@ -244,7 +245,7 @@ export default class MountainChunk extends Chunk {
             );
         }
 
-        // BOTTOM ARCH
+        // BOTTOM_ ARCH
 
         generateVegetate(
             elementArray,
@@ -282,7 +283,7 @@ export default class MountainChunk extends Chunk {
             this
         );
 
-        // TOP ARCH
+        // TOP_ ARCH
 
         generateVegetate(
             elementArray,
@@ -327,7 +328,7 @@ export default class MountainChunk extends Chunk {
             this
         );
 
-        // BOTTOM ROCK
+        // BOTTOM_ ROCK
         generateVegetate(
             elementArray,
             function (x, y) {

@@ -5,17 +5,17 @@ import Stroke from "../svgPolylines/Stroke";
 import SvgPolyline from "../SvgPolyline";
 import { config } from "../../config";
 
-const BOATFILLCOLOR = config.chunks.boat.boat.fillColor;
-const DEFAULTFLIP = config.chunks.boat.defaultFlip;
-const DEFAULTLENGTH = config.chunks.boat.defaultLength;
-const DEFAULTSCALE = config.chunks.boat.defaultScale;
+const BOATFILL_COLOR = config.chunks.boat.boat.fillColor;
+const DEFAULT_FLIP = config.chunks.boat.defaultFlip;
+const DEFAULT_LENGTH = config.chunks.boat.defaultLength;
+const DEFAULT_SCALE = config.chunks.boat.defaultScale;
 const MANHASSTICK = config.chunks.boat.man.hasStick;
 const MANHATNUMBER = config.chunks.boat.man.hatNumber;
-const STROKECOLOR = config.chunks.boat.stroke.color;
-const STROKEFILLCOLOR = config.chunks.boat.stroke.fillColor;
-const STROKENOISE = config.chunks.boat.stroke.strokeNoise;
-const STROKESTROKEWIDTH = config.chunks.boat.stroke.strokeWidth;
-const STROKEWIDTH = config.chunks.boat.stroke.width;
+const STROKE_COLOR = config.chunks.boat.stroke.color;
+const STROKE_FILL_COLOR = config.chunks.boat.stroke.fillColor;
+const STROKE_NOISE = config.chunks.boat.stroke.strokeNoise;
+const STROKE_STROKE_WIDTH = config.chunks.boat.stroke.strokeWidth;
+const STROKE_WIDTH = config.chunks.boat.stroke.width;
 /**
  * Represents a boat chunk with different scale and flip.
  *
@@ -26,19 +26,19 @@ export default class BoatChunk extends Chunk {
      * Constructor for the Boat class.
      * @param {number} xOffset - The x-coordinate offset for the boat.
      * @param {number} yOffset - The y-coordinate offset for the boat.
-     * @param {number} [scale=DEFAULTSCALE] - The scale of the boat.
-     * @param {boolean} [flip=DEFAULTFLIP] - Whether to flip the boat horizontally.
+     * @param {number} [scale=DEFAULT_SCALE] - The scale of the boat.
+     * @param {boolean} [flip=DEFAULT_FLIP] - Whether to flip the boat horizontally.
      */
     constructor(
         xOffset: number,
         yOffset: number,
-        scale: number = DEFAULTSCALE,
-        flip: boolean = DEFAULTFLIP
+        scale: number = DEFAULT_SCALE,
+        flip: boolean = DEFAULT_FLIP
     ) {
         super("boat", xOffset, yOffset);
 
         const direction = flip ? -1 : 1;
-        const pointNum = DEFAULTLENGTH / 5;
+        const pointNum = DEFAULT_LENGTH / 5;
         const pointArray = new Array<Point>(2 * pointNum);
         const lastIndex = 2 * pointNum - 1;
         const function1 = (x: number) =>
@@ -49,7 +49,7 @@ export default class BoatChunk extends Chunk {
         for (let i = 0; i < pointNum; i++) {
             const hop = i * 5 * scale;
             const xPoint = hop * direction + xOffset;
-            const yPoint = hop / DEFAULTLENGTH;
+            const yPoint = hop / DEFAULT_LENGTH;
 
             pointArray[i] = new Point(xPoint, function1(yPoint) + yOffset);
             pointArray[lastIndex - i] = new Point(
@@ -71,15 +71,15 @@ export default class BoatChunk extends Chunk {
             )
         );
         // boat
-        this.add(new SvgPolyline(pointArray, 0, 0, BOATFILLCOLOR));
+        this.add(new SvgPolyline(pointArray, 0, 0, BOATFILL_COLOR));
         this.add(
             new Stroke(
                 pointArray,
-                STROKEFILLCOLOR,
-                STROKECOLOR,
-                STROKEWIDTH,
-                STROKENOISE,
-                STROKESTROKEWIDTH,
+                STROKE_FILL_COLOR,
+                STROKE_COLOR,
+                STROKE_WIDTH,
+                STROKE_NOISE,
+                STROKE_STROKE_WIDTH,
                 (x) => Math.sin(x * Math.PI * 2)
             )
         );

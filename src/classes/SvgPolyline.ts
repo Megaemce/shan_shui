@@ -1,9 +1,9 @@
 import Point from "./Point";
 import { config } from "../config";
 
-const DEFAULTFILLCOLOR = config.svgPolyline.defaultFillColor;
-const DEFAULTSTROKECOLOR = config.svgPolyline.defaultStrokeColor;
-const DEFAULTSTROKEWIDTH = config.svgPolyline.defaultStrokeWidth;
+const DEFAULT_FILL_COLOR = config.svgPolyline.defaultFillColor;
+const DEFAULT_STROKE_COLOR = config.svgPolyline.defaultStrokeColor;
+const DEFAULT_STROKE_WIDTH = config.svgPolyline.defaultStrokeWidth;
 
 /**
  * Represents a polyline in SVG.
@@ -18,17 +18,17 @@ export default class SvgPolyline {
      * @param {Point[]} pointArray - Array of SvgPoint objects defining the polyline.
      * @param {number} [xOffset=0] - The x-axis offset.
      * @param {number} [yOffset=0] - The y-axis offset.
-     * @param {string} [fillColor=DEFAULTFILLCOLOR] - The fill color.
-     * @param {string} [strokeColor=DEFAULTSTROKECOLOR] - The stroke color.
-     * @param {number} [strokeWidth=DEFAULTSTROKEWIDTH] - The stroke width.
+     * @param {string} [fillColor=DEFAULT_FILL_COLOR] - The fill color.
+     * @param {string} [strokeColor=DEFAULT_STROKE_COLOR] - The stroke color.
+     * @param {number} [strokeWidth=DEFAULT_STROKE_WIDTH] - The stroke width.
      */
     constructor(
         pointArray: Point[],
         xOffset: number = 0,
         yOffset: number = 0,
-        fillColor: string = DEFAULTFILLCOLOR,
-        strokeColor: string = DEFAULTSTROKECOLOR,
-        strokeWidth: number = DEFAULTSTROKEWIDTH
+        fillColor: string = DEFAULT_FILL_COLOR,
+        strokeColor: string = DEFAULT_STROKE_COLOR,
+        strokeWidth: number = DEFAULT_STROKE_WIDTH
     ) {
         const style = `style='
             fill:${fillColor};
@@ -46,13 +46,5 @@ export default class SvgPolyline {
                 )
                 .join(" ")}
             '${style}/>`;
-    }
-
-    /**
-     * Renders the polyline as a string.
-     * @returns {string} The string representation of the polyline.
-     */
-    render(): string {
-        return this.stringify;
     }
 }

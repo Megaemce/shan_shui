@@ -1,15 +1,15 @@
 import { config } from "../config";
 
-const DEFAULTSEED = config.prng.defaultSeed;
-const PRIMEONE = config.prng.primeOne;
-const PRIMETWO = config.prng.primeTwo;
-const SEMIPRIME = PRIMEONE * PRIMETWO;
+const DEFAULT_SEED = config.prng.defaultSeed;
+const PRIM_EONE = config.prng.primeOne;
+const PRIM_ETWO = config.prng.primeTwo;
+const SEMIPRIM_E = PRIM_EONE * PRIM_ETWO;
 
 /**
  * Pseudo-Random Number Generator (PRNG) class.
  */
 export default class PRNG {
-    static _seed: number = DEFAULTSEED;
+    static _seed: number = DEFAULT_SEED;
 
     /**
      * Hashes the input value for use in seeding.
@@ -45,13 +45,13 @@ export default class PRNG {
          * Redo the seeding process if the generated value is not suitable.
          */
         const redo = () => {
-            newSeed = (this.hash(value) + z) % SEMIPRIME;
+            newSeed = (this.hash(value) + z) % SEMIPRIM_E;
             z += 1;
         };
 
         while (
-            newSeed % PRIMEONE === 0 ||
-            newSeed % PRIMETWO === 0 ||
+            newSeed % PRIM_EONE === 0 ||
+            newSeed % PRIM_ETWO === 0 ||
             newSeed === 0 ||
             newSeed === 1
         ) {
@@ -71,8 +71,8 @@ export default class PRNG {
      * @returns The next pseudo-random number (float) in the sequence.
      */
     static next(): number {
-        this._seed = (this._seed * this._seed) % SEMIPRIME;
-        return this._seed / SEMIPRIME;
+        this._seed = (this._seed * this._seed) % SEMIPRIM_E;
+        return this._seed / SEMIPRIM_E;
     }
 
     /**

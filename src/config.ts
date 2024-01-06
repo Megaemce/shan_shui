@@ -190,7 +190,6 @@ export const config = {
     },
     ui: {
         resolution: 512,
-        defaultTimeout: 10,
         canvasWidth: 512,
         zoom: 1.142,
     },

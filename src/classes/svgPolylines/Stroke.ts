@@ -4,11 +4,11 @@ import Point from "../Point";
 import SvgPolyline from "../SvgPolyline";
 import { config } from "../../config";
 
-const DEFAULTFILLCOLOR = config.svgPolyline.stroke.defaultFillColor;
-const DEFAULTNOISE = config.svgPolyline.stroke.defaultNoise;
-const DEFAULTSTROKECOLOR = config.svgPolyline.stroke.defaultStrokeColor;
-const DEFAULTSTROKEWIDTH = config.svgPolyline.stroke.defaultStrokeWidth;
-const DEFAULTWIDTH = config.svgPolyline.stroke.defaultWidth;
+const DEFAULT_FILL_COLOR = config.svgPolyline.stroke.defaultFillColor;
+const DEFAULT_NOISE = config.svgPolyline.stroke.defaultNoise;
+const DEFAULT_STROKE_COLOR = config.svgPolyline.stroke.defaultStrokeColor;
+const DEFAULT_STROKE_WIDTH = config.svgPolyline.stroke.defaultStrokeWidth;
+const DEFAULT_WIDTH = config.svgPolyline.stroke.defaultWidth;
 
 /**
  * Class representing a stylized stroke using Perlin noise.
@@ -17,20 +17,20 @@ export default class Stroke extends SvgPolyline {
     /**
      * Constructs a Stroke instance.
      * @param {Point[]} pointArray - List of points defining the stroke.
-     * @param {string} [fillColor=DEFAULTFILLCOLOR] - Fill color for the stroke.
-     * @param {string} [color=DEFAULTSTROKECOLOR] - Stroke color.
-     * @param {number} [width=DEFAULTWIDTH] - Width of the stroke.
-     * @param {number} [noise=DEFAULTNOISE] - Amount of noise applied to the stroke.
-     * @param {number} [strokeWidth=DEFAULTSTROKEWIDTH] - Outer width of the stroke.
+     * @param {string} [fillColor=DEFAULT_FILL_COLOR] - Fill color for the stroke.
+     * @param {string} [color=DEFAULT_STROKE_COLOR] - Stroke color.
+     * @param {number} [width=DEFAULT_WIDTH] - Width of the stroke.
+     * @param {number} [noise=DEFAULT_NOISE] - Amount of noise applied to the stroke.
+     * @param {number} [strokeWidth=DEFAULT_STROKE_WIDTH] - Outer width of the stroke.
      * @param {(x: number) => number} [strokeWidthFunction=(x: number) => Math.sin(x * Math.PI)] - Function to modulate stroke width.
      */
     constructor(
         pointArray: Point[],
-        fillColor: string = DEFAULTFILLCOLOR,
-        color: string = DEFAULTSTROKECOLOR,
-        width: number = DEFAULTWIDTH,
-        noise: number = DEFAULTNOISE,
-        strokeWidth: number = DEFAULTSTROKEWIDTH,
+        fillColor: string = DEFAULT_FILL_COLOR,
+        color: string = DEFAULT_STROKE_COLOR,
+        width: number = DEFAULT_WIDTH,
+        noise: number = DEFAULT_NOISE,
+        strokeWidth: number = DEFAULT_STROKE_WIDTH,
         strokeWidthFunction: (x: number) => number = (x: number) =>
             Math.sin(x * Math.PI)
     ) {
