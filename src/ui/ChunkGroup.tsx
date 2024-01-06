@@ -6,7 +6,7 @@ export default function ChunkGroup({
     layer,
 }: IChunkGroup): ReactElement {
     return (
-        <g id={`chunk${chunkId}`}>
+        <g id={`chunk${chunkId}`} style={{ mixBlendMode: "revert-layer" }}>
             {layer.map((element, index) => (
                 <g
                     id={`chunk${chunkId}-element${index}-${element.tag}`}
