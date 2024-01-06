@@ -75,7 +75,7 @@ export default class Tree07 extends ComplexSvg {
             const m = midPoint(T[k]);
             const c = (Perlin.noise(m.x * 0.02, m.y * 0.02) * 200 + 50) | 0;
             const co = `rgba(${c},${c},${c},0.8)`;
-            this.add(new SvgPolyline(T[k], 0, 0, co, co));
+            this.addAtStart(new SvgPolyline(T[k], 0, 0, co, co));
         }
     }
 }

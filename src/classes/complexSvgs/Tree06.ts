@@ -34,7 +34,7 @@ export default class Tree06 extends ComplexSvg {
             0
         );
 
-        this.add(
+        this.addAtStart(
             new SvgPolyline(pointArray, xOffset, yOffset, "white", color, 0)
         );
 
@@ -48,7 +48,7 @@ export default class Tree06 extends ComplexSvg {
                 ),
                 color,
                 color,
-                2.5,
+                1.5,
                 0.9,
                 0,
                 (_) => Math.sin(1)

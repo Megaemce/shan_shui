@@ -78,7 +78,7 @@ export default class Tree01 extends ComplexSvg {
             );
         }
 
-        this.add(new SvgPolyline(leftLines, 0, 0, "none", color, 1.5));
-        this.add(new SvgPolyline(rightLines, 0, 0, "none", color, 1.5));
+        this.addAtStart(new SvgPolyline(leftLines, 0, 0, "none", color, 1.5));
+        this.addAtStart(new SvgPolyline(rightLines, 0, 0, "none", color, 1.5));
     }
 }

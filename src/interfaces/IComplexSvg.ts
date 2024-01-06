@@ -29,4 +29,12 @@ export default interface IComplexSvg {
      * @param {SvgPolyline | ComplexSvg} object - The object to be added.
      */
     add: (object: SvgPolyline | ComplexSvg) => void;
+
+    /**
+     * Adds an object at the beginning of elements array.
+     * This way object will be rendered first, thus being a background.
+     * @function
+     * @param {SvgPolyline | ComplexSvg} object - The object to be added at the beginning of this.elements
+     */
+    addAtStart: (object: SvgPolyline | ComplexSvg) => void;
 }

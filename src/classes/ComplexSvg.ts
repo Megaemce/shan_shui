@@ -15,9 +15,23 @@ export default class ComplexSvg implements IComplexSvg {
      */
     add(object: SvgPolyline | ComplexSvg) {
         if (object instanceof SvgPolyline) {
-            this.elements = this.elements.concat(object);
+            this.elements.push(object);
         } else {
             this.elements = this.elements.concat(object.elements);
+        }
+    }
+
+    /**
+     * Adds an object at the beginning of elements array.
+     * This way object will be rendered first, thus being a background.
+     *
+     * @param {SvgPolyline | ComplexSvg} object - The object to be added to this.elements
+     */
+    addAtStart(object: SvgPolyline | ComplexSvg) {
+        if (object instanceof SvgPolyline) {
+            this.elements.unshift(object);
+        } else {
+            this.elements = object.elements.concat(this.elements);
         }
     }
 

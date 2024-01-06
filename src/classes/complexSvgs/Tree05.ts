@@ -85,7 +85,7 @@ export default class Tree05 extends ComplexSvg {
             }
         }
 
-        this.add(
+        this.addAtStart(
             new SvgPolyline(
                 pointArrayModified,
                 xOffset,

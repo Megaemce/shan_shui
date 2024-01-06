@@ -82,6 +82,6 @@ export default class Tree03 extends ComplexSvg {
                 newY
             );
         }
-        this.add(new SvgPolyline(pointArray, 0, 0, "white", color, 1.5));
+        this.addAtStart(new SvgPolyline(pointArray, 0, 0, "white", color, 1.5));
     }
 }

@@ -122,7 +122,7 @@ export default class Tree08 extends ComplexSvg {
             point.y = yOffset + d * Math.sin(a + angle);
         });
 
-        this.add(
+        this.addAtStart(
             new Stroke(
                 pointArrayModified,
                 "rgba(100,100,100,0.5)",
