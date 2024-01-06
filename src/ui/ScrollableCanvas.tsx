@@ -73,7 +73,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     </filter>
                 </defs>
                 <g id="main" width={windowWidth} height={windowHeight}>
-                    {chunkCache.layers.sort().map((layer, i) => {
+                    {chunkCache.layers.map((layer, i) => {
                         return <ChunkGroup key={i} chunkId={i} layer={layer} />;
                     })}
                 </g>
