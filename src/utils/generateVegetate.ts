@@ -1,21 +1,21 @@
 import Point from "../classes/Point";
-import ComplexSvg from "../classes/ComplexSvg";
+import Structure from "../classes/Structure";
 
 /**
  * Generate vegetation elements based on specified growth and proof rules.
  * @param {Point[][]} elementArray - A 2D array representing terrain's elements with their points.
- * @param {(x: number, y: number) => ComplexSvg} treeFunc - A function that generates vegetation elements at a given location.
+ * @param {(x: number, y: number) => Structure} treeFunc - A function that generates vegetation elements at a given location.
  * @param {(i: number, j: number) => boolean} growthRule - A function that determines whether vegetation should grow at a specific point based on the indices.
  * @param {(elementArray: Point[], i: number) => boolean} proofRule - A function that determines additional conditions for vegetation growth based on the array of potential vegetation points and an index.
- * @param {ComplexSvg} target - The target ComplexSvg element where the generated vegetation elements are to be added.
+ * @param {Structure} target - The target ComplexSvg element where the generated vegetation elements are to be added.
  * @returns {void}
  */
 export function generateVegetate(
     elementArray: Point[][],
-    treeFunc: (x: number, y: number) => ComplexSvg,
+    treeFunc: (x: number, y: number) => Structure,
     growthRule: (i: number, j: number) => boolean,
     proofRule: (points: Point[], i: number) => boolean,
-    target: ComplexSvg
+    target: Structure
 ): void {
     const vegList: Point[] = [];
 

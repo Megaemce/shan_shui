@@ -1,16 +1,13 @@
 import React, { ReactElement } from "react";
-import { IChunkGroup } from "../interfaces/IChunkGroup";
+import { IFrame } from "../interfaces/IFrame";
 
-export default function ChunkGroup({
-    chunkId,
-    layer,
-}: IChunkGroup): ReactElement {
+export default function Frame({ chunkId, frame }: IFrame): ReactElement {
     return (
-        <g id={`chunk${chunkId}`} style={{ mixBlendMode: "revert-layer" }}>
-            {layer.map((element, index) => (
+        <g id={`frame${chunkId}`}>
+            {frame.map((element, index) => (
                 <g
-                    id={`chunk${chunkId}-element${index}-${element.tag}`}
-                    key={`chunk${chunkId}-element${index}-${element.tag}`}
+                    id={`frame${chunkId}-element${index}-${element.tag}`}
+                    key={`frame${chunkId}-element${index}-${element.tag}`}
                     dangerouslySetInnerHTML={{
                         __html: element.stringify(),
                     }}

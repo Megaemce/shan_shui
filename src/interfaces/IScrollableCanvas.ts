@@ -1,4 +1,4 @@
-import ChunkCache from "../classes/ChunkCache";
+import CachedLayer from "../classes/CachedLayer";
 
 /**
  * Represents the properties for the ScrollableCanvas component.
@@ -51,7 +51,7 @@ export interface IScrollableCanvas {
     /**
      * ChunkCache instance for caching and managing chunks.
      *
-     * @type {ChunkCache}
+     * @type {CachedLayer}
      */
-    chunkCache: ChunkCache;
+    chunkCache: CachedLayer;
 }

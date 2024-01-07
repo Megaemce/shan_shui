@@ -1,5 +1,5 @@
 import "./styles.css";
-import ChunkGroup from "./ChunkGroup";
+import Frame from "./ChunkGroup";
 import Range from "../classes/Range";
 import React from "react";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
@@ -73,8 +73,8 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     </filter>
                 </defs>
                 <g id="main" width={windowWidth} height={windowHeight}>
-                    {chunkCache.layers.map((layer, i) => {
-                        return <ChunkGroup key={i} chunkId={i} layer={layer} />;
+                    {chunkCache.frames.map((frame, i) => {
+                        return <Frame key={i} chunkId={i} frame={frame} />;
                     })}
                 </g>
                 <rect

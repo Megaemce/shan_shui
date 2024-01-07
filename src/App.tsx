@@ -1,5 +1,5 @@
 import "./App.css";
-import ChunkCache from "./classes/ChunkCache";
+import CachedLayer from "./classes/CachedLayer";
 import PRNG from "./classes/PRNG";
 import Range from "./classes/Range";
 import React, { useState, useEffect, useRef, useCallback } from "react";
@@ -19,7 +19,7 @@ export const App: React.FC = () => {
     );
     const currentDate = new Date().getTime().toString();
     const currentSeed = currentURLSeed || currentDate;
-    const chunkCacheRef = useRef(new ChunkCache());
+    const chunkCacheRef = useRef(new CachedLayer());
     PRNG.seed = currentSeed;
 
     // State variables

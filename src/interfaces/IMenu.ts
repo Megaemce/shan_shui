@@ -1,4 +1,4 @@
-import ChunkCache from "../classes/ChunkCache";
+import CachedLayer from "../classes/CachedLayer";
 import Range from "../classes/Range";
 
 /**
@@ -92,9 +92,9 @@ export interface IMenu {
     /**
      * The chunk cache associated with the menu.
      *
-     * @type {ChunkCache}
+     * @type {CachedLayer}
      */
-    chunkCache: ChunkCache;
+    chunkCache: CachedLayer;
 
     /**
      * The range for saving menu state.
