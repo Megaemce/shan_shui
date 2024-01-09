@@ -11,6 +11,10 @@ npm install
 npm start
 ```
 
+## 🖼️ Composition elements
+
+![man](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/render_scheme.png)
+
 ## 📦 Examples of rendered components
 
 <details>
