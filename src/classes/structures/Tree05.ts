@@ -95,7 +95,7 @@ export default class Tree05 extends Structure {
 
         this.add(new Barkify(xOffset, yOffset, branches));
 
-        // Tree trunk
+        // Tree trunkB
         this.add(
             new Stroke(
                 pointArrayModified.map((point: Point) => {

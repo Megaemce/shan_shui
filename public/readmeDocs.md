@@ -19,69 +19,34 @@ On your current screen, multiple frames may intersect with each other, comprisin
 
 ## 📦 Examples of rendered components
 
+### Layers
+
 <details>
-<summary>👨🏻‍🌾 Man</summary>
+<summary>BackgroundMountainLayer</summary>
 
-Made of `Hat` (optional), `Man` and `Stick` (optional)
-
-![man](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/man.png)
-
-</details>
-<br>
-<details>
-<summary>💦 Water</summary>
-
-![water](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/water.png)
+![distmountain](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/distmountain.png)
 
 </details>
 <br>
 
 <details>
-<summary>🏣 Architectures</summary>
-<br>
+<summary>MiddleMountainLayer</summary>
 
-<details>
-<summary>Pavilion</summary>
-
-Made of `Hut` 🟩, `Box` 🟥 and `Rail` 🟧
-
-![arch01](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch01.png)
+![mountain](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/mountain.png)
 
 </details>
 <br>
 
 <details>
-<summary>House</summary>
+<summary>BottomMountainLayer</summary>
 
-Made of `Roof` ⬛ and `Box` 🟥
-
-![arch02](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch02.png)
+![flatmountain](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/flatmountain.png)
 
 </details>
 <br>
 
 <details>
-<summary>Pagoda</summary>
-
-Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
-
-![arch03](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch03.png)
-
-</details>
-<br>
-
-<details>
-<summary>Tower</summary>
-
-Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
-
-![arch04](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch04.png)
-
-</details>
-<br>
-
-<details>
-<summary>Boat</summary>
+<summary>BoatLayer</summary>
 
 ![boat01](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/boat01.png)
 
@@ -89,21 +54,191 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <br>
 
 <details>
+<summary>WaterLayer</summary>
+
+![water](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/water.png)
+
+</details>
+<br>
+
+### Structures
+
+<details>
+<summary>Bark</summary>
+
+Made out of `Stroke`.
+
+</details>
+<br>
+
+<details>
+<summary>Barkify</summary>
+
+Made out of `Blob`, `Bark` and `Stroke`
+
+</details>
+<br>
+
+<details>
+<summary>BottomMountainDecoration</summary>
+
+Made out of `Tree08`,`Tree07`,`Tree02`,`Tree05`, `Tree04`, `Rock` and `Pavilion`.
+
+</details>
+<br>
+
+<details>
+<summary>Box</summary>
+
+Made out of `Stroke`.
+
+</details>
+<br>
+
+<details>
+<summary>Cloth</summary>
+
+Made out of `Stroke`.
+
+</details>
+<br>
+
+<details>
+<summary>Hat01</summary>
+
+Made out of `Element`.
+
+</details>
+<br>
+
+<details>
+<summary>Hat02</summary>
+
+Made out of `Element`.
+
+</details>
+<br>
+
+<details>
+<summary>House</summary>
+
+Made out of `Roof` ⬛ and `Box` 🟥
+
+![arch02](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch02.png)
+
+</details>
+<br>
+
+<details>
+<summary>Man</summary>
+
+Made out of `Hat` (optional), `Man` and `Stick` (optional)
+
+![man](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/man.png)
+
+</details>
+<br>
+
+<details>
+<summary>MiddleMountainFoot</summary>
+
+Made out of `Stroke`.
+
+</details>
+<br>
+
+<details>
+<summary>Pagoda</summary>
+
+Made out of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
+
+![arch03](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch03.png)
+
+</details>
+<br>
+
+<details>
+<summary>PagodaRoof</summary>
+
+Made out of `Stroke`.
+
+</details>
+<br>
+
+<details>
+<summary>Pavilion</summary>
+
+Made out of `Hut` 🟩, `Box` 🟥 and `Rail` 🟧
+
+![arch01](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch01.png)
+
+</details>
+<br>
+
+<details>
+<summary>Rail</summary>
+
+Made out of `Stroke`.
+
+</details>
+<br>
+
+<details>
+<summary>Rock</summary>
+
+Made out of `Stroke` and `Texture`.
+
+</details>
+<br>
+
+<details>
+<summary>Roof</summary>
+
+Made out of `Stroke`.
+
+</details>
+<br>
+
+<details>
+<summary>Stick</summary>
+
+Made out of `Element`.
+
+</details>
+<br>
+
+<details>
+<summary>Texture</summary>
+
+Made out of `Stroke`.
+
+</details>
+<br>
+
+<details>
+<summary>Tower</summary>
+
+Made out of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
+
+![arch04](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/arch04.png)
+
+</details>
+<br>
+
+<details>
 <summary>TransmissionTower</summary>
+
+Made out of `Stroke`.
 
 ![tower01](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/arch/tower01.png)
 
 </details>
-
-</details>
-<br>
-
-<details>
-<summary>🌳 Trees</summary>
 <br>
 
 <details>
 <summary>Tree01</summary>
+
+Made out of `Element`.
 
 ![tree01](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree01.png)
 
@@ -112,6 +247,8 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 
 <details>
 <summary>Tree02</summary>
+
+Made out of `Blob`.
 
 ![tree02](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree02.png)
 
@@ -122,6 +259,8 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree03</summary>
 
+Made out of `Element`.
+
 ![tree03](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree03.png)
 
 </details>
@@ -129,6 +268,8 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 
 <details>
 <summary>Tree04</summary>
+
+Made out of `Stroke`, `Twig` and `Barkify`.
 
 ![tree04](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree04.png)
 
@@ -138,6 +279,8 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree05</summary>
 
+Made out of `Stroke`, `Twig` and `Barkify`.
+
 ![tree05](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree05.png)
 
 </details>
@@ -145,6 +288,8 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 
 <details>
 <summary>Tree06</summary>
+
+Made out of `Stroke`.
 
 ![tree06](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree06.png)
 
@@ -154,6 +299,8 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree07</summary>
 
+Made out of `Blob`.
+
 ![tree07](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree07.png)
 
 </details>
@@ -162,39 +309,24 @@ Made of `PagodaRoof` 🟦, `Box` 🟥 and `Rail` 🟧
 <details>
 <summary>Tree08</summary>
 
+Made out of `Stroke`.
+
 ![tree08](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/tree/tree08.png)
 
 </details>
-
-</details>
 <br>
 
 <details>
-<summary>⛰️ Mountains</summary>
-<br>
+<summary>Twig</summary>
 
-<details>
-<summary>Mountain</summary>
-
-![mountain](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/mountain.png)
+Made out of `Twig`, `Blob` and `Stroke`
 
 </details>
 <br>
 
-<details>
-<summary>FlatMountain</summary>
+### Elements
 
-![flatmountain](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/flatmountain.png)
-
-</details>
-<br>
-
-<details>
-<summary>DistantMountain</summary>
-
-![distmountain](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/distmountain.png)
-
-</details>
-<br>
-
-</details>
+-   Blob
+-   Branch
+-   Decoration
+-   Stroke
