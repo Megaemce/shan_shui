@@ -48,6 +48,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     left: 0,
                     position: "fixed",
                     top: 0,
+                    scrollBehavior: "smooth",
                 }}
             >
                 <defs>
