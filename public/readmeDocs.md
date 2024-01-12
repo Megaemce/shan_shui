@@ -15,7 +15,7 @@ npm start
 
 ![man](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/render_scheme.png)
 
-On your current screen, multiple frames may intersect with each other, comprising one to four layers and containing various structures formed by numerous elements.
+On your current screen, multiple frames may intersect with each other, comprising one to five layers and containing various structures formed by numerous elements.
 
 ## 📦 Examples of rendered components
 
