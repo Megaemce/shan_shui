@@ -108,21 +108,19 @@ export const App: React.FC = () => {
                 horizontalScroll(step);
                 requestAnimationFrame(autoScrollCallback);
             };
-
-            const interval = 1000 / FPS;
-            const autoScrollTimeout = setTimeout(autoScrollCallback, interval);
+            const autoScrollTimeout = setTimeout(autoScrollCallback, step);
 
             return () => clearTimeout(autoScrollTimeout);
         },
-        [autoScroll, FPS, horizontalScroll]
+        [autoScroll, horizontalScroll]
     );
 
     /**
      * Effect to initiate horizontal auto-scrolling.
      */
     useEffect(() => {
-        horizontalAutoScroll(FPS);
-    }, [horizontalAutoScroll, FPS]);
+        autoScroll && horizontalAutoScroll(FPS);
+    }, [autoScroll, horizontalAutoScroll, FPS]);
 
     /**
      * Callback function to reload the page with a new seed.
