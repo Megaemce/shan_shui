@@ -49,7 +49,7 @@ export interface IScrollableCanvas {
      */
 
     /**
-     * ChunkCache instance for caching and managing chunks.
+     * CachedLayer instance for caching and managing chunks.
      *
      * @type {CachedLayer}
      */
