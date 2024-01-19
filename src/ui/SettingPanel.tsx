@@ -1,9 +1,8 @@
 import "./styles.css";
 import React, { useState } from "react";
-import { ButtonMenu } from "./ButtonMenu";
-import { ButtonSource } from "./ButtonSource";
 import { ISettingPanel } from "../interfaces/ISettingPanel";
 import { Menu } from "./Menu";
+import { Divide as Hamburger } from "hamburger-react";
 
 export const SettingPanel: React.FC<ISettingPanel> = ({
     seed,
@@ -22,6 +21,9 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     toggleAutoLoad,
 }) => {
     const [menuVisible, setMenuVisible] = useState(false);
+    const handleClick = () => {
+        window.location.href = "https://github.com/Megaemce/shan_shui";
+    };
 
     const toggleVisible = () => setMenuVisible(!menuVisible);
 
@@ -30,12 +32,22 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     return (
         <div id="SETTING" style={{ left }}>
             <div id="BTN_ROW">
-                <ButtonMenu
-                    onClick={toggleVisible}
-                    menu_visible={menuVisible}
-                    left={left}
+                <Hamburger
+                    toggled={menuVisible}
+                    toggle={toggleVisible}
+                    size={20}
+                    duration={0.9}
+                    label="Show menu"
                 />
-                <ButtonSource />
+                <div
+                    id="SOURCE_BTN"
+                    onClick={handleClick}
+                    title="Fork me on Github!"
+                >
+                    <div>
+                        <span id="SRC_BTN.t">&lt;/&gt;</span>
+                    </div>
+                </div>
             </div>
             <div style={{ height: 4 }} />
             {menuVisible && (

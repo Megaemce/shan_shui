@@ -7,7 +7,7 @@ div#SETTING {
 
 div#BTN_ROW {
     top: 3px;
-    height: 32px;
+    height: 48px;
     user-select: none;
     vertical-align: middle;
     font-size: 18px;
@@ -16,20 +16,16 @@ div#BTN_ROW {
 div#BTN_ROW > div {
     float: left;
     margin-right: 3px;
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     border: 1px solid rgba(0, 0, 0, 0.4);
     text-align: center;
-    display: table;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     color: rgba(0, 0, 0, 0.4);
     z-index: 1000;
-}
-
-div#SET_BTN > div,
-div#SOURCE_BTN > div {
-    display: table-cell;
-    vertical-align: middle;
 }
 
 div#MENU {
@@ -66,10 +62,10 @@ table#SCROLLABLE_CANVAS {
     display: inline;
 }
 
+/* Positioning of L and R buttons */
 #SCROLLABLE_CANVAS div#L {
     left: 3px;
 }
-
 #SCROLLABLE_CANVAS div#R {
     right: 3px;
 }
