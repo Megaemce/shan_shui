@@ -12,7 +12,7 @@ Discover the beauty of an ever-evolving Chinese landscape art. This project comb
 
 ## 🏗️ Tech stack
 
-React and nothing more! ✨
+React, TypeScript and SVG. Nothing more! ✨
 
 ## ⚙️ Installation
 
@@ -25,13 +25,16 @@ npm start
 
 ## 📖 Documentation
 
-[Check it in online](https://megaemce.github.io/shan_shui_docs/) or generate locally with TypeDoc
+[Check it in online](https://megaemce.github.io/shan_shui_docs/) or generate it locally with TypeDoc
 
 ```
 npm doc
 ```
 
-## 🙏🏻 Thank you
+## 🙏 Thank you
 
-This is the third iteration of this app. 
-Firstly, it was created as a [monolithic JavaScript file](https://github.com/LingDong-/shan-shui-inf) by [Lingdong Huang](https://github.com/LingDong-) and then it was [rebuilt with React](https://github.com/RedContritio/shan_shui_inf) by [RedContritio](https://github.com/RedContritio).
+This is the third iteration of this app:
+
+1. Firstly created as a [monolithic JavaScript file](https://github.com/LingDong-/shan-shui-inf) by [Lingdong Huang](https://github.com/LingDong-)
+2. Then it was [rebuilt with React 17](https://github.com/RedContritio/shan_shui_inf) by [RedContritio](https://github.com/RedContritio).
+3. I have rebuilt it using modern React components, employing an object-oriented programming (OOP) approach for enhanced performance. Additionally, I have addressed several bugs and incorporated various improvements.
