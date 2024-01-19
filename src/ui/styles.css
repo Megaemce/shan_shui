@@ -1,7 +1,11 @@
+h4 {
+    margin: 5px;
+}
+
 div#SETTING {
     position: fixed;
     z-index: 1000;
-    left: 40px;
+    left: 56px;
     top: 3px;
 }
 
@@ -13,13 +17,16 @@ div#BTN_ROW {
     font-size: 18px;
 }
 
+div#INP_SEED {
+    width: 100px;
+}
+
 div#BTN_ROW > div {
     float: left;
     margin-right: 3px;
     width: 48px;
     height: 48px;
     border: 1px solid rgba(0, 0, 0, 0.4);
-    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -31,28 +38,21 @@ div#BTN_ROW > div {
 div#MENU {
     background-color: rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.4);
-    text-align: start;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 
-div#MENU td > * {
-    margin-top: 0;
-    margin-bottom: 0;
-    user-select: none;
-}
-
-table#SCROLLABLE_CANVAS {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-#SCROLLABLE_CANVAS div#L,
-#SCROLLABLE_CANVAS div#R {
+#SCROLLABLE_CANVAS div#LeftScroll,
+#SCROLLABLE_CANVAS div#RightScroll {
     position: fixed;
     z-index: 1000;
-    width: 32px;
+    width: 48px;
     text-align: center;
     top: 3px;
     color: rgba(0, 0, 0, 0.4);
-    display: table;
+    display: flex;
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.4);
     user-select: none;
@@ -60,19 +60,23 @@ table#SCROLLABLE_CANVAS {
 
 .ROWITEM {
     display: inline;
+    width: 60px;
 }
 
 /* Positioning of L and R buttons */
-#SCROLLABLE_CANVAS div#L {
+#SCROLLABLE_CANVAS div#LeftScroll {
+    justify-content: left;
     left: 3px;
 }
-#SCROLLABLE_CANVAS div#R {
+#SCROLLABLE_CANVAS div#RightScroll {
+    justify-content: right;
     right: 3px;
 }
 
-#SCROLLABLE_CANVAS div#L\.t,
-#SCROLLABLE_CANVAS div#R\.t {
+#SCROLLABLE_CANVAS div#LeftScroll\.icon,
+#SCROLLABLE_CANVAS div#RightScroll\.icon {
     vertical-align: middle;
-    display: table-cell;
+    display: flex;
+    align-items: center;
     font-size: 32px;
 }

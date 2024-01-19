@@ -27,10 +27,8 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
 
     const toggleVisible = () => setMenuVisible(!menuVisible);
 
-    const left = 40;
-
     return (
-        <div id="SETTING" style={{ left }}>
+        <div id="SETTING">
             <div id="BTN_ROW">
                 <Hamburger
                     toggled={menuVisible}
@@ -52,7 +50,6 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
             <div style={{ height: 4 }} />
             {menuVisible && (
                 <Menu
-                    display="block"
                     seed={seed}
                     setSeed={setSeed}
                     step={step}

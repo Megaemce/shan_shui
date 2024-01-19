@@ -8,13 +8,6 @@ import Range from "../classes/Range";
  */
 export interface IMenu {
     /**
-     * The display name of the menu.
-     *
-     * @type {string}
-     */
-    display: string;
-
-    /**
      * The seed value for the menu.
      *
      * @type {string}

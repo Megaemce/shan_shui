@@ -33,9 +33,7 @@ export const ScrollBar: React.FC<IScrollBar> = ({
                 height,
             }}
         >
-            <div id={`${id}.t`}>
-                <span>{icon}</span>
-            </div>
+            <div id={`${id}.icon`}>{icon}</div>
         </div>
     );
 };

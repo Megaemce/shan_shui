@@ -6,7 +6,6 @@ import { DebounceInput } from "react-debounce-input";
 import { IMenu } from "../interfaces/IMenu";
 
 export const Menu: React.FC<IMenu> = ({
-    display,
     seed,
     setSeed,
     step,
@@ -50,7 +49,7 @@ export const Menu: React.FC<IMenu> = ({
         );
 
     return (
-        <div id="MENU" style={{ display }}>
+        <div id="MENU">
             <div>
                 <h4>Current seed</h4>
                 <DebounceInput
@@ -60,7 +59,6 @@ export const Menu: React.FC<IMenu> = ({
                     value={seed}
                     debounceTimeout={500}
                     onChange={(e) => setSeed(e.target.value)}
-                    style={{ width: 120 }}
                 />
                 <button onClick={reloadWindowSeed}>Generate</button>
             </div>
@@ -105,7 +103,6 @@ export const Menu: React.FC<IMenu> = ({
                     debounceTimeout={500}
                     value={saveRange.left}
                     onChange={onChangeSaveRangeL}
-                    style={{ width: 60 }}
                 />
                 to
                 <DebounceInput
@@ -114,7 +111,6 @@ export const Menu: React.FC<IMenu> = ({
                     debounceTimeout={500}
                     value={saveRange.right}
                     onChange={onChangeSaveRangeR}
-                    style={{ width: 60 }}
                 />
             </div>
 

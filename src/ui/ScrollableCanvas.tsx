@@ -95,7 +95,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     return (
         <div id="SCROLLABLE_CANVAS">
             <ScrollBar
-                id="L"
+                id="LeftScroll"
                 onClick={() => horizontalScroll(-step)}
                 height={windowHeight - 8}
                 icon="&#x3008;"
@@ -147,7 +147,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                 />
             </svg>
             <ScrollBar
-                id="R"
+                id="RightScroll"
                 onClick={() => horizontalScroll(step)}
                 height={windowHeight - 8}
                 icon="&#x3009;"
