@@ -5,17 +5,17 @@ import Stroke from "../elements/Stroke";
 import Element from "../Element";
 import { config } from "../../config";
 
-const BOATFILL_COLOR = config.chunks.boat.boat.fillColor;
-const DEFAULT_FLIP = config.chunks.boat.defaultFlip;
-const DEFAULT_LENGTH = config.chunks.boat.defaultLength;
-const DEFAULT_SCALE = config.chunks.boat.defaultScale;
-const MANHASSTICK = config.chunks.boat.man.hasStick;
-const MANHATNUMBER = config.chunks.boat.man.hatNumber;
-const STROKE_COLOR = config.chunks.boat.stroke.color;
-const STROKE_FILL_COLOR = config.chunks.boat.stroke.fillColor;
-const STROKE_NOISE = config.chunks.boat.stroke.strokeNoise;
-const STROKE_STROKE_WIDTH = config.chunks.boat.stroke.strokeWidth;
-const STROKE_WIDTH = config.chunks.boat.stroke.width;
+const BOATFILL_COLOR = config.layers.boat.boat.fillColor;
+const DEFAULT_FLIP = config.layers.boat.defaultFlip;
+const DEFAULT_LENGTH = config.layers.boat.defaultLength;
+const DEFAULT_SCALE = config.layers.boat.defaultScale;
+const MANHASSTICK = config.layers.boat.man.hasStick;
+const MANHATNUMBER = config.layers.boat.man.hatNumber;
+const STROKE_COLOR = config.layers.boat.stroke.color;
+const STROKE_FILL_COLOR = config.layers.boat.stroke.fillColor;
+const STROKE_NOISE = config.layers.boat.stroke.strokeNoise;
+const STROKE_STROKE_WIDTH = config.layers.boat.stroke.strokeWidth;
+const STROKE_WIDTH = config.layers.boat.stroke.width;
 /**
  * Represents a boat layer with different scale and flip.
  *

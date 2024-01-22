@@ -3,11 +3,11 @@ import Perlin from "../Perlin";
 import Point from "../Point";
 import { config } from "../../config";
 
-const DEFAULT_HEIGHT = config.svgPolyline.branch.defaultHeight;
-const DEFAULT_STROKE_WIDTH = config.svgPolyline.branch.defaultStrokeWidth;
-const DEFAULT_ANGLE = config.svgPolyline.branch.defaultAngle;
-const DEFAULT_BENDING_ANGLE = config.svgPolyline.branch.defaultBendingAngle;
-const DEFAULT_DETAILS = config.svgPolyline.branch.defaultDetails;
+const DEFAULT_HEIGHT = config.element.branch.defaultHeight;
+const DEFAULT_STROKE_WIDTH = config.element.branch.defaultStrokeWidth;
+const DEFAULT_ANGLE = config.element.branch.defaultAngle;
+const DEFAULT_BENDING_ANGLE = config.element.branch.defaultBendingAngle;
+const DEFAULT_DETAILS = config.element.branch.defaultDetails;
 
 /**
  * Generates a list of points representing a branch structure.

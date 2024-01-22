@@ -10,26 +10,26 @@ import { calculateBoundingBox } from "../../utils/polytools";
 import { config } from "../../config";
 import { lineDivider } from "../../utils/polytools";
 
-const BACKGROUND_FILL_COLOR = config.chunks.flatMountain.background.fillColor;
-const BACKGROUND_STROKE_COLOR = config.chunks.flatMountain.background.color;
-const DEFAULT_FLATNESS = config.chunks.flatMountain.defaultFlatness;
-const DEFAULT_HEIGHT_MAX = config.chunks.flatMountain.defaultHeight.max;
-const DEFAULT_HEIGHT_MIN = config.chunks.flatMountain.defaultHeight.min;
-const DEFAULT_SEED = config.chunks.flatMountain.defaultSeed;
-const DEFAULT_WIDTH_MAX = config.chunks.flatMountain.defaultWidth.max;
-const DEFAULT_WIDTH_MIN = config.chunks.flatMountain.defaultWidth.min;
-const OUTLINE_FILL_COLOR = config.chunks.flatMountain.outline.fillColor;
-const OUTLINE_STROKE_COLOR = config.chunks.flatMountain.outline.color;
-const OUTLINE_STROKE_NOISE = config.chunks.flatMountain.outline.strokeNoise;
-const OUTLINE_STROKE_WIDTH = config.chunks.flatMountain.outline.strokeWidth;
-const POLYLINE_FILL_COLOR = config.chunks.flatMountain.polyline.fillColor;
-const POLYLINE_STROKE_COLOR = config.chunks.flatMountain.polyline.color;
-const POLYLINE_STROKE_WIDTH = config.chunks.flatMountain.polyline.strokeWidth;
-const STROKE_COLOR = config.chunks.flatMountain.stroke.color;
-const STROKE_FILL_COLOR = config.chunks.flatMountain.stroke.fillColor;
-const STROKE_WIDTH = config.chunks.flatMountain.stroke.strokeWidth;
-const TEXTURE_SHADOW = config.chunks.flatMountain.texture.shadow;
-const TEXTURE_SIZE = config.chunks.flatMountain.texture.size;
+const BACKGROUND_FILL_COLOR = config.layers.bottomMountain.background.fillColor;
+const BACKGROUND_STROKE_COLOR = config.layers.bottomMountain.background.color;
+const DEFAULT_FLATNESS = config.layers.bottomMountain.defaultFlatness;
+const DEFAULT_HEIGHT_MAX = config.layers.bottomMountain.defaultHeight.max;
+const DEFAULT_HEIGHT_MIN = config.layers.bottomMountain.defaultHeight.min;
+const DEFAULT_SEED = config.layers.bottomMountain.defaultSeed;
+const DEFAULT_WIDTH_MAX = config.layers.bottomMountain.defaultWidth.max;
+const DEFAULT_WIDTH_MIN = config.layers.bottomMountain.defaultWidth.min;
+const OUTLINE_FILL_COLOR = config.layers.bottomMountain.outline.fillColor;
+const OUTLINE_STROKE_COLOR = config.layers.bottomMountain.outline.color;
+const OUTLINE_STROKE_NOISE = config.layers.bottomMountain.outline.strokeNoise;
+const OUTLINE_STROKE_WIDTH = config.layers.bottomMountain.outline.strokeWidth;
+const POLYLINE_FILL_COLOR = config.layers.bottomMountain.polyline.fillColor;
+const POLYLINE_STROKE_COLOR = config.layers.bottomMountain.polyline.color;
+const POLYLINE_STROKE_WIDTH = config.layers.bottomMountain.polyline.strokeWidth;
+const STROKE_COLOR = config.layers.bottomMountain.stroke.color;
+const STROKE_FILL_COLOR = config.layers.bottomMountain.stroke.fillColor;
+const STROKE_WIDTH = config.layers.bottomMountain.stroke.strokeWidth;
+const TEXTURE_SHADOW = config.layers.bottomMountain.texture.shadow;
+const TEXTURE_SIZE = config.layers.bottomMountain.texture.size;
 
 /**
  * Represents a flat mountain chunk with optional vegetation and textures.

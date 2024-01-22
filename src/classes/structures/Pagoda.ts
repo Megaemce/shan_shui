@@ -4,6 +4,18 @@ import PagodaRoof from "./PagodaRoof";
 import Point from "../Point";
 import Rail from "./Rail";
 import Decoration from "../elements/Decoration";
+import { config } from "../../config";
+
+const DECORATOR_HORIZONTAL_SUB_POINTS =
+    config.structure.pagoda.decorator.horizontalSubPoints;
+const DECORATOR_STYLE = config.structure.pagoda.decorator.style;
+const DECORATOR_VERTICAL_SUB_POINTS =
+    config.structure.pagoda.decorator.verticalSubPoints;
+const DEFAULT_STORIES = config.structure.pagoda.defaultStories;
+const DEFAULT_STROKE_WIDTH = config.structure.pagoda.defaultStrokeWidth;
+const HEIGHT = config.structure.pagoda.height;
+const PERIOD = config.structure.pagoda.period;
+const ROTATION = config.structure.pagoda.rotation;
 
 /**
  * Represents a series of arch structures with decreasing size.
@@ -12,20 +24,16 @@ export default class Pagoda extends Structure {
     /**
      * @param {number} xOffset - The x-coordinate offset for the arches.
      * @param {number} yOffset - The y-coordinate offset for the arches.
-     * @param {number} [strokeWidth=50] - The initial stroke width of the arches.
-     * @param {number} [stories=7] - The number of arches to generate.
+     * @param {number} [strokeWidth=DEFAULT_STROKE_WIDTH] - The initial stroke width of the arches.
+     * @param {number} [stories=DEFAULT_STORIES] - The number of arches to generate.
      */
     constructor(
         xOffset: number,
         yOffset: number,
-        strokeWidth: number = 50,
-        stories: number = 7
+        strokeWidth: number = DEFAULT_STROKE_WIDTH,
+        stories: number = DEFAULT_STORIES
     ) {
         super();
-
-        const height = 10,
-            rotation = 0.7,
-            period = 5;
 
         let heightOffset = 0;
 
@@ -36,13 +44,13 @@ export default class Pagoda extends Structure {
             bottomRightPoint: Point
         ) =>
             Decoration(
-                1,
+                DECORATOR_STYLE,
                 upperLeftPoint,
                 upperRightPoint,
                 bottomLeftPoint,
                 bottomRightPoint,
-                [1, 4],
-                [1, 2]
+                DECORATOR_HORIZONTAL_SUB_POINTS,
+                DECORATOR_VERTICAL_SUB_POINTS
             );
 
         for (let i = 0; i < stories; i++) {
@@ -50,10 +58,10 @@ export default class Pagoda extends Structure {
                 new Box(
                     xOffset,
                     yOffset - heightOffset,
-                    height,
+                    HEIGHT,
                     strokeWidth * Math.pow(0.85, i),
-                    rotation,
-                    period / 2,
+                    ROTATION,
+                    PERIOD / 2,
                     false,
                     true,
                     1.5,
@@ -66,26 +74,26 @@ export default class Pagoda extends Structure {
                     yOffset - heightOffset,
                     i * 0.2,
                     false,
-                    height / 2,
+                    HEIGHT / 2,
                     strokeWidth * Math.pow(0.85, i) * 1.1,
-                    period / 2,
+                    PERIOD / 2,
                     5,
                     true,
-                    rotation,
+                    ROTATION,
                     0.5
                 )
             );
             this.add(
                 new PagodaRoof(
                     xOffset,
-                    yOffset - heightOffset - height,
-                    height * 1.5,
+                    yOffset - heightOffset - HEIGHT,
+                    HEIGHT * 1.5,
                     strokeWidth * Math.pow(0.9, i),
                     1.5,
-                    period
+                    PERIOD
                 )
             );
-            heightOffset += height * 1.5;
+            heightOffset += HEIGHT * 1.5;
         }
     }
 }

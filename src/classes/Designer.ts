@@ -7,15 +7,15 @@ import { config } from "../config";
 import { isLocalMaximum } from "../utils/utils";
 
 const BOAT_PROBABILITY = config.designer.boat.probability;
-const DIST_MOUNTAIN_INTERVAL = config.designer.distanceMountain.interval;
-const FLAT_MOUNTAIN_PROBABILITY = config.designer.flatMountain.probability;
-const MOUNTAIN_COVER_THRESHOLD = config.designer.mountain.coverThreshold;
-const MOUNTAIN_RADIUS = config.designer.mountain.radius;
+const BOAT_RADIUS_THRESHOLD = config.designer.boat.radiusThreshold;
+const DIST_MOUNTAIN_INTERVAL = config.designer.backgroundMountain.interval;
+const FLAT_MOUNTAIN_PROBABILITY = config.designer.bottomMountain.probability;
+const MAX_BOAT_Y = config.designer.boat.y.max;
+const MIN_BOAT_Y = config.designer.boat.y.min;
+const MOUNTAIN_COVER_THRESHOLD = config.designer.middleMountain.coverThreshold;
+const MOUNTAIN_RADIUS = config.designer.middleMountain.radius;
 const NOISE_SAMPLE = config.designer.noiseSample;
 const X_STEP = config.designer.xStep;
-const MIN_BOAT_Y = config.designer.boat.y.min;
-const MAX_BOAT_Y = config.designer.boat.y.max;
-const BOAT_RADIUS_THRESHOLD = config.designer.boat.radiusThreshold;
 
 /**
  * Class for generating terrain design chunks based on Perlin noise.

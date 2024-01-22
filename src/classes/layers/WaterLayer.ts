@@ -5,10 +5,10 @@ import Point from "../Point";
 import Stroke from "../elements/Stroke";
 import { config } from "../../config";
 
-const COLORNOALFA = config.chunks.water.colorNoAlfa;
-const DEFAULT_HEIGTH = config.chunks.water.defaultHeight;
-const DEFAULT_WAVECLUSTERS = config.chunks.water.defaultWaveClusters;
-const DEFAULT_WIDTH = config.chunks.water.defaultWidth;
+const COLORNOALFA = config.layers.water.colorNoAlfa;
+const DEFAULT_HEIGTH = config.layers.water.defaultHeight;
+const DEFAULT_WAVECLUSTERS = config.layers.water.defaultWaveClusters;
+const DEFAULT_WIDTH = config.layers.water.defaultWidth;
 
 /**
  * Class representing a water chunk with undulating waves.

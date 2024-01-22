@@ -1,5 +1,5 @@
 export const config = {
-    chunks: {
+    layers: {
         boat: {
             defaultScale: 1,
             defaultFlip: false,
@@ -19,7 +19,7 @@ export const config = {
                 strokeWidth: 1,
             },
         },
-        distantMountain: {
+        backgroundMountain: {
             defaultSeed: 0,
             defaultHeight: 300,
             defaultWidth: 2000,
@@ -28,7 +28,7 @@ export const config = {
             strokeWidth: 1,
             color: "none",
         },
-        flatMountain: {
+        bottomMountain: {
             defaultSeed: 0,
             defaultHeight: {
                 min: 40,
@@ -64,7 +64,7 @@ export const config = {
                 strokeWidth: 3,
             },
         },
-        mountain: {
+        middleMountain: {
             defaultSeed: 0,
             defaultHeight: {
                 min: 100,
@@ -109,7 +109,7 @@ export const config = {
             colorNoAlfa: "rgba(100, 100, 100,", // color without the alpha. Need to add alfa value and closing bracket
         },
     },
-    chunkCache: {
+    cachedLayer: {
         flatMountainHeight: 100,
         flatMountainWidth: {
             min: 600,
@@ -139,14 +139,14 @@ export const config = {
             },
             radiusThreshold: 400,
         },
-        mountain: {
+        middleMountain: {
             coverThreshold: 0.3, // Threshold value for determining mountain coverage in the design.
             radius: 2, // Radius of the circular area used to check for local maxima.
         },
-        flatMountain: {
+        bottomMountain: {
             probability: 0.01, // Probability of generating a flat mountain chunk.
         },
-        distanceMountain: {
+        backgroundMountain: {
             interval: 1000, // Interval at which distant mountains are generated.
         },
     },
@@ -162,8 +162,34 @@ export const config = {
         primeOne: 999979,
         primeTwo: 999983,
     },
-    complexSvg: {},
-    svgPolyline: {
+    structure: {
+        house: {
+            decorator: {
+                horizontalSubPoints: [5, 5, 4],
+                verticalSubPoints: [2, 2, 3],
+            },
+            height: 10,
+            perspective: 5,
+            defaultStrokeWidth: 50,
+            defaultStories: 3,
+            defaultRotatation: 0.3,
+            defaultStyle: 1,
+            defaultHasRail: false,
+        },
+        pagoda: {
+            defaultStrokeWidth: 50,
+            defaultStories: 7,
+            height: 10,
+            rotation: 0.7,
+            period: 5,
+            decorator: {
+                style: 1,
+                horizontalSubPoints: 4,
+                verticalSubPoints: 2,
+            },
+        },
+    },
+    element: {
         defaultFillColor: "rgba(0,0,0,0)",
         defaultStrokeColor: "rgba(0,0,0,0)",
         defaultStrokeWidth: 0,

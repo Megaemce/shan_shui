@@ -4,11 +4,11 @@ import Point from "../Point";
 import Element from "../Element";
 import { config } from "../../config";
 
-const DEFAULT_FILL_COLOR = config.svgPolyline.stroke.defaultFillColor;
-const DEFAULT_NOISE = config.svgPolyline.stroke.defaultNoise;
-const DEFAULT_STROKE_COLOR = config.svgPolyline.stroke.defaultStrokeColor;
-const DEFAULT_STROKE_WIDTH = config.svgPolyline.stroke.defaultStrokeWidth;
-const DEFAULT_WIDTH = config.svgPolyline.stroke.defaultWidth;
+const DEFAULT_FILL_COLOR = config.element.stroke.defaultFillColor;
+const DEFAULT_NOISE = config.element.stroke.defaultNoise;
+const DEFAULT_STROKE_COLOR = config.element.stroke.defaultStrokeColor;
+const DEFAULT_STROKE_WIDTH = config.element.stroke.defaultStrokeWidth;
+const DEFAULT_WIDTH = config.element.stroke.defaultWidth;
 
 /**
  * Class representing a stylized stroke using Perlin noise.
@@ -36,7 +36,7 @@ export default class Stroke extends Element {
     ) {
         /**
          * For inital pointArray = [0,1,2,3] creates vtxArray = [0,(1),(2),3,(2),(1),0]
-         * where (values) are modified by the main for loop
+         * where bracketed values are modified by the main for loop
          **/
         const vtxArray = new Array<Point>(pointArray.length * 2);
         const lastPointIndex = pointArray.length - 1;

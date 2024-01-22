@@ -5,10 +5,10 @@ import Element from "../Element";
 import { config } from "../../config";
 import { normalizeNoise } from "../../utils/utils";
 
-const DEFAULT_FILL_COLOR = config.svgPolyline.blob.defaultFillColor;
-const DEFAULT_LENGTH = config.svgPolyline.blob.defaultLength;
-const DEFAULT_STROKE_WIDTH = config.svgPolyline.blob.defaultStrokeWidth;
-const DEFAULT_NOISE = config.svgPolyline.blob.defaultNoise;
+const DEFAULT_FILL_COLOR = config.element.blob.defaultFillColor;
+const DEFAULT_LENGTH = config.element.blob.defaultLength;
+const DEFAULT_STROKE_WIDTH = config.element.blob.defaultStrokeWidth;
+const DEFAULT_NOISE = config.element.blob.defaultNoise;
 
 /**
  * Represents a blob with a stylized outline as an SvgPolyline.

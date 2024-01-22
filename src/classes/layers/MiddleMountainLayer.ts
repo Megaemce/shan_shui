@@ -19,25 +19,26 @@ import { config } from "../../config";
 import { distance } from "../../utils/polytools";
 import { generateVegetate } from "../../utils/generateVegetate";
 
-const BACKGROUND_FILL_COLOR = config.chunks.mountain.background.fillColor;
-const BACKGROUND_STROKE_COLOR = config.chunks.mountain.background.strokeColor;
-const BOTTOM_COLORNOALFA = config.chunks.mountain.bottom.colorNoAlfa;
-const DEFAULT_HEIGHT_MAX = config.chunks.mountain.defaultHeight.max;
-const DEFAULT_HEIGHT_MIN = config.chunks.mountain.defaultHeight.min;
+const BACKGROUND_FILL_COLOR = config.layers.middleMountain.background.fillColor;
+const BACKGROUND_STROKE_COLOR =
+    config.layers.middleMountain.background.strokeColor;
+const BOTTOM_COLORNOALFA = config.layers.middleMountain.bottom.colorNoAlfa;
+const DEFAULT_HEIGHT_MAX = config.layers.middleMountain.defaultHeight.max;
+const DEFAULT_HEIGHT_MIN = config.layers.middleMountain.defaultHeight.min;
 const DEFAULT_MIDDLE_VEGETATION =
-    config.chunks.mountain.defaultMiddleVegetation;
-const DEFAULT_SEED = config.chunks.mountain.defaultSeed;
-const DEFAULT_WIDTH_MAX = config.chunks.mountain.defaultWidth.max;
-const DEFAULT_WIDTH_MIN = config.chunks.mountain.defaultWidth.min;
-const MIDDLE_COLORNOALFA = config.chunks.mountain.middle.colorNoAlfa;
-const OUTLINE_COLOR = config.chunks.mountain.outline.color;
-const OUTLINE_FILL_COLOR = config.chunks.mountain.outline.fillColor;
-const OUTLINE_STROKE_NOISE = config.chunks.mountain.outline.strokeNoise;
-const OUTLINE_STROKE_WIDTH = config.chunks.mountain.outline.strokeWidth;
-const RIM_CLUSTERS = config.chunks.mountain.rim.clusters;
-const RIM_COLORNOALFA = config.chunks.mountain.rim.colorNoAlfa;
-const TEXTURE_SIZE = config.chunks.mountain.texture.size;
-const TOP_COLORNOALFA = config.chunks.mountain.top.colorNoAlfa;
+    config.layers.middleMountain.defaultMiddleVegetation;
+const DEFAULT_SEED = config.layers.middleMountain.defaultSeed;
+const DEFAULT_WIDTH_MAX = config.layers.middleMountain.defaultWidth.max;
+const DEFAULT_WIDTH_MIN = config.layers.middleMountain.defaultWidth.min;
+const MIDDLE_COLORNOALFA = config.layers.middleMountain.middle.colorNoAlfa;
+const OUTLINE_COLOR = config.layers.middleMountain.outline.color;
+const OUTLINE_FILL_COLOR = config.layers.middleMountain.outline.fillColor;
+const OUTLINE_STROKE_NOISE = config.layers.middleMountain.outline.strokeNoise;
+const OUTLINE_STROKE_WIDTH = config.layers.middleMountain.outline.strokeWidth;
+const RIM_CLUSTERS = config.layers.middleMountain.rim.clusters;
+const RIM_COLORNOALFA = config.layers.middleMountain.rim.colorNoAlfa;
+const TEXTURE_SIZE = config.layers.middleMountain.texture.size;
+const TOP_COLORNOALFA = config.layers.middleMountain.top.colorNoAlfa;
 
 /**
  * Represents a mountainous landscape with various elements.
@@ -51,8 +52,8 @@ export default class MiddleMountainLayer extends Layer {
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
      * @param {number} [seed=DEFAULT_SEED] - The seed for noise functions.
-     * @param {number} [height =PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX)] - The height of the mountain.
-     * @param {number} [width =PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX)] - The width of the mountain.
+     * @param {number} [height=PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX)] - The height of the mountain.
+     * @param {number} [width=PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX)] - The width of the mountain.
 
      */
     constructor(
@@ -259,7 +260,8 @@ export default class MiddleMountainLayer extends Layer {
                         PRNG.normalizedRandom(40, 70),
                         PRNG.randomChoice([1, 2, 2, 3]),
                         PRNG.random(),
-                        PRNG.randomChoice([1, 2, 3])
+                        PRNG.randomChoice([0, 1, 2]),
+                        PRNG.randomChoice([true, false])
                     );
                 } else if (treeType === 2) {
                     return new generateTower(

@@ -11,12 +11,12 @@ import WaterLayer from "./layers/WaterLayer";
 import { config } from "../config";
 
 const CHUNKWIDTH = config.ui.canvasWidth;
-const DISTANT_MOUNTAIN_HEIGHT = config.chunkCache.distantMountainHeight;
-const FLAT_MOUNTAIN_FLATNESS_MAX = config.chunkCache.flatMountainFlatness.max;
-const FLAT_MOUNTAIN_FLATNESS_MIN = config.chunkCache.flatMountainFlatness.min;
-const FLAT_MOUNTAIN_HEIGHT = config.chunkCache.flatMountainHeight;
-const FLAT_MOUNTAIN_WIDTH_MAX = config.chunkCache.flatMountainWidth.max;
-const FLAT_MOUNTAIN_WIDTH_MIN = config.chunkCache.flatMountainWidth.min;
+const DISTANT_MOUNTAIN_HEIGHT = config.cachedLayer.distantMountainHeight;
+const FLAT_MOUNTAIN_FLATNESS_MAX = config.cachedLayer.flatMountainFlatness.max;
+const FLAT_MOUNTAIN_FLATNESS_MIN = config.cachedLayer.flatMountainFlatness.min;
+const FLAT_MOUNTAIN_HEIGHT = config.cachedLayer.flatMountainHeight;
+const FLAT_MOUNTAIN_WIDTH_MAX = config.cachedLayer.flatMountainWidth.max;
+const FLAT_MOUNTAIN_WIDTH_MIN = config.cachedLayer.flatMountainWidth.min;
 const ZOOM = config.ui.zoom;
 
 /**

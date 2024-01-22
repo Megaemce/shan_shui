@@ -5,13 +5,13 @@ import Element from "../Element";
 import { config } from "../../config";
 import { midPoint, triangulate } from "../../utils/polytools";
 
-const DEFAULT_HEIGHT = config.chunks.distantMountain.defaultHeight;
-const DEFAULT_SEED = config.chunks.distantMountain.defaultSeed;
-const DEFAULT_WIDTH = config.chunks.distantMountain.defaultWidth;
-const SEGMENTS = config.chunks.distantMountain.segments;
-const SPAN = config.chunks.distantMountain.span;
-const STROKE_COLOR = config.chunks.distantMountain.color;
-const STROKE_WIDTH = config.chunks.distantMountain.strokeWidth;
+const DEFAULT_HEIGHT = config.layers.backgroundMountain.defaultHeight;
+const DEFAULT_SEED = config.layers.backgroundMountain.defaultSeed;
+const DEFAULT_WIDTH = config.layers.backgroundMountain.defaultWidth;
+const SEGMENTS = config.layers.backgroundMountain.segments;
+const SPAN = config.layers.backgroundMountain.span;
+const STROKE_COLOR = config.layers.backgroundMountain.color;
+const STROKE_WIDTH = config.layers.backgroundMountain.strokeWidth;
 
 /**
  * Represents a distant mountain chunk with varying heights and colors.

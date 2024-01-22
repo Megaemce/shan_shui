@@ -4,21 +4,32 @@ import Point from "../Point";
 import Rail from "./Rail";
 import Roof from "./Roof";
 import Decoration from "../elements/Decoration";
+import { config } from "../../config";
+
+const DECORATOR_HORIZONTAL_SUB_POINTS =
+    config.structure.house.decorator.horizontalSubPoints;
+const DECORATOR_VERTICAL_SUB_POINTS =
+    config.structure.house.decorator.verticalSubPoints;
+const DEFAULT_HAS_RAIL = config.structure.house.defaultHasRail;
+const DEFAULT_ROTATION = config.structure.house.defaultRotatation;
+const DEFAULT_STORIES = config.structure.house.defaultStories;
+const DEFAULT_STROKE_WIDTH = config.structure.house.defaultStrokeWidth;
+const DEFAULT_STYLE = config.structure.house.defaultStyle;
+const HEIGHT = config.structure.house.height;
+const PERSPECTIVE = config.structure.house.perspective;
 
 export default class House extends Structure {
     constructor(
         xOffset: number,
         yOffset: number,
-        strokeWidth: number = 50,
-        stories: number = 3,
-        rotation: number = 0.3,
-        style: number = 1
+        strokeWidth: number = DEFAULT_STROKE_WIDTH,
+        stories: number = DEFAULT_STORIES,
+        rotation: number = DEFAULT_ROTATION,
+        style: number = DEFAULT_STYLE,
+        hasRail: boolean = DEFAULT_HAS_RAIL
     ) {
         super();
 
-        const height = 10;
-        const perspective = 5;
-        const hasRail = false;
         const decorator = (
             upperLeftPoint: Point,
             upperRightPoint: Point,
@@ -31,8 +42,8 @@ export default class House extends Structure {
                 upperRightPoint,
                 bottomLeftPoint,
                 bottomRightPoint,
-                [[], [1, 5], [1, 5], [1, 4]][style],
-                [[], [1, 2], [1, 2], [1, 3]][style]
+                DECORATOR_HORIZONTAL_SUB_POINTS[style],
+                DECORATOR_VERTICAL_SUB_POINTS[style]
             );
 
         let heightOffset = 0;
@@ -42,10 +53,10 @@ export default class House extends Structure {
                 new Box(
                     xOffset,
                     yOffset - heightOffset,
-                    height,
+                    HEIGHT,
                     strokeWidth * Math.pow(0.85, i),
                     rotation,
-                    perspective,
+                    PERSPECTIVE,
                     false,
                     true,
                     1.5,
@@ -60,9 +71,9 @@ export default class House extends Structure {
                         yOffset - heightOffset,
                         i * 0.2,
                         false,
-                        height / 2,
+                        HEIGHT / 2,
                         strokeWidth * Math.pow(0.85, i) * 1.1,
-                        perspective,
+                        PERSPECTIVE,
                         4,
                         true,
                         rotation,
@@ -73,16 +84,16 @@ export default class House extends Structure {
             this.add(
                 new Roof(
                     xOffset,
-                    yOffset - heightOffset - height,
-                    height,
+                    yOffset - heightOffset - HEIGHT,
+                    HEIGHT,
                     strokeWidth * Math.pow(0.9, i),
                     rotation,
                     1.5,
-                    perspective
+                    PERSPECTIVE
                 )
             );
 
-            heightOffset += height * 1.5;
+            heightOffset += HEIGHT * 1.5;
         }
     }
 }

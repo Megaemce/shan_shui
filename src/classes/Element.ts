@@ -1,9 +1,9 @@
 import Point from "./Point";
 import { config } from "../config";
 
-const DEFAULT_FILL_COLOR = config.svgPolyline.defaultFillColor;
-const DEFAULT_STROKE_COLOR = config.svgPolyline.defaultStrokeColor;
-const DEFAULT_STROKE_WIDTH = config.svgPolyline.defaultStrokeWidth;
+const DEFAULT_FILL_COLOR = config.element.defaultFillColor;
+const DEFAULT_STROKE_COLOR = config.element.defaultStrokeColor;
+const DEFAULT_STROKE_WIDTH = config.element.defaultStrokeWidth;
 
 /**
  * Represents a polyline in SVG.
