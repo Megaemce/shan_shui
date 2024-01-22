@@ -41,6 +41,11 @@ export default class Structure implements IStructure {
      * @returns {string} The SVG string.
      */
     stringify(): string {
-        return this.elements.map((element) => element.stringify).join("\n");
+        const result = this.elements.reduce((acc, element) => {
+            acc += element.stringify + "\n";
+            return acc;
+        }, "");
+
+        return result;
     }
 }
