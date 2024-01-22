@@ -3,6 +3,7 @@ import Point from "../Point";
 import Stroke from "../elements/Stroke";
 import Element from "../Element";
 import { lineDivider } from "../../utils/polytools";
+import boxDecoration from "../../utils/boxDecoration";
 
 /**
  * Represents a box generated using procedural generation.
@@ -30,12 +31,9 @@ export default class Box extends Structure {
         hasTransparency: boolean = true,
         hasBottom: boolean = true,
         strokeWidth: number = 3,
-        decorator: (
-            upperLeftPoint: Point,
-            upperRightPoint: Point,
-            bottomLeftPoint: Point,
-            bottomRightPoint: Point
-        ) => Point[][] = () => []
+        style: number,
+        horizontalSubPoints: number = 3,
+        verticalSubPoints: number = 2
     ) {
         super();
 
@@ -100,11 +98,14 @@ export default class Box extends Structure {
 
         const surface = (rotation < 0.5 ? 1 : 0) * 2 - 1;
         const extendedPointList = pointList.concat(
-            decorator(
+            boxDecoration(
+                style,
                 new Point(surface * right, top),
                 new Point(front_x, top + front_y),
                 new Point(surface * right, bottom),
-                new Point(front_x, front_y)
+                new Point(front_x, front_y),
+                horizontalSubPoints,
+                verticalSubPoints
             )
         );
 

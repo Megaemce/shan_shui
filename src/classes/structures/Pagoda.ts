@@ -1,9 +1,7 @@
 import Box from "./Box";
 import PagodaRoof from "./PagodaRoof";
-import Point from "../Point";
 import Rail from "./Rail";
 import Structure from "../Structure";
-import boxDecoration from "../../utils/boxDecoration";
 import { config } from "../../config";
 
 const DECORATOR_HORIZONTAL_SUB_POINTS =
@@ -37,22 +35,6 @@ export default class Pagoda extends Structure {
 
         let heightOffset = 0;
 
-        const decorator = (
-            upperLeftPoint: Point,
-            upperRightPoint: Point,
-            bottomLeftPoint: Point,
-            bottomRightPoint: Point
-        ) =>
-            boxDecoration(
-                DECORATOR_STYLE,
-                upperLeftPoint,
-                upperRightPoint,
-                bottomLeftPoint,
-                bottomRightPoint,
-                DECORATOR_HORIZONTAL_SUB_POINTS,
-                DECORATOR_VERTICAL_SUB_POINTS
-            );
-
         for (let i = 0; i < stories; i++) {
             this.add(
                 new Box(
@@ -65,7 +47,9 @@ export default class Pagoda extends Structure {
                     false,
                     true,
                     1.5,
-                    decorator
+                    DECORATOR_STYLE,
+                    DECORATOR_HORIZONTAL_SUB_POINTS,
+                    DECORATOR_VERTICAL_SUB_POINTS
                 )
             );
             this.add(

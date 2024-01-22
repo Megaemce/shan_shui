@@ -37,7 +37,8 @@ export default class Tower extends Structure {
                     period / 2,
                     true,
                     true,
-                    1.5
+                    1.5,
+                    666 // no style at all
                 )
             );
             this.add(
