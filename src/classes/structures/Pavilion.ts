@@ -16,7 +16,7 @@ export default class Pavilion extends Structure {
     ) {
         super();
 
-        const p = PRNG.random(0.4, 0.6);
+        const p = PRNG.random(0.6, 0.8);
         const h0 = height * p;
         const h1 = height * (1 - p);
 

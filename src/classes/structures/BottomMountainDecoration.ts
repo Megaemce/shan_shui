@@ -192,8 +192,8 @@ export default class BottomMountainDecoration extends Structure {
                         PRNG.normalizedRandom(bounding.xMin, bounding.xMax),
                     yOffset + (bounding.yMin + bounding.yMax) / 2 + 20,
                     PRNG.random(),
-                    PRNG.normalizedRandom(80, 100),
-                    PRNG.normalizedRandom(160, 200),
+                    PRNG.normalizedRandom(70, 90),
+                    PRNG.normalizedRandom(120, 160),
                     PRNG.random()
                 )
             );

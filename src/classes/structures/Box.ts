@@ -31,7 +31,7 @@ export default class Box extends Structure {
         hasTransparency: boolean = true,
         hasBottom: boolean = true,
         strokeWidth: number = 3,
-        style: number,
+        style: number = 666, // no style at all
         horizontalSubPoints: number = 3,
         verticalSubPoints: number = 2
     ) {
