@@ -1,9 +1,9 @@
 import Box from "./Box";
-import Structure from "../Structure";
 import Point from "../Point";
 import Rail from "./Rail";
 import Roof from "./Roof";
-import Decoration from "../elements/Decoration";
+import Structure from "../Structure";
+import boxDecoration from "../../utils/boxDecoration";
 import { config } from "../../config";
 
 const DECORATOR_HORIZONTAL_SUB_POINTS =
@@ -36,7 +36,7 @@ export default class House extends Structure {
             bottomLeftPoint: Point,
             bottomRightPoint: Point
         ) =>
-            Decoration(
+            boxDecoration(
                 style,
                 upperLeftPoint,
                 upperRightPoint,

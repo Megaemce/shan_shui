@@ -1,5 +1,5 @@
-import Point from "../Point";
-import { lineDivider } from "../../utils/polytools";
+import Point from "../classes/Point";
+import { lineDivider } from "./polytools";
 
 /**
  * Generates decorative elements based on the specified style.
@@ -12,7 +12,7 @@ import { lineDivider } from "../../utils/polytools";
  * @param {number} [verticalSubPoints=2] - The vertical sub points number.
  * @returns {Point[][]} An array of points representing the decorative elements.
  */
-export default function Decoration(
+export default function boxDecoration(
     style: number,
     upperLeftPoint: Point = new Point(0, 0),
     upperRightPoint: Point = new Point(0, 100),

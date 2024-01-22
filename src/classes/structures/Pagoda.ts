@@ -1,9 +1,9 @@
 import Box from "./Box";
-import Structure from "../Structure";
 import PagodaRoof from "./PagodaRoof";
 import Point from "../Point";
 import Rail from "./Rail";
-import Decoration from "../elements/Decoration";
+import Structure from "../Structure";
+import boxDecoration from "../../utils/boxDecoration";
 import { config } from "../../config";
 
 const DECORATOR_HORIZONTAL_SUB_POINTS =
@@ -43,7 +43,7 @@ export default class Pagoda extends Structure {
             bottomLeftPoint: Point,
             bottomRightPoint: Point
         ) =>
-            Decoration(
+            boxDecoration(
                 DECORATOR_STYLE,
                 upperLeftPoint,
                 upperRightPoint,
