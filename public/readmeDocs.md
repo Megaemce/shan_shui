@@ -2,7 +2,7 @@ Discover the beauty of an ever-evolving Chinese landscape art. This project comb
 
 ## 🏗️ Tech stack
 
-React and nothing more! ✨
+React, TypeScript and SVG. Nothing more! ✨
 
 ## ⚙️ Installation
 
