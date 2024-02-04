@@ -19,7 +19,6 @@ export default class Roof extends Structure {
      * @param {number} [strokeWidth = 3] - The stroke width value.
      * @param {number} [perspective = 4] - The perspective value.
      * @param {number} [cor = 5] - The corner radius value.
-     * @return {void}
      */
     constructor(
         xOffset: number,
