@@ -28,7 +28,7 @@ npm start
 [Check it in online](https://megaemce.github.io/shan_shui_docs/) or generate it locally with TypeDoc from Shan_Shui project.
 
 ```
-npm doc
+npm docs
 ```
 
 ## 🙏 Thank you
