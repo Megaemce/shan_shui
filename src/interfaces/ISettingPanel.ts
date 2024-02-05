@@ -73,7 +73,7 @@ export interface ISettingPanel {
      *
      * @type {CachedLayer}
      */
-    chunkCache: CachedLayer;
+    cachedLayer: CachedLayer;
 
     /**
      * The width of the panel window.

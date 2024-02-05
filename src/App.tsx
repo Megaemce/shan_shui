@@ -19,7 +19,7 @@ export const App: React.FC = () => {
     );
     const currentDate = new Date().getTime().toString();
     const currentSeed = currentURLSeed || currentDate;
-    const chunkCacheRef = useRef(new CachedLayer());
+    const cachedLayerRef = useRef(new CachedLayer());
     PRNG.seed = currentSeed;
 
     // State variables
@@ -142,7 +142,7 @@ export const App: React.FC = () => {
                     horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}
                     currentPosition={currentPosition}
-                    chunkCache={chunkCacheRef.current}
+                    cachedLayer={cachedLayerRef.current}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
                     saveRange={saveRange}
@@ -155,7 +155,7 @@ export const App: React.FC = () => {
                     windowHeight={windowHeight}
                     currentPosition={currentPosition}
                     windowWidth={windowWidth}
-                    chunkCache={chunkCacheRef.current}
+                    cachedLayer={cachedLayerRef.current}
                 />
             </div>
         </>

@@ -53,5 +53,5 @@ export interface IScrollableCanvas {
      *
      * @type {CachedLayer}
      */
-    chunkCache: CachedLayer;
+    cachedLayer: CachedLayer;
 }

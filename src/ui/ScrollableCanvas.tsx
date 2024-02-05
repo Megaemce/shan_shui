@@ -18,7 +18,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     windowHeight,
     currentPosition,
     windowWidth,
-    chunkCache,
+    cachedLayer,
 }) => {
     const [viewBoxValue, setViewBoxValue] = useState(
         `0 0 ${windowWidth / ZOOM} ${windowHeight / ZOOM}`
@@ -39,7 +39,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     const newRange = new Range(currentPosition, currentPosition + windowWidth);
 
     // Update the chunk cache based on the current view
-    chunkCache.update(newRange, CANVASWIDTH);
+    cachedLayer.update(newRange, CANVASWIDTH);
 
     const svgRef = useRef<SVGSVGElement | null>(null);
     const startTime = performance.now();
@@ -134,8 +134,8 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     </filter>
                 </defs>
                 <g id="main" width={windowWidth} height={windowHeight}>
-                    {chunkCache.frames.map((frame, i) => {
-                        return <Frame key={i} chunkId={i} frame={frame} />;
+                    {cachedLayer.frames.map((frame, i) => {
+                        return <Frame key={i} frameId={i} frame={frame} />;
                     })}
                 </g>
                 <rect

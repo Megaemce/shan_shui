@@ -1,15 +1,15 @@
 import React, { ReactElement } from "react";
 import { IFrame } from "../interfaces/IFrame";
 
-export default function Frame({ chunkId, frame }: IFrame): ReactElement {
+export default function Frame({ frameId, frame }: IFrame): ReactElement {
     return (
-        <g id={`frame${chunkId}`}>
-            {frame.map((element, index) => (
+        <g id={`frame${frameId}`}>
+            {frame.map((layer, index) => (
                 <g
-                    id={`frame${chunkId}-element${index}-${element.tag}`}
-                    key={`frame${chunkId}-element${index}-${element.tag}`}
+                    id={`frame${frameId}-layer${index}-${layer.tag}`}
+                    key={`frame${frameId}-layer${index}-${layer.tag}`}
                     dangerouslySetInnerHTML={{
-                        __html: element.stringify(),
+                        __html: layer.stringify(),
                     }}
                 ></g>
             ))}

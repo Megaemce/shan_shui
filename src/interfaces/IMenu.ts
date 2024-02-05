@@ -87,7 +87,7 @@ export interface IMenu {
      *
      * @type {CachedLayer}
      */
-    chunkCache: CachedLayer;
+    cachedLayer: CachedLayer;
 
     /**
      * The range for saving menu state.
