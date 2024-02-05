@@ -1,5 +1,5 @@
 import "./styles.css";
-import Frame from "./ChunkGroup";
+import Frame from "./Frame";
 import Range from "../classes/Range";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
