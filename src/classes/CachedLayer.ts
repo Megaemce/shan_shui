@@ -181,12 +181,12 @@ export default class CachedLayer {
             </defs>
             <g 
                 id="${CachedLayer.id}">
-                    ${this.frames.forEach((chunks) =>
-                        chunks
+                    ${this.frames.forEach((frame) =>
+                        frame
                             .filter(
-                                (chunks) => chunks.x >= left && chunks.x < right
+                                (frame) => frame.x >= left && frame.x < right
                             )
-                            .map((chunk) => chunk.stringify())
+                            .map((layer) => layer.stringify())
                             .join("\n")
                     )} 
                 </g>
