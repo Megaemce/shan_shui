@@ -11,7 +11,6 @@ const DEFAULT_STROKE_WIDTH = config.element.defaultStrokeWidth;
 export default class Element {
     /** String representation of the polyline. */
     stringify: string = "";
-    /** Array of points defining the polyline. */
 
     /**
      * Initializes a new instance of the Elemnt class.

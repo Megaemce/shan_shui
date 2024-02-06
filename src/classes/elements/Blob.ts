@@ -11,7 +11,7 @@ const DEFAULT_STROKE_WIDTH = config.element.blob.defaultStrokeWidth;
 const DEFAULT_NOISE = config.element.blob.defaultNoise;
 
 /**
- * Represents a blob with a stylized outline as an SvgPolyline.
+ * Represents a blob
  */
 export default class Blob extends Element {
     _points: Point[] = []; // used by Tree07 only

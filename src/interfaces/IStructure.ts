@@ -8,7 +8,7 @@ import Element from "../classes/Element";
  */
 export default interface IStructure {
     /**
-     * An array of SvgPolyline elements.
+     * An array of Elements.
      *
      * @type {Array<Element>}
      */
@@ -23,7 +23,7 @@ export default interface IStructure {
     stringify: () => string;
 
     /**
-     * Adds an SvgPolyline or ComplexSvg to the ComplexSvg.
+     * Adds an Element or Structure to the given Structure.
      *
      * @function
      * @param {Element | Structure} object - The object to be added.
