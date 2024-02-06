@@ -118,8 +118,8 @@ export default class CachedLayer {
      */
     public update(givenRange: Range, chunkWidth: number = CHUNKWIDTH): void {
         if (
-            givenRange.right > this.visibleRange.right + chunkWidth ||
-            givenRange.left < this.visibleRange.left - chunkWidth
+            givenRange.right + 500 > this.visibleRange.right + chunkWidth ||
+            givenRange.left - 500 < this.visibleRange.left - chunkWidth
         ) {
             this.generate(givenRange);
         }
@@ -209,5 +209,35 @@ export default class CachedLayer {
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
+    }
+
+    public async render(): Promise<string> {
+        const framePromises = this.frames.map((frame, i) => {
+            const layerPromises = frame.map(async (layer, index) => {
+                const worker = new Worker(
+                    new URL("../utils/workers.ts", import.meta.url)
+                );
+                const result = await new Promise((resolve) => {
+                    worker.onmessage = (e: MessageEvent) => {
+                        resolve(e.data.stringify);
+                        worker.terminate();
+                    };
+
+                    worker.postMessage({
+                        elements: layer.elements,
+                        layerTag: layer.tag,
+                        index: index,
+                        frameIndex: i,
+                    });
+                });
+                return result;
+            });
+            return Promise.all(layerPromises).then((layerResults) => {
+                return `<g id="frame${i}">${layerResults.join("\n")}</g>`;
+            });
+        });
+
+        const framesResults = await Promise.all(framePromises);
+        return framesResults.join("");
     }
 }

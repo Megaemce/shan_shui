@@ -44,6 +44,6 @@ export default class Element {
                         (point.y + yOffset).toFixed(1)
                 )
                 .join(" ")}
-            '${style}/>`;
+            ' ${style}/>`;
     }
 }
