@@ -51,10 +51,10 @@ export const Menu: React.FC<IMenu> = ({
     return (
         <div id="MENU">
             <div>
-                <h4>Current seed</h4>
+                <h4>Current seed:</h4>
                 <DebounceInput
                     id="INP_SEED"
-                    className="ROWITEM"
+                    className="ROWITEM_SEED"
                     title="random seed"
                     value={seed}
                     debounceTimeout={500}
@@ -96,7 +96,7 @@ export const Menu: React.FC<IMenu> = ({
             </div>
             <div>
                 <h4>Save view</h4>
-                From
+                from
                 <DebounceInput
                     className="ROWITEM"
                     type="number"

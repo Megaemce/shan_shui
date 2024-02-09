@@ -1,5 +1,14 @@
 h4 {
-    margin: 5px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+p {
+    margin: 0;
+}
+
+button {
+    margin-bottom: 5px;
 }
 
 div#SETTING {
@@ -61,6 +70,13 @@ div#MENU {
 .ROWITEM {
     display: inline;
     width: 60px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.ROWITEM_SEED {
+    display: inline;
+    width: 100px;
 }
 
 /* Positioning of L and R buttons */
