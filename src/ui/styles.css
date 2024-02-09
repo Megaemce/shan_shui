@@ -16,6 +16,9 @@ div#SETTING {
     z-index: 1000;
     left: 56px;
     top: 3px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
 }
 
 div#BTN_ROW {
@@ -51,6 +54,7 @@ div#MENU {
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
+    margin-top: 5px;
 }
 
 #SCROLLABLE_CANVAS div#LeftScroll,

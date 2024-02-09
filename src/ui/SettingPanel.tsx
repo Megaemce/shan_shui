@@ -34,7 +34,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                     toggled={menuVisible}
                     toggle={toggleVisible}
                     size={20}
-                    duration={0.9}
+                    duration={0.2}
                     label="Show menu"
                 />
                 <div
@@ -47,7 +47,6 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                     </div>
                 </div>
             </div>
-            <div style={{ height: 4 }} />
             {menuVisible && (
                 <Menu
                     seed={seed}
