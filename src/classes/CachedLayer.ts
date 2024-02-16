@@ -214,6 +214,12 @@ export default class CachedLayer {
     public async render(): Promise<string> {
         const framePromises = this.frames.map((frame, i) => {
             const layerPromises = frame.map(async (layer, index) => {
+                /**
+                 * The Worker constructor is being called with a URL object created from a relative path and the import.meta.url.
+                 * new URL("../utils/workers.ts", import.meta.url) - This constructs a full URL by resolving the relative path
+                 * "../utils/workers.ts" against the base URL of the current module (import.meta.url).
+                 * It's a way to ensure the worker script can be located when the code is running, no matter the environment.
+                 */
                 const worker = new Worker(
                     new URL("../utils/workers.ts", import.meta.url)
                 );
