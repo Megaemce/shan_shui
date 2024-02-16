@@ -85,12 +85,14 @@ export const App: React.FC = () => {
     const horizontalScroll = useCallback(
         (value: number) => {
             const nextPosition = currentPosition + value;
-            setCurrentPosition(nextPosition);
+            if (nextPosition > 0) {
+                setCurrentPosition(nextPosition);
 
-            if (autoLoad) {
-                setSaveRange(
-                    new Range(nextPosition, nextPosition + windowWidth)
-                );
+                if (autoLoad) {
+                    setSaveRange(
+                        new Range(nextPosition, nextPosition + windowWidth)
+                    );
+                }
             }
         },
         [autoLoad, currentPosition, windowWidth]
