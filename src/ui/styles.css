@@ -5,10 +5,23 @@ h4 {
 
 p {
     margin: 0;
+    color: rgba(0, 0, 0, 0.4);
 }
 
 button {
     margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.Loader {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 
 div#SETTING {
@@ -27,6 +40,19 @@ div#BTN_ROW {
     user-select: none;
     vertical-align: middle;
     font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    button {
+        width: 48px;
+        height: 48px;
+        margin-right: 3px;
+        background-color: transparent;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        color: rgba(0, 0, 0, 0.4);
+        font-size: 20px;
+    }
 }
 
 div#INP_SEED {
@@ -42,7 +68,6 @@ div#BTN_ROW > div {
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     color: rgba(0, 0, 0, 0.4);
     z-index: 1000;
 }
@@ -57,8 +82,7 @@ div#MENU {
     margin-top: 5px;
 }
 
-#SCROLLABLE_CANVAS div#LeftScroll,
-#SCROLLABLE_CANVAS div#RightScroll {
+#SCROLLABLE_CANVAS button {
     position: fixed;
     z-index: 1000;
     width: 48px;
@@ -69,6 +93,17 @@ div#MENU {
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.4);
     user-select: none;
+    vertical-align: middle;
+    align-items: center;
+    font-size: 25px;
+}
+
+button#LeftScroll {
+    left: 3px;
+}
+
+button#RightScroll {
+    right: 3px;
 }
 
 .ROWITEM {
@@ -81,22 +116,4 @@ div#MENU {
 .ROWITEM_SEED {
     display: inline;
     width: 100px;
-}
-
-/* Positioning of L and R buttons */
-#SCROLLABLE_CANVAS div#LeftScroll {
-    justify-content: left;
-    left: 3px;
-}
-#SCROLLABLE_CANVAS div#RightScroll {
-    justify-content: right;
-    right: 3px;
-}
-
-#SCROLLABLE_CANVAS div#LeftScroll\.icon,
-#SCROLLABLE_CANVAS div#RightScroll\.icon {
-    vertical-align: middle;
-    display: flex;
-    align-items: center;
-    font-size: 32px;
 }
