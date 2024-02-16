@@ -3,7 +3,7 @@ import Range from "../classes/Range";
 import React, { useEffect, useRef, useState } from "react";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
 import { config } from "../config";
-import { Triangle } from "react-loader-spinner";
+import { InfinitySpin } from "react-loader-spinner";
 import { Button } from "./Button";
 
 const ZOOM = config.ui.zoom;
@@ -93,19 +93,8 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     height={windowHeight}
                 />
             </svg>
-            <div
-                className="Loader"
-                style={{ display: loading ? "flex" : "none" }}
-            >
-                <Triangle
-                    visible={loading}
-                    height="80"
-                    width="80"
-                    color="rgba(0, 0, 0, 0.4)"
-                    ariaLabel="Rendering layers"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                />
+            <div className={`Loader ${loading ? "" : "hidden"}`}>
+                <InfinitySpin width="200" color="rgba(0, 0, 0, 0.4)" />
                 <p>Rendering layers...</p>
             </div>
 
