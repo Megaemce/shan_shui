@@ -1,10 +1,14 @@
 import Element from "../classes/Element";
-
-/* eslint-disable no-restricted-globals */
-self.onmessage = function (e: MessageEvent): void {
-    const elements = e.data.elements as Array<Element>;
-    const layerTag = e.data.layerTag as string;
+/**
+ * Process the incoming message event and post the worker result.
+ *
+ * @param {MessageEvent} e - the message event containing index, layerTag, elements, and frameIndex
+ * @return {void}
+ */
+onmessage = function (e: MessageEvent): void {
     const index = e.data.index as number;
+    const layerTag = e.data.layerTag as string;
+    const elements = e.data.elements as Array<Element>;
     const frameIndex = e.data.frameIndex as number;
 
     const workerResult = `
@@ -12,5 +16,5 @@ self.onmessage = function (e: MessageEvent): void {
             ${elements.map((element) => element.stringify).join("\n")}"
         </g>`;
 
-    self.postMessage({ stringify: workerResult });
+    postMessage({ stringify: workerResult });
 };
