@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { IScrollBar } from "../interfaces/IScrollBar";
+import { IButton } from "../interfaces/IButton";
 
-/**
- * ScrollBar component for navigation within the ScrollableCanvas.
- */
-export const ScrollBar: React.FC<IScrollBar> = ({
+export const Button: React.FC<IButton> = ({
     id,
+    title,
     height,
     onClick,
     icon,
@@ -23,8 +21,10 @@ export const ScrollBar: React.FC<IScrollBar> = ({
     const onMouseOut = () => setIsHover(false);
 
     return (
-        <div
+        <button
             id={id}
+            title={title}
+            aria-label={title}
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}
             onClick={onClick}
@@ -33,7 +33,7 @@ export const ScrollBar: React.FC<IScrollBar> = ({
                 height,
             }}
         >
-            <div id={`${id}.icon`}>{icon}</div>
-        </div>
+            {icon}
+        </button>
     );
 };
