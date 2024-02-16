@@ -9,9 +9,6 @@ import { Button } from "./Button";
 const ZOOM = config.ui.zoom;
 const CANVASWIDTH = config.ui.canvasWidth;
 
-/**
- * ScrollableCanvas component for rendering a scrollable canvas with ScrollBars.
- */
 export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     step,
     horizontalScroll,
@@ -31,8 +28,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
         setLoading(true);
         (async () => {
             setSvgContent(await cachedLayer.render());
-            setLoading(false);
-        })();
+        })().then(() => setLoading(false));
     }, [cachedLayer.frames.length, cachedLayer]);
 
     return (
@@ -51,11 +47,6 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                 viewBox={`${currentPosition} 0 ${windowWidth / ZOOM} ${
                     windowHeight / ZOOM
                 }`}
-                style={{
-                    left: 0,
-                    position: "fixed",
-                    top: 0,
-                }}
             >
                 <defs>
                     <filter

@@ -13,6 +13,12 @@ button {
     cursor: pointer;
 }
 
+svg#SVG {
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
 .Loader {
     display: flex;
     flex-direction: column;
