@@ -26,10 +26,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     cachedLayer.update(newRange, CANVASWIDTH);
 
     useEffect(() => {
-        (async () => {
-            const content = await cachedLayer.render();
-            setSvgContent(content);
-        })();
+        (async () => setSvgContent(await cachedLayer.render()))();
     }, [cachedLayer.frames.length, cachedLayer]);
 
     return (
