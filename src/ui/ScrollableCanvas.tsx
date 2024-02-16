@@ -2,8 +2,9 @@ import "./styles.css";
 import Range from "../classes/Range";
 import React, { useEffect, useRef, useState } from "react";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
-import { ScrollBar } from "./ScrollBar";
 import { config } from "../config";
+import { Triangle } from "react-loader-spinner";
+import { Button } from "./Button";
 
 const ZOOM = config.ui.zoom;
 const CANVASWIDTH = config.ui.canvasWidth;
@@ -19,6 +20,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     windowWidth,
     cachedLayer,
 }) => {
+    const [loading, setLoading] = useState(true);
     const [svgContent, setSvgContent] = useState("");
     const newRange = new Range(currentPosition, currentPosition + windowWidth);
     const svgRef = useRef<SVGSVGElement | null>(null);
@@ -26,17 +28,23 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     cachedLayer.update(newRange, CANVASWIDTH);
 
     useEffect(() => {
-        (async () => setSvgContent(await cachedLayer.render()))();
+        setLoading(true);
+        (async () => {
+            setSvgContent(await cachedLayer.render());
+            setLoading(false);
+        })();
     }, [cachedLayer.frames.length, cachedLayer]);
 
     return (
         <div id="SCROLLABLE_CANVAS">
-            <ScrollBar
+            <Button
                 id="LeftScroll"
-                onClick={() => horizontalScroll(-step)}
+                title="Scroll left"
                 height={windowHeight - 8}
                 icon="&#x3008;"
+                onClick={() => horizontalScroll(-step)}
             />
+
             <svg
                 id="SVG"
                 ref={svgRef}
@@ -85,11 +93,28 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     height={windowHeight}
                 />
             </svg>
-            <ScrollBar
+            <div
+                className="Loader"
+                style={{ display: loading ? "flex" : "none" }}
+            >
+                <Triangle
+                    visible={loading}
+                    height="80"
+                    width="80"
+                    color="rgba(0, 0, 0, 0.4)"
+                    ariaLabel="Rendering layers"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                />
+                <p>Rendering layers...</p>
+            </div>
+
+            <Button
                 id="RightScroll"
-                onClick={() => horizontalScroll(step)}
+                title="Scroll right"
                 height={windowHeight - 8}
                 icon="&#x3009;"
+                onClick={() => horizontalScroll(step)}
             />
         </div>
     );
