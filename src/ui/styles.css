@@ -27,7 +27,7 @@ svg#SVG {
     align-items: center;
     position: fixed;
     width: 100%;
-    height: 100%;
+    height: 200px;
     opacity: 1; /* Fully visible */
     transition: opacity 0.5s ease; /* Smooth transition */
 }

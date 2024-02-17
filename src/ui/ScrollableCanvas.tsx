@@ -86,7 +86,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
             </svg>
             <div className={`Loader ${loading ? "" : "hidden"}`}>
                 <InfinitySpin width="200" color="rgba(0, 0, 0, 0.4)" />
-                <p>Rendering layers...</p>
+                <p>Rendering new layer</p>
             </div>
 
             <Button
