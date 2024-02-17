@@ -38,12 +38,12 @@ export default class CachedLayer {
         }
 
         plan.forEach(({ tag, x, y }, i) => {
-            if (tag === "mount") {
+            if (tag === "middleMountain") {
                 this.frames[CachedLayer.id].push(
                     new MiddleMountainLayer(x, y, PRNG.random(0, 2 * i))
                 );
                 this.frames[CachedLayer.id].push(new WaterLayer(x, y));
-            } else if (tag === "flatmount") {
+            } else if (tag === "bottomMountain") {
                 this.frames[CachedLayer.id].push(
                     new BottomMountainLayer(
                         x,
@@ -60,7 +60,7 @@ export default class CachedLayer {
                         )
                     )
                 );
-            } else if (tag === "distmount") {
+            } else if (tag === "backgroundMoutain") {
                 this.frames[CachedLayer.id].push(
                     new BackgroundMountainLayer(
                         x,
@@ -103,7 +103,7 @@ export default class CachedLayer {
             }
 
             const plan = new Designer(start, end);
-            this.process(plan.regions);
+            this.process(plan.layers);
         }
 
         // render the chunks in the background first

@@ -18,15 +18,15 @@ const NOISE_SAMPLE = config.designer.noiseSample;
 const X_STEP = config.designer.xStep;
 
 /**
- * Class for generating terrain design chunks based on Perlin noise.
+ * Class for generating terrain design based on Perlin noise.
  */
 export default class Designer {
-    regions: ILayer[] = [];
+    layers: ILayer[] = [];
     iMin: number;
     iMax: number;
     xOffset: number;
     /**
-     * Generates terrain design chunks based on Perlin noise.
+     * Generates terrain design.
      * @param {number} xMin - The minimum x-coordinate for generation.
      * @param {number} xMax - The maximum x-coordinate for generation.
      */
@@ -40,16 +40,16 @@ export default class Designer {
         const noiseFunction = (point: Point) =>
             Math.max(Perlin.noise(point.x * NOISE_SAMPLE) - 0.55, 0) * 2;
 
-        this.generateMountainChunks(noiseFunction, yRange);
-        this.generateFlatMountainChunks();
-        this.generateBoatChunks();
+        this.generateMiddleMountainDesign(noiseFunction, yRange);
+        this.generateBottomMountainDesign();
+        this.generateBoatDesign();
     }
 
     /**
-     * Adds boat chunks to the regions.
+     * Adds boat layers to the layers.
      * @private
      */
-    private generateBoatChunks(): void {
+    private generateBoatDesign(): void {
         const localRegion: ILayer[] = [];
 
         for (let i = this.iMin; i < this.iMax; i++) {
@@ -69,17 +69,17 @@ export default class Designer {
                 }
             }
         }
-        this.regions = this.regions.concat(localRegion);
+        this.layers = this.layers.concat(localRegion);
     }
 
     /**
-     * Adds mountain chunks to the regions.
+     * Adds mountain layers to the layers.
      * @private
      * @param {Function} noiseFunction - The noise function.
      * @param {Function} yRange - The y range function.
-     * @returns {ILayer[]} An array of generated chunks.
+     * @returns {ILayer[]} An array of generated layers.
      */
-    private generateMountainChunks(
+    private generateMiddleMountainDesign(
         noiseFunction: (point: Point) => number,
         yRange: (x: number) => number
     ): void {
@@ -101,7 +101,7 @@ export default class Designer {
                     const yOffset = y + 300;
 
                     const mountainChunk = new SketchLayer(
-                        "mount",
+                        "middleMountain",
                         xOffset,
                         yOffset
                     );
@@ -117,7 +117,7 @@ export default class Designer {
                 Math.max(1, X_STEP - 1)
             ) {
                 const distMountainChunk = new SketchLayer(
-                    "distmount",
+                    "backgroundMoutain",
                     x,
                     PRNG.random(230, 280)
                 );
@@ -128,15 +128,15 @@ export default class Designer {
             }
         }
 
-        this.regions = this.regions.concat(localRegion);
+        this.layers = this.layers.concat(localRegion);
     }
 
     /**
-     * Adds flat mountain chunks to the regions.
+     * Adds flat mountain layers to the layers.
      * @private
-     * @returns {ILayer[]} An array of generated chunks.
+     * @returns {ILayer[]} An array of generated layers.
      */
-    private generateFlatMountainChunks(): void {
+    private generateBottomMountainDesign(): void {
         const localRegion: ILayer[] = [];
 
         for (let i = this.iMin; i < this.iMax; i++) {
@@ -145,7 +145,7 @@ export default class Designer {
             if (PRNG.random() < FLAT_MOUNTAIN_PROBABILITY) {
                 for (let j = 0; j < PRNG.random(0, 4); j++) {
                     const flatMountainChunk = new SketchLayer(
-                        "flatmount",
+                        "bottomMountain",
                         x + PRNG.random(0, 700),
                         700 - j * 50
                     );
@@ -157,28 +157,28 @@ export default class Designer {
             }
         }
 
-        this.regions = this.regions.concat(localRegion);
+        this.layers = this.layers.concat(localRegion);
     }
 
     /**
-     * Checks if a chunk needs to be added to the region.
+     * Checks if a layer needs to be added to the region.
      * @private
-     * @param {ILayer[]} regions - The region of existing chunks.
-     * @param {ILayer} chunk - The chunk to check.
-     * @param {number} radius - The threshold radius for considering chunks to be the same.
-     * @returns {boolean} True if the chunk needs to be added, false otherwise.
+     * @param {ILayer[]} region - The region of existing layers.
+     * @param {ILayer} layer - The layer to check.
+     * @param {number} radius - The threshold radius for considering layers to be the same.
+     * @returns {boolean} True if the layer needs to be added, false otherwise.
      */
     private needsAdding(
-        regions: ILayer[],
-        chunk: ILayer,
+        region: ILayer[],
+        layer: ILayer,
         radius: number = 10
     ): boolean {
-        const localCheck = regions.every(
-            (existingChunk) => Math.abs(existingChunk.x - chunk.x) >= radius
+        const localCheck = region.every(
+            (existingChunk) => Math.abs(existingChunk.x - layer.x) >= radius
         );
 
-        const globalCheck = this.regions.every(
-            (existingChunk) => Math.abs(existingChunk.x - chunk.x) >= radius
+        const globalCheck = this.layers.every(
+            (existingChunk) => Math.abs(existingChunk.x - layer.x) >= radius
         );
 
         return localCheck && globalCheck;

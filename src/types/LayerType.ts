@@ -3,9 +3,9 @@
  */
 
 export type LayerType =
-    | "mount"
-    | "flatmount"
-    | "distmount"
+    | "middleMountain"
+    | "bottomMountain"
+    | "backgroundMoutain"
     | "boat"
     | "water"
     | "?";

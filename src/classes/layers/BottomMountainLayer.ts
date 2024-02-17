@@ -54,7 +54,7 @@ export default class BottomMountainLayer extends Layer {
         width: number = PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX),
         flatness: number = DEFAULT_FLATNESS
     ) {
-        super("flatmount", xOffset, yOffset);
+        super("bottomMountain", xOffset, yOffset);
 
         const elementNumber = 5;
         const elementDetails = 50;

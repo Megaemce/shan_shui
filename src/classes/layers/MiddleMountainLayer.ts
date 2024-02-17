@@ -63,7 +63,7 @@ export default class MiddleMountainLayer extends Layer {
         height: number = PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX),
         width: number = PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX)
     ) {
-        super("mount", xOffset, yOffset);
+        super("middleMountain", xOffset, yOffset);
 
         // number of elements, and details of each element
         const [elementNumber, elementDetails] = [10, 50];
