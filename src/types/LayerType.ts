@@ -7,5 +7,4 @@ export type LayerType =
     | "bottomMountain"
     | "backgroundMountain"
     | "boat"
-    | "water"
-    | "?";
+    | "water";
