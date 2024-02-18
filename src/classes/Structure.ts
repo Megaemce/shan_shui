@@ -3,6 +3,7 @@ import IStructure from "../interfaces/IStructure";
 
 /**
  * Represents a complex SVG.
+ *
  * @implements {IStructure}
  */
 export default class Structure implements IStructure {

@@ -43,6 +43,7 @@ export const App: React.FC = () => {
     const onChangeSaveRange = (newSaveRange: Range) => {
         setSaveRange(newSaveRange);
     };
+
     /**
      * Callback function to toggle auto-scrolling.
      * @param {boolean} isEnabled - Indicates whether auto-scroll is enabled.
