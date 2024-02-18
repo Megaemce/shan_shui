@@ -1,5 +1,5 @@
 import "./App.css";
-import CachedLayer from "./classes/CachedLayer";
+import Frame from "./classes/Frame";
 import PRNG from "./classes/PRNG";
 import Range from "./classes/Range";
 import React, { useState, useEffect, useRef, useCallback } from "react";
@@ -19,7 +19,7 @@ export const App: React.FC = () => {
     );
     const currentDate = new Date().getTime().toString();
     const currentSeed = currentURLSeed || currentDate;
-    const cachedLayerRef = useRef(new CachedLayer());
+    const frameRef = useRef(new Frame());
     PRNG.seed = currentSeed;
 
     // State variables
@@ -144,7 +144,7 @@ export const App: React.FC = () => {
                     horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}
                     currentPosition={currentPosition}
-                    cachedLayer={cachedLayerRef.current}
+                    frame={frameRef.current}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
                     saveRange={saveRange}
@@ -157,7 +157,7 @@ export const App: React.FC = () => {
                     windowHeight={windowHeight}
                     currentPosition={currentPosition}
                     windowWidth={windowWidth}
-                    cachedLayer={cachedLayerRef.current}
+                    frame={frameRef.current}
                 />
             </div>
         </>

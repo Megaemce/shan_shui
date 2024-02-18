@@ -8,8 +8,9 @@ import { isLocalMaximum } from "../utils/utils";
 
 const BOAT_PROBABILITY = config.designer.boat.probability;
 const BOAT_RADIUS_THRESHOLD = config.designer.boat.radiusThreshold;
-const DIST_MOUNTAIN_INTERVAL = config.designer.backgroundMountain.interval;
-const FLAT_MOUNTAIN_PROBABILITY = config.designer.bottomMountain.probability;
+const BACKGROUND_MOUNTAIN_INTERVAL =
+    config.designer.backgroundMountain.interval;
+const BOTTOM_MOUNTAIN_PROBABILITY = config.designer.bottomMountain.probability;
 const MAX_BOAT_Y = config.designer.boat.y.max;
 const MIN_BOAT_Y = config.designer.boat.y.min;
 const MOUNTAIN_COVER_THRESHOLD = config.designer.middleMountain.coverThreshold;
@@ -113,11 +114,11 @@ export default class Designer {
             }
 
             if (
-                Math.abs(x) % DIST_MOUNTAIN_INTERVAL <
+                Math.abs(x) % BACKGROUND_MOUNTAIN_INTERVAL <
                 Math.max(1, X_STEP - 1)
             ) {
                 const distMountainChunk = new SketchLayer(
-                    "backgroundMoutain",
+                    "backgroundMountain",
                     x,
                     PRNG.random(230, 280)
                 );
@@ -142,16 +143,16 @@ export default class Designer {
         for (let i = this.iMin; i < this.iMax; i++) {
             const x = i * X_STEP + this.xOffset;
 
-            if (PRNG.random() < FLAT_MOUNTAIN_PROBABILITY) {
+            if (PRNG.random() < BOTTOM_MOUNTAIN_PROBABILITY) {
                 for (let j = 0; j < PRNG.random(0, 4); j++) {
-                    const flatMountainChunk = new SketchLayer(
+                    const bottomMountainChunk = new SketchLayer(
                         "bottomMountain",
                         x + PRNG.random(0, 700),
                         700 - j * 50
                     );
 
-                    if (this.needsAdding(localRegion, flatMountainChunk)) {
-                        localRegion.push(flatMountainChunk);
+                    if (this.needsAdding(localRegion, bottomMountainChunk)) {
+                        localRegion.push(bottomMountainChunk);
                     }
                 }
             }

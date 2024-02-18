@@ -10,68 +10,69 @@ import Range from "./Range";
 import WaterLayer from "./layers/WaterLayer";
 import { config } from "../config";
 
-const CHUNKWIDTH = config.ui.canvasWidth;
-const DISTANT_MOUNTAIN_HEIGHT = config.cachedLayer.distantMountainHeight;
-const FLAT_MOUNTAIN_FLATNESS_MAX = config.cachedLayer.flatMountainFlatness.max;
-const FLAT_MOUNTAIN_FLATNESS_MIN = config.cachedLayer.flatMountainFlatness.min;
-const FLAT_MOUNTAIN_HEIGHT = config.cachedLayer.flatMountainHeight;
-const FLAT_MOUNTAIN_WIDTH_MAX = config.cachedLayer.flatMountainWidth.max;
-const FLAT_MOUNTAIN_WIDTH_MIN = config.cachedLayer.flatMountainWidth.min;
+const FRAME_WIDTH = config.ui.frameWidth;
+const BACKGROUND_MOUNTAIN_HEIGHT = config.frame.backgroundMountainHeight;
+const BOTTOM_MOUNTAIN_FLATNESS_MAX = config.frame.bottomMountainFlatness.max;
+const BOTTOM_MOUNTAIN_FLATNESS_MIN = config.frame.bottomMountainFlatness.min;
+const BOTTOM_MOUNTAIN_HEIGHT = config.frame.bottomMountainHeight;
+const BOTTOM_MOUNTAIN_WIDTH_MAX = config.frame.bottomMountainWidth.max;
+const BOTTOM_MOUNTAIN_WIDTH_MIN = config.frame.bottomMountainWidth.min;
 const ZOOM = config.ui.zoom;
 
 /**
- * Class representing a cached layer used for generating and managing layer of terrain.
+ * Class representing a frame used for generating and managing layer of terrain.
  */
-export default class CachedLayer {
-    /** Array to store generated chunks. */
+export default class Frame {
+    /** Array to store generated frames. */
     frames: Layer[][] = [];
     /** Range representing the visible area. */
     visibleRange: Range = new Range();
     static id: number = 0;
+
     /**
-     * Processes the generated chunk plan and adds corresponding chunks to the cache.
-     * @param plan - The generated chunk plan.
+     * Processes the generated frame plan and adds corresponding frames to the cache.
+     * @param plan - The generated frame plan.
      */
     private process(plan: ILayer[]): void {
-        if (!this.frames[CachedLayer.id]) {
-            this.frames[CachedLayer.id] = [];
+        if (!this.frames[Frame.id]) {
+            this.frames[Frame.id] = [];
         }
 
         plan.forEach(({ tag, x, y }, i) => {
             if (tag === "middleMountain") {
-                this.frames[CachedLayer.id].push(
+                this.frames[Frame.id].push(
                     new MiddleMountainLayer(x, y, PRNG.random(0, 2 * i))
                 );
-                this.frames[CachedLayer.id].push(new WaterLayer(x, y));
+                this.frames[Frame.id].push(new WaterLayer(x, y));
             } else if (tag === "bottomMountain") {
-                this.frames[CachedLayer.id].push(
+                this.frames[Frame.id].push(
                     new BottomMountainLayer(
                         x,
                         y,
                         PRNG.random(0, 2 * Math.PI),
-                        FLAT_MOUNTAIN_HEIGHT,
+                        BOTTOM_MOUNTAIN_HEIGHT,
                         PRNG.random(
-                            FLAT_MOUNTAIN_WIDTH_MIN,
-                            FLAT_MOUNTAIN_WIDTH_MAX
+                            BOTTOM_MOUNTAIN_WIDTH_MIN,
+                            BOTTOM_MOUNTAIN_WIDTH_MAX
                         ),
                         PRNG.random(
-                            FLAT_MOUNTAIN_FLATNESS_MIN,
-                            FLAT_MOUNTAIN_FLATNESS_MAX
+                            BOTTOM_MOUNTAIN_FLATNESS_MIN,
+                            BOTTOM_MOUNTAIN_FLATNESS_MAX
                         )
                     )
                 );
-            } else if (tag === "backgroundMoutain") {
-                this.frames[CachedLayer.id].push(
+            } else if (tag === "backgroundMountain") {
+                this.frames[Frame.id].push(
                     new BackgroundMountainLayer(
                         x,
                         y,
                         PRNG.random(0, 100),
-                        DISTANT_MOUNTAIN_HEIGHT,
+                        BACKGROUND_MOUNTAIN_HEIGHT,
                         PRNG.randomChoice([500, 1000, 1500])
                     )
                 );
             } else if (tag === "boat") {
-                this.frames[CachedLayer.id].push(
+                this.frames[Frame.id].push(
                     new BoatLayer(
                         x,
                         y,
@@ -84,21 +85,21 @@ export default class CachedLayer {
     }
 
     /**
-     * Generates chunks based on the given PRNG and range.
-     * @param givenRange - The range for which to generate chunks.
+     * Generates frames based on the given PRNG and range.
+     * @param givenRange - The range for which to generate frames.
      */
     private generate(givenRange: Range): void {
         while (
-            givenRange.right > this.visibleRange.right - CHUNKWIDTH ||
-            givenRange.left < this.visibleRange.left + CHUNKWIDTH
+            givenRange.right > this.visibleRange.right - FRAME_WIDTH ||
+            givenRange.left < this.visibleRange.left + FRAME_WIDTH
         ) {
             let start, end;
 
-            if (givenRange.right > this.visibleRange.right - CHUNKWIDTH) {
+            if (givenRange.right > this.visibleRange.right - FRAME_WIDTH) {
                 start = this.visibleRange.right;
-                end = this.visibleRange.right += CHUNKWIDTH;
+                end = this.visibleRange.right += FRAME_WIDTH;
             } else {
-                start = this.visibleRange.left -= CHUNKWIDTH;
+                start = this.visibleRange.left -= FRAME_WIDTH;
                 end = this.visibleRange.left;
             }
 
@@ -106,20 +107,20 @@ export default class CachedLayer {
             this.process(plan.layers);
         }
 
-        // render the chunks in the background first
-        this.frames[CachedLayer.id].sort((a, b) => a.y - b.y);
-        CachedLayer.id++;
+        // render the frames in the background first
+        this.frames[Frame.id].sort((a, b) => a.y - b.y);
+        Frame.id++;
     }
 
     /**
-     * Updates the chunk cache based on the given PRNG and range.
+     * Updates the frame cache based on the given PRNG and range.
      * @param givenRange - The range for which to update the cache.
-     * @param chunkWidth - The width of each chunk (default is CHUNKWIDTH).
+     * @param frameWidth - The width of each frame (default is FRAME_WIDTH).
      */
-    public update(givenRange: Range, chunkWidth: number = CHUNKWIDTH): void {
+    public update(givenRange: Range, frameWidth: number = FRAME_WIDTH): void {
         if (
-            givenRange.right + 500 > this.visibleRange.right + chunkWidth ||
-            givenRange.left - 500 < this.visibleRange.left - chunkWidth
+            givenRange.right + 500 > this.visibleRange.right + frameWidth ||
+            givenRange.left - 500 < this.visibleRange.left - frameWidth
         ) {
             this.generate(givenRange);
         }
@@ -130,13 +131,13 @@ export default class CachedLayer {
      * @param seed - The seed for the terrain generation.
      * @param range - The range for which to generate the SVG.
      * @param windowHeight - The height of the SVG.
-     * @param chunkWidth - The width of each chunk (default is CHUNKWIDTH).
+     * @param frameWidth - The width of each frame (default is FRAME_WIDTH).
      */
     public download(
         seed: string,
         range: Range,
         windowHeight: number,
-        chunkWidth: number = CHUNKWIDTH
+        frameWidth: number = FRAME_WIDTH
     ): void {
         const filename: string = `${seed}-[${range.left}, ${range.right}].svg`;
         const windx: number = range.right - range.left;
@@ -144,10 +145,10 @@ export default class CachedLayer {
             windowHeight / ZOOM
         }`;
 
-        this.update(range, chunkWidth);
+        this.update(range, frameWidth);
 
-        const left = range.left - chunkWidth;
-        const right = range.right + chunkWidth;
+        const left = range.left - frameWidth;
+        const right = range.right + frameWidth;
 
         const content: string = `
         <svg 
@@ -180,7 +181,7 @@ export default class CachedLayer {
                 </filter>
             </defs>
             <g 
-                id="${CachedLayer.id}">
+                id="${Frame.id}">
                     ${this.frames.forEach((frame) =>
                         frame
                             .filter(

@@ -13,7 +13,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     horizontalScroll,
     toggleAutoScroll,
     currentPosition,
-    cachedLayer,
+    frame,
     windowWidth,
     windowHeight,
     saveRange,
@@ -57,7 +57,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                     horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}
                     currentPosition={currentPosition}
-                    cachedLayer={cachedLayer}
+                    frame={frame}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
                     saveRange={saveRange}

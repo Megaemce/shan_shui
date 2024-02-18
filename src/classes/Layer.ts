@@ -3,7 +3,7 @@ import ILayer from "../interfaces/ILayer";
 import { LayerType } from "../types/LayerType";
 
 /**
- * Represents a chunk of terrain with SVG elements.
+ * Represents a layer of terrain with SVG elements.
  */
 export default class Layer extends Structure implements ILayer {
     /**

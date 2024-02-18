@@ -34,7 +34,7 @@ export default class BackgroundMountainLayer extends Layer {
         height: number = DEFAULT_HEIGHT,
         width: number = DEFAULT_WIDTH
     ) {
-        super("backgroundMoutain", xOffset, yOffset);
+        super("backgroundMountain", xOffset, yOffset);
 
         const pointArray: Point[][] = [];
 

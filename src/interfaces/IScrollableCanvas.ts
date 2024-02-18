@@ -1,4 +1,4 @@
-import CachedLayer from "../classes/CachedLayer";
+import Frame from "../classes/Frame";
 
 /**
  * Represents the properties for the ScrollableCanvas component.
@@ -43,15 +43,9 @@ export interface IScrollableCanvas {
     windowWidth: number;
 
     /**
-     * PRNG (Pseudo-Random Number Generator) instance.
+     * Frame instance for caching and managing frames.
      *
-     * @type {PRNG}
+     * @type {Frame}
      */
-
-    /**
-     * CachedLayer instance for caching and managing chunks.
-     *
-     * @type {CachedLayer}
-     */
-    cachedLayer: CachedLayer;
+    frame: Frame;
 }

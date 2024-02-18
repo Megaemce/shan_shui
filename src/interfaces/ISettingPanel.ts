@@ -1,5 +1,5 @@
 import Range from "../classes/Range";
-import CachedLayer from "../classes/CachedLayer";
+import Frame from "../classes/Frame";
 
 /**
  * Represents the properties for the SettingPanel component.
@@ -71,9 +71,9 @@ export interface ISettingPanel {
     /**
      * The displayed chunk cache
      *
-     * @type {CachedLayer}
+     * @type {Frame}
      */
-    cachedLayer: CachedLayer;
+    frame: Frame;
 
     /**
      * The width of the panel window.

@@ -109,17 +109,17 @@ export const config = {
             colorNoAlfa: "rgba(100, 100, 100,", // color without the alpha. Need to add alfa value and closing bracket
         },
     },
-    cachedLayer: {
-        flatMountainHeight: 100,
-        flatMountainWidth: {
+    frame: {
+        bottomMountainHeight: 100,
+        bottomMountainWidth: {
             min: 600,
             max: 1000,
         },
-        flatMountainFlatness: {
+        bottomMountainFlatness: {
             min: 0.5,
             max: 0.7,
         },
-        distantMountainHeight: 150,
+        backgroundMountainHeight: 150,
     },
     utils: {
         bezierCurvePoints: 20,
@@ -215,8 +215,7 @@ export const config = {
         },
     },
     ui: {
-        resolution: 512,
-        canvasWidth: 512,
+        frameWidth: 512,
         zoom: 1.142,
     },
 };

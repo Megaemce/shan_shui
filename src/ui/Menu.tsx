@@ -16,7 +16,7 @@ export const Menu: React.FC<IMenu> = ({
     currentPosition,
     windowWidth,
     windowHeight,
-    cachedLayer,
+    frame,
     saveRange,
     onChangeSaveRange,
     toggleAutoLoad,
@@ -29,7 +29,7 @@ export const Menu: React.FC<IMenu> = ({
         toggleAutoLoad(event.target.checked);
     const downloadSvg = () => {
         if (saveRange.length > 0) {
-            cachedLayer.download(seed, saveRange, windowHeight);
+            frame.download(seed, saveRange, windowHeight);
         } else {
             alert("Range length must be above zero");
         }

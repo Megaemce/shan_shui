@@ -1,11 +1,11 @@
 /**
- * Represents a tag associated with a Chunk.
+ * Represents a tag associated with a Layer.
  */
 
 export type LayerType =
     | "middleMountain"
     | "bottomMountain"
-    | "backgroundMoutain"
+    | "backgroundMountain"
     | "boat"
     | "water"
     | "?";
