@@ -25,7 +25,6 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     renderer.update(newRange);
 
     useEffect(() => {
-        console.log("it seems that renderer has changed");
         setLoading(true);
         (async () => {
             setSvgContent(await renderer.render());

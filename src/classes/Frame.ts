@@ -29,7 +29,6 @@ export default class Frame {
         public id: number
     ) {
         // create active layers from the plan
-        console.log(plan);
         this.process(plan);
         // render the layers in the background first
         this.layers.sort((a, b) => a.y - b.y);

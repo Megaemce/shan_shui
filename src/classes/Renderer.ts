@@ -23,8 +23,6 @@ export default class Renderer {
 
             this.visibleRange.right += FRAME_WIDTH;
 
-            console.log("generating frame in range", frameRange);
-
             const frameID = this.frames.length + 1;
             const framePlan = new Designer(frameRange).layers;
             const newFrame = new Frame(framePlan, frameRange, frameID);
