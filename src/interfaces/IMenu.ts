@@ -1,5 +1,5 @@
-import Frame from "../classes/Frame";
 import Range from "../classes/Range";
+import Renderer from "../classes/Renderer";
 
 /**
  * Represents an interface for a React Menu.
@@ -83,11 +83,11 @@ export interface IMenu {
     windowHeight: number;
 
     /**
-     * The chunk cache associated with the menu.
+     * Reference to renderer
      *
-     * @type {Frame}
+     * @type {Renderer}
      */
-    frame: Frame;
+    renderer: Renderer;
 
     /**
      * The range for saving menu state.

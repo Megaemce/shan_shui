@@ -1,5 +1,5 @@
 import Range from "../classes/Range";
-import Frame from "../classes/Frame";
+import Renderer from "../classes/Renderer";
 
 /**
  * Represents the properties for the SettingPanel component.
@@ -69,11 +69,11 @@ export interface ISettingPanel {
     currentPosition: number;
 
     /**
-     * The displayed chunk cache
+     * Reference to Renderer
      *
-     * @type {Frame}
+     * @type {Renderer}
      */
-    frame: Frame;
+    renderer: Renderer;
 
     /**
      * The width of the panel window.

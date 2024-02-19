@@ -7,7 +7,6 @@ import { InfinitySpin } from "react-loader-spinner";
 import { Button } from "./Button";
 
 const ZOOM = config.ui.zoom;
-const FRAME_WIDTH = config.ui.frameWidth;
 
 export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     step,
@@ -15,21 +14,23 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     windowHeight,
     currentPosition,
     windowWidth,
-    frame,
+    renderer,
 }) => {
     const [loading, setLoading] = useState(true);
     const [svgContent, setSvgContent] = useState("");
     const newRange = new Range(currentPosition, currentPosition + windowWidth);
     const svgRef = useRef<SVGSVGElement | null>(null);
 
-    frame.update(newRange, FRAME_WIDTH);
+    // Update the renderer with the new range on every refresh
+    renderer.update(newRange);
 
     useEffect(() => {
+        console.log("it seems that renderer has changed");
         setLoading(true);
         (async () => {
-            setSvgContent(await frame.render());
+            setSvgContent(await renderer.render());
         })().then(() => setLoading(false));
-    }, [frame.frames.length, frame]);
+    }, [renderer, renderer.frames.length]);
 
     return (
         <div id="SCROLLABLE_CANVAS">

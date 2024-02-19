@@ -1,10 +1,11 @@
 import "./App.css";
-import Frame from "./classes/Frame";
 import PRNG from "./classes/PRNG";
 import Range from "./classes/Range";
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import Renderer from "./classes/Renderer";
 import { ScrollableCanvas } from "./ui/ScrollableCanvas";
 import { SettingPanel } from "./ui/SettingPanel";
+import { config } from "./config";
 
 /**
  * Main application component.
@@ -12,15 +13,12 @@ import { SettingPanel } from "./ui/SettingPanel";
  * @returns {JSX.Element} The main application component.
  */
 
-export const App: React.FC = () => {
+export const App: React.FC = (): JSX.Element => {
     const FPS = 60;
-    const currentURLSeed = new URLSearchParams(window.location.search).get(
-        "seed"
-    );
+    const urlSeed = new URLSearchParams(window.location.search).get("seed");
     const currentDate = new Date().getTime().toString();
-    const currentSeed = currentURLSeed || currentDate;
-    const frameRef = useRef(new Frame());
-    PRNG.seed = currentSeed;
+    const currentSeed = urlSeed || currentDate;
+    const rendererRef = useRef(new Renderer());
 
     // State variables
     const [seed, setSeed] = useState<string>(currentSeed);
@@ -35,6 +33,10 @@ export const App: React.FC = () => {
         new Range(0, window.innerWidth)
     );
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
+
+    PRNG.seed = currentSeed;
+    config.ui.frameWidth =
+        window.innerWidth > 1024 ? config.ui.frameWidth : window.innerWidth;
 
     /**
      * Callback function to handle changes in the save range.
@@ -145,7 +147,7 @@ export const App: React.FC = () => {
                     horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}
                     currentPosition={currentPosition}
-                    frame={frameRef.current}
+                    renderer={rendererRef.current}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
                     saveRange={saveRange}
@@ -158,7 +160,7 @@ export const App: React.FC = () => {
                     windowHeight={windowHeight}
                     currentPosition={currentPosition}
                     windowWidth={windowWidth}
-                    frame={frameRef.current}
+                    renderer={rendererRef.current}
                 />
             </div>
         </>

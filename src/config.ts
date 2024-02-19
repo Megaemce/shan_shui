@@ -215,7 +215,7 @@ export const config = {
         },
     },
     ui: {
-        frameWidth: 512,
+        frameWidth: 300,
         zoom: 1.142,
     },
 };

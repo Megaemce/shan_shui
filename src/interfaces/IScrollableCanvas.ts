@@ -1,4 +1,4 @@
-import Frame from "../classes/Frame";
+import Renderer from "../classes/Renderer";
 
 /**
  * Represents the properties for the ScrollableCanvas component.
@@ -43,9 +43,9 @@ export interface IScrollableCanvas {
     windowWidth: number;
 
     /**
-     * Frame instance for caching and managing frames.
+     * Reference to Renderer.
      *
-     * @type {Frame}
+     * @type {Renderer}
      */
-    frame: Frame;
+    renderer: Renderer;
 }

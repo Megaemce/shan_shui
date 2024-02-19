@@ -9,10 +9,9 @@ onmessage = function (e: MessageEvent): void {
     const index = e.data.index as number;
     const layerTag = e.data.layerTag as string;
     const elements = e.data.elements as Array<Element>;
-    const frameIndex = e.data.frameIndex as number;
 
     const workerResult = `
-        <g id="frame${frameIndex}-layer${index}-${layerTag}">
+        <g id="layer${index}-${layerTag}">
             ${elements.map((element) => element.stringify).join("\n")}"
         </g>`;
 

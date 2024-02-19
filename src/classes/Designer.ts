@@ -1,10 +1,11 @@
-import ILayer from "../interfaces/ILayer";
 import PRNG from "./PRNG";
 import Perlin from "./Perlin";
 import Point from "./Point";
 import SketchLayer from "./SketchLayer";
 import { config } from "../config";
 import { isLocalMaximum } from "../utils/utils";
+import Layer from "./Layer";
+import Range from "./Range";
 
 const BOAT_PROBABILITY = config.designer.boat.probability;
 const BOAT_RADIUS_THRESHOLD = config.designer.boat.radiusThreshold;
@@ -19,58 +20,57 @@ const NOISE_SAMPLE = config.designer.noiseSample;
 const X_STEP = config.designer.xStep;
 
 /**
- * Class for generating terrain design based on Perlin noise.
+ * Class for designing new frame. The main reason for this class is to generate new terrain
+ * with certainty that the new frames will not collide with each other in ugly manner.
  */
 export default class Designer {
-    layers: ILayer[] = [];
+    layers: Layer[] = [];
     iMin: number;
     iMax: number;
     xOffset: number;
     /**
      * Generates terrain design.
-     * @param {number} xMin - The minimum x-coordinate for generation.
-     * @param {number} xMax - The maximum x-coordinate for generation.
+     * @param {Range} givenRange - Given range for which to generate design.
      */
 
-    constructor(xMin: number, xMax: number) {
-        this.iMin = Math.floor(xMin / X_STEP);
-        this.iMax = Math.floor(xMax / X_STEP);
-        this.xOffset = (xMin % X_STEP) + (xMin < 0 ? 1 : 0) * X_STEP;
+    constructor(givenRange: Range) {
+        this.iMin = Math.floor(givenRange.left / X_STEP);
+        this.iMax = Math.floor(givenRange.right / X_STEP);
+        this.xOffset =
+            (givenRange.left % X_STEP) + (givenRange.left < 0 ? 1 : 0) * X_STEP;
 
         const yRange = (x: number) => Perlin.noise(x * 0.01, Math.PI);
         const noiseFunction = (point: Point) =>
             Math.max(Perlin.noise(point.x * NOISE_SAMPLE) - 0.55, 0) * 2;
 
+        // the background mountains dont't need to be generated as even if they will collide they will look cool
         this.generateMiddleMountainDesign(noiseFunction, yRange);
         this.generateBottomMountainDesign();
         this.generateBoatDesign();
     }
 
     /**
-     * Adds boat layers to the layers.
+     * Checks if a new layer will not collide with already existing layers.
      * @private
+     * @param {Layer[]} existingLayers - The array of existing layers.
+     * @param {Layer} newLayer - The layer to check.
+     * @param {number} radius - The threshold radius for considering layers to be the same.
+     * @returns {boolean} True if the layer needs to be added, false otherwise.
      */
-    private generateBoatDesign(): void {
-        const localRegion: ILayer[] = [];
+    private checkCollision(
+        existingLayers: Layer[],
+        newLayer: Layer,
+        radius: number = 10
+    ): boolean {
+        const localCheck = existingLayers.every(
+            (existingChunk) => Math.abs(existingChunk.x - newLayer.x) >= radius
+        );
 
-        for (let i = this.iMin; i < this.iMax; i++) {
-            if (PRNG.random() < BOAT_PROBABILITY) {
-                const x = i * X_STEP + this.xOffset;
-                const y = PRNG.random(MIN_BOAT_Y, MAX_BOAT_Y);
-                const boatChunk = new SketchLayer("boat", x, y);
+        const globalCheck = this.layers.every(
+            (existingChunk) => Math.abs(existingChunk.x - newLayer.x) >= radius
+        );
 
-                if (
-                    this.needsAdding(
-                        localRegion,
-                        boatChunk,
-                        BOAT_RADIUS_THRESHOLD
-                    )
-                ) {
-                    localRegion.push(boatChunk);
-                }
-            }
-        }
-        this.layers = this.layers.concat(localRegion);
+        return localCheck && globalCheck;
     }
 
     /**
@@ -78,13 +78,13 @@ export default class Designer {
      * @private
      * @param {Function} noiseFunction - The noise function.
      * @param {Function} yRange - The y range function.
-     * @returns {ILayer[]} An array of generated layers.
+     * @returns {Layer[]} An array of generated layers.
      */
     private generateMiddleMountainDesign(
         noiseFunction: (point: Point) => number,
         yRange: (x: number) => number
     ): void {
-        const localRegion: ILayer[] = [];
+        const localRegion: Layer[] = [];
 
         for (let i = this.iMin; i < this.iMax; i++) {
             const x = i * X_STEP + this.xOffset;
@@ -107,7 +107,7 @@ export default class Designer {
                         yOffset
                     );
 
-                    if (this.needsAdding(localRegion, mountainChunk)) {
+                    if (this.checkCollision(localRegion, mountainChunk)) {
                         localRegion.push(mountainChunk);
                     }
                 }
@@ -123,7 +123,7 @@ export default class Designer {
                     PRNG.random(230, 280)
                 );
 
-                if (this.needsAdding(localRegion, distMountainChunk)) {
+                if (this.checkCollision(localRegion, distMountainChunk)) {
                     localRegion.push(distMountainChunk);
                 }
             }
@@ -135,10 +135,10 @@ export default class Designer {
     /**
      * Adds flat mountain layers to the layers.
      * @private
-     * @returns {ILayer[]} An array of generated layers.
+     * @returns {Layer[]} An array of generated layers.
      */
     private generateBottomMountainDesign(): void {
-        const localRegion: ILayer[] = [];
+        const localRegion: Layer[] = [];
 
         for (let i = this.iMin; i < this.iMax; i++) {
             const x = i * X_STEP + this.xOffset;
@@ -151,7 +151,7 @@ export default class Designer {
                         700 - j * 50
                     );
 
-                    if (this.needsAdding(localRegion, bottomMountainChunk)) {
+                    if (this.checkCollision(localRegion, bottomMountainChunk)) {
                         localRegion.push(bottomMountainChunk);
                     }
                 }
@@ -162,26 +162,29 @@ export default class Designer {
     }
 
     /**
-     * Checks if a layer needs to be added to the region.
+     * Adds boat layers to the layers.
      * @private
-     * @param {ILayer[]} region - The region of existing layers.
-     * @param {ILayer} layer - The layer to check.
-     * @param {number} radius - The threshold radius for considering layers to be the same.
-     * @returns {boolean} True if the layer needs to be added, false otherwise.
      */
-    private needsAdding(
-        region: ILayer[],
-        layer: ILayer,
-        radius: number = 10
-    ): boolean {
-        const localCheck = region.every(
-            (existingChunk) => Math.abs(existingChunk.x - layer.x) >= radius
-        );
+    private generateBoatDesign(): void {
+        const localRegion: Layer[] = [];
 
-        const globalCheck = this.layers.every(
-            (existingChunk) => Math.abs(existingChunk.x - layer.x) >= radius
-        );
+        for (let i = this.iMin; i < this.iMax; i++) {
+            if (PRNG.random() < BOAT_PROBABILITY) {
+                const x = i * X_STEP + this.xOffset;
+                const y = PRNG.random(MIN_BOAT_Y, MAX_BOAT_Y);
+                const boatChunk = new SketchLayer("boat", x, y);
 
-        return localCheck && globalCheck;
+                if (
+                    this.checkCollision(
+                        localRegion,
+                        boatChunk,
+                        BOAT_RADIUS_THRESHOLD
+                    )
+                ) {
+                    localRegion.push(boatChunk);
+                }
+            }
+        }
+        this.layers = this.layers.concat(localRegion);
     }
 }
