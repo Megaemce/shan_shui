@@ -35,8 +35,6 @@ export const App: React.FC = (): JSX.Element => {
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
 
     PRNG.seed = currentSeed;
-    config.ui.frameWidth =
-        window.innerWidth > 1024 ? config.ui.frameWidth : window.innerWidth;
 
     /**
      * Callback function to handle changes in the save range.
