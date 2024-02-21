@@ -20,43 +20,6 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     const [svgContent, setSvgContent] = useState("");
     const newRange = new Range(currentPosition, currentPosition + windowWidth);
     const svgRef = useRef<SVGSVGElement | null>(null);
-    const currentViewBoxPosition = useRef(currentPosition);
-
-    useEffect(() => {
-        const oldViewBoxPosition = currentViewBoxPosition.current;
-
-        if (!svgRef.current) return;
-
-        let timeStart = Date.now();
-        const duration = 1000;
-        const distance = currentPosition - oldViewBoxPosition;
-
-        const loop = () => {
-            if (!svgRef.current) return;
-
-            const now = Date.now();
-            const deltaTime = now - timeStart;
-            const progress = Math.min(deltaTime / duration, 1);
-
-            if (now > timeStart + duration) cancelAnimationFrame(raf);
-
-            currentViewBoxPosition.current =
-                oldViewBoxPosition + distance * progress;
-
-            svgRef.current.setAttribute(
-                "viewBox",
-                `${currentViewBoxPosition.current} 0 ${windowWidth / ZOOM} ${
-                    windowHeight / ZOOM
-                }`
-            );
-
-            raf = requestAnimationFrame(loop);
-        };
-
-        let raf = requestAnimationFrame(loop);
-
-        return () => cancelAnimationFrame(raf);
-    }, [currentPosition, windowWidth, windowHeight]);
 
     // Update the renderer with the new range on every refresh
     renderer.update(newRange);
