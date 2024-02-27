@@ -12,13 +12,13 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     step,
     horizontalScroll,
     windowHeight,
-    currentPosition,
+    newPosition,
     windowWidth,
     renderer,
 }) => {
     const [loading, setLoading] = useState(true);
     const [svgContent, setSvgContent] = useState("");
-    const newRange = new Range(currentPosition, currentPosition + windowWidth);
+    const newRange = new Range(newPosition, newPosition + windowWidth);
     const svgRef = useRef<SVGSVGElement | null>(null);
 
     // Update the renderer with the new range on every refresh
@@ -44,7 +44,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
             <svg
                 id="SVG"
                 ref={svgRef}
-                viewBox={`${currentPosition} 0 ${windowWidth / ZOOM} ${
+                viewBox={`${newPosition} 0 ${windowWidth / ZOOM} ${
                     windowHeight / ZOOM
                 }`}
             >

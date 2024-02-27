@@ -5,7 +5,6 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Renderer from "./classes/Renderer";
 import { ScrollableCanvas } from "./ui/ScrollableCanvas";
 import { SettingPanel } from "./ui/SettingPanel";
-import { config } from "./config";
 
 /**
  * Main application component.
@@ -23,7 +22,7 @@ export const App: React.FC = (): JSX.Element => {
     // State variables
     const [seed, setSeed] = useState<string>(currentSeed);
     const [step, setStep] = useState(100);
-    const [currentPosition, setCurrentPosition] = useState<number>(0);
+    const [newPosition, setNewPosition] = useState<number>(0);
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
     const [windowHeight, setWindowHeight] = useState<number>(
         window.innerHeight
@@ -34,6 +33,7 @@ export const App: React.FC = (): JSX.Element => {
     );
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
 
+    Renderer.workingRange = saveRange; // firstly working range is a full sreen
     PRNG.seed = currentSeed;
 
     /**
@@ -60,7 +60,7 @@ export const App: React.FC = (): JSX.Element => {
      */
     const toggleAutoLoad = (isEnabled: boolean) => {
         setAutoLoad(isEnabled);
-        setSaveRange(new Range(currentPosition, currentPosition + windowWidth));
+        setSaveRange(new Range(newPosition, newPosition + windowWidth));
     };
 
     /**
@@ -85,9 +85,9 @@ export const App: React.FC = (): JSX.Element => {
      */
     const horizontalScroll = useCallback(
         (value: number) => {
-            const nextPosition = currentPosition + value;
+            const nextPosition = newPosition + value;
             if (nextPosition > 0) {
-                setCurrentPosition(nextPosition);
+                setNewPosition(nextPosition);
 
                 if (autoLoad) {
                     setSaveRange(
@@ -96,7 +96,7 @@ export const App: React.FC = (): JSX.Element => {
                 }
             }
         },
-        [autoLoad, currentPosition, windowWidth]
+        [autoLoad, newPosition, windowWidth]
     );
 
     /**
@@ -144,7 +144,7 @@ export const App: React.FC = (): JSX.Element => {
                     reloadWindowSeed={reloadWindowSeed}
                     horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}
-                    currentPosition={currentPosition}
+                    newPosition={newPosition}
                     renderer={rendererRef.current}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
@@ -156,7 +156,7 @@ export const App: React.FC = (): JSX.Element => {
                     step={step}
                     horizontalScroll={horizontalScroll}
                     windowHeight={windowHeight}
-                    currentPosition={currentPosition}
+                    newPosition={newPosition}
                     windowWidth={windowWidth}
                     renderer={rendererRef.current}
                 />

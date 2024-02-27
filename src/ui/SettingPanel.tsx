@@ -12,7 +12,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     reloadWindowSeed,
     horizontalScroll,
     toggleAutoScroll,
-    currentPosition,
+    newPosition,
     renderer,
     windowWidth,
     windowHeight,
@@ -56,7 +56,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                     reloadWindowSeed={reloadWindowSeed}
                     horizontalScroll={horizontalScroll}
                     toggleAutoScroll={toggleAutoScroll}
-                    currentPosition={currentPosition}
+                    newPosition={newPosition}
                     renderer={renderer}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}

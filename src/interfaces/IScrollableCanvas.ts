@@ -29,11 +29,11 @@ export interface IScrollableCanvas {
     windowHeight: number;
 
     /**
-     * The current x-coordinate of the canvas.
+     * The new x-coordinate of the canvas.
      *
      * @type {number}
      */
-    currentPosition: number;
+    newPosition: number;
 
     /**
      * The width of the canvas.

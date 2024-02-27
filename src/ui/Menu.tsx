@@ -13,7 +13,7 @@ export const Menu: React.FC<IMenu> = ({
     reloadWindowSeed,
     horizontalScroll,
     toggleAutoScroll,
-    currentPosition,
+    newPosition,
     windowWidth,
     windowHeight,
     renderer,
@@ -35,9 +35,7 @@ export const Menu: React.FC<IMenu> = ({
         }
     };
     const loadCurrentRange = () => {
-        onChangeSaveRange(
-            new Range(currentPosition, currentPosition + windowWidth)
-        );
+        onChangeSaveRange(new Range(newPosition, newPosition + windowWidth));
     };
     const onChangeSaveRangeL = (event: ChangeEvent<HTMLInputElement>) =>
         onChangeSaveRange(
@@ -65,7 +63,7 @@ export const Menu: React.FC<IMenu> = ({
             <div>
                 <h4>Current view:</h4>
                 <p>
-                    [{currentPosition}, {currentPosition + windowWidth}]
+                    [{newPosition}, {newPosition + windowWidth}]
                 </p>
                 <button title="Scroll left" onClick={horizonalScrollLeft}>
                     &lt;

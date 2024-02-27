@@ -62,11 +62,11 @@ export interface ISettingPanel {
     toggleAutoScroll: (status: boolean, value: number) => void;
 
     /**
-     * The current position of the panel.
+     * The new x-coordinate of the canvas.
      *
      * @type {number}
      */
-    currentPosition: number;
+    newPosition: number;
 
     /**
      * Reference to Renderer

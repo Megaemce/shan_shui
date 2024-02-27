@@ -62,11 +62,11 @@ export interface IMenu {
     toggleAutoScroll: (s: boolean, v: number) => void;
 
     /**
-     * The current position of the menu.
+     * The new x-coordinate of the canvas.
      *
      * @type {number}
      */
-    currentPosition: number;
+    newPosition: number;
 
     /**
      * The width of the menu window.
