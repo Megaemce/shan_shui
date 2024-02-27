@@ -6,22 +6,40 @@ import { config } from "../config";
 const ZOOM = config.ui.zoom;
 const FRAME_WIDTH = config.ui.frameWidth;
 
+// function yieldToMain() {
+//     return new Promise((resolve) => {
+//         setTimeout(resolve, 0);
+//     });
+// }
+
 export default class Renderer {
     frames: Frame[] = [];
-    visibleRange: Range = new Range();
+    static workingRange: Range;
 
     /**
      * Updates the frames based on the given range.
      * @param givenRange - The range for which to update the cache.
      */
     public update(givenRange: Range): void {
-        while (givenRange.right > this.visibleRange.right - FRAME_WIDTH) {
+        console.log("calling update with new range", givenRange);
+        console.log("current working range", Renderer.workingRange);
+        console.log("current frame width", FRAME_WIDTH);
+
+        // Calculate the number of iterations needed
+        const numIterations = Math.ceil(
+            (givenRange.right - Renderer.workingRange.right + FRAME_WIDTH) /
+                FRAME_WIDTH
+        );
+
+        for (let i = 0; i < numIterations; i++) {
             let frameRange = new Range(
-                this.visibleRange.right,
-                this.visibleRange.right + FRAME_WIDTH
+                Renderer.workingRange.right,
+                Renderer.workingRange.right + FRAME_WIDTH
             );
 
-            this.visibleRange.right += FRAME_WIDTH;
+            Renderer.workingRange.move(FRAME_WIDTH);
+
+            console.log("░░░ creating new frame ░░░");
 
             const frameID = this.frames.length + 1;
             const framePlan = new Designer(frameRange).layers;
