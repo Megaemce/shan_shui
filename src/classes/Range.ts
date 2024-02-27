@@ -17,4 +17,12 @@ export default class Range implements IRange {
     get length(): number {
         return this.right - this.left;
     }
+
+    /**
+     * Move the range by given number
+     */
+    move(value: number) {
+        this.left += value;
+        this.right += value;
+    }
 }
