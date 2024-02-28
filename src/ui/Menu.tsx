@@ -23,10 +23,6 @@ export const Menu: React.FC<IMenu> = ({
 }) => {
     const horizonalScrollLeft = () => horizontalScroll(-step);
     const horizonalScrollRight = () => horizontalScroll(step);
-    const toggleAutoScrollHandler = (event: ChangeEvent<HTMLInputElement>) =>
-        toggleAutoScroll(event.target.checked, step);
-    const toggleAutoLoadHandler = (event: ChangeEvent<HTMLInputElement>) =>
-        toggleAutoLoad(event.target.checked);
     const downloadSvg = () => {
         if (saveRange.length > 0) {
             renderer.download(seed, saveRange, windowHeight);
@@ -88,7 +84,7 @@ export const Menu: React.FC<IMenu> = ({
                     name="Auto-scrol"
                     id="AUTO_SCROLL"
                     type="checkbox"
-                    onChange={toggleAutoScrollHandler}
+                    onChange={toggleAutoScroll}
                 />
                 <label htmlFor="AUTO_SCROLL">Auto-scroll</label>
             </div>
@@ -116,7 +112,7 @@ export const Menu: React.FC<IMenu> = ({
                 <input
                     id="AUTO_LOAD"
                     type="checkbox"
-                    onChange={toggleAutoLoadHandler}
+                    onChange={toggleAutoLoad}
                 />
                 <label htmlFor="AUTO_LOAD">Auto-load</label>
             </div>

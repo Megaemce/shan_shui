@@ -53,13 +53,11 @@ export interface IMenu {
     horizontalScroll: (v: number) => void;
 
     /**
-     * Toggles auto-scrolling with a specified speed.
+     * Toggles auto-scrolling.
      *
      * @function
-     * @param {boolean} s - The auto-scroll state.
-     * @param {number} v - The auto-scroll speed.
      */
-    toggleAutoScroll: (s: boolean, v: number) => void;
+    toggleAutoScroll: () => void;
 
     /**
      * The new x-coordinate of the canvas.
@@ -108,7 +106,6 @@ export interface IMenu {
      * Toggles auto-loading state.
      *
      * @function
-     * @param {boolean} s - The auto-load state.
      */
-    toggleAutoLoad: (s: boolean) => void;
+    toggleAutoLoad: () => void;
 }

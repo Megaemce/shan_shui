@@ -53,13 +53,10 @@ export interface ISettingPanel {
     horizontalScroll: (value: number) => void;
 
     /**
-     * Toggles auto-scrolling with a specified speed.
-     *
+     * Toggles auto-scrolling.
      * @function
-     * @param {boolean} status - The auto-scroll status.
-     * @param {number} value - The auto-scroll speed.
      */
-    toggleAutoScroll: (status: boolean, value: number) => void;
+    toggleAutoScroll: () => void;
 
     /**
      * The new x-coordinate of the canvas.
@@ -108,7 +105,6 @@ export interface ISettingPanel {
      * Toggles auto-loading state.
      *
      * @function
-     * @param {boolean} status - The auto-load status.
      */
-    toggleAutoLoad: (status: boolean) => void;
+    toggleAutoLoad: () => void;
 }

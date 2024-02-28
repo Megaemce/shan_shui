@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Renderer from "./classes/Renderer";
 import { ScrollableCanvas } from "./ui/ScrollableCanvas";
 import { SettingPanel } from "./ui/SettingPanel";
+import lodash from "lodash";
 
 /**
  * Main application component.
@@ -13,11 +14,11 @@ import { SettingPanel } from "./ui/SettingPanel";
  */
 
 export const App: React.FC = (): JSX.Element => {
-    const FPS = 60;
     const urlSeed = new URLSearchParams(window.location.search).get("seed");
     const currentDate = new Date().getTime().toString();
     const currentSeed = urlSeed || currentDate;
     const rendererRef = useRef(new Renderer());
+    const timeoutRef = useRef<number | NodeJS.Timeout>(0);
 
     // State variables
     const [seed, setSeed] = useState<string>(currentSeed);
@@ -33,7 +34,6 @@ export const App: React.FC = (): JSX.Element => {
     );
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
 
-    Renderer.workingRange = saveRange; // firstly working range is a full sreen
     PRNG.seed = currentSeed;
 
     /**
@@ -46,20 +46,16 @@ export const App: React.FC = (): JSX.Element => {
 
     /**
      * Callback function to toggle auto-scrolling.
-     * @param {boolean} isEnabled - Indicates whether auto-scroll is enabled.
-     * @param {number} step - The step value for auto-scrolling.
      */
-    const toggleAutoScroll = (isEnabled: boolean, step: number) => {
-        setAutoScroll(isEnabled);
-        horizontalAutoScroll(step);
+    const toggleAutoScroll = () => {
+        setAutoScroll(!autoScroll);
     };
 
     /**
      * Callback function to toggle auto-loading.
-     * @param {boolean} isEnabled - Indicates whether auto-load is enabled.
      */
-    const toggleAutoLoad = (isEnabled: boolean) => {
-        setAutoLoad(isEnabled);
+    const toggleAutoLoad = () => {
+        setAutoLoad(!autoLoad);
         setSaveRange(new Range(newPosition, newPosition + windowWidth));
     };
 
@@ -67,15 +63,15 @@ export const App: React.FC = (): JSX.Element => {
      * Add hooks for window resize events.
      */
     useEffect(() => {
-        const resizeCallback = () => {
+        const handleResize = lodash.debounce(() => {
             setWindowWidth(window.innerWidth);
             setWindowHeight(window.innerHeight);
-        };
-
-        window.addEventListener("resize", resizeCallback);
+        }, 200);
+        window.addEventListener("resize", handleResize);
+        console.log("useEffect on resize was called");
 
         return () => {
-            window.removeEventListener("resize", resizeCallback);
+            window.removeEventListener("resize", handleResize);
         };
     }, []);
 
@@ -85,46 +81,32 @@ export const App: React.FC = (): JSX.Element => {
      */
     const horizontalScroll = useCallback(
         (value: number) => {
-            const nextPosition = newPosition + value;
-            if (nextPosition > 0) {
-                setNewPosition(nextPosition);
+            if (newPosition + value < 0) return;
 
-                if (autoLoad) {
-                    setSaveRange(
-                        new Range(nextPosition, nextPosition + windowWidth)
-                    );
-                }
-            }
+            setNewPosition((current) => current + value);
         },
-        [autoLoad, newPosition, windowWidth]
-    );
-
-    /**
-     * Callback function to handle horizontal auto-scrolling.
-     * @param {number} step - The step value for auto-scrolling.
-     */
-    const horizontalAutoScroll = useCallback(
-        (step: number) => {
-            if (!autoScroll) return;
-
-            const autoScrollCallback = () => {
-                horizontalScroll(step);
-                requestAnimationFrame(autoScrollCallback);
-            };
-            const autoScrollTimeout = setTimeout(autoScrollCallback, step);
-
-            return () => clearTimeout(autoScrollTimeout);
-        },
-        [autoScroll, horizontalScroll]
+        [newPosition]
     );
 
     /**
      * Effect to initiate horizontal auto-scrolling.
      */
     useEffect(() => {
-        autoScroll && horizontalAutoScroll(FPS);
-    }, [autoScroll, horizontalAutoScroll, FPS]);
+        const autoScrollCallback = () => {
+            if (autoScroll) {
+                horizontalScroll(step);
+                timeoutRef.current = setTimeout(autoScrollCallback, 1000); // Execute every 1 second
+            }
+        };
 
+        if (autoScroll) {
+            timeoutRef.current = setTimeout(autoScrollCallback, 1000); // Start the auto-scrolling
+        }
+
+        return () => {
+            clearTimeout(timeoutRef.current); // Clean up the timeout when component unmounts
+        };
+    }, [autoScroll, step, horizontalScroll]);
     /**
      * Callback function to reload the page with a new seed.
      */
