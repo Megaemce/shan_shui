@@ -12,11 +12,13 @@ import lodash from "lodash";
  * @component
  * @returns {JSX.Element} The main application component.
  */
-
 export const App: React.FC = (): JSX.Element => {
+    // Initialize seed based on URL or current time
     const urlSeed = new URLSearchParams(window.location.search).get("seed");
     const currentDate = new Date().getTime().toString();
     const currentSeed = urlSeed || currentDate;
+
+    // Refs
     const rendererRef = useRef(new Renderer());
     const timeoutRef = useRef<number | NodeJS.Timeout>(0);
 
@@ -36,80 +38,70 @@ export const App: React.FC = (): JSX.Element => {
 
     PRNG.seed = currentSeed;
 
-    /**
-     * Callback function to handle changes in the save range.
-     * @param {Range} newSaveRange - The new save range.
-     */
-    const onChangeSaveRange = (newSaveRange: Range) => {
-        setSaveRange(newSaveRange);
+    // Callback function to handle changes in the save range
+    const onChangeSaveRange = (newRange: Range) => {
+        setSaveRange(newRange);
     };
 
-    /**
-     * Callback function to toggle auto-scrolling.
-     */
+    // Callback function when Auto-scrolling button is clicked
     const toggleAutoScroll = () => {
-        setAutoScroll(!autoScroll);
+        setAutoScroll((current) => !current);
     };
 
-    /**
-     * Callback function to toggle auto-loading.
-     */
+    // Callback function when Auto-loading button is clicked
     const toggleAutoLoad = () => {
-        setAutoLoad(!autoLoad);
+        setAutoLoad((current) => !current);
         setSaveRange(new Range(newPosition, newPosition + windowWidth));
     };
 
-    /**
-     * Add hooks for window resize events.
-     */
+    // Add hooks for window resize events with debounce
     useEffect(() => {
         const handleResize = lodash.debounce(() => {
             setWindowWidth(window.innerWidth);
             setWindowHeight(window.innerHeight);
         }, 200);
         window.addEventListener("resize", handleResize);
-        console.log("useEffect on resize was called");
 
         return () => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
 
-    /**
-     * Callback function to handle horizontal scrolling.
-     * @param {number} value - The scroll value.
-     */
+    // Callback function to handle horizontal scrolling
     const horizontalScroll = useCallback(
         (value: number) => {
-            if (newPosition + value < 0) return;
+            let newValue = newPosition + value;
 
-            setNewPosition((current) => current + value);
+            if (newValue < 0) return;
+            if (autoLoad) {
+                setSaveRange(new Range(newValue, newValue + windowWidth));
+            }
+
+            setNewPosition(newValue);
         },
-        [newPosition]
+        [newPosition, autoLoad, windowWidth]
     );
 
-    /**
-     * Effect to initiate horizontal auto-scrolling.
-     */
+    // Effect to initiate horizontal auto-scrolling
     useEffect(() => {
         const autoScrollCallback = () => {
             if (autoScroll) {
                 horizontalScroll(step);
-                timeoutRef.current = setTimeout(autoScrollCallback, 1000); // Execute every 1 second
+                timeoutRef.current = setTimeout(autoScrollCallback, 1000);
             }
         };
 
         if (autoScroll) {
-            timeoutRef.current = setTimeout(autoScrollCallback, 1000); // Start the auto-scrolling
+            timeoutRef.current = setTimeout(autoScrollCallback, 1000);
         }
 
+        // Clean up the timeout when component unmounts
         return () => {
-            clearTimeout(timeoutRef.current); // Clean up the timeout when component unmounts
+            clearTimeout(timeoutRef.current);
         };
     }, [autoScroll, step, horizontalScroll]);
-    /**
-     * Callback function to reload the page with a new seed.
-     */
+
+    // Callback function to reload the page with a new seed
     const reloadWindowSeed = () => {
         const url = window.location.href.split("?")[0];
         window.location.href = `${url}?seed=${seed}`;
