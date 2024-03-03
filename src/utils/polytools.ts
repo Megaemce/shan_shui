@@ -319,7 +319,8 @@ function findBestEar(
     isConvex: boolean,
     optimize: boolean
 ): Point[][] {
-    const potentialEars = [];
+    let bestEar = [pointArray, []];
+    let bestRatio = 0;
 
     // go throu all the possible pointArray permutation
     for (let i = 0; i < pointArray.length; i++) {
@@ -338,21 +339,14 @@ function findBestEar(
                 return potentialEar;
             }
 
-            potentialEars.push(potentialEar);
+            const ratio = calculateSliverRatio(potentialEar[0]);
+
+            if (ratio >= bestRatio) {
+                bestEar = potentialEar;
+                bestRatio = ratio;
+            }
         }
     }
-
-    let bestEar = [pointArray, []];
-    let bestRatio = 0;
-
-    potentialEars.forEach((ear) => {
-        const ratio = calculateSliverRatio(ear[0]);
-
-        if (ratio >= bestRatio) {
-            bestEar = ear;
-            bestRatio = ratio;
-        }
-    });
 
     return bestEar;
 }

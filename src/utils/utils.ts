@@ -125,17 +125,19 @@ export function normalizeNoise(noiseArray: number[]): number[] {
     let leftBoundary = 100;
     let rightBoundary = -100;
 
-    noiseArray.forEach((value, i) => {
+    for (let i = 0; i < noiseArray.length; i++) {
+        leftBoundary = Math.min(leftBoundary, noiseArray[i]);
+        rightBoundary = Math.max(rightBoundary, noiseArray[i]);
+
         noiseArray[i] +=
             (dif * (noiseArray.length - 1 - i)) / (noiseArray.length - 1);
-        leftBoundary = Math.min(leftBoundary, value);
-        rightBoundary = Math.max(rightBoundary, value);
-    });
+        // Maps a value from range (leftBoundary,rightBoundary) to (0,1) in place.
+        noiseArray[i] =
+            (noiseArray[i] - leftBoundary) / (rightBoundary - leftBoundary);
+    }
 
-    // Maps a value from range (leftBoundary,rightBoundary) to (0,1).
-    return noiseArray.map(
-        (value) => (value - leftBoundary) / (rightBoundary - leftBoundary)
-    );
+    // Return the modified noiseArray with values mapped to (0,1).
+    return noiseArray;
 }
 
 /**
