@@ -60,12 +60,13 @@ export default class Blob extends Element {
 
         noiseArray = normalizeNoise(noiseArray);
 
-        lalist.forEach(([l, a], i) => {
+        for (let i = 0; i < lalist.length; i++) {
+            const [l, a] = lalist[i];
             const ns = noiseArray[i] * noise + (1 - noise);
             const newX = x + Math.cos(a + angle) * l * ns;
             const newY = y + Math.sin(a + angle) * l * ns;
             pointArray[i] = new Point(newX, newY);
-        });
+        }
 
         super(pointArray, 0, 0, fillColor, fillColor);
 

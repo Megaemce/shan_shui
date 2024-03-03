@@ -77,17 +77,17 @@ export default class Texture extends Structure {
 
         // SHADE
 
-        textureArray.forEach((texture, i) => {
-            if (i % step === 0 && texture.length > 0) {
+        for (let index = 0; index < textureArray.length; index++) {
+            if (index % step === 0 && textureArray[index].length > 0) {
                 this.add(
                     new Stroke(
-                        texture,
+                        textureArray[index],
                         "rgba(100,100,100,0.1)",
                         "rgba(100,100,100,0.1)",
                         shadow
                     )
                 );
             }
-        });
+        }
     }
 }

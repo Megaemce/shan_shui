@@ -20,16 +20,18 @@ export function generateVegetate(
     const vegList: Point[] = [];
 
     // Collect points where vegetation can potentially grow based on growthRule
-    elementArray.forEach((element, i) => {
-        element.forEach((point, j) => {
+    for (let i = 0; i < elementArray.length; i++) {
+        for (let j = 0; j < elementArray[i].length; j++) {
             if (growthRule(i, j)) {
-                vegList.push(point);
+                vegList.push(elementArray[i][j]);
             }
-        });
-    });
+        }
+    }
 
     // Check additional proofRule conditions and generate vegetation on point location
-    vegList.forEach((point, i) => {
-        proofRule(vegList, i) && target.add(treeFunc(point.x, point.y));
-    });
+    for (let i = 0; i < vegList.length; i++) {
+        if (proofRule(vegList, i)) {
+            target.add(treeFunc(vegList[i].x, vegList[i].y));
+        }
+    }
 }
