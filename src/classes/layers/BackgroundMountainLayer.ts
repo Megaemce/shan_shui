@@ -24,15 +24,15 @@ export default class BackgroundMountainLayer extends Layer {
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
      * @param {number} [seed=DEFAULT_SEED] - The seed for the noise function.
-     * @param {number} [height=DEFAULT_HEIGHT] - The overall height of the mountain.
      * @param {number} [width=DEFAULT_WIDTH] - The width of the mountain.
+     * @param {number} [height=DEFAULT_HEIGHT] - The overall height of the mountain.
      */
     constructor(
         xOffset: number,
         yOffset: number,
         seed: number = DEFAULT_SEED,
-        height: number = DEFAULT_HEIGHT,
-        width: number = DEFAULT_WIDTH
+        width: number = DEFAULT_WIDTH,
+        height: number = DEFAULT_HEIGHT
     ) {
         super("backgroundMountain", xOffset, yOffset);
 

@@ -52,16 +52,15 @@ export default class MiddleMountainLayer extends Layer {
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
      * @param {number} [seed=DEFAULT_SEED] - The seed for noise functions.
-     * @param {number} [height=PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX)] - The height of the mountain.
      * @param {number} [width=PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX)] - The width of the mountain.
-
+     * @param {number} [height=PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX)] - The height of the mountain.
      */
     constructor(
         xOffset: number,
         yOffset: number,
         seed: number = DEFAULT_SEED,
-        height: number = PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX),
-        width: number = PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX)
+        width: number = PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX),
+        height: number = PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX)
     ) {
         super("middleMountain", xOffset, yOffset);
 

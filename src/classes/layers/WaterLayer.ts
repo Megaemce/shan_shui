@@ -20,16 +20,17 @@ export default class WaterLayer extends Layer {
      * Creates an instance of WaterChunk.
      * @param {number} xOffset - X-coordinate offset for the chunk.
      * @param {number} yOffset - Y-coordinate offset for the chunk.
-     * @param {number} [height=DEFAULT_HEIGTH] - Height of the waves.
      * @param {number} [width=DEFAULT_WIDTH] - Width of the waves.
+     * @param {number} [height=DEFAULT_HEIGTH] - Height of the waves.
      * @param {number} [waveClusters=DEFAULT_WAVECLUSTERS] - Number of clusters of waves.
      */
 
     constructor(
         xOffset: number,
         yOffset: number,
-        height: number = DEFAULT_HEIGTH,
         width: number = DEFAULT_WIDTH,
+        height: number = DEFAULT_HEIGTH,
+
         waveClusters: number = DEFAULT_WAVECLUSTERS
     ) {
         super("water", xOffset, yOffset - 10000);
