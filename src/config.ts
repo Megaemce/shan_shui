@@ -125,7 +125,8 @@ export const config = {
         bezierCurvePoints: 20,
     },
     designer: {
-        xStep: 5, // Step size along the x-axis for generating terrain.
+        radius: 10, // The threshold radius for considering layers to be the same
+        xStep: 50, // Step size along the x-axis for generating terrain.
         noiseSample: 0.03, // Sample value for the noise function.
         boatY: {
             min: 300,
@@ -140,11 +141,11 @@ export const config = {
             radiusThreshold: 400,
         },
         middleMountain: {
-            coverThreshold: 0.3, // Threshold value for determining mountain coverage in the design.
+            coverThreshold: 0.2, // Threshold value for determining mountain coverage in the design.
             radius: 2, // Radius of the circular area used to check for local maxima.
         },
         bottomMountain: {
-            probability: 0.01, // Probability of generating a flat mountain chunk.
+            probability: 0.1, // Probability of generating a flat mountain chunk.
         },
         backgroundMountain: {
             interval: 1000, // Interval at which distant mountains are generated.
