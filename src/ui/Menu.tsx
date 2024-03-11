@@ -34,12 +34,10 @@ export const Menu: React.FC<IMenu> = ({
         onChangeSaveRange(new Range(newPosition, newPosition + windowWidth));
     };
     const onChangeSaveRangeL = (event: ChangeEvent<HTMLInputElement>) =>
-        onChangeSaveRange(
-            new Range(event.target.valueAsNumber, saveRange.right)
-        );
+        onChangeSaveRange(new Range(event.target.valueAsNumber, saveRange.end));
     const onChangeSaveRangeR = (event: ChangeEvent<HTMLInputElement>) =>
         onChangeSaveRange(
-            new Range(saveRange.left, event.target.valueAsNumber)
+            new Range(saveRange.start, event.target.valueAsNumber)
         );
 
     return (
@@ -61,7 +59,7 @@ export const Menu: React.FC<IMenu> = ({
                 <p>
                     [{newPosition}, {newPosition + windowWidth}]
                 </p>
-                <button title="Scroll left" onClick={horizonalScrollLeft}>
+                <button title="Scroll start" onClick={horizonalScrollLeft}>
                     &lt;
                 </button>
                 <DebounceInput
@@ -75,7 +73,7 @@ export const Menu: React.FC<IMenu> = ({
                     step={step}
                     onChange={(e) => setStep(Number(e.target.value))}
                 />
-                <button title="Scroll right" onClick={horizonalScrollRight}>
+                <button title="Scroll end" onClick={horizonalScrollRight}>
                     &gt;
                 </button>
             </div>
@@ -95,7 +93,7 @@ export const Menu: React.FC<IMenu> = ({
                     className="ROWITEM"
                     type="number"
                     debounceTimeout={500}
-                    value={saveRange.left}
+                    value={saveRange.start}
                     onChange={onChangeSaveRangeL}
                 />
                 to
@@ -103,7 +101,7 @@ export const Menu: React.FC<IMenu> = ({
                     className="ROWITEM"
                     type="number"
                     debounceTimeout={500}
-                    value={saveRange.right}
+                    value={saveRange.end}
                     onChange={onChangeSaveRangeR}
                 />
             </div>
