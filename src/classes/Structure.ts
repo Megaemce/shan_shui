@@ -35,18 +35,4 @@ export default class Structure implements IStructure {
             this.elements = object.elements.concat(this.elements);
         }
     }
-
-    /**
-     * Renders the SVG representation of the complex SVG.
-     *
-     * @returns {string} The SVG string.
-     */
-    stringify(): string {
-        const result = this.elements.reduce((acc, element) => {
-            acc += element.stringify + "\n";
-            return acc;
-        }, "");
-
-        return result;
-    }
 }

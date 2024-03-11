@@ -15,14 +15,6 @@ export default interface IStructure {
     elements: Array<Element>;
 
     /**
-     * Returns the ComplexSvg string representation.
-     *
-     * @function
-     * @returns {string} The SVG string representation.
-     */
-    stringify: () => string;
-
-    /**
      * Adds an Element or Structure to the given Structure.
      *
      * @function
