@@ -1,3 +1,4 @@
+import Range from "../classes/Range";
 import { LayerType } from "../types/LayerType";
 
 /**
@@ -26,4 +27,11 @@ export default interface ILayer {
      * @type {number}
      */
     y: number;
+
+    /**
+     * Layer range getter
+     *
+     * @return {Range}
+     */
+    get range(): Range;
 }

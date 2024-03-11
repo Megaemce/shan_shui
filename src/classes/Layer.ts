@@ -1,5 +1,6 @@
-import Structure from "./Structure";
 import ILayer from "../interfaces/ILayer";
+import Range from "./Range";
+import Structure from "./Structure";
 import { LayerType } from "../types/LayerType";
 
 /**
@@ -19,5 +20,20 @@ export default class Layer extends Structure implements ILayer {
         public y: number = 0
     ) {
         super();
+    }
+
+    get range(): Range {
+        let xMax = -Infinity;
+        let xMin = +Infinity;
+
+        for (let i = 0; i < this.elements.length; i++) {
+            const elementStart = this.elements[i].range.start;
+            const elementEnd = this.elements[i].range.end;
+
+            if (xMin > elementStart) xMin = elementStart;
+            if (xMax < elementEnd) xMax = elementEnd;
+        }
+
+        return new Range(xMin, xMax);
     }
 }
