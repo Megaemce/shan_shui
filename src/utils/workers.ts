@@ -6,14 +6,17 @@ import Element from "../classes/Element";
  * @return {void}
  */
 onmessage = function (e: MessageEvent): void {
+    const frameNum = e.data.frameNum as number;
     const index = e.data.index as number;
     const layerTag = e.data.layerTag as string;
     const elements = e.data.elements as Array<Element>;
 
-    const workerResult = `
-        <g id="layer${index}-${layerTag}">
-            ${elements.map((element) => element.stringify).join("\n")}"
-        </g>`;
+    let text = "";
+    for (let i = 0; i < elements.length; i++) {
+        text += elements[i].stringify + "\n";
+    }
+
+    const workerResult = `<g id="frame${frameNum}-layer${index}-${layerTag}">${text}</g>`;
 
     postMessage({ stringify: workerResult });
 };
