@@ -36,10 +36,12 @@ export default class Rock extends Structure {
         for (let i = 0; i < resolution[0]; i++) {
             pointArray.push([]);
 
-            const noiseArray = [];
+            let noiseArray = new Array<number>(resolution[1]);
+
             for (let j = 0; j < resolution[1]; j++) {
-                noiseArray.push(Perlin.noise(i, j * 0.2, this.seed));
+                noiseArray[j] = Perlin.noise(i, j * 0.2, this.seed);
             }
+
             normalizeNoise(noiseArray);
 
             for (let j = 0; j < resolution[1]; j++) {
