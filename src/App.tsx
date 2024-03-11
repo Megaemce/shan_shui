@@ -1,11 +1,11 @@
-import "./App.css";
 import PRNG from "./classes/PRNG";
 import Range from "./classes/Range";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Renderer from "./classes/Renderer";
+import { debounce } from "lodash";
 import { ScrollableCanvas } from "./ui/ScrollableCanvas";
 import { SettingPanel } from "./ui/SettingPanel";
-import lodash from "lodash";
+import { config } from "./config";
 
 /**
  * Main application component.
@@ -56,11 +56,13 @@ export const App: React.FC = (): JSX.Element => {
 
     // Add hooks for window resize events with debounce
     useEffect(() => {
-        const handleResize = lodash.debounce(() => {
+        const handleResize = debounce(() => {
             setWindowWidth(window.innerWidth);
             setWindowHeight(window.innerHeight);
         }, 200);
+
         window.addEventListener("resize", handleResize);
+        config.ui.frameWidth = window.innerWidth / 2;
 
         return () => {
             window.removeEventListener("resize", handleResize);
