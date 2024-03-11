@@ -8,7 +8,7 @@ React, TypeScript and SVG. Nothing more! ✨
 
 ```
 npm install
-npm start
+npm run start
 ```
 
 ## 🖼️ Composition elements

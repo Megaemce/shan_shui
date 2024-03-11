@@ -1,6 +1,5 @@
 import PRNG from "./PRNG";
 import Perlin from "./Perlin";
-import Point from "./Point";
 import SketchLayer from "./SketchLayer";
 import { config } from "../config";
 import { isLocalMaximum } from "../utils/utils";
