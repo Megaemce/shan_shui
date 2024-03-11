@@ -6,49 +6,58 @@ import { config } from "../config";
 const ZOOM = config.ui.zoom;
 const FRAME_WIDTH = config.ui.frameWidth;
 
-// function yieldToMain() {
-//     return new Promise((resolve) => {
-//         setTimeout(resolve, 0);
-//     });
-// }
-
 export default class Renderer {
     frames: Frame[] = [];
-    static workingRange: Range;
+    /** Keeping the range that was already covered by renderer */
+    static coveredRange = new Range(0, 0);
+    /** Keeeping the current visible range so layers not within range can be hidden */
+    static visibleRange = new Range(0, 0);
 
     /**
      * Updates the frames based on the given range.
-     * @param givenRange - The range for which to update the cache.
+     * @param range - The new range of the canvas
      */
-    public update(givenRange: Range): void {
-        console.log("calling update with new range", givenRange);
-        console.log("current working range", Renderer.workingRange);
-        console.log("current frame width", FRAME_WIDTH);
+    public async createFrames(range: Range): Promise<string> {
+        Renderer.visibleRange = range;
 
-        // Calculate the number of iterations needed
-        const numIterations = Math.ceil(
-            (givenRange.right - Renderer.workingRange.right + FRAME_WIDTH) /
-                FRAME_WIDTH
-        );
+        // check if new range is extending beyond already covered range and trim it to only have new range
+        if (!Renderer.coveredRange.contains(range)) {
+            // if the new range start is still within covered range trim it
+            if (range.start < Renderer.coveredRange.end) {
+                range.start = Renderer.coveredRange.end;
+            }
 
-        for (let i = 0; i < numIterations; i++) {
-            let frameRange = new Range(
-                Renderer.workingRange.right,
-                Renderer.workingRange.right + FRAME_WIDTH
-            );
+            // cover more then just what is seen so the user will not have to rerender on every click
+            if (range.end >= Renderer.coveredRange.end) {
+                range.end *= 1.5;
+            }
 
-            Renderer.workingRange.move(FRAME_WIDTH);
-
+            console.log("range to cover after trimming is:", range);
             console.log("░░░ creating new frame ░░░");
 
             const frameID = this.frames.length + 1;
-            const framePlan = new Designer(frameRange).layers;
-            const newFrame = new Frame(framePlan, frameRange, frameID);
+            const framePlan = new Designer(range).plan;
+            const newFrame = new Frame(framePlan, range, frameID);
+
+            if (newFrame.range.end > Renderer.coveredRange.end) {
+                Renderer.coveredRange.end = newFrame.range.end;
+            }
 
             this.frames.push(newFrame);
         }
+
+        const framePromises = this.frames.map(async (frame) => {
+            return frame.render();
+        });
+
+        const frameResult = await Promise.all(framePromises).then(
+            (frameResults) => frameResults.join("\n")
+        );
+
+        return frameResult;
     }
 
+    // used by download
     public async render(): Promise<string> {
         /**
          * Make sure that the last added frame is render first so it's not covered with previous frame.
@@ -74,22 +83,22 @@ export default class Renderer {
      * @param windowHeight - The height of the SVG.
      */
     public download(seed: string, range: Range, windowHeight: number): void {
-        const filename: string = `${seed}-[${range.left}, ${range.right}].svg`;
-        const windx: number = range.right - range.left;
-        const viewbox = `${range.left} 0 ${windx / ZOOM} ${
+        const filename: string = `${seed}-[${range.start}, ${range.end}].svg`;
+        const windx: number = range.end - range.start;
+        const viewbox = `${range.start} 0 ${windx / ZOOM} ${
             windowHeight / ZOOM
         }`;
 
-        this.update(range);
+        this.createFrames(range);
 
-        const left = range.left - FRAME_WIDTH;
-        const right = range.right + FRAME_WIDTH;
+        const start = range.start - FRAME_WIDTH;
+        const end = range.end + FRAME_WIDTH;
 
         const content: string = `
         <svg 
             id="SVG" 
             xmlns="http://www.w3.org/2000/svg" 
-            width="${range.right - range.left}" 
+            width="${range.end - range.start}" 
             height="${windowHeight}" 
             viewBox="${viewbox}">
             <defs>
@@ -120,8 +129,8 @@ export default class Renderer {
                     ${this.frames
                         .filter(
                             (frame) =>
-                                frame.visibleRange.left >= left &&
-                                frame.visibleRange.right < right
+                                frame.visibleRange.start >= start &&
+                                frame.visibleRange.end < end
                         )
                         .forEach((frame) => frame.render())} 
                 </g>

@@ -8,13 +8,9 @@ import Range from "./Range";
 import SketchLayer from "./SketchLayer";
 import WaterLayer from "./layers/WaterLayer";
 import { config } from "../config";
+import Renderer from "./Renderer";
 
 const BACKGROUND_MOUNTAIN_HEIGHT = config.frame.backgroundMountainHeight;
-const BOTTOM_MOUNTAIN_FLATNESS_MAX = config.frame.bottomMountainFlatness.max;
-const BOTTOM_MOUNTAIN_FLATNESS_MIN = config.frame.bottomMountainFlatness.min;
-const BOTTOM_MOUNTAIN_HEIGHT = config.frame.bottomMountainHeight;
-const BOTTOM_MOUNTAIN_WIDTH_MAX = config.frame.bottomMountainWidth.max;
-const BOTTOM_MOUNTAIN_WIDTH_MIN = config.frame.bottomMountainWidth.min;
 
 /**
  * Class representing a frame used for generating and managing layer of terrain.
@@ -24,8 +20,8 @@ export default class Frame {
     layers: Layer[] = [];
 
     constructor(
-        public plan: SketchLayer[],
-        public visibleRange: Range,
+        public plan: SketchLayer[], // TODO: this should be removed in prod as it's only for debugging
+        public visibleRange: Range, // used by Renderer.download
         public id: number
     ) {
         // create active layers from the plan
@@ -44,23 +40,11 @@ export default class Frame {
                 this.layers.push(
                     new MiddleMountainLayer(x, y, PRNG.random(0, 2 * i))
                 );
+
                 this.layers.push(new WaterLayer(x, y));
             } else if (tag === "bottomMountain") {
                 this.layers.push(
-                    new BottomMountainLayer(
-                        x,
-                        y,
-                        PRNG.random(0, 2 * Math.PI),
-                        BOTTOM_MOUNTAIN_HEIGHT,
-                        PRNG.random(
-                            BOTTOM_MOUNTAIN_WIDTH_MIN,
-                            BOTTOM_MOUNTAIN_WIDTH_MAX
-                        ),
-                        PRNG.random(
-                            BOTTOM_MOUNTAIN_FLATNESS_MIN,
-                            BOTTOM_MOUNTAIN_FLATNESS_MAX
-                        )
-                    )
+                    new BottomMountainLayer(x, y, PRNG.random(0, 2 * Math.PI))
                 );
             } else if (tag === "backgroundMountain") {
                 this.layers.push(
@@ -68,8 +52,8 @@ export default class Frame {
                         x,
                         y,
                         PRNG.random(0, 100),
-                        BACKGROUND_MOUNTAIN_HEIGHT,
-                        PRNG.randomChoice([500, 1000, 1500])
+                        PRNG.randomChoice([500, 1000, 1500]),
+                        BACKGROUND_MOUNTAIN_HEIGHT
                     )
                 );
             } else if (tag === "boat") {
@@ -91,6 +75,9 @@ export default class Frame {
      */
     public async render(): Promise<string> {
         const layerPromises = this.layers.map(async (layer, index) => {
+            // don't render the layer if it's not visible
+            if (!Renderer.visibleRange.isShowing(layer.range)) return;
+
             /**
              * The Worker constructor is being called with a URL object created from a relative path and the import.meta.url.
              * new URL("../utils/workers.ts", import.meta.url) - This constructs a full URL by resolving the relative path
@@ -108,6 +95,7 @@ export default class Frame {
                 };
 
                 worker.postMessage({
+                    frameNum: this.id,
                     elements: layer.elements,
                     layerTag: layer.tag,
                     index: index,
@@ -123,5 +111,24 @@ export default class Frame {
         );
 
         return layerResults;
+    }
+
+    /**
+     * Return the current frame range
+     * @returns {Range}
+     */
+    public get range(): Range {
+        let xMax = -Infinity;
+        let xMin = +Infinity;
+
+        for (let i = 0; i < this.layers.length; i++) {
+            const layerStart = this.layers[i].range.start;
+            const layerEnd = this.layers[i].range.end;
+
+            if (xMin > layerStart) xMin = layerStart;
+            if (xMax < layerEnd) xMax = layerEnd;
+        }
+
+        return new Range(xMin, xMax);
     }
 }

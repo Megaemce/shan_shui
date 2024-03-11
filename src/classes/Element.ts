@@ -1,4 +1,5 @@
 import Point from "./Point";
+import Range from "./Range";
 import { config } from "../config";
 
 const DEFAULT_FILL_COLOR = config.element.defaultFillColor;
@@ -11,6 +12,8 @@ const DEFAULT_STROKE_WIDTH = config.element.defaultStrokeWidth;
 export default class Element {
     /** String representation of the polyline. */
     stringify: string = "";
+    /** Keeping the range of the element so it could be hidden is not within working */
+    range: Range = new Range(0, 0);
 
     /**
      * Initializes a new instance of the Elemnt class.
@@ -35,15 +38,20 @@ export default class Element {
             stroke-width:${strokeWidth}
         '`;
 
-        this.stringify = `<polyline points='
-            ${pointArray
-                .map(
-                    (point) =>
-                        (point.x + xOffset).toFixed(1) +
-                        "," +
-                        (point.y + yOffset).toFixed(1)
-                )
-                .join(" ")}
-            ' ${style}/>`;
+        let points = "";
+        let xMin = +Infinity;
+        let xMax = -Infinity;
+
+        for (let i = 0; i < pointArray.length; i++) {
+            let x = pointArray[i].x + xOffset;
+            let y = pointArray[i].y + yOffset;
+
+            if (xMin > x) xMin = x;
+            if (xMax < x) xMax = x;
+            points += `${x.toFixed(1)},${y.toFixed(1)} `;
+        }
+
+        this.range = new Range(xMin, xMax);
+        this.stringify = `<polyline points='${points}'${style}/>`;
     }
 }
