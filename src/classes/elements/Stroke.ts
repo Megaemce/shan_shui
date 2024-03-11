@@ -38,9 +38,9 @@ export default class Stroke extends Element {
          * For inital pointArray = [0,1,2,3] creates vtxArray = [0,(1),(2),3,(2),(1),0]
          * where bracketed values are modified by the main for loop
          **/
-        const vtxArray = new Array<Point>(pointArray.length * 2);
-        const lastPointIndex = pointArray.length - 1;
+        const vtxArray = new Array<Point>(pointArray.length * 2 - 1);
         const lastVtxIndex = vtxArray.length - 1;
+        const lastPointIndex = pointArray.length - 1;
 
         vtxArray[0] = pointArray[0];
         vtxArray[lastPointIndex] = pointArray[lastPointIndex];
