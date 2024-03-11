@@ -89,25 +89,19 @@ export function expand(
 
 /**
  * Checks if a point is a local maximum within a circular area.
- * @param {Point} center - The center point to check.
- * @param {Function} getValue - The function to get the value at a given point.
+ * @param {number} x - The x-coord of the point to check.
+ * @param {Function} noiseFunction - The noise function. Operate only on x-coord.
  * @param {number} radius - The radius of the circular area.
  * @returns {boolean} True if the center point is a local maximum, false otherwise.
  */
 export function isLocalMaximum(
-    center: Point,
-    getValue: Function,
+    x: number,
+    noiseFunction: Function,
     radius: number
 ): boolean {
-    const centerValue = getValue(center);
-
-    for (let x = center.x - radius; x <= center.x + radius; x++) {
-        for (let y = center.y - radius; y <= center.y + radius; y++) {
-            const neighborValue = getValue(new Point(x, y));
-
-            if (centerValue < neighborValue) {
-                return false;
-            }
+    for (let i = x - radius; i <= x + radius; i++) {
+        if (noiseFunction(x) < noiseFunction(i)) {
+            return false;
         }
     }
 
@@ -117,27 +111,27 @@ export function isLocalMaximum(
 /**
  * Loop through a noise list, adjusting values and normalizing them.
  * @param {number[]} noiseArray - The noise list.
- * @returns {number[]} The normalized noise list.
+ * @returns {void}
  */
-export function normalizeNoise(noiseArray: number[]): number[] {
+export function normalizeNoise(noiseArray: number[]): void {
     const dif = noiseArray[noiseArray.length - 1] - noiseArray[0];
 
     let leftBoundary = 100;
     let rightBoundary = -100;
 
     for (let i = 0; i < noiseArray.length; i++) {
-        leftBoundary = Math.min(leftBoundary, noiseArray[i]);
-        rightBoundary = Math.max(rightBoundary, noiseArray[i]);
-
         noiseArray[i] +=
             (dif * (noiseArray.length - 1 - i)) / (noiseArray.length - 1);
-        // Maps a value from range (leftBoundary,rightBoundary) to (0,1) in place.
+
+        if (noiseArray[i] < leftBoundary) leftBoundary = noiseArray[i];
+        if (noiseArray[i] > rightBoundary) rightBoundary = noiseArray[i];
+    }
+
+    // Maps a value from range (leftBoundary,rightBoundary) to (0,1).
+    for (var i = 0; i < noiseArray.length; i++) {
         noiseArray[i] =
             (noiseArray[i] - leftBoundary) / (rightBoundary - leftBoundary);
     }
-
-    // Return the modified noiseArray with values mapped to (0,1).
-    return noiseArray;
 }
 
 /**

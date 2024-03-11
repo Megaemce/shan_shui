@@ -58,7 +58,7 @@ export default class Blob extends Element {
             noiseArray[i] = Perlin.noise(i * 0.05, PRNG.random(0, 10));
         }
 
-        noiseArray = normalizeNoise(noiseArray);
+        normalizeNoise(noiseArray);
 
         for (let i = 0; i < lalist.length; i++) {
             const [l, a] = lalist[i];

@@ -43,7 +43,7 @@ export default class Bark extends Structure {
             noiseArray[i] = Perlin.noise(i * 0.05, n0);
         }
 
-        noiseArray = normalizeNoise(noiseArray);
+        normalizeNoise(noiseArray);
 
         const barkArray = lengthAngleArray.map(([l, a], i) => {
             const localNoise = noiseArray[i] * noise + (1 - noise);
