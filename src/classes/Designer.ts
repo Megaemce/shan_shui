@@ -17,6 +17,7 @@ const MIN_BOAT_Y = config.designer.boat.y.min;
 const MOUNTAIN_COVER_THRESHOLD = config.designer.middleMountain.coverThreshold;
 const MOUNTAIN_RADIUS = config.designer.middleMountain.radius;
 const NOISE_SAMPLE = config.designer.noiseSample;
+const RADIUS = config.designer.radius;
 const X_STEP = config.designer.xStep;
 
 /**
@@ -24,80 +25,56 @@ const X_STEP = config.designer.xStep;
  * with certainty that the new frames will not collide with each other in ugly manner.
  */
 export default class Designer {
-    layers: Layer[] = [];
-    iMin: number;
-    iMax: number;
-    xOffset: number;
+    plan: Layer[] = [];
     /**
      * Generates terrain design.
-     * @param {Range} givenRange - Given range for which to generate design.
+     * @param {Range} range - range for which to generate design.
      */
-
-    constructor(givenRange: Range) {
-        this.iMin = Math.floor(givenRange.left / X_STEP);
-        this.iMax = Math.floor(givenRange.right / X_STEP);
-        this.xOffset =
-            (givenRange.left % X_STEP) + (givenRange.left < 0 ? 1 : 0) * X_STEP;
-
-        const yRange = (x: number) => Perlin.noise(x * 0.01, Math.PI);
-        const noiseFunction = (point: Point) =>
-            Math.max(Perlin.noise(point.x * NOISE_SAMPLE) - 0.55, 0) * 2;
-
-        // the background mountains dont't need to be generated as even if they will collide they will look cool
-        this.generateMiddleMountainDesign(noiseFunction, yRange);
-        this.generateBottomMountainDesign();
-        this.generateBoatDesign();
+    constructor(range: Range) {
+        this.generateDesign(range);
     }
 
     /**
      * Checks if a new layer will not collide with already existing layers.
      * @private
-     * @param {Layer[]} existingLayers - The array of existing layers.
      * @param {Layer} newLayer - The layer to check.
-     * @param {number} radius - The threshold radius for considering layers to be the same.
+     * @param {number} [radius=RADIUS] - The threshold radius for considering layers to be the same.
      * @returns {boolean} True if the layer needs to be added, false otherwise.
      */
-    private checkCollision(
-        existingLayers: Layer[],
-        newLayer: Layer,
-        radius: number = 10
-    ): boolean {
-        const localCheck = existingLayers.every(
-            (existingChunk) => Math.abs(existingChunk.x - newLayer.x) >= radius
+    private checkCollision(newLayer: Layer, radius: number = RADIUS): boolean {
+        return this.plan.every(
+            (layer) => Math.abs(layer.x - newLayer.x) >= radius
         );
-
-        const globalCheck = this.layers.every(
-            (existingChunk) => Math.abs(existingChunk.x - newLayer.x) >= radius
-        );
-
-        return localCheck && globalCheck;
     }
 
     /**
-     * Adds mountain layers to the layers.
+     * Generate new design within given range
      * @private
-     * @param {Function} noiseFunction - The noise function.
-     * @param {Function} yRange - The y range function.
-     * @returns {Layer[]} An array of generated layers.
      */
-    private generateMiddleMountainDesign(
-        noiseFunction: (point: Point) => number,
-        yRange: (x: number) => number
-    ): void {
-        const localRegion: Layer[] = [];
+    private generateDesign(range: Range): void {
+        const yRange = (x: number) => Perlin.noise(x * 0.01, Math.PI);
+        const noiseFunction = (x: number) =>
+            Math.max(Perlin.noise(x * NOISE_SAMPLE) - 0.55, 0) * 2;
 
-        for (let i = this.iMin; i < this.iMax; i++) {
-            const x = i * X_STEP + this.xOffset;
+        for (let i = 0; i * X_STEP < range.length; i++) {
+            const x = range.start + i * X_STEP;
 
-            for (let y = 0; y < yRange(x) * 480; y += 30) {
-                if (
-                    noiseFunction(new Point(x, y)) > MOUNTAIN_COVER_THRESHOLD &&
-                    isLocalMaximum(
-                        new Point(x, y),
-                        noiseFunction,
-                        MOUNTAIN_RADIUS
-                    )
-                ) {
+            // generate boats
+            if (PRNG.random() < BOAT_PROBABILITY) {
+                const y = PRNG.random(MIN_BOAT_Y, MAX_BOAT_Y);
+                const boatChunk = new SketchLayer("boat", x, y);
+
+                if (this.checkCollision(boatChunk, BOAT_RADIUS_THRESHOLD)) {
+                    this.plan.push(boatChunk);
+                }
+            }
+
+            // generate middleMountain
+            if (
+                noiseFunction(x) > MOUNTAIN_COVER_THRESHOLD &&
+                isLocalMaximum(x, noiseFunction, MOUNTAIN_RADIUS)
+            ) {
+                for (let y = 0; y < yRange(x) * 480; y += 30) {
                     const xOffset = x + PRNG.random(0, 500);
                     const yOffset = y + 300;
 
@@ -107,12 +84,28 @@ export default class Designer {
                         yOffset
                     );
 
-                    if (this.checkCollision(localRegion, mountainChunk)) {
-                        localRegion.push(mountainChunk);
+                    if (this.checkCollision(mountainChunk)) {
+                        this.plan.push(mountainChunk);
                     }
                 }
             }
 
+            // generate bottomMountain
+            if (PRNG.random() < BOTTOM_MOUNTAIN_PROBABILITY) {
+                for (let j = 0; j < PRNG.random(0, 4); j++) {
+                    const bottomMountainChunk = new SketchLayer(
+                        "bottomMountain",
+                        x + PRNG.random(0, 700),
+                        700 - j * 50
+                    );
+
+                    if (this.checkCollision(bottomMountainChunk)) {
+                        this.plan.push(bottomMountainChunk);
+                    }
+                }
+            }
+
+            // generate backgroundMountain
             if (
                 Math.abs(x) % BACKGROUND_MOUNTAIN_INTERVAL <
                 Math.max(1, X_STEP - 1)
@@ -123,68 +116,10 @@ export default class Designer {
                     PRNG.random(230, 280)
                 );
 
-                if (this.checkCollision(localRegion, distMountainChunk)) {
-                    localRegion.push(distMountainChunk);
+                if (this.checkCollision(distMountainChunk)) {
+                    this.plan.push(distMountainChunk);
                 }
             }
         }
-
-        this.layers = this.layers.concat(localRegion);
-    }
-
-    /**
-     * Adds flat mountain layers to the layers.
-     * @private
-     * @returns {Layer[]} An array of generated layers.
-     */
-    private generateBottomMountainDesign(): void {
-        const localRegion: Layer[] = [];
-
-        for (let i = this.iMin; i < this.iMax; i++) {
-            const x = i * X_STEP + this.xOffset;
-
-            if (PRNG.random() < BOTTOM_MOUNTAIN_PROBABILITY) {
-                for (let j = 0; j < PRNG.random(0, 4); j++) {
-                    const bottomMountainChunk = new SketchLayer(
-                        "bottomMountain",
-                        x + PRNG.random(0, 700),
-                        700 - j * 50
-                    );
-
-                    if (this.checkCollision(localRegion, bottomMountainChunk)) {
-                        localRegion.push(bottomMountainChunk);
-                    }
-                }
-            }
-        }
-
-        this.layers = this.layers.concat(localRegion);
-    }
-
-    /**
-     * Adds boat layers to the layers.
-     * @private
-     */
-    private generateBoatDesign(): void {
-        const localRegion: Layer[] = [];
-
-        for (let i = this.iMin; i < this.iMax; i++) {
-            if (PRNG.random() < BOAT_PROBABILITY) {
-                const x = i * X_STEP + this.xOffset;
-                const y = PRNG.random(MIN_BOAT_Y, MAX_BOAT_Y);
-                const boatChunk = new SketchLayer("boat", x, y);
-
-                if (
-                    this.checkCollision(
-                        localRegion,
-                        boatChunk,
-                        BOAT_RADIUS_THRESHOLD
-                    )
-                ) {
-                    localRegion.push(boatChunk);
-                }
-            }
-        }
-        this.layers = this.layers.concat(localRegion);
     }
 }
