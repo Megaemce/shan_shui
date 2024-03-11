@@ -6,23 +6,52 @@ import IRange from "../interfaces/IRange";
 export default class Range implements IRange {
     /**
      * Creates a new Range.
-     * @param {number} [left=0] - The left boundary of the range.
-     * @param {number} [right=1] - The right boundary of the range.
+     * @param {number} [start=0] - The beginning boundary of the range.
+     * @param {number} [end=1] - The end boundary of the range.
      */
-    constructor(public left: number = 0, public right: number = 1) {}
+    constructor(public start: number = 0, public end: number = 1) {}
 
     /**
      * Gets the length of the range.
      */
     get length(): number {
-        return this.right - this.left;
+        return this.end - this.start;
     }
 
     /**
      * Move the range by given number
+     * @param {number} value
+     * @returns {Range}
      */
-    move(value: number) {
-        this.left += value;
-        this.right += value;
+    public move(value: number): Range {
+        this.start += value;
+        this.end += value;
+
+        return this;
+    }
+
+    /**
+     * Check if the given range is contained in this range
+     * @param {Range} range - range to check
+     * @returns {boolean}
+     */
+    public contains(range: Range): boolean {
+        // range.end < this.end to render before "on the edge" situation eg. [0,1500], [700,1500]
+        if (this.start <= range.start && range.end < this.end) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the given range is within this range (it's visble)
+     * @param {Range} range - range to check
+     */
+    public isShowing(range: Range): boolean {
+        return (
+            (range.start > this.start && range.start < this.end) || // start of range is within this range
+            (range.end > this.start && range.end < this.end) || // end of range is within this range
+            (range.start < this.start && range.end > this.end) // this range is completely within otherRange
+        );
     }
 }

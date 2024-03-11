@@ -5,16 +5,16 @@
  */
 export default interface IRange {
     /**
-     * The left boundary of the range.
+     * The beginning boundary of the range.
      *
      * @type {number}
      */
-    left: number;
+    start: number;
 
     /**
-     * The right boundary of the range.
+     * The end boundary of the range.
      *
      * @type {number}
      */
-    right: number;
+    end: number;
 }
