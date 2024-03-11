@@ -18,18 +18,25 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
 }) => {
     const [loading, setLoading] = useState(true);
     const [svgContent, setSvgContent] = useState("");
-    const newRange = new Range(newPosition, newPosition + windowWidth);
     const svgRef = useRef<SVGSVGElement | null>(null);
 
-    // Update the renderer with the new range on every refresh
-    renderer.update(newRange);
-
     useEffect(() => {
+        const startingRange = new Range(0, windowWidth);
+
+        renderer.createFrames(startingRange);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Create frames within new range
+    useEffect(() => {
+        const newRange = new Range(newPosition, newPosition + windowWidth);
+
         setLoading(true);
         (async () => {
-            setSvgContent(await renderer.render());
-        })().then(() => setLoading(false));
-    }, [renderer, renderer.frames.length]);
+            setSvgContent(await renderer.createFrames(newRange));
+            setLoading(false);
+        })();
+    }, [renderer, newPosition, windowWidth]);
 
     return (
         <div id="SCROLLABLE_CANVAS">
