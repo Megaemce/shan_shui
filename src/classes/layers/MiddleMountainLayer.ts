@@ -1,14 +1,15 @@
-import Layer from "../Layer";
-import Structure from "../Structure";
+import Element from "../Element";
 import House from "../structures/House";
+import Layer from "../Layer";
 import MiddleMountainFoot from "../structures/MiddleMountainFoot";
+import MiddleMountainWater from "../structures/MiddleMountainWater";
 import PRNG from "../PRNG";
 import Pagoda from "../structures/Pagoda";
 import Perlin from "../Perlin";
 import Point from "../Point";
 import Rock from "../structures/Rock";
 import Stroke from "../elements/Stroke";
-import Element from "../Element";
+import Structure from "../Structure";
 import Texture from "../structures/Texture";
 import TransmissionTower from "../structures/TransmissionTower";
 import Tree01 from "../structures/Tree01";
@@ -86,6 +87,9 @@ export default class MiddleMountainLayer extends Layer {
                 );
             }
         }
+
+        // Water
+        this.add(new MiddleMountainWater(xOffset, yOffset - 10000));
 
         // RIM_
 

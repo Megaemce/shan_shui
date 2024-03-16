@@ -1,9 +1,9 @@
-import Layer from "../Layer";
 import PRNG from "../PRNG";
 import Perlin from "../Perlin";
 import Point from "../Point";
 import Stroke from "../elements/Stroke";
 import { config } from "../../config";
+import Structure from "../Structure";
 
 const COLORNOALFA = config.layers.water.colorNoAlfa;
 const DEFAULT_HEIGTH = config.layers.water.defaultHeight;
@@ -13,9 +13,9 @@ const DEFAULT_WIDTH = config.layers.water.defaultWidth;
 /**
  * Class representing a water chunk with undulating waves.
  *
- * @extends Layer
+ * @extends Strcuture
  */
-export default class WaterLayer extends Layer {
+export default class MiddleMountainWater extends Structure {
     /**
      * Creates an instance of WaterChunk.
      * @param {number} xOffset - X-coordinate offset for the chunk.
@@ -30,10 +30,9 @@ export default class WaterLayer extends Layer {
         yOffset: number,
         width: number = DEFAULT_WIDTH,
         height: number = DEFAULT_HEIGTH,
-
         waveClusters: number = DEFAULT_WAVECLUSTERS
     ) {
-        super("water", xOffset, yOffset - 10000);
+        super();
 
         const resolution = 5;
         let yk = 0;
