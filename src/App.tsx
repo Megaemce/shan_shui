@@ -2,10 +2,33 @@ import PRNG from "./classes/PRNG";
 import Range from "./classes/Range";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Renderer from "./classes/Renderer";
-import { debounce } from "lodash";
 import { ScrollableCanvas } from "./ui/ScrollableCanvas";
 import { SettingPanel } from "./ui/SettingPanel";
 import { config } from "./config";
+
+type AnyFunction = (...args: any[]) => any;
+
+function debounce<F extends AnyFunction>(
+    func: F,
+    wait: number
+): (...args: Parameters<F>) => void {
+    let timeoutId: ReturnType<typeof setTimeout> | null;
+
+    return function debounced(
+        this: ThisParameterType<F>,
+        ...args: Parameters<F>
+    ): void {
+        const context = this;
+
+        const later = () => {
+            timeoutId = null;
+            func.apply(context, args);
+        };
+
+        clearTimeout(timeoutId!);
+        timeoutId = setTimeout(later, wait) as any;
+    };
+}
 
 /**
  * Main application component.
