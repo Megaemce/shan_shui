@@ -44,14 +44,14 @@ export default class Range implements IRange {
     }
 
     /**
-     * Check if the given range is within this range (it's visble)
+     * Check if the given range is within this range (it's visible)
      * @param {Range} range - range to check
      */
     public isShowing(range: Range): boolean {
         return (
-            (range.start > this.start && range.start < this.end) || // start of range is within this range
-            (range.end > this.start && range.end < this.end) || // end of range is within this range
-            (range.start < this.start && range.end > this.end) // this range is completely within otherRange
+            (this.start <= range.start && range.start <= this.end) ||
+            (this.start <= range.end && range.end <= this.end) ||
+            (range.start <= this.start && range.end >= this.end)
         );
     }
 }
