@@ -1,10 +1,10 @@
 import "./styles.css";
 import Range from "../classes/Range";
 import React, { useEffect, useRef, useState } from "react";
-import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
-import { config } from "../config";
-import { InfinitySpin } from "react-loader-spinner";
 import { Button } from "./Button";
+import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
+import { InfinitySpin } from "react-loader-spinner";
+import { config } from "../config";
 
 const ZOOM = config.ui.zoom;
 
@@ -20,20 +20,15 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     const [svgContent, setSvgContent] = useState("");
     const svgRef = useRef<SVGSVGElement | null>(null);
 
-    useEffect(() => {
-        const startingRange = new Range(0, windowWidth);
-
-        renderer.createFrames(startingRange);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     // Create frames within new range
     useEffect(() => {
         const newRange = new Range(newPosition, newPosition + windowWidth);
+        console.log("New range", newRange);
 
         setLoading(true);
         (async () => {
-            setSvgContent(await renderer.createFrames(newRange));
+            const newSvgContent = await renderer.renderPicture(newRange);
+            if (newSvgContent) setSvgContent(newSvgContent);
             setLoading(false);
         })();
     }, [renderer, newPosition, windowWidth]);
@@ -63,6 +58,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     >
                         <feTurbulence
                             type="fractalNoise"
+                            stitchTiles="stitch"
                             baseFrequency="0.02"
                             numOctaves="5"
                             result="noise"
@@ -93,7 +89,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
             </svg>
             <div className={`Loader ${loading ? "" : "hidden"}`}>
                 <InfinitySpin width="200" color="rgba(0, 0, 0, 0.4)" />
-                <p>Rendering new layers</p>
+                <p>Rendering elements</p>
             </div>
 
             <Button
