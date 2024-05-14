@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Renderer from "./classes/Renderer";
 import { ScrollableCanvas } from "./ui/ScrollableCanvas";
 import { SettingPanel } from "./ui/SettingPanel";
-import { config } from "./config";
 
 type AnyFunction = (...args: any[]) => any;
 
@@ -36,7 +35,7 @@ function debounce<F extends AnyFunction>(
  * @returns {JSX.Element} The main application component.
  */
 export const App: React.FC = (): JSX.Element => {
-    // Initialize seed based on URL or current time
+    // Initialize seed based on previous value or current time
     const urlSeed = new URLSearchParams(window.location.search).get("seed");
     const currentDate = new Date().getTime().toString();
     const currentSeed = urlSeed || currentDate;
@@ -60,6 +59,7 @@ export const App: React.FC = (): JSX.Element => {
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
 
     PRNG.seed = currentSeed;
+    Renderer.forwardCoverage = window.innerWidth / 2;
 
     // Callback function to handle changes in the save range
     const onChangeSaveRange = (newRange: Range) => {
@@ -85,7 +85,8 @@ export const App: React.FC = (): JSX.Element => {
         }, 200);
 
         window.addEventListener("resize", handleResize);
-        config.ui.frameWidth = window.innerWidth / 2;
+
+        Renderer.forwardCoverage = window.innerWidth / 2;
 
         return () => {
             window.removeEventListener("resize", handleResize);

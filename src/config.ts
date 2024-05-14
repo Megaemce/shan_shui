@@ -21,7 +21,7 @@ export const config = {
         },
         backgroundMountain: {
             defaultSeed: 0,
-            defaultHeight: 300,
+            defaultHeight: 150,
             defaultWidth: 2000,
             segments: 5,
             span: 10,
@@ -108,18 +108,6 @@ export const config = {
             defaultWaveClusters: 10, // Number of clusters of waves.
             colorNoAlfa: "rgba(100, 100, 100,", // color without the alpha. Need to add alfa value and closing bracket
         },
-    },
-    frame: {
-        bottomMountainHeight: 100,
-        bottomMountainWidth: {
-            min: 600,
-            max: 1000,
-        },
-        bottomMountainFlatness: {
-            min: 0.5,
-            max: 0.7,
-        },
-        backgroundMountainHeight: 150,
     },
     utils: {
         bezierCurvePoints: 20,
@@ -216,7 +204,6 @@ export const config = {
         },
     },
     ui: {
-        frameWidth: 300,
         zoom: 1.142,
     },
 };
