@@ -1,4 +1,3 @@
-import Range from "../classes/Range";
 import { LayerType } from "../types/LayerType";
 
 /**
@@ -29,9 +28,7 @@ export default interface ILayer {
     y: number;
 
     /**
-     * Layer range getter
-     *
-     * @return {Range}
+     * Calculcate the layer range and set it into range prop
      */
-    get range(): Range;
+    calcAndSetRange(): void;
 }

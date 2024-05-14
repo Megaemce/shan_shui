@@ -7,6 +7,8 @@ import { LayerType } from "../types/LayerType";
  * Represents a layer of terrain with SVG elements.
  */
 export default class Layer extends Structure implements ILayer {
+    /** Visible range of layer */
+    public range: Range = new Range(0, 0);
     /**
      * Initializes a new instance with specified coordinates and tag.
      *
@@ -22,7 +24,11 @@ export default class Layer extends Structure implements ILayer {
         super();
     }
 
-    get range(): Range {
+    /**
+     * Calculcate the layer range and set it into range prop
+     * @returns {Range}
+     */
+    public calcAndSetRange(): void {
         let xMax = -Infinity;
         let xMin = +Infinity;
 
@@ -34,6 +40,12 @@ export default class Layer extends Structure implements ILayer {
             if (xMax < elementEnd) xMax = elementEnd;
         }
 
-        return new Range(xMin, xMax);
+        this.range = new Range(xMin, xMax);
     }
+    /** Set the new range for layer
+     * @param {Range} value - new value
+     */
+    // set range(value: Range) {
+    //     this._range = value;
+    // }
 }
