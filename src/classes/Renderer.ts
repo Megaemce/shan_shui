@@ -4,76 +4,96 @@ import Range from "./Range";
 import { config } from "../config";
 
 const ZOOM = config.ui.zoom;
-const FRAME_WIDTH = config.ui.frameWidth;
 
 export default class Renderer {
+    /** Keeping the frames array with frames ready to be render in current scenne */
     frames: Frame[] = [];
+    /** Making sure that the new render area is at least 1.5x of the current windows width so the user doesn't need to render the scene on every click. */
+    static forwardCoverage = 0;
     /** Keeping the range that was already covered by renderer */
     static coveredRange = new Range(0, 0);
-    /** Keeeping the current visible range so layers not within range can be hidden */
+    /** Keeeping the current visible range so layers not within range can be hidden.
+     *  This value is kept so the Frame.ts can use it without relaying on the
+     *  ScrollableCanvas's newPosition parameter
+     */
     static visibleRange = new Range(0, 0);
 
+    get visibleRange(): Range {
+        return Renderer.visibleRange;
+    }
+
     /**
-     * Updates the frames based on the given range.
+     * Render picture based on the given range.
      * @param range - The new range of the canvas
+     * @return {Promise<string | undefined>} The svg content or undefined if no new frame is created
      */
-    public async createFrames(range: Range): Promise<string> {
+    public async renderPicture(range: Range): Promise<string | undefined> {
+        // Set the new range as a visible range before adjusting it
+        const newRange = new Range(range.start, range.end);
+
         Renderer.visibleRange = range;
 
-        // check if new range is extending beyond already covered range and trim it to only have new range
+        // Check if the rendering of new frame is needed based on already covered range
         if (!Renderer.coveredRange.contains(range)) {
-            // if the new range start is still within covered range trim it
+            // Trim the newRange so it covers only the uncovered range
             if (range.start < Renderer.coveredRange.end) {
-                range.start = Renderer.coveredRange.end;
+                newRange.start = Renderer.coveredRange.end;
             }
 
-            // cover more then just what is seen so the user will not have to rerender on every click
+            // Expand the range so the scene by 0.5 windowWidth so it's not render every time when user clicks forward
             if (range.end >= Renderer.coveredRange.end) {
-                range.end *= 1.5;
+                newRange.end += Renderer.forwardCoverage;
+                Renderer.coveredRange.end = newRange.end;
             }
 
-            console.log("range to cover after trimming is:", range);
-            console.log("░░░ creating new frame ░░░");
+            // Shound't happen but just in case
+            if (newRange.end < newRange.start)
+                console.error(
+                    "Trimmed range of new frame is invalid as the end is less than the start"
+                );
 
-            const frameID = this.frames.length + 1;
-            const framePlan = new Designer(range).plan;
-            const newFrame = new Frame(framePlan, range, frameID);
-
-            if (newFrame.range.end > Renderer.coveredRange.end) {
-                Renderer.coveredRange.end = newFrame.range.end;
-            }
-
+            const newFrame = await this.createNewFrame(newRange);
             this.frames.push(newFrame);
         }
 
-        const framePromises = this.frames.map(async (frame) => {
-            return frame.render();
-        });
-
-        const frameResult = await Promise.all(framePromises).then(
-            (frameResults) => frameResults.join("\n")
-        );
-
-        return frameResult;
+        // render all the visible elements of the frames' layers
+        return this.renderFrames();
     }
 
-    // used by download
-    public async render(): Promise<string> {
-        /**
-         * Make sure that the last added frame is render first so it's not covered with previous frame.
-         * In SVG last rendered elements have highest Z-index.
-         */
-        this.frames.sort((a, b) => b.id - a.id);
+    /**
+     * Design and create new frame within given range
+     * @private
+     * @param range given range
+     * @returns {Promise<Frame>} newly created frame as a promise
+     */
+    private async createNewFrame(range: Range): Promise<Frame> {
+        console.log("░░░ creating new frame ░░░");
 
-        const framePromises = this.frames.map(async (frame) => {
-            return frame.render();
-        });
+        const frameID = this.frames.length + 1;
+        const framePlan = new Designer(range).plan;
+        const newFrame = new Frame(framePlan, frameID);
 
-        const frameResult = await Promise.all(framePromises).then(
-            (frameResults) => frameResults.join("\n")
+        await Promise.all(
+            framePlan.map((sketch) => newFrame.addSketchToLayers(sketch))
         );
 
-        return frameResult;
+        return newFrame;
+    }
+
+    /**
+     * Render all frames visible within Renderer.visibleRange
+     * @returns {Promise<string>} string representation of SVG image
+     */
+    public async renderFrames(): Promise<string> {
+        const frameResults = await Promise.all(
+            this.frames.map((frame) =>
+                Renderer.visibleRange.isShowing(frame.range)
+                    ? frame.render()
+                    : ""
+            )
+        );
+
+        return frameResults.join("\n");
     }
 
     /**
@@ -89,10 +109,10 @@ export default class Renderer {
             windowHeight / ZOOM
         }`;
 
-        this.createFrames(range);
+        this.renderPicture(range);
 
-        const start = range.start - FRAME_WIDTH;
-        const end = range.end + FRAME_WIDTH;
+        // const start = range.start - FRAME_WIDTH;
+        // const end = range.end + FRAME_WIDTH;
 
         const content: string = `
         <svg 
@@ -126,13 +146,7 @@ export default class Renderer {
             </defs>
             <g 
                 id="main">
-                    ${this.frames
-                        .filter(
-                            (frame) =>
-                                frame.visibleRange.start >= start &&
-                                frame.visibleRange.end < end
-                        )
-                        .forEach((frame) => frame.render())} 
+                   
                 </g>
             <rect 
                 id="background" 
