@@ -3,7 +3,6 @@ import Perlin from "./Perlin";
 import SketchLayer from "./SketchLayer";
 import { config } from "../config";
 import { isLocalMaximum } from "../utils/utils";
-import Layer from "./Layer";
 import Range from "./Range";
 
 const BOAT_PROBABILITY = config.designer.boat.probability;
@@ -24,7 +23,7 @@ const X_STEP = config.designer.xStep;
  * with certainty that the new frames will not collide with each other in ugly manner.
  */
 export default class Designer {
-    plan: Layer[] = [];
+    plan: SketchLayer[] = [];
     /**
      * Generates terrain design.
      * @param {Range} range - range for which to generate design.
@@ -36,11 +35,14 @@ export default class Designer {
     /**
      * Checks if a new layer will not collide with already existing layers.
      * @private
-     * @param {Layer} newLayer - The layer to check.
+     * @param {SketchLayer} newLayer - The layer to check.
      * @param {number} [radius=RADIUS] - The threshold radius for considering layers to be the same.
      * @returns {boolean} True if the layer needs to be added, false otherwise.
      */
-    private checkCollision(newLayer: Layer, radius: number = RADIUS): boolean {
+    private checkCollision(
+        newLayer: SketchLayer,
+        radius: number = RADIUS
+    ): boolean {
         return this.plan.every(
             (layer) => Math.abs(layer.x - newLayer.x) >= radius
         );
