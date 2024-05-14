@@ -89,7 +89,7 @@ export default class MiddleMountainLayer extends Layer {
         }
 
         // Water
-        this.add(new MiddleMountainWater(xOffset, yOffset - 10000));
+        this.add(new MiddleMountainWater(xOffset, yOffset));
 
         // RIM_
 

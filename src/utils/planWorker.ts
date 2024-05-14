@@ -1,17 +1,16 @@
-import Layer from "../classes/Layer";
-import PRNG from "../classes/PRNG";
 import BackgroundMountainLayer from "../classes/layers/BackgroundMountainLayer";
 import BoatLayer from "../classes/layers/BoatLayer";
 import BottomMountainLayer from "../classes/layers/BottomMountainLayer";
+import Layer from "../classes/Layer";
 import MiddleMountainLayer from "../classes/layers/MiddleMountainLayer";
-import MiddleMountainWater from "../classes/structures/MiddleMountainWater";
+import PRNG from "../classes/PRNG";
 import { LayerType } from "../types/LayerType";
 
 /**
  * Process the incoming message event and post the worker result.
  *
  * @param {MessageEvent} e - the message event containing index, layerTag, x and y coords
- * @return {void}
+ * @return {Object} - workers serialized data will not return Layer but Object. See: https://stackoverflow.com/a/7705809
  */
 onmessage = function (e: MessageEvent): void {
     const tag = e.data.tag as LayerType;
@@ -23,7 +22,6 @@ onmessage = function (e: MessageEvent): void {
 
     if (tag === "middleMountain") {
         layer = new MiddleMountainLayer(x, y, PRNG.random(0, 2 * index));
-        // layers.push(new WaterLayer(x, y));
     } else if (tag === "bottomMountain") {
         layer = new BottomMountainLayer(x, y, PRNG.random(0, 2 * Math.PI));
     } else if (tag === "backgroundMountain") {
@@ -38,6 +36,8 @@ onmessage = function (e: MessageEvent): void {
     } else {
         console.warn("Layer tag is outside nominal type!");
     }
+
+    layer?.calcAndSetRange();
 
     postMessage({ layer: layer });
 };
