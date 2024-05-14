@@ -1,16 +1,7 @@
-import BackgroundMountainLayer from "./layers/BackgroundMountainLayer";
-import BoatLayer from "./layers/BoatLayer";
-import BottomMountainLayer from "./layers/BottomMountainLayer";
 import Layer from "./Layer";
-import MiddleMountainLayer from "./layers/MiddleMountainLayer";
-import PRNG from "./PRNG";
 import Range from "./Range";
-import SketchLayer from "./SketchLayer";
-import WaterLayer from "./layers/WaterLayer";
-import { config } from "../config";
 import Renderer from "./Renderer";
-
-const BACKGROUND_MOUNTAIN_HEIGHT = config.frame.backgroundMountainHeight;
+import SketchLayer from "./SketchLayer";
 
 /**
  * Class representing a frame used for generating and managing layer of terrain.
@@ -20,52 +11,33 @@ export default class Frame {
     layers: Layer[] = [];
 
     constructor(
-        public plan: SketchLayer[], // TODO: this should be removed in prod as it's only for debugging
-        public visibleRange: Range, // used by Renderer.download
+        public plan: Layer[], // TODO: this should be removed in prod as it's only for debugging
         public id: number
-    ) {
-        // create active layers from the plan
-        this.process(plan);
-        // render the layers in the background first
-        this.layers.sort((a, b) => a.y - b.y);
-    }
+    ) {}
 
     /**
-     * Create active layers based on the given plan.
-     * @param {SketchLayer[]} plan - plan created by the designer
+     * Create active layers based on the given plan and adds it to Frame.layers
+     * @param {SketchLayer} - plan created by the designer
      */
-    private process(plan: SketchLayer[]): void {
-        plan.forEach(({ tag, x, y }, i) => {
-            if (tag === "middleMountain") {
-                this.layers.push(
-                    new MiddleMountainLayer(x, y, PRNG.random(0, 2 * i))
-                );
+    public async addSketchToLayers({ tag, x, y }: SketchLayer): Promise<void> {
+        return new Promise((resolve) => {
+            const worker = new Worker(
+                new URL("../utils/planWorker.ts", import.meta.url)
+            );
 
-                this.layers.push(new WaterLayer(x, y));
-            } else if (tag === "bottomMountain") {
-                this.layers.push(
-                    new BottomMountainLayer(x, y, PRNG.random(0, 2 * Math.PI))
-                );
-            } else if (tag === "backgroundMountain") {
-                this.layers.push(
-                    new BackgroundMountainLayer(
-                        x,
-                        y,
-                        PRNG.random(0, 100),
-                        PRNG.randomChoice([500, 1000, 1500]),
-                        BACKGROUND_MOUNTAIN_HEIGHT
-                    )
-                );
-            } else if (tag === "boat") {
-                this.layers.push(
-                    new BoatLayer(
-                        x,
-                        y,
-                        y / 800,
-                        PRNG.randomChoice([true, false])
-                    )
-                );
-            }
+            worker.onmessage = (e: MessageEvent) => {
+                const layer = e.data.layer;
+                this.layers.push(layer);
+                worker.terminate();
+                resolve();
+            };
+
+            worker.postMessage({
+                tag: tag,
+                index: this.id,
+                x: x,
+                y: y,
+            });
         });
     }
 
@@ -74,24 +46,21 @@ export default class Frame {
      * @returns {Promise<string>}
      */
     public async render(): Promise<string> {
-        const layerPromises = this.layers.map(async (layer, index) => {
-            // don't render the layer if it's not visible
-            if (!Renderer.visibleRange.isShowing(layer.range)) return;
+        const renderedLayers: string[] = [];
 
-            /**
-             * The Worker constructor is being called with a URL object created from a relative path and the import.meta.url.
-             * new URL("../utils/workers.ts", import.meta.url) - This constructs a full URL by resolving the relative path
-             * "../utils/workers.ts" against the base URL of the current module (import.meta.url).
-             * It's a way to ensure the worker script can be located when the code is running, no matter the environment.
-             */
+        for (let index = 0; index < this.layers.length; index++) {
+            const layer = this.layers[index];
+
+            if (!Renderer.visibleRange.isShowing(layer.range)) continue;
+
             const worker = new Worker(
-                new URL("../utils/workers.ts", import.meta.url)
+                new URL("../utils/layerWorker.ts", import.meta.url)
             );
-            /** returns svg group with id="layerIndex-layerTag" */
+
             const result = await new Promise<string>((resolve) => {
                 worker.onmessage = (e: MessageEvent) => {
-                    resolve(e.data.stringify);
                     worker.terminate();
+                    resolve(e.data.stringify);
                 };
 
                 worker.postMessage({
@@ -101,23 +70,17 @@ export default class Frame {
                     index: index,
                 });
             });
-            return result;
-        });
 
-        const layerResults = await Promise.all(layerPromises).then(
-            (layerResults) => {
-                return `<g id="frame${this.id}">${layerResults.join("\n")}</g>`;
-            }
-        );
+            renderedLayers.push(result);
+        }
 
-        return layerResults;
+        return `<g id="frame${this.id}">${renderedLayers.join("\n")}</g>`;
     }
-
     /**
      * Return the current frame range
      * @returns {Range}
      */
-    public get range(): Range {
+    get range(): Range {
         let xMax = -Infinity;
         let xMin = +Infinity;
 
