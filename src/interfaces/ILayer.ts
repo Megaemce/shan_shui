@@ -26,9 +26,4 @@ export default interface ILayer {
      * @type {number}
      */
     y: number;
-
-    /**
-     * Calculcate the layer range and set it into range prop
-     */
-    calcAndSetRange(): void;
 }

@@ -12,7 +12,7 @@ const DEFAULT_STROKE_WIDTH = config.element.defaultStrokeWidth;
 export default class Element {
     /** String representation of the polyline. */
     stringify: string = "";
-    /** Keeping the range of the element so it could be hidden is not within working */
+    /** Keeping the range of the element so it could be hidden is not within working area */
     range: Range = new Range(0, 0);
 
     /**

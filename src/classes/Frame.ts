@@ -15,10 +15,7 @@ export default class Frame {
     /** keeping the active layers within the frame. */
     layers: Layer[] = [];
 
-    constructor(
-        public plan: Layer[], // TODO: this should be removed in prod as it's only for debugging
-        public id: number
-    ) {}
+    constructor(public id: number) {}
 
     /**
      * Create active layers based on the given plan and adds it to Frame.layers
@@ -34,7 +31,6 @@ export default class Frame {
                     y,
                     PRNG.random(0, 2 * this.id)
                 );
-                layer.calcAndSetRange();
             } else if (tag === "bottomMountain") {
                 layer = new BottomMountainLayer(
                     x,
@@ -48,7 +44,6 @@ export default class Frame {
                     PRNG.random(0, 100),
                     PRNG.randomChoice([500, 1000, 1500])
                 );
-                layer.calcAndSetRange();
             } else if (tag === "boat") {
                 layer = new BoatLayer(
                     x,
@@ -56,13 +51,11 @@ export default class Frame {
                     y / 800,
                     PRNG.randomChoice([true, false])
                 );
-                layer.calcAndSetRange();
             } else {
                 console.warn("Layer tag is outside nominal type!");
             }
 
             if (layer) {
-                layer.calcAndSetRange();
                 this.layers.push(layer);
                 resolve();
             }

@@ -1,5 +1,6 @@
 import Element from "./Element";
 import IStructure from "../interfaces/IStructure";
+import Range from "./Range";
 
 /**
  * Represents a complex SVG.
@@ -8,6 +9,7 @@ import IStructure from "../interfaces/IStructure";
  */
 export default class Structure implements IStructure {
     elements: Array<Element> = [];
+    range: Range = new Range(0, 0);
 
     /**
      * Adds an object to the elements array.
@@ -19,6 +21,14 @@ export default class Structure implements IStructure {
             this.elements.push(object);
         } else {
             this.elements = this.elements.concat(object.elements);
+        }
+
+        // update the range if the new object is expanding beyond current range
+        if (this.range.start > object.range.start) {
+            this.range.start = object.range.start;
+        }
+        if (this.range.end < object.range.end) {
+            this.range.end = object.range.end;
         }
     }
 
@@ -33,6 +43,14 @@ export default class Structure implements IStructure {
             this.elements.unshift(object);
         } else {
             this.elements = object.elements.concat(this.elements);
+        }
+
+        // update the range if the new object is expanding beyond current range
+        if (this.range.start > object.range.start) {
+            this.range.start = object.range.start;
+        }
+        if (this.range.end < object.range.end) {
+            this.range.end = object.range.end;
         }
     }
 }
