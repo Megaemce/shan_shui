@@ -1,7 +1,12 @@
 import Layer from "./Layer";
+import PRNG from "./PRNG";
 import Range from "./Range";
 import Renderer from "./Renderer";
 import SketchLayer from "./SketchLayer";
+import BackgroundMountainLayer from "./layers/BackgroundMountainLayer";
+import BoatLayer from "./layers/BoatLayer";
+import BottomMountainLayer from "./layers/BottomMountainLayer";
+import MiddleMountainLayer from "./layers/MiddleMountainLayer";
 
 /**
  * Class representing a frame used for generating and managing layer of terrain.
@@ -21,23 +26,46 @@ export default class Frame {
      */
     public async addSketchToLayers({ tag, x, y }: SketchLayer): Promise<void> {
         return new Promise((resolve) => {
-            const worker = new Worker(
-                new URL("../utils/planWorker.ts", import.meta.url)
-            );
+            let layer: Layer | undefined = undefined;
 
-            worker.onmessage = (e: MessageEvent) => {
-                const layer = e.data.layer;
+            if (tag === "middleMountain") {
+                layer = new MiddleMountainLayer(
+                    x,
+                    y,
+                    PRNG.random(0, 2 * this.id)
+                );
+                layer.calcAndSetRange();
+            } else if (tag === "bottomMountain") {
+                layer = new BottomMountainLayer(
+                    x,
+                    y,
+                    PRNG.random(0, 2 * Math.PI)
+                );
+            } else if (tag === "backgroundMountain") {
+                layer = new BackgroundMountainLayer(
+                    x,
+                    y,
+                    PRNG.random(0, 100),
+                    PRNG.randomChoice([500, 1000, 1500])
+                );
+                layer.calcAndSetRange();
+            } else if (tag === "boat") {
+                layer = new BoatLayer(
+                    x,
+                    y,
+                    y / 800,
+                    PRNG.randomChoice([true, false])
+                );
+                layer.calcAndSetRange();
+            } else {
+                console.warn("Layer tag is outside nominal type!");
+            }
+
+            if (layer) {
+                layer.calcAndSetRange();
                 this.layers.push(layer);
-                worker.terminate();
                 resolve();
-            };
-
-            worker.postMessage({
-                tag: tag,
-                index: this.id,
-                x: x,
-                y: y,
-            });
+            }
         });
     }
 
