@@ -4,6 +4,7 @@ import SketchLayer from "./SketchLayer";
 import { config } from "../config";
 import { isLocalMaximum } from "../utils/utils";
 import Range from "./Range";
+import { LayerType } from "../types/LayerType";
 
 const BOAT_PROBABILITY = config.designer.boat.probability;
 const BOAT_RADIUS_THRESHOLD = config.designer.boat.radiusThreshold;
@@ -30,26 +31,51 @@ export default class Designer {
      */
     constructor(range: Range) {
         this.generateDesign(range);
+        this.sortPlan();
     }
 
     /**
-     * Checks if a new layer will not collide with already existing layers.
+     * Checks if a new layer is colliding with layers with the same tag or with all the layers with given tags from `tagArray`.
      * @private
      * @param {SketchLayer} newLayer - The layer to check.
      * @param {number} [radius=RADIUS] - The threshold radius for considering layers to be the same.
+     * @param {Array<LayerType>} [tagArray=[]] - Check for layers with these tags
      * @returns {boolean} True if the layer needs to be added, false otherwise.
      */
-    private checkCollision(
+    private isColliding(
         newLayer: SketchLayer,
-        radius: number = RADIUS
+        radius: number = RADIUS,
+        tagArray: Array<LayerType> = []
     ): boolean {
-        return this.plan.every(
-            (layer) => Math.abs(layer.x - newLayer.x) >= radius
-        );
-    }
+        let colliding = false;
 
+        this.plan.forEach((layer) => {
+            // check only withing layer with the same name. Ergo check for local collision
+            if (tagArray.length === 0) {
+                if (
+                    layer.tag === newLayer.tag &&
+                    Math.abs(layer.x - newLayer.x) < radius
+                ) {
+                    colliding = true;
+                }
+            } else {
+                // check for collision with the labels mentioned in the tagArray
+                tagArray.forEach((tag) => {
+                    if (
+                        layer.tag === tag &&
+                        Math.abs(layer.x - newLayer.x) < radius
+                    ) {
+                        colliding = true;
+                    }
+                });
+            }
+        });
+
+        return colliding;
+    }
     /**
-     * Generate new design within given range
+     * Generate new design within given range.
+     * Start with backgroundMountains, then middleMountains, boats and finally bottomMountains.
      * @private
      */
     private generateDesign(range: Range): void {
@@ -60,17 +86,7 @@ export default class Designer {
         for (let i = 0; i * X_STEP < range.length; i++) {
             const x = range.start + i * X_STEP;
 
-            // generate boats
-            if (PRNG.random() < BOAT_PROBABILITY) {
-                const y = PRNG.random(MIN_BOAT_Y, MAX_BOAT_Y);
-                const boatChunk = new SketchLayer("boat", x, y);
-
-                if (this.checkCollision(boatChunk, BOAT_RADIUS_THRESHOLD)) {
-                    this.plan.push(boatChunk);
-                }
-            }
-
-            // generate middleMountain
+            // generate middleMountain without checking global collision
             if (
                 noiseFunction(x) > MOUNTAIN_COVER_THRESHOLD &&
                 isLocalMaximum(x, noiseFunction, MOUNTAIN_RADIUS)
@@ -79,48 +95,70 @@ export default class Designer {
                     const xOffset = x + PRNG.random(0, 500);
                     const yOffset = y + 300;
 
-                    const mountainChunk = new SketchLayer(
+                    const middleMountain = new SketchLayer(
                         "middleMountain",
                         xOffset,
                         yOffset
                     );
 
-                    if (this.checkCollision(mountainChunk)) {
-                        this.plan.push(mountainChunk);
+                    if (!this.isColliding(middleMountain)) {
+                        this.plan.push(middleMountain);
                     }
                 }
             }
 
-            // generate bottomMountain
+            // generate bottomMountain without checking global collision
             if (PRNG.random() < BOTTOM_MOUNTAIN_PROBABILITY) {
                 for (let j = 0; j < PRNG.random(0, 4); j++) {
-                    const bottomMountainChunk = new SketchLayer(
+                    const bottomMountain = new SketchLayer(
                         "bottomMountain",
                         x + PRNG.random(0, 700),
                         700 - j * 50
                     );
 
-                    if (this.checkCollision(bottomMountainChunk)) {
-                        this.plan.push(bottomMountainChunk);
+                    if (!this.isColliding(bottomMountain)) {
+                        this.plan.push(bottomMountain);
                     }
                 }
             }
 
-            // generate backgroundMountain
+            // generate backgroundMountain without checking global collision
             if (
                 Math.abs(x) % BACKGROUND_MOUNTAIN_INTERVAL <
                 Math.max(1, X_STEP - 1)
             ) {
-                const distMountainChunk = new SketchLayer(
+                const backgroundMountain = new SketchLayer(
                     "backgroundMountain",
                     x,
                     PRNG.random(230, 280)
                 );
 
-                if (this.checkCollision(distMountainChunk)) {
-                    this.plan.push(distMountainChunk);
+                if (!this.isColliding(backgroundMountain)) {
+                    this.plan.push(backgroundMountain);
+                }
+            }
+
+            // generate boats with checking global collision
+            if (PRNG.random() < BOAT_PROBABILITY) {
+                const y = PRNG.random(MIN_BOAT_Y, MAX_BOAT_Y);
+                const boatChunk = new SketchLayer("boat", x, y);
+
+                if (
+                    !this.isColliding(boatChunk, BOAT_RADIUS_THRESHOLD, [
+                        "boat",
+                        "middleMountain",
+                    ])
+                ) {
+                    this.plan.push(boatChunk);
                 }
             }
         }
+    }
+
+    /**
+     * Sort the layers in the plan by the y coordinate
+     */
+    private sortPlan(): void {
+        this.plan.sort((a, b) => a.y - b.y);
     }
 }
