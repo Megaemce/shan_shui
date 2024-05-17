@@ -41,12 +41,11 @@ export const Menu: React.FC<IMenu> = ({
         );
 
     return (
-        <div id="MENU">
-            <div>
+        <div id="Menu">
+            <div className="Section">
                 <h4>Current seed:</h4>
                 <DebounceInput
-                    id="INP_SEED"
-                    className="ROWITEM_SEED"
+                    className="InputSeed"
                     title="random seed"
                     value={seed}
                     debounceTimeout={500}
@@ -54,17 +53,17 @@ export const Menu: React.FC<IMenu> = ({
                 />
                 <button onClick={reloadWindowSeed}>Generate</button>
             </div>
-            <div>
+            <div className="Section">
                 <h4>Current view:</h4>
                 <p>
                     [{newPosition}, {newPosition + windowWidth}]
                 </p>
-                <button title="Scroll start" onClick={horizonalScrollLeft}>
+                <button title="Scroll left" onClick={horizonalScrollLeft}>
                     &lt;
                 </button>
                 <DebounceInput
-                    id="INC_STEP"
-                    title="increment step"
+                    className="InputStep"
+                    title="Increment step"
                     type="number"
                     value={step}
                     min={0}
@@ -73,24 +72,24 @@ export const Menu: React.FC<IMenu> = ({
                     step={step}
                     onChange={(e) => setStep(Number(e.target.value))}
                 />
-                <button title="Scroll end" onClick={horizonalScrollRight}>
+                <button title="Scroll right" onClick={horizonalScrollRight}>
                     &gt;
                 </button>
             </div>
-            <div>
+            <div className="Section">
                 <input
-                    name="Auto-scrol"
-                    id="AUTO_SCROLL"
+                    name="Auto-scroll"
+                    id="AutoScroll"
                     type="checkbox"
                     onChange={toggleAutoScroll}
                 />
-                <label htmlFor="AUTO_SCROLL">Auto-scroll</label>
+                <label htmlFor="AutoScroll">Auto-scroll</label>
             </div>
-            <div>
+            <div className="Section">
                 <h4>Save view</h4>
                 from
                 <DebounceInput
-                    className="ROWITEM"
+                    className="InputNumber"
                     type="number"
                     debounceTimeout={500}
                     value={saveRange.start}
@@ -98,39 +97,37 @@ export const Menu: React.FC<IMenu> = ({
                 />
                 to
                 <DebounceInput
-                    className="ROWITEM"
+                    className="InputNumber"
                     type="number"
                     debounceTimeout={500}
                     value={saveRange.end}
                     onChange={onChangeSaveRangeR}
                 />
             </div>
-
-            <div>
+            <div className="Section">
                 <input
-                    id="AUTO_LOAD"
+                    id="InputAutoLoad"
                     type="checkbox"
                     onChange={toggleAutoLoad}
                 />
-                <label htmlFor="AUTO_LOAD">Auto-load</label>
+                <label htmlFor="InputAutoLoad">Auto-load</label>
             </div>
-
-            <div>
+            <div className="Section">
                 <button
                     title="Import current range"
                     type="button"
-                    id="loadrange-btn"
+                    id="ButtonLoadRange"
                     value="Import current range"
                     onClick={loadCurrentRange}
                 >
                     Import current range
                 </button>
             </div>
-            <div>
+            <div className="Section">
                 <button
                     title="Download as SVG"
                     type="button"
-                    id="dwn-btn"
+                    id="ButtonDownload"
                     value="Download as SVG"
                     onClick={downloadSvg}
                 >

@@ -31,7 +31,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
 
     return (
         <div id="Settings">
-            <div id="BTN_ROW">
+            <div id="Buttons">
                 <Button
                     id="Settings"
                     title="Open settings"

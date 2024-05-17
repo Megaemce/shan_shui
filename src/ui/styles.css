@@ -1,8 +1,3 @@
-h4 {
-    margin-top: 10px;
-    margin-bottom: 0px;
-}
-
 p {
     margin: 0;
     color: rgba(0, 0, 0, 0.4);
@@ -46,7 +41,7 @@ div#Settings {
     flex-wrap: nowrap;
 }
 
-div#BTN_ROW {
+div#Buttons {
     top: 3px;
     height: 48px;
     user-select: none;
@@ -56,7 +51,7 @@ div#BTN_ROW {
     flex-direction: row;
     flex-wrap: nowrap;
 
-    button {
+    & button {
         width: 48px;
         height: 48px;
         margin-right: 3px;
@@ -67,11 +62,7 @@ div#BTN_ROW {
     }
 }
 
-div#INP_SEED {
-    width: 100px;
-}
-
-div#BTN_ROW > div {
+div#Buttons > div {
     float: left;
     margin-right: 3px;
     width: 48px;
@@ -84,7 +75,7 @@ div#BTN_ROW > div {
     z-index: 1000;
 }
 
-div#MENU {
+div#Menu {
     background-color: rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.4);
     display: flex;
@@ -92,6 +83,18 @@ div#MENU {
     flex-wrap: nowrap;
     align-items: center;
     margin-top: 5px;
+}
+
+div.Section > h4 {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+div.Section > p {
+    display: flex;
+    justify-content: center;
 }
 
 #ScrollableCanvas button {
@@ -118,14 +121,14 @@ button#RightScroll {
     right: 3px;
 }
 
-.ROWITEM {
+input.InputNumber {
     display: inline;
     width: 60px;
     margin-left: 3px;
     margin-right: 3px;
 }
 
-.ROWITEM_SEED {
-    display: inline;
+input.InputSeed {
     width: 100px;
+    display: inline;
 }
