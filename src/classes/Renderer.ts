@@ -54,10 +54,11 @@ export default class Renderer {
 
             const newFrame = await this.createNewFrame(newRange);
             this.frames.push(newFrame);
+
+            return this.renderFrames();
         }
 
         // render all the visible elements of the frames' layers
-        return this.renderFrames();
     }
 
     /**

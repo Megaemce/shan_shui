@@ -47,35 +47,21 @@ export default class Designer {
         radius: number = RADIUS,
         tagArray: Array<LayerType> = []
     ): boolean {
-        let colliding = false;
+        return this.plan.some((layer) => {
+            const isLocal = tagArray.length === 0 && layer.tag === newLayer.tag;
+            const isTagged = tagArray.includes(layer.tag);
 
-        this.plan.forEach((layer) => {
-            // check only withing layer with the same name. Ergo check for local collision
-            if (tagArray.length === 0) {
-                if (
-                    layer.tag === newLayer.tag &&
-                    Math.abs(layer.x - newLayer.x) < radius
-                ) {
-                    colliding = true;
-                }
-            } else {
-                // check for collision with the labels mentioned in the tagArray
-                tagArray.forEach((tag) => {
-                    if (
-                        layer.tag === tag &&
-                        Math.abs(layer.x - newLayer.x) < radius
-                    ) {
-                        colliding = true;
-                    }
-                });
+            if (
+                (isLocal || isTagged) &&
+                Math.abs(layer.x - newLayer.x) < radius
+            ) {
+                return true;
             }
+            return false;
         });
-
-        return colliding;
     }
     /**
      * Generate new design within given range.
-     * Start with backgroundMountains, then middleMountains, boats and finally bottomMountains.
      * @private
      */
     private generateDesign(range: Range): void {
@@ -138,7 +124,7 @@ export default class Designer {
                 }
             }
 
-            // generate boats with checking global collision
+            // generate boats with boat and middleMountain collision detection
             if (PRNG.random() < BOAT_PROBABILITY) {
                 const y = PRNG.random(MIN_BOAT_Y, MAX_BOAT_Y);
                 const boatChunk = new SketchLayer("boat", x, y);
