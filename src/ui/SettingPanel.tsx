@@ -30,7 +30,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     const toggleVisible = () => setMenuVisible(!menuVisible);
 
     return (
-        <div id="SETTING">
+        <div id="Settings">
             <div id="BTN_ROW">
                 <Button
                     id="Settings"

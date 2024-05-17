@@ -36,7 +36,7 @@ svg#SVG {
     display: none; /* Hide after animation completes */
 }
 
-div#SETTING {
+div#Settings {
     position: fixed;
     z-index: 1000;
     left: 56px;
@@ -94,7 +94,7 @@ div#MENU {
     margin-top: 5px;
 }
 
-#SCROLLABLE_CANVAS button {
+#ScrollableCanvas button {
     position: fixed;
     z-index: 1000;
     width: 48px;

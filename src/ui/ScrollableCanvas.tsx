@@ -34,7 +34,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     }, [renderer, newPosition, windowWidth]);
 
     return (
-        <div id="SCROLLABLE_CANVAS">
+        <div id="ScrollableCanvas">
             <Button
                 id="LeftScroll"
                 title="Scroll left"
@@ -74,13 +74,13 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     </filter>
                 </defs>
                 <g
-                    id="main"
+                    id="Picture"
                     width={windowWidth}
                     height={windowHeight}
                     dangerouslySetInnerHTML={{ __html: svgContent }}
                 />
                 <rect
-                    id="background"
+                    id="Background"
                     filter="url(#roughpaper)"
                     style={{ mixBlendMode: "multiply" }}
                     width={windowWidth}

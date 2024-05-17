@@ -135,32 +135,30 @@ export const App: React.FC = (): JSX.Element => {
 
     return (
         <>
-            <div className="App">
-                <SettingPanel
-                    seed={seed}
-                    setSeed={setSeed}
-                    step={step}
-                    setStep={setStep}
-                    reloadWindowSeed={reloadWindowSeed}
-                    horizontalScroll={horizontalScroll}
-                    toggleAutoScroll={toggleAutoScroll}
-                    newPosition={newPosition}
-                    renderer={rendererRef.current}
-                    windowWidth={windowWidth}
-                    windowHeight={windowHeight}
-                    saveRange={saveRange}
-                    onChangeSaveRange={onChangeSaveRange}
-                    toggleAutoLoad={toggleAutoLoad}
-                />
-                <ScrollableCanvas
-                    step={step}
-                    horizontalScroll={horizontalScroll}
-                    windowHeight={windowHeight}
-                    newPosition={newPosition}
-                    windowWidth={windowWidth}
-                    renderer={rendererRef.current}
-                />
-            </div>
+            <SettingPanel
+                seed={seed}
+                setSeed={setSeed}
+                step={step}
+                setStep={setStep}
+                reloadWindowSeed={reloadWindowSeed}
+                horizontalScroll={horizontalScroll}
+                toggleAutoScroll={toggleAutoScroll}
+                newPosition={newPosition}
+                renderer={rendererRef.current}
+                windowWidth={windowWidth}
+                windowHeight={windowHeight}
+                saveRange={saveRange}
+                onChangeSaveRange={onChangeSaveRange}
+                toggleAutoLoad={toggleAutoLoad}
+            />
+            <ScrollableCanvas
+                step={step}
+                horizontalScroll={horizontalScroll}
+                windowHeight={windowHeight}
+                newPosition={newPosition}
+                windowWidth={windowWidth}
+                renderer={rendererRef.current}
+            />
         </>
     );
 };
