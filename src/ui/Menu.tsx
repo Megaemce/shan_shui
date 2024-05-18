@@ -42,7 +42,7 @@ export const Menu: React.FC<IMenu> = ({
 
     return (
         <div id="Menu">
-            <div className="Section">
+            <div id="CurrentSeed">
                 <h4>Current seed:</h4>
                 <DebounceInput
                     className="InputSeed"
@@ -53,7 +53,7 @@ export const Menu: React.FC<IMenu> = ({
                 />
                 <button onClick={reloadWindowSeed}>Generate</button>
             </div>
-            <div className="Section">
+            <div id="CurrentView">
                 <h4>Current view:</h4>
                 <p>
                     [{newPosition}, {newPosition + windowWidth}]
@@ -76,16 +76,16 @@ export const Menu: React.FC<IMenu> = ({
                     &gt;
                 </button>
             </div>
-            <div className="Section">
+            <div id="AutoScroll">
                 <input
                     name="Auto-scroll"
-                    id="AutoScroll"
+                    id="InputAutoScroll"
                     type="checkbox"
                     onChange={toggleAutoScroll}
                 />
-                <label htmlFor="AutoScroll">Auto-scroll</label>
+                <label htmlFor="InputAutoScroll">Auto-scroll</label>
             </div>
-            <div className="Section">
+            <div id="SaveView">
                 <h4>Save view</h4>
                 from
                 <DebounceInput
@@ -104,7 +104,7 @@ export const Menu: React.FC<IMenu> = ({
                     onChange={onChangeSaveRangeR}
                 />
             </div>
-            <div className="Section">
+            <div id="AutoLoad">
                 <input
                     id="InputAutoLoad"
                     type="checkbox"
@@ -112,7 +112,7 @@ export const Menu: React.FC<IMenu> = ({
                 />
                 <label htmlFor="InputAutoLoad">Auto-load</label>
             </div>
-            <div className="Section">
+            <div id="ImportCurrentRange">
                 <button
                     title="Import current range"
                     type="button"
@@ -123,7 +123,7 @@ export const Menu: React.FC<IMenu> = ({
                     Import current range
                 </button>
             </div>
-            <div className="Section">
+            <div id="DownloadAsSVG">
                 <button
                     title="Download as SVG"
                     type="button"

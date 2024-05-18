@@ -1,11 +1,68 @@
 p {
     margin: 0;
-    color: rgba(0, 0, 0, 0.4);
+    color: rgba(0, 0, 0, 0.7);
 }
 
 button {
     margin-bottom: 5px;
     cursor: pointer;
+
+    background: #f0e7d087;
+    color: rgba(0, 0, 0, 0.4);
+
+    border-top-left-radius: 255px 15px;
+    border-top-right-radius: 15px 225px;
+    border-bottom-right-radius: 225px 15px;
+    border-bottom-left-radius: 15px 255px;
+    border: solid 3px rgba(100, 100, 100, 0.579);
+
+    font-family: "Merienda", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+button#LeftScroll {
+    left: 3px;
+    justify-content: flex-start;
+}
+
+button#RightScroll {
+    right: 3px;
+    justify-content: flex-end;
+}
+
+input {
+    background-color: rgba(255, 255, 255, 0.5);
+
+    border-top-left-radius: 255px 15px;
+    border-bottom-left-radius: 15px 225px;
+    border-top-right-radius: 225px 15px;
+    border-bottom-right-radius: 15px 255px;
+    border: solid 2px rgba(100, 100, 100, 0.579);
+
+    font-family: "Merienda", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+input.InputNumber {
+    display: inline;
+    width: 60px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+input.InputSeed {
+    width: 100px;
+    margin-right: 3px;
 }
 
 svg#SVG {
@@ -31,104 +88,86 @@ svg#SVG {
     display: none; /* Hide after animation completes */
 }
 
-div#Settings {
-    position: fixed;
-    z-index: 1000;
-    left: 56px;
-    top: 3px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-}
-
 div#Buttons {
+    position: fixed;
+    z-index: 3;
     top: 3px;
+    left: 48px;
     height: 48px;
-    user-select: none;
-    vertical-align: middle;
+    width: calc(100% - 96px);
     font-size: 18px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    justify-content: space-between;
 
     & button {
         width: 48px;
         height: 48px;
         margin-right: 3px;
-        background-color: transparent;
-        border: 1px solid rgba(0, 0, 0, 0.4);
-        color: rgba(0, 0, 0, 0.4);
         font-size: 20px;
     }
 }
 
-div#Buttons > div {
-    float: left;
-    margin-right: 3px;
-    width: 48px;
-    height: 48px;
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(0, 0, 0, 0.4);
-    z-index: 1000;
-}
-
 div#Menu {
-    background-color: rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.4);
+    position: fixed;
+    z-index: 3;
+    top: 51px;
+    left: 51px;
+    background-color: rgba(255, 255, 255, 0.5);
+
+    border-top-left-radius: 255px 15px;
+    border-bottom-left-radius: 15px 225px;
+    border-bottom-right-radius: 225px 15px;
+    border-top-right-radius: 15px 255px;
+    border: solid 3px rgba(100, 100, 100, 0.579);
+
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
-    margin-top: 5px;
-}
+    padding: 8px;
 
-div.Section > h4 {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    margin-bottom: 0px;
-}
+    & button {
+        color: rgb(0, 0, 0);
+        border: solid 2px rgba(100, 100, 100, 0.579);
+    }
 
-div.Section > p {
-    display: flex;
-    justify-content: center;
+    & h4 {
+        display: flex;
+        justify-content: center;
+        margin: 3px 0 3px 0;
+    }
+
+    & p {
+        display: flex;
+        justify-content: center;
+        font-size: 15px;
+    }
+
+    & div {
+        margin-bottom: 10px;
+    }
+
+    & #CurrentView,
+    #SaveView {
+        margin: 0px;
+    }
+
+    & #CurrentView button {
+        margin-left: 4px;
+        margin-right: 4px;
+    }
 }
 
 #ScrollableCanvas button {
     position: fixed;
-    z-index: 1000;
+    z-index: 2;
+    height: 25%;
     width: 48px;
-    text-align: center;
-    top: 3px;
-    color: rgba(0, 0, 0, 0.4);
+    top: 37.5%;
     display: flex;
     cursor: pointer;
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    user-select: none;
-    vertical-align: middle;
     align-items: center;
     font-size: 25px;
-}
-
-button#LeftScroll {
-    left: 3px;
-}
-
-button#RightScroll {
-    right: 3px;
-}
-
-input.InputNumber {
-    display: inline;
-    width: 60px;
-    margin-left: 3px;
-    margin-right: 3px;
-}
-
-input.InputSeed {
-    width: 100px;
-    display: inline;
 }

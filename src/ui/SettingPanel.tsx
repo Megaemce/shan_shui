@@ -30,20 +30,18 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     const toggleVisible = () => setMenuVisible(!menuVisible);
 
     return (
-        <div id="Settings">
+        <>
             <div id="Buttons">
                 <Button
                     id="Settings"
                     title="Open settings"
                     onClick={toggleVisible}
-                    height={48}
                     icon={icon}
                 />
                 <Button
                     id="GitHub"
                     title="Open GitHub project"
                     onClick={handleGitHubClick}
-                    height={48}
                     icon="</>"
                 />
             </div>
@@ -65,6 +63,6 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                     toggleAutoLoad={toggleAutoLoad}
                 />
             )}
-        </div>
+        </>
     );
 };
