@@ -79,7 +79,7 @@ export default class Designer {
             ) {
                 for (let y = 0; y < yRange(x) * 480; y += 30) {
                     const xOffset = x + PRNG.random(0, 500);
-                    const yOffset = y + 350;
+                    const yOffset = y + 400;
 
                     const middleMountain = new SketchLayer(
                         "middleMountain",
@@ -99,7 +99,7 @@ export default class Designer {
                     const bottomMountain = new SketchLayer(
                         "bottomMountain",
                         x + PRNG.random(0, 700),
-                        750 - j * 50
+                        850 - j * 50
                     );
 
                     if (!this.isColliding(bottomMountain)) {

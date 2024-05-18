@@ -4,9 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "./Button";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
 import { InfinitySpin } from "react-loader-spinner";
-import { config } from "../config";
-
-const ZOOM = config.ui.zoom;
 
 export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     step,
@@ -46,9 +43,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
             <svg
                 id="SVG"
                 ref={svgRef}
-                viewBox={`${newPosition} 0 ${windowWidth / ZOOM} ${
-                    windowHeight / ZOOM
-                }`}
+                viewBox={`${newPosition} 0 ${windowWidth} ${windowHeight}`}
             >
                 <defs>
                     <filter
