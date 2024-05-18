@@ -69,7 +69,7 @@ export const Menu: React.FC<IMenu> = ({
                     min={0}
                     max={10000}
                     debounceTimeout={500}
-                    step={step}
+                    step={100}
                     onChange={(e) => setStep(Number(e.target.value))}
                 />
                 <button title="Scroll right" onClick={horizonalScrollRight}>
