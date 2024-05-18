@@ -27,16 +27,6 @@ button:hover {
     background: rgba(255, 255, 255, 0.5);
 }
 
-button#LeftScroll {
-    left: 3px;
-    justify-content: flex-start;
-}
-
-button#RightScroll {
-    right: 3px;
-    justify-content: flex-end;
-}
-
 input {
     background-color: rgba(255, 255, 255, 0.5);
 
@@ -80,12 +70,10 @@ svg#SVG {
     position: fixed;
     width: 100%;
     height: 200px;
-    opacity: 1; /* Fully visible */
 }
 
 .Loader.hidden {
-    opacity: 0; /* Fade out */
-    display: none; /* Hide after animation completes */
+    display: none;
 }
 
 div#Buttons {
@@ -106,6 +94,10 @@ div#Buttons {
         height: 48px;
         margin-right: 3px;
         font-size: 20px;
+    }
+
+    & button#Settings {
+        transform: rotate(-91deg);
     }
 }
 
@@ -170,4 +162,13 @@ div#Menu {
     cursor: pointer;
     align-items: center;
     font-size: 25px;
+    justify-content: center;
+}
+
+#ScrollableCanvas button#LeftScroll {
+    left: 3px;
+}
+
+#ScrollableCanvas button#RightScroll {
+    right: 3px;
 }

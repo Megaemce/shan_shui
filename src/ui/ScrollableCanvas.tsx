@@ -35,7 +35,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
             <Button
                 id="LeftScroll"
                 title="Scroll left"
-                icon="&#x3008;"
+                icon="⟨"
                 onClick={() => horizontalScroll(-step)}
             />
 
@@ -89,7 +89,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
             <Button
                 id="RightScroll"
                 title="Scroll right"
-                icon="&#x3009;"
+                icon="⟩"
                 onClick={() => horizontalScroll(step)}
             />
         </div>

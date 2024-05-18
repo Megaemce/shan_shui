@@ -21,7 +21,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     toggleAutoLoad,
 }) => {
     const [menuVisible, setMenuVisible] = useState(false);
-    const icon: string = menuVisible ? "✕" : "☰";
+    const icon: string = menuVisible ? "X" : "III";
 
     const handleGitHubClick = () => {
         window.location.href = "https://github.com/Megaemce/shan_shui";

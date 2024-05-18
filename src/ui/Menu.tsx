@@ -123,15 +123,15 @@ export const Menu: React.FC<IMenu> = ({
                     Import current range
                 </button>
             </div>
-            <div id="DownloadAsSVG">
+            <div id="Download">
                 <button
-                    title="Download as SVG"
+                    title="Download"
                     type="button"
                     id="ButtonDownload"
-                    value="Download as SVG"
+                    value="Download"
                     onClick={downloadSvg}
                 >
-                    Download as .SVG
+                    Download
                 </button>
             </div>
         </div>
