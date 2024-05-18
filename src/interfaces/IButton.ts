@@ -19,13 +19,6 @@ export interface IButton {
     title: string;
 
     /**
-     * The height of the Button.
-     *
-     * @type {number}
-     */
-    height: number;
-
-    /**
      * The function to be executed when the Button is clicked.
      *
      * @function
