@@ -1,9 +1,6 @@
 import Designer from "./Designer";
 import Frame from "./Frame";
 import Range from "./Range";
-import { config } from "../config";
-
-const ZOOM = config.ui.zoom;
 
 export default class Renderer {
     /** Keeping the frames array with frames ready to be render in current scenne */
@@ -54,11 +51,10 @@ export default class Renderer {
 
             const newFrame = await this.createNewFrame(newRange);
             this.frames.push(newFrame);
-
-            return this.renderFrames();
         }
 
         // render all the visible elements of the frames' layers
+        return this.renderFrames();
     }
 
     /**
@@ -87,11 +83,13 @@ export default class Renderer {
      */
     public async renderFrames(): Promise<string> {
         const frameResults = await Promise.all(
-            this.frames.map((frame) =>
-                Renderer.visibleRange.isShowing(frame.range)
-                    ? frame.render()
-                    : ""
-            )
+            this.frames
+                .sort((a, b) => b.id - a.id)
+                .map((frame) =>
+                    Renderer.visibleRange.isShowing(frame.range)
+                        ? frame.render()
+                        : ""
+                )
         );
 
         return frameResults.join("\n");
@@ -106,9 +104,7 @@ export default class Renderer {
     public download(seed: string, range: Range, windowHeight: number): void {
         const filename: string = `${seed}-[${range.start}, ${range.end}].svg`;
         const windx: number = range.end - range.start;
-        const viewbox = `${range.start} 0 ${windx / ZOOM} ${
-            windowHeight / ZOOM
-        }`;
+        const viewbox = `${range.start} 0 ${windx} ${windowHeight}`;
 
         this.renderPicture(range);
 

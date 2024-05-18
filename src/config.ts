@@ -203,7 +203,4 @@ export const config = {
             defaultStrokeWidth: 1,
         },
     },
-    ui: {
-        zoom: 1.142,
-    },
 };
