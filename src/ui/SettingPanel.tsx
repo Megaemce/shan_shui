@@ -21,23 +21,72 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     toggleAutoLoad,
 }) => {
     const [menuVisible, setMenuVisible] = useState(false);
+    const [darkMode, setDarkMode] = useState(false);
     const icon: string = menuVisible ? "X" : "III";
+    const darkModeIcon: string = darkMode ? "☀" : "☾";
 
     const handleGitHubClick = () => {
         window.location.href = "https://github.com/Megaemce/shan_shui";
     };
 
-    const toggleVisible = () => setMenuVisible(!menuVisible);
+    const toggleVisible = () => {
+        const menu = document.getElementById("Menu") as HTMLElement;
+
+        setMenuVisible(!menuVisible);
+
+        if (!menuVisible) {
+            menu.classList.remove("hidden");
+        } else {
+            menu.classList.add("hidden");
+        }
+    };
+    const toggleDarkmode = () => {
+        const buttons = document.getElementById("Buttons") as HTMLElement;
+        const svg = document.getElementById("SVG") as HTMLElement;
+        const leftScroll = document.getElementById("LeftScroll") as HTMLElement;
+        const rightScroll = document.getElementById(
+            "RightScroll"
+        ) as HTMLElement;
+        const loader = document.getElementById("Loader") as HTMLElement;
+        const menu = document.getElementById("Menu") as HTMLElement;
+
+        setDarkMode(!darkMode);
+
+        if (!darkMode) {
+            buttons.classList.add("darkmode");
+            svg.classList.add("darkmode");
+            leftScroll.classList.add("darkmode");
+            rightScroll.classList.add("darkmode");
+            menu.classList.add("darkmode");
+            loader.classList.add("darkmode");
+        } else {
+            buttons.classList.remove("darkmode");
+            svg.classList.remove("darkmode");
+            leftScroll.classList.remove("darkmode");
+            rightScroll.classList.remove("darkmode");
+            menu.classList.remove("darkmode");
+            loader.classList.remove("darkmode");
+        }
+    };
 
     return (
         <>
             <div id="Buttons">
-                <Button
-                    id="Settings"
-                    title="Open settings"
-                    onClick={toggleVisible}
-                    icon={icon}
-                />
+                <div className="LeftButtons">
+                    <Button
+                        id="Settings"
+                        title="Open settings"
+                        onClick={toggleVisible}
+                        icon={icon}
+                    />
+                    <Button
+                        id="Darkmode"
+                        title="Dark mode"
+                        onClick={toggleDarkmode}
+                        icon={darkModeIcon}
+                    />
+                </div>
+
                 <Button
                     id="GitHub"
                     title="Open GitHub project"
@@ -45,24 +94,23 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                     icon="</>"
                 />
             </div>
-            {menuVisible && (
-                <Menu
-                    seed={seed}
-                    setSeed={setSeed}
-                    step={step}
-                    setStep={setStep}
-                    reloadWindowSeed={reloadWindowSeed}
-                    horizontalScroll={horizontalScroll}
-                    toggleAutoScroll={toggleAutoScroll}
-                    newPosition={newPosition}
-                    renderer={renderer}
-                    windowWidth={windowWidth}
-                    windowHeight={windowHeight}
-                    saveRange={saveRange}
-                    onChangeSaveRange={onChangeSaveRange}
-                    toggleAutoLoad={toggleAutoLoad}
-                />
-            )}
+
+            <Menu
+                seed={seed}
+                setSeed={setSeed}
+                step={step}
+                setStep={setStep}
+                reloadWindowSeed={reloadWindowSeed}
+                horizontalScroll={horizontalScroll}
+                toggleAutoScroll={toggleAutoScroll}
+                newPosition={newPosition}
+                renderer={renderer}
+                windowWidth={windowWidth}
+                windowHeight={windowHeight}
+                saveRange={saveRange}
+                onChangeSaveRange={onChangeSaveRange}
+                toggleAutoLoad={toggleAutoLoad}
+            />
         </>
     );
 };

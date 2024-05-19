@@ -59,9 +59,20 @@ svg#SVG {
     position: fixed;
     left: 0;
     top: 0;
+
+    & #Background {
+        mix-blend-mode: multiply;
+    }
+    & #Background.darkmode {
+        mix-blend-mode: hard-light;
+    }
 }
 
-.Loader {
+svg#SVG.darkmode {
+    filter: invert(1) sepia(1);
+}
+
+#Loader {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -72,8 +83,12 @@ svg#SVG {
     height: 200px;
 }
 
-.Loader.hidden {
+#Loader.hidden {
     display: none;
+}
+
+#Loader.darkmode {
+    filter: invert(1) sepia(1);
 }
 
 div#Buttons {
@@ -99,6 +114,14 @@ div#Buttons {
     & button#Settings {
         transform: rotate(-91deg);
     }
+
+    & div.LeftButtons {
+        display: flex;
+    }
+}
+
+div#Buttons.darkmode {
+    filter: invert(1) sepia(1);
 }
 
 div#Menu {
@@ -152,6 +175,14 @@ div#Menu {
     }
 }
 
+div#Menu.hidden {
+    display: none;
+}
+
+div#Menu.darkmode {
+    filter: invert(1) sepia(1);
+}
+
 #ScrollableCanvas button {
     position: fixed;
     z-index: 2;
@@ -169,6 +200,14 @@ div#Menu {
     left: 3px;
 }
 
+#ScrollableCanvas button#LeftScroll.darkmode {
+    filter: invert(1) sepia(1);
+}
+
 #ScrollableCanvas button#RightScroll {
     right: 3px;
+}
+
+#ScrollableCanvas button#RightScroll.darkmode {
+    filter: invert(1) sepia(1);
 }

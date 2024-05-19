@@ -41,7 +41,7 @@ export const Menu: React.FC<IMenu> = ({
         );
 
     return (
-        <div id="Menu">
+        <div id="Menu" className="hidden">
             <div id="CurrentSeed">
                 <h4>Current seed:</h4>
                 <DebounceInput

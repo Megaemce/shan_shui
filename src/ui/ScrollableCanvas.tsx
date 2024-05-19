@@ -76,12 +76,11 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                 <rect
                     id="Background"
                     filter="url(#roughpaper)"
-                    style={{ mixBlendMode: "multiply" }}
                     width={windowWidth}
                     height={windowHeight}
                 />
             </svg>
-            <div className={`Loader ${loading ? "" : "hidden"}`}>
+            <div id="Loader" className={`${loading ? "" : "hidden"}`}>
                 <InfinitySpin width="200" color="rgba(0, 0, 0, 0.4)" />
                 <p>Rendering elements</p>
             </div>
