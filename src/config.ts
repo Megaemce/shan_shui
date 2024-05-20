@@ -183,10 +183,12 @@ export const config = {
         defaultStrokeColor: "rgba(0,0,0,0)",
         defaultStrokeWidth: 0,
         blob: {
+            defaultAngle: 0,
             defaultFillColor: "rgba(200,200,200,0.9)",
             defaultLength: 20,
             defaultStrokeWidth: 0.5,
             defaultNoise: 0.5,
+            resolution: 15,
         },
         branch: {
             defaultHeight: 360,
