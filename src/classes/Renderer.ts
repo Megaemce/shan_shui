@@ -74,9 +74,10 @@ export default class Renderer {
             framePlan.map((sketch) => newFrame.addSketchToLayers(sketch))
         );
 
+        // await newFrame.changePlanToFrames(framePlan);
+
         return newFrame;
     }
-
     /**
      * Render all frames visible within Renderer.visibleRange
      * @returns {Promise<string>} string representation of SVG image
@@ -88,7 +89,7 @@ export default class Renderer {
                 .map((frame) =>
                     Renderer.visibleRange.isShowing(frame.range)
                         ? frame.render()
-                        : ""
+                        : Promise.resolve("")
                 )
         );
 
