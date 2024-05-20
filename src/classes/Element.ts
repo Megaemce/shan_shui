@@ -32,11 +32,7 @@ export default class Element {
         strokeColor: string = DEFAULT_STROKE_COLOR,
         strokeWidth: number = DEFAULT_STROKE_WIDTH
     ) {
-        const style = `style='
-            fill:${fillColor};
-            stroke:${strokeColor};
-            stroke-width:${strokeWidth}
-        '`;
+        const style = `style='fill:${fillColor}; stroke:${strokeColor}; stroke-width:${strokeWidth}'`;
 
         let points = "";
         let xMin = +Infinity;
@@ -52,6 +48,6 @@ export default class Element {
         }
 
         this.range = new Range(xMin, xMax);
-        this.stringify = `<polyline points='${points}'${style}/>`;
+        this.stringify = `<polyline points='${points}' ${style}/>`;
     }
 }
