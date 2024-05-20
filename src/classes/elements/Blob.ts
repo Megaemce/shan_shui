@@ -14,7 +14,7 @@ const DEFAULT_NOISE = config.element.blob.defaultNoise;
  * Represents a blob
  */
 export default class Blob extends Element {
-    _points: Point[] = []; // used by Tree07 only
+    points: Point[] = []; // used by Tree07 only
     /**
      * Constructor for the BlobGenerator class.
      * @param {number} x - X-coordinate of the blob.
@@ -71,10 +71,7 @@ export default class Blob extends Element {
         super(pointArray, 0, 0, fillColor, fillColor);
 
         if (returnPoints) {
-            this._points = pointArray;
+            this.points = pointArray;
         }
-    }
-    get points() {
-        return this._points;
     }
 }
