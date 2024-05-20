@@ -128,7 +128,13 @@ export default class BottomMountainLayer extends Layer {
                 yOffset,
                 TEXTURE_SIZE,
                 TEXTURE_SHADOW,
-                () => 0.5 + PRNG.randomSign() * PRNG.random(0, 0.4)
+                () => {
+                    if (PRNG.random() > 0.5) {
+                        return 0.1 + 0.4 * PRNG.random();
+                    } else {
+                        return 0.9 - 0.4 * PRNG.random();
+                    }
+                }
             )
         );
 

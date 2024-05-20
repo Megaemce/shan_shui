@@ -188,7 +188,7 @@ export const config = {
             defaultLength: 20,
             defaultStrokeWidth: 0.5,
             defaultNoise: 0.5,
-            resolution: 15,
+            resolution: 12,
         },
         branch: {
             defaultHeight: 360,
