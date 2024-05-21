@@ -48,8 +48,8 @@ This is the third iteration of this app:
       <br>
       <br>
 
-    |      | [DOM Content Loading](https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event) | [FCP](https://web.dev/articles/fcp) | [LCP](https://web.dev/articles/lcp) | Longest task |
-    | ---- | :-----------------------------------------------------------------------------------------------------: | :---------------------------------: | :---------------------------------: | :----------: |
-    | Old  |                                                  4.92s                                                  |                4.92s                |                6.18s                |    2.02s     |
-    | New  |                                                  0.44s                                                  |                1.09s                |                1.09s                |  286.80 ms   |
-    | Diff |                                                   11x                                                   |                 4x                  |                5.5x                 |      7x      |
+    | | [DCL](https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event) | [FCP](https://web.dev/articles/fcp) | [LCP](https://web.dev/articles/lcp) | Longest task |
+    | --- | :-: | :-: | :-: | :-: |
+    | Old  | 4.92s | 4.92s | 6.18s | 2.02s |
+    | New  |  0.4s | 0.5s | 0.5s | 0.21s |
+    | Diff | ⏬12x | ⏬10x | ⏬12x | ⏬10x |
