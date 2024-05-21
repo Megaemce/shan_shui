@@ -38,8 +38,18 @@ This is the third iteration of this app:
 1. Firstly created as a [monolithic JavaScript file](https://github.com/LingDong-/shan-shui-inf) by [Lingdong Huang](https://github.com/LingDong-)
 2. Then it was [rebuilt with React 17](https://github.com/RedContritio/shan_shui_inf) by [RedContritio](https://github.com/RedContritio).
 3. I have rebuilt it using React components, employing an object-oriented programming approach. Additionally, I have addressed several bugs and incorporated various improvements for enhanced performance and readability:
-    - Designing and rendering is done via [web workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) for parallel computation and [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) for the [main thread blockages reduction](https://web.dev/articles/optimize-long-tasks?utm_source=devtools),
-    - Invisible objects are removed from the DOM for faster rendering,
+
+    - Dark mode was added,
     - Some of the most complex elements were simplified,
     - Whole code was rewritten and commented using TypeDoc,
-    - [Fastest way to work with array](https://annoyscript.vercel.app/posts/The%20fastest%20way%20to%20work%20with%20arrays/) was implemented wherever it is reasonable.
+    - [Fastest way to work with array](https://annoyscript.vercel.app/posts/The%20fastest%20way%20to%20work%20with%20arrays/) was implemented wherever it was reasonable,
+    - Invisible objects are removed from the DOM for faster rendering and lower memory consumption,
+    - Designing and rendering is done via [web workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) for parallel computation and [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) for the [main thread blockages reduction](https://web.dev/articles/optimize-long-tasks?utm_source=devtools).
+      <br>
+      <br>
+
+    |      | [DOM Content Loading](https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event) | [FCP](https://web.dev/articles/fcp) | [LCP](https://web.dev/articles/lcp) | Longest task |
+    | ---- | :-----------------------------------------------------------------------------------------------------: | :---------------------------------: | :---------------------------------: | :----------: |
+    | Old  |                                                  4.92s                                                  |                4.92s                |                6.18s                |    2.02s     |
+    | New  |                                                  0.44s                                                  |                1.09s                |                1.09s                |  286.80 ms   |
+    | Diff |                                                   11x                                                   |                 4x                  |                5.5x                 |      7x      |
