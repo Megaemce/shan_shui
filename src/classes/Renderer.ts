@@ -70,11 +70,14 @@ export default class Renderer {
         const framePlan = new Designer(range).plan;
         const newFrame = new Frame(frameID);
 
-        await Promise.all(
-            framePlan.map((sketch) => newFrame.addSketchToLayers(sketch))
-        );
+        framePlan.forEach((sketch) => {
+            setTimeout(() => {
+                newFrame.addSketchToLayers(sketch);
+            }, 0);
+        });
 
-        // await newFrame.changePlanToFrames(framePlan);
+        // wait for the addSketchToLayers to finish
+        await new Promise((resolve) => setTimeout(resolve, 0));
 
         return newFrame;
     }

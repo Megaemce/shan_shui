@@ -1,6 +1,5 @@
 import Layer from "./Layer";
 import PRNG from "./PRNG";
-import Point from "./Point";
 import Range from "./Range";
 import Renderer from "./Renderer";
 import SketchLayer from "./SketchLayer";
@@ -8,18 +7,6 @@ import BackgroundMountainLayer from "./layers/BackgroundMountainLayer";
 import BoatLayer from "./layers/BoatLayer";
 import BottomMountainLayer from "./layers/BottomMountainLayer";
 import MiddleMountainLayer from "./layers/MiddleMountainLayer";
-
-type LayerSerialized = {
-    tag: string;
-    x: number;
-    y: number;
-    range: { start: number; end: number };
-    elements: Array<{
-        stringify: string;
-        range: { start: number; end: number };
-        points?: Point[];
-    }>;
-};
 
 /**
  * Class representing a frame used for generating and managing layer of terrain.
@@ -29,62 +16,15 @@ export default class Frame {
      *  When passing custom classes or instances to web workers, they are serialized
      *  into plain objects due to the fact that web workers can only communicate using JSON-compatible data types
      */
-    layers: LayerSerialized[] = [];
+    layers: Layer[] = [];
 
     constructor(public id: number) {}
-
-    public async changePlanToFrames(framePlan: SketchLayer[]): Promise<void> {
-        const changePromises: Promise<LayerSerialized>[] = [];
-
-        for (let index = 0; index < framePlan.length; index++) {
-            const sketch = framePlan[index];
-
-            const worker = new Worker(
-                new URL("../utils/planWorker.ts", import.meta.url)
-            );
-
-            const changePromise = new Promise<LayerSerialized>(
-                (resolve, reject) => {
-                    worker.onmessage = (e: MessageEvent) => {
-                        worker.terminate();
-                        if (e.data.error) {
-                            reject(new Error(e.data.error));
-                        } else {
-                            resolve(e.data.layer);
-                        }
-                    };
-
-                    worker.onerror = (e) => {
-                        worker.terminate();
-                        reject(new Error(`Worker error: ${e.message}`));
-                    };
-
-                    worker.postMessage({
-                        tag: sketch.tag,
-                        id: this.id,
-                        x: sketch.x,
-                        y: sketch.y,
-                    });
-                }
-            );
-
-            changePromises.push(changePromise);
-        }
-
-        try {
-            const results = await Promise.all(changePromises);
-            this.layers.push(...results);
-        } catch (error) {
-            console.error("Error rendering frame:", error);
-            throw error;
-        }
-    }
 
     /**
      * Create active layers based on the given plan and adds it to Frame.layers
      * @param {SketchLayer} - plan created by the designer
      */
-    public async addSketchToLayers({ tag, x, y }: SketchLayer): Promise<void> {
+    public addSketchToLayers({ tag, x, y }: SketchLayer): void {
         let layer: Layer;
         if (tag === "middleMountain") {
             layer = new MiddleMountainLayer(x, y, PRNG.random(0, 2 * this.id));
@@ -120,9 +60,8 @@ export default class Frame {
 
         for (let index = 0; index < this.layers.length; index++) {
             const layer = this.layers[index];
-            const range = new Range(layer.range.start, layer.range.end);
 
-            if (!Renderer.visibleRange.isShowing(range)) continue;
+            if (!Renderer.visibleRange.isShowing(layer.range)) continue;
 
             const worker = new Worker(
                 new URL("../utils/layerWorker.ts", import.meta.url)
