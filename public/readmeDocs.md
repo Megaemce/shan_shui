@@ -1,4 +1,4 @@
-Discover the beauty of an ever-evolving Chinese landscape art. This project combines the elegance of procedural generation with the power of vector graphics to create a mesmerizing, infinite-scrolling journey through the heart of Chinese art and culture.
+Discover the beauty of an ever-evolving Chinese landscape art. This project combines the elegance of procedural generation with the power of vector graphics to create a mesmerizing, infinite-scrolling journey.
 
 ## 🏗️ Tech stack
 
@@ -15,7 +15,7 @@ npm run start
 
 ![man](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/render_scheme.png)
 
-On your current screen, multiple frames may intersect with each other, comprising one to five layers and containing various structures formed by numerous elements.
+On your current screen, multiple frames may intersect with each other, comprising many layers and containing various structures formed by numerous elements.
 
 ## 📦 Examples of rendered components
 
@@ -75,7 +75,7 @@ Made out of `Blob`, `Bark` and `Stroke`
 <details>
 <summary>BottomMountainDecoration</summary>
 
-Made out of `Tree08`,`Tree07`,`Tree02`,`Tree05`, `Tree04`, `Rock` and `Pavilion`.
+Made out of `Tree02`,`Tree04`,`Tree05`,`Tree06`, `Tree07`, `Rock` and `Pavilion`.
 
 </details>
 <br>
