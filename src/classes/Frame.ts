@@ -1,12 +1,13 @@
+import BackgroundMountainLayer from "./layers/BackgroundMountainLayer";
+import BoatLayer from "./layers/BoatLayer";
+import BottomMountainLayer from "./layers/BottomMountainLayer";
 import Layer from "./Layer";
+import MiddleMountainLayer from "./layers/MiddleMountainLayer";
 import PRNG from "./PRNG";
 import Range from "./Range";
 import Renderer from "./Renderer";
 import SketchLayer from "./SketchLayer";
-import BackgroundMountainLayer from "./layers/BackgroundMountainLayer";
-import BoatLayer from "./layers/BoatLayer";
-import BottomMountainLayer from "./layers/BottomMountainLayer";
-import MiddleMountainLayer from "./layers/MiddleMountainLayer";
+import WorkerPool from "./WorkerPool";
 
 /**
  * Class representing a frame used for generating and managing layer of terrain.
@@ -52,10 +53,13 @@ export default class Frame {
     }
 
     /**
-     * Renders the frame into an SVG string using web workers.
+     * Renders the frame into an SVG string using web workers pool.
+     * Cannot simply create a web worker for each layer because this way we
+     * create many HTTP request on vercel with makes the whole solution conquerent not parallel
      * @returns {Promise<string>}
      */
     public async render(): Promise<string> {
+        const workerPool = new WorkerPool(navigator.hardwareConcurrency || 8);
         const renderPromises: Promise<string>[] = [];
 
         for (let index = 0; index < this.layers.length; index++) {
@@ -63,31 +67,11 @@ export default class Frame {
 
             if (!Renderer.visibleRange.isShowing(layer.range)) continue;
 
-            const worker = new Worker(
-                new URL("../utils/layerWorker.ts", import.meta.url)
-            );
-
-            const renderPromise = new Promise<string>((resolve, reject) => {
-                worker.onmessage = (e: MessageEvent) => {
-                    worker.terminate();
-                    if (e.data.error) {
-                        reject(new Error(e.data.error));
-                    } else {
-                        resolve(e.data.stringify);
-                    }
-                };
-
-                worker.onerror = (e) => {
-                    worker.terminate();
-                    reject(new Error(`Worker error: ${e.message}`));
-                };
-
-                worker.postMessage({
-                    frameNum: this.id,
-                    elements: layer.elements,
-                    layerTag: layer.tag,
-                    index: index,
-                });
+            const renderPromise = workerPool.addTask({
+                frameNum: this.id,
+                elements: layer.elements,
+                layerTag: layer.tag,
+                index: index,
             });
 
             renderPromises.push(renderPromise);
@@ -95,9 +79,11 @@ export default class Frame {
 
         try {
             const renderedLayers = await Promise.all(renderPromises);
+            workerPool.terminateAll();
             return `<g id="frame${this.id}">${renderedLayers.join("\n")}</g>`;
         } catch (error) {
             console.error("Error rendering frame:", error);
+            workerPool.terminateAll();
             throw error;
         }
     }
