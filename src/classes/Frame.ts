@@ -5,9 +5,9 @@ import Layer from "./Layer";
 import MiddleMountainLayer from "./layers/MiddleMountainLayer";
 import PRNG from "./PRNG";
 import Range from "./Range";
-import Renderer from "./Renderer";
+import Renderer from "./rendering/Renderer";
 import SketchLayer from "./SketchLayer";
-import WorkerPool from "./WorkerPool";
+import WorkerPool from "./rendering/WorkerPool";
 
 /**
  * Class representing a frame used for generating and managing layer of terrain.

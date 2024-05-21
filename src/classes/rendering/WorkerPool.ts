@@ -1,3 +1,5 @@
+import CustomWorker from "./CustomWorker";
+
 /**
  * Class representing a worker pool.
  * Use as a solution to the issue seen on vercel,
@@ -5,8 +7,8 @@
  * making the general solution more conquerent than parallel.
  */
 export default class WorkerPool {
-    private workers: Worker[];
-    private idleWorkers: Worker[];
+    private workers: CustomWorker[];
+    private idleWorkers: CustomWorker[];
     private taskQueue: {
         message: any;
         resolve: (value: string) => void;
@@ -25,9 +27,7 @@ export default class WorkerPool {
         this.taskQueue = [];
 
         for (let i = 0; i < size; i++) {
-            const worker = new Worker(
-                new URL("../utils/layerWorker.ts", import.meta.url)
-            );
+            const worker = new CustomWorker();
 
             worker.onmessage = (e: MessageEvent) => this.onMessage(worker, e);
             worker.onerror = (e: ErrorEvent) => this.onError(worker, e);
@@ -38,42 +38,48 @@ export default class WorkerPool {
     /**
      * Handles the onMessage event from a worker.
      *
-     * @param {Worker} worker - The worker that sent the message.
+     * @param {CustomWorker} worker - The worker that sent the message.
      * @param {MessageEvent} e - The message event.
      * @return {void} This function does not return anything.
      */
-    private onMessage(worker: Worker, e: MessageEvent): void {
-        const { resolve, reject } = (worker as any).currentTask;
-        if (e.data.error) {
-            reject(new Error(e.data.error));
-        } else {
-            resolve(e.data.stringify);
+    private onMessage(worker: CustomWorker, e: MessageEvent): void {
+        if (worker.currentTask) {
+            // Added check
+            const { resolve, reject } = worker.currentTask;
+            if (e.data.error) {
+                reject(new Error(e.data.error));
+            } else {
+                resolve(e.data.stringify);
+            }
+            worker.currentTask = null; // Clear currentTask
+            this.runNextTask(worker);
         }
-        (worker as any).currentTask = null;
-        this.runNextTask(worker);
     }
 
     /**
      * Handles the onError event from a worker.
      *
-     * @param {Worker} worker - The worker that encountered the error.
+     * @param {CustomWorker} worker - The worker that encountered the error.
      * @param {ErrorEvent} e - The error event.
      * @return {void} This function does not return anything.
      */
-    private onError(worker: Worker, e: ErrorEvent): void {
-        const { reject } = (worker as any).currentTask;
-        reject(new Error(`Worker error: ${e.message}`));
-        (worker as any).currentTask = null;
-        this.runNextTask(worker);
+    private onError(worker: CustomWorker, e: ErrorEvent): void {
+        if (worker.currentTask) {
+            // Added check
+            const { reject } = worker.currentTask;
+            reject(new Error(`Worker error: ${e.message}`));
+            worker.currentTask = null; // Clear currentTask
+            this.runNextTask(worker);
+        }
     }
 
     /**
      * Runs the next task for the worker if there are tasks in the task queue.
      * If the task queue is empty, the worker is added to the idle workers list.
      *
-     * @param {Worker} worker - The worker to run the next task for.
+     * @param {CustomWorker} worker - The worker to run the next task for.
      */
-    private runNextTask(worker: Worker) {
+    private runNextTask(worker: CustomWorker) {
         if (this.taskQueue.length > 0) {
             const task = this.taskQueue.shift()!;
             this.runTask(worker, task);
@@ -85,21 +91,21 @@ export default class WorkerPool {
     /**
      * Runs a task on a worker by assigning the task to the worker and sending the task message.
      *
-     * @param {Worker} worker - The worker on which the task will be run.
+     * @param {CustomWorker} worker - The worker on which the task will be run.
      * @param {Object} task - The task object containing the message, resolve, and reject functions.
      * @param {any} task.message - The message to be sent to the worker.
      * @param {Function} task.resolve - The function to be called when the task is successfully resolved.
      * @param {Function} task.reject - The function to be called when the task encounters an error.
      */
     private runTask(
-        worker: Worker,
+        worker: CustomWorker,
         task: {
             message: any;
             resolve: (value: string) => void;
             reject: (reason?: any) => void;
         }
     ) {
-        (worker as any).currentTask = task;
+        worker.currentTask = task;
         worker.postMessage(task.message);
     }
 

@@ -1,5 +1,5 @@
 import Range from "../classes/Range";
-import Renderer from "../classes/Renderer";
+import Renderer from "../classes/rendering/Renderer";
 
 /**
  * Represents an interface for a React Menu.
