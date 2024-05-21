@@ -177,6 +177,9 @@ export const config = {
                 verticalSubPoints: 2,
             },
         },
+        bottomMountain: {
+            pavilionChance: 0.25, // Chance of adding pavilion to bottomMountain
+        },
     },
     element: {
         defaultFillColor: "rgba(0,0,0,0)",

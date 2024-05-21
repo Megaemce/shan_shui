@@ -9,6 +9,9 @@ import Tree05 from "./Tree05";
 import Tree06 from "./Tree06";
 import Tree07 from "./Tree07";
 import Tree08 from "./Tree08";
+import { config } from "../../config";
+
+const PAVILION_CHANCE = config.structure.bottomMountain.pavilionChance;
 
 export default class BottomMountainDecoration extends Structure {
     /**
@@ -21,8 +24,18 @@ export default class BottomMountainDecoration extends Structure {
     constructor(xOffset: number, yOffset: number, bounding: Bound) {
         super();
 
-        const tt = PRNG.randomChoice([0, 0, 1, 2, 3, 4]);
+        const treeType = PRNG.randomChoice([
+            "Rock",
+            "Rock",
+            "Tree04",
+            "Tree05",
+            "Tree06",
+            "Tree07",
+        ]);
 
+        // TODO: Why the order matters here?
+
+        // Add some smaller rocks.
         for (let j = 0; j < PRNG.random(0, 5); j++) {
             this.add(
                 new Rock(
@@ -40,6 +53,7 @@ export default class BottomMountainDecoration extends Structure {
             );
         }
 
+        // Add some trees08.
         for (let j = 0; j < PRNG.randomChoice([0, 0, 1, 2]); j++) {
             const xr =
                 xOffset + PRNG.normalizedRandom(bounding.xMin, bounding.xMax);
@@ -67,7 +81,7 @@ export default class BottomMountainDecoration extends Structure {
             }
         }
 
-        if (tt === 0) {
+        if (treeType === "Rock") {
             for (let j = 0; j < PRNG.random(0, 3); j++) {
                 this.add(
                     new Rock(
@@ -84,9 +98,33 @@ export default class BottomMountainDecoration extends Structure {
                     )
                 );
             }
-        }
+        } else if (treeType === "Tree04") {
+            for (let i = 0; i < PRNG.randomChoice([1, 1, 1, 1, 2, 2, 3]); i++) {
+                const xr = PRNG.normalizedRandom(bounding.xMin, bounding.xMax);
+                const yr = (bounding.yMin + bounding.yMax) / 2;
+                this.add(new Tree04(xOffset + xr, yOffset + yr + 20));
 
-        if (tt === 1) {
+                for (let j = 0; j < PRNG.random(0, 2); j++) {
+                    this.add(
+                        new Rock(
+                            xOffset +
+                                Math.max(
+                                    bounding.xMin,
+                                    Math.min(
+                                        bounding.xMax,
+                                        xr + PRNG.normalizedRandom(-50, 50)
+                                    )
+                                ),
+                            yOffset + yr + PRNG.normalizedRandom(-5, 5) + 20,
+                            PRNG.random(100 * i * j),
+                            PRNG.random(40, 60),
+                            5,
+                            PRNG.random(50, 70)
+                        )
+                    );
+                }
+            }
+        } else if (treeType === "Tree05") {
             const xMid = (bounding.xMin + bounding.xMax) / 2;
             const xMin = PRNG.random(bounding.xMin, xMid);
             const xMax = PRNG.random(xMid, bounding.xMax);
@@ -117,33 +155,7 @@ export default class BottomMountainDecoration extends Structure {
                     )
                 );
             }
-        } else if (tt === 2) {
-            for (let i = 0; i < PRNG.randomChoice([1, 1, 1, 1, 2, 2, 3]); i++) {
-                const xr = PRNG.normalizedRandom(bounding.xMin, bounding.xMax);
-                const yr = (bounding.yMin + bounding.yMax) / 2;
-                this.add(new Tree04(xOffset + xr, yOffset + yr + 20));
-
-                for (let j = 0; j < PRNG.random(0, 2); j++) {
-                    this.add(
-                        new Rock(
-                            xOffset +
-                                Math.max(
-                                    bounding.xMin,
-                                    Math.min(
-                                        bounding.xMax,
-                                        xr + PRNG.normalizedRandom(-50, 50)
-                                    )
-                                ),
-                            yOffset + yr + PRNG.normalizedRandom(-5, 5) + 20,
-                            PRNG.random(100 * i * j),
-                            PRNG.random(40, 60),
-                            5,
-                            PRNG.random(50, 70)
-                        )
-                    );
-                }
-            }
-        } else if (tt === 3) {
+        } else if (treeType === "Tree06") {
             for (let i = 0; i < PRNG.randomChoice([1, 1, 1, 1, 2, 2, 3]); i++) {
                 this.add(
                     new Tree06(
@@ -154,7 +166,7 @@ export default class BottomMountainDecoration extends Structure {
                     )
                 );
             }
-        } else if (tt === 4) {
+        } else if (treeType === "Tree07") {
             const xMid = (bounding.xMin + bounding.xMax) / 2;
             const xMin = PRNG.random(bounding.xMin, xMid);
             const xMax = PRNG.random(xMid, bounding.xMax);
@@ -173,6 +185,7 @@ export default class BottomMountainDecoration extends Structure {
             }
         }
 
+        // Add some trees02
         for (let i = 0; i < PRNG.random(0, 50); i++) {
             this.add(
                 new Tree02(
@@ -184,8 +197,8 @@ export default class BottomMountainDecoration extends Structure {
             );
         }
 
-        const ts = PRNG.randomChoice([0, 0, 0, 0, 1]);
-        if (ts === 1 && tt !== 4) {
+        // Add some pavilion
+        if (PRNG.random() < PAVILION_CHANCE && treeType !== "Tree07") {
             this.add(
                 new Pavilion(
                     xOffset +
