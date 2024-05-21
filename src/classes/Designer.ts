@@ -1,10 +1,10 @@
-import PRNG from "../PRNG";
-import Perlin from "../Perlin";
-import SketchLayer from "../SketchLayer";
-import { config } from "../../config";
-import { isLocalMaximum } from "../../utils/utils";
-import Range from "../Range";
-import { LayerType } from "../../types/LayerType";
+import PRNG from "./PRNG";
+import Perlin from "./Perlin";
+import SketchLayer from "./SketchLayer";
+import { config } from "../config";
+import { isLocalMaximum } from "../utils/utils";
+import Range from "./Range";
+import { LayerType } from "../types/LayerType";
 
 const BOAT_PROBABILITY = config.designer.boat.probability;
 const BOAT_RADIUS_THRESHOLD = config.designer.boat.radiusThreshold;

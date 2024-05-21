@@ -1,4 +1,4 @@
-import Renderer from "../classes/rendering/Renderer";
+import Renderer from "../classes/Renderer";
 
 /**
  * Represents the properties for the ScrollableCanvas component.

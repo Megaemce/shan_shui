@@ -1,6 +1,6 @@
 import Designer from "./Designer";
-import Frame from "../Frame";
-import Range from "../Range";
+import Frame from "./Frame";
+import Range from "./Range";
 
 export default class Renderer {
     /** Keeping the frames array with frames ready to be render in current scenne */

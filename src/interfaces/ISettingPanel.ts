@@ -1,5 +1,5 @@
 import Range from "../classes/Range";
-import Renderer from "../classes/rendering/Renderer";
+import Renderer from "../classes/Renderer";
 
 /**
  * Represents the properties for the SettingPanel component.
