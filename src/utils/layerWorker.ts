@@ -1,12 +1,3 @@
-/**
- * Process the incoming message event and post the worker result.
- * This utils needs to be JavaScript as the new URL("../../utils/layerWorker", import.meta.url)
- * in CustomWorker cannot translate the URL to the correct path for some strange reason.
- *
- * @param {MessageEvent} e - the message event containing index, layerTag, elements, and frameIndex
- * @return {void}
- */
-
 const workerFunction = function () {
     onmessage = function (e) {
         const frameNum = e.data.frameNum;
@@ -25,16 +16,9 @@ const workerFunction = function () {
     };
 };
 
-//This stringifies the whole function
-let codeToString = workerFunction.toString();
-//This brings out the code in the bracket in string
-let mainCode = codeToString.substring(
-    codeToString.indexOf("{") + 1,
-    codeToString.lastIndexOf("}")
-);
-//convert the code into a raw data
-let blob = new Blob([mainCode], { type: "application/javascript" });
-//A url is made out of the blob object and we're good to go
-let worker_script = URL.createObjectURL(blob);
+const code = workerFunction.toString(); // Stringifies the whole function
+const mainCode = code.substring(code.indexOf("{") + 1, code.lastIndexOf("}")); // Get everything between brackets
+const blob = new Blob([mainCode], { type: "text/javascript" }); // Create a Blob containing onmessage function
+const workerBlobURL = URL.createObjectURL(blob); // Create URL to Blob object
 
-export default worker_script;
+export default workerBlobURL;

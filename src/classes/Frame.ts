@@ -7,7 +7,7 @@ import BackgroundMountainLayer from "./layers/BackgroundMountainLayer";
 import BoatLayer from "./layers/BoatLayer";
 import BottomMountainLayer from "./layers/BottomMountainLayer";
 import MiddleMountainLayer from "./layers/MiddleMountainLayer";
-import worker_script from "../utils/layerWorker";
+import workerBlobURL from "../utils/layerWorker";
 
 /**
  * Class representing a frame used for generating and managing layer of terrain.
@@ -63,7 +63,7 @@ export default class Frame {
                 return Promise.resolve("");
 
             return new Promise<string>((resolve, reject) => {
-                const worker = new Worker(worker_script);
+                const worker = new Worker(workerBlobURL);
 
                 worker.onmessage = (e: MessageEvent) => {
                     worker.terminate();
