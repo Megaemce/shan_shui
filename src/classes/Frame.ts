@@ -56,17 +56,15 @@ export default class Frame {
      * Renders the frame into an SVG string using web workers.
      * @returns {Promise<string>}
      */
+
     public async render(): Promise<string> {
-        const renderPromises: Promise<string>[] = [];
+        const renderPromises = this.layers.map((layer, index) => {
+            if (!Renderer.visibleRange.isShowing(layer.range))
+                return Promise.resolve("");
 
-        for (let index = 0; index < this.layers.length; index++) {
-            const layer = this.layers[index];
+            return new Promise<string>((resolve, reject) => {
+                const worker = new Worker(worker_script);
 
-            if (!Renderer.visibleRange.isShowing(layer.range)) continue;
-
-            const worker = new Worker(worker_script);
-
-            const renderPromise = new Promise<string>((resolve, reject) => {
                 worker.onmessage = (e: MessageEvent) => {
                     worker.terminate();
                     if (e.data.error) {
@@ -88,13 +86,11 @@ export default class Frame {
                     index: index,
                 });
             });
-
-            renderPromises.push(renderPromise);
-        }
+        });
 
         try {
-            const renderedLayers = await Promise.all(renderPromises);
-            return `<g id="frame${this.id}">${renderedLayers.join("\n")}</g>`;
+            const results = await Promise.all(renderPromises);
+            return `<g id="frame${this.id}">${results.join("\n")}</g>`;
         } catch (error) {
             console.error("Error rendering frame:", error);
             throw error;
