@@ -41,7 +41,7 @@ This is the third iteration of this app:
 
     - Dark mode was added,
     - Some of the most complex elements were simplified,
-    - Whole code was rewritten and commented using TypeDoc,
+    - Whole code was rewritten and commented using JSDoc,
     - [Fastest way to work with array](https://annoyscript.vercel.app/posts/The%20fastest%20way%20to%20work%20with%20arrays/) was implemented wherever it was reasonable,
     - Invisible objects are removed from the DOM for faster rendering and lower memory consumption,
     - Designing and rendering is done via [web workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) for parallel computation and [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) for the [main thread blockages reduction](https://web.dev/articles/optimize-long-tasks?utm_source=devtools).
@@ -51,5 +51,5 @@ This is the third iteration of this app:
     | | [DCL](https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event) | [FCP](https://web.dev/articles/fcp) | [LCP](https://web.dev/articles/lcp) | Longest task |
     | --- | :-: | :-: | :-: | :-: |
     | Old  | 4.92s | 4.92s | 6.18s | 2.02s |
-    | New  |  0.4s | 0.5s | 0.5s | 0.21s |
-    | Diff | ⏬12x | ⏬10x | ⏬12x | ⏬10x |
+    | New  |  0.19s | 0.25s | 0.25s | 0.23s |
+    | Diff | ⏬25x | ⏬19x | ⏬25x | ⏬8x |
