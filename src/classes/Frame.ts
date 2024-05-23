@@ -1,13 +1,13 @@
 import Layer from "./Layer";
 import PRNG from "./PRNG";
 import Range from "./Range";
-import Renderer from "./Renderer";
 import SketchLayer from "./SketchLayer";
 import BackgroundMountainLayer from "./layers/BackgroundMountainLayer";
 import BoatLayer from "./layers/BoatLayer";
 import BottomMountainLayer from "./layers/BottomMountainLayer";
 import MiddleMountainLayer from "./layers/MiddleMountainLayer";
 import workerBlobURL from "../utils/layerWorker";
+import { chunkVisibleLayers } from "../utils/utils";
 
 /**
  * Class representing a frame used for generating and managing layer of terrain.
@@ -58,43 +58,48 @@ export default class Frame {
      */
 
     public async render(): Promise<string> {
-        const renderPromises = this.layers.map((layer, index) => {
-            if (!Renderer.visibleRange.isShowing(layer.range))
-                return Promise.resolve("");
+        const chunks = chunkVisibleLayers(this.layers);
 
-            return new Promise<string>((resolve, reject) => {
-                const worker = new Worker(workerBlobURL);
+        const chunkResultPromises = chunks.map(async (layers) => {
+            const renderPromises = layers.map((layer, index) => {
+                return new Promise<string>((resolve, reject) => {
+                    const worker = new Worker(workerBlobURL);
 
-                worker.onmessage = (e: MessageEvent) => {
-                    worker.terminate();
-                    if (e.data.error) {
-                        reject(new Error(e.data.error));
-                    } else {
-                        resolve(e.data.stringify);
-                    }
-                };
+                    worker.onmessage = (e: MessageEvent) => {
+                        worker.terminate();
+                        if (e.data.error) {
+                            reject(new Error(e.data.error));
+                        } else {
+                            resolve(e.data.stringify);
+                        }
+                    };
 
-                worker.onerror = (e) => {
-                    worker.terminate();
-                    reject(new Error(`Worker error: ${e.message}`));
-                };
+                    worker.onerror = (e) => {
+                        worker.terminate();
+                        reject(new Error(`Worker error: ${e.message}`));
+                    };
 
-                worker.postMessage({
-                    frameNum: this.id,
-                    elements: layer.elements,
-                    layerTag: layer.tag,
-                    index: index,
+                    worker.postMessage({
+                        frameNum: this.id,
+                        elements: layer.elements,
+                        layerTag: layer.tag,
+                        index: index,
+                    });
                 });
             });
+
+            try {
+                const results = await Promise.all(renderPromises);
+                return results.join("\n");
+            } catch (error) {
+                console.error("Error rendering frame:", error);
+                throw error;
+            }
         });
 
-        try {
-            const results = await Promise.all(renderPromises);
-            return `<g id="frame${this.id}">${results.join("\n")}</g>`;
-        } catch (error) {
-            console.error("Error rendering frame:", error);
-            throw error;
-        }
+        const chunkResults = await Promise.all(chunkResultPromises);
+
+        return `<g id="frame${this.id}">${chunkResults.join("\n")}</g>`;
     }
 
     /**

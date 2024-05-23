@@ -1,4 +1,6 @@
+import Layer from "../classes/Layer";
 import Point from "../classes/Point";
+import Renderer from "../classes/Renderer";
 import { config } from "../config";
 import { midPoint } from "./polytools";
 
@@ -174,4 +176,29 @@ export function generateBezierCurve(controlPoints: Point[]): Point[] {
     }
 
     return curvePoints;
+}
+
+/**
+ * Splits visible layers into chunks of a specified size.
+ *
+ * @param {Layer[]} layers - An array of layers.
+ * @param {number} [size=navigator.hardwareConcurrency] - The size of each chunk. Defaults to the number of hardware concurrency.
+ * @return {Array<Array<Layer>>} - An array of chunks, where each chunk contains visible layers.
+ */
+export function chunkVisibleLayers(
+    layers: Layer[],
+    size: number = navigator.hardwareConcurrency
+): Array<Array<Layer>> {
+    // Filter layers by visibility
+    const visibleLayers: Array<Layer> = layers.filter((layer) =>
+        Renderer.visibleRange.isShowing(layer.range)
+    );
+
+    // Split visible layers into chunks
+    const result: Array<Array<Layer>> = [];
+    for (let i = 0; i < visibleLayers.length; i += size) {
+        result.push(visibleLayers.slice(i, i + size));
+    }
+
+    return result;
 }
