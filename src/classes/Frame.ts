@@ -57,6 +57,18 @@ export default class Frame {
      * @returns {Promise<string>}
      */
 
+    /**
+     * Renders the frame into an SVG string using web workers.
+     *
+     * This function chunks the visible layers of the frame into smaller groups,
+     * and then renders each group using a web worker. The rendering process
+     * is done asynchronously, and the results are collected and joined into
+     * a single string.
+     *
+     * @returns {Promise<string>} A promise that resolves to the SVG string
+     *                           representation of the rendered frame.
+     * @throws {Error} If there is an error during the rendering process.
+     */
     public async render(): Promise<string> {
         const chunks = chunkVisibleLayers(this.layers);
 
@@ -76,7 +88,11 @@ export default class Frame {
 
                     worker.onerror = (e) => {
                         worker.terminate();
-                        reject(new Error(`Worker error: ${e.message}`));
+                        reject(
+                            new Error(
+                                `Worker failed while rendering layer ${layer} with error: ${e.message}`
+                            )
+                        );
                     };
 
                     worker.postMessage({
@@ -92,7 +108,7 @@ export default class Frame {
                 const results = await Promise.all(renderPromises);
                 return results.join("\n");
             } catch (error) {
-                console.error("Error rendering frame:", error);
+                console.error(error);
                 throw error;
             }
         });
