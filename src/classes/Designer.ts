@@ -69,9 +69,7 @@ export default class Designer {
         const noiseFunction = (x: number) =>
             Math.max(Perlin.noise(x * NOISE_SAMPLE) - 0.55, 0) * 2;
 
-        for (let i = 0; i * X_STEP < range.length; i++) {
-            const x = range.start + i * X_STEP;
-
+        for (let x = range.start; x < range.end; x += X_STEP) {
             // generate middleMountain without checking global collision
             if (
                 noiseFunction(x) > MOUNTAIN_COVER_THRESHOLD &&
