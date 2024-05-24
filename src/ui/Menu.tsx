@@ -47,6 +47,10 @@ export const Menu: React.FC<IMenu> = ({
             window.alert("Value is too high. Current maximum is " + maxStep);
             event.target.value = String(maxStep);
             setStep(maxStep);
+        } else if (event.target.valueAsNumber < 0) {
+            window.alert("Value cannot be negative. Setting to 100");
+            event.target.value = String(100);
+            setStep(100);
         } else {
             setStep(event.target.valueAsNumber);
         }
