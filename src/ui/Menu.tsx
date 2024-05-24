@@ -20,12 +20,13 @@ export const Menu: React.FC<IMenu> = ({
     saveRange,
     onChangeSaveRange,
     toggleAutoLoad,
+    darkMode,
 }) => {
     const horizonalScrollLeft = () => horizontalScroll(-step);
     const horizonalScrollRight = () => horizontalScroll(step);
     const downloadSvg = () => {
         if (saveRange.length > 0) {
-            renderer.download(seed, saveRange, windowHeight);
+            renderer.download(seed, saveRange, windowHeight, darkMode);
         } else {
             alert("Range length must be above zero");
         }

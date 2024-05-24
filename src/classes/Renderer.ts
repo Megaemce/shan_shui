@@ -108,7 +108,8 @@ export default class Renderer {
     public async download(
         seed: string,
         range: Range,
-        windowHeight: number
+        windowHeight: number,
+        darkMode?: boolean
     ): Promise<void> {
         const filename: string = `${seed}-[${range.start}, ${range.end}].svg`;
         const viewbox = `${range.start} 0 ${range.length} ${windowHeight}`;
@@ -120,27 +121,27 @@ export default class Renderer {
             xmlns="http://www.w3.org/2000/svg" 
             width="${range.length}" 
             height="${windowHeight}" 
-            viewBox="${viewbox}">
+            viewBox="${viewbox}"
+            style="${darkMode && "filter: invert(1) sepia(1);"}">
             <defs>
                 <filter 
                     width="${range.length}" 
                     height="${windowHeight}" 
                     id="roughpaper">
-                        <feTurbulence 
-                            type="fractalNoise" 
-                            baseFrequency="0.02" 
-                            numOctaves="5" 
-                            result="noise">
-                        </feTurbulence>
-                        <feDiffuseLighting 
-                            in="noise" 
-                            lighting-color="#F0E7D0" 
-                            surfaceScale="2" 
-                            result="diffLight">
-                                <feDistantLight 
-                                    azimuth="45" 
-                                    elevation="60">
-                                </feDistantLight>
+                          <feTurbulence
+                            type="fractalNoise"
+                            stitchTiles="stitch"
+                            baseFrequency="0.02"
+                            numOctaves="5"
+                            result="noise"
+                        />
+                        <feDiffuseLighting
+                            in="noise"
+                            lightingColor="#F0E7D0"
+                            surfaceScale="2"
+                            result="diffLight"
+                        >
+                            <feDistantLight azimuth="45" elevation="60" />
                         </feDiffuseLighting>
                 </filter>
             </defs>
@@ -148,11 +149,11 @@ export default class Renderer {
                 ${svg}       
             </g>
             <rect 
-                id="background" 
+                id="Background" 
                 width="${range.length}" 
                 height="${windowHeight}" 
                 filter="url(#roughpaper)" 
-                style="mix-blend-mode:multiply">
+                style="mix-blend-mode: multiply">
             </rect>
         </svg>`;
 

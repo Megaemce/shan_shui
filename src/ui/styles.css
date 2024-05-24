@@ -63,9 +63,6 @@ svg#SVG {
     & #Background {
         mix-blend-mode: multiply;
     }
-    & #Background.darkmode {
-        mix-blend-mode: hard-light;
-    }
 }
 
 svg#SVG.darkmode {

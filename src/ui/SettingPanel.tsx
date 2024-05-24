@@ -54,18 +54,18 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
 
         if (!darkMode) {
             buttons.classList.add("darkmode");
-            svg.classList.add("darkmode");
             leftScroll.classList.add("darkmode");
             rightScroll.classList.add("darkmode");
             menu.classList.add("darkmode");
             loader.classList.add("darkmode");
+            svg.classList.add("darkmode");
         } else {
             buttons.classList.remove("darkmode");
-            svg.classList.remove("darkmode");
             leftScroll.classList.remove("darkmode");
             rightScroll.classList.remove("darkmode");
             menu.classList.remove("darkmode");
             loader.classList.remove("darkmode");
+            svg.classList.remove("darkmode");
         }
     };
 
@@ -110,6 +110,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                 saveRange={saveRange}
                 onChangeSaveRange={onChangeSaveRange}
                 toggleAutoLoad={toggleAutoLoad}
+                darkMode={darkMode}
             />
         </>
     );

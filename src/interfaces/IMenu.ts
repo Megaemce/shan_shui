@@ -108,4 +108,11 @@ export interface IMenu {
      * @function
      */
     toggleAutoLoad: () => void;
+
+    /**
+     * The dark mode state.
+     *
+     * @type {boolean}
+     */
+    darkMode: boolean;
 }
