@@ -98,7 +98,12 @@ export const App: React.FC = (): JSX.Element => {
         (value: number) => {
             let newValue = newPosition + value;
 
-            if (newValue < 0) return;
+            if (newValue < 0) {
+                window.alert(
+                    "Already at the beginning of the picture. Move to the right"
+                );
+                return;
+            }
             if (autoLoad) {
                 setSaveRange(new Range(newValue, newValue + windowWidth));
             }
