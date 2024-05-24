@@ -71,9 +71,9 @@ export default class Frame {
     public async render(): Promise<string> {
         const chunks = chunkVisibleLayers(this.layers);
 
-        const chunkPromises = chunks.map((layers) => {
-            const workersPromises = layers.map((layer, index) => {
-                const workerPromise = new Promise<string>((resolve, reject) => {
+        const framePromises = chunks.map((layers) => {
+            const chunkPromises = layers.map((layer, index) => {
+                return new Promise<string>((resolve, reject) => {
                     const worker = new Worker(workerBlobURL);
 
                     worker.onmessage = (e: MessageEvent) => {
@@ -97,19 +97,17 @@ export default class Frame {
                         index: index,
                     });
                 });
-
-                return workerPromise;
             });
 
             // Wait for all layer rendering promises to resolve for this chunk
-            return Promise.all(workersPromises);
+            return Promise.all(chunkPromises);
         });
 
         // Wait for all chunk rendering promises to resolve
-        const chunkResults = await Promise.all(chunkPromises);
+        const frameRenders = await Promise.all(framePromises);
 
         // Join the results of each chunk
-        return `<g id="frame${this.id}">${chunkResults.join("\n")}</g>`;
+        return `<g id="frame${this.id}">${frameRenders.join("\n")}</g>`;
     }
 
     /**
