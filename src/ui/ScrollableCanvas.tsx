@@ -13,20 +13,19 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     windowWidth,
     renderer,
 }) => {
-    const [loading, setLoading] = useState(true);
     const [svgContent, setSvgContent] = useState("");
     const svgRef = useRef<SVGSVGElement | null>(null);
 
     // Create frames within new range
     useEffect(() => {
         const newRange = new Range(newPosition, newPosition + windowWidth);
+        const loader = document.getElementById("Loader") as HTMLElement;
 
-        setLoading(true);
+        loader.classList.remove("hidden");
         (async () => {
             const newSvgContent = await renderer.renderPicture(newRange);
             if (newSvgContent) setSvgContent(newSvgContent);
-            setLoading(false);
-        })();
+        })().then(() => loader.classList.add("hidden"));
     }, [renderer, newPosition, windowWidth]);
 
     return (
@@ -79,7 +78,7 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                     height={windowHeight}
                 />
             </svg>
-            <div id="Loader" className={`${loading ? "" : "hidden"}`}>
+            <div id="Loader">
                 <InfinitySpin width="200" color="rgba(0, 0, 0, 0.4)" />
                 <p>Rendering elements</p>
             </div>
