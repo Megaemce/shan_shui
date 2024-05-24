@@ -20,7 +20,6 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
     // Create frames within new range
     useEffect(() => {
         const newRange = new Range(newPosition, newPosition + windowWidth);
-        console.log("New range", newRange);
 
         setLoading(true);
         (async () => {

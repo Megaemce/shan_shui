@@ -105,26 +105,25 @@ export default class Renderer {
      * @param range - The range for which to generate the SVG.
      * @param windowHeight - The height of the SVG.
      */
-    public download(seed: string, range: Range, windowHeight: number): void {
+    public async download(
+        seed: string,
+        range: Range,
+        windowHeight: number
+    ): Promise<void> {
         const filename: string = `${seed}-[${range.start}, ${range.end}].svg`;
-        const windx: number = range.end - range.start;
-        const viewbox = `${range.start} 0 ${windx} ${windowHeight}`;
-
-        this.renderPicture(range);
-
-        // const start = range.start - FRAME_WIDTH;
-        // const end = range.end + FRAME_WIDTH;
-
+        const viewbox = `${range.start} 0 ${range.length} ${windowHeight}`;
+        const element = document.createElement("a");
+        const svg = await this.renderPicture(range);
         const content: string = `
         <svg 
             id="SVG" 
             xmlns="http://www.w3.org/2000/svg" 
-            width="${range.end - range.start}" 
+            width="${range.length}" 
             height="${windowHeight}" 
             viewBox="${viewbox}">
             <defs>
                 <filter 
-                    width="${windx}" 
+                    width="${range.length}" 
                     height="${windowHeight}" 
                     id="roughpaper">
                         <feTurbulence 
@@ -145,20 +144,18 @@ export default class Renderer {
                         </feDiffuseLighting>
                 </filter>
             </defs>
-            <g 
-                id="main">
-                   
-                </g>
+            <g id="main">
+                ${svg}       
+            </g>
             <rect 
                 id="background" 
-                width="${windx}" 
+                width="${range.length}" 
                 height="${windowHeight}" 
                 filter="url(#roughpaper)" 
                 style="mix-blend-mode:multiply">
             </rect>
         </svg>`;
 
-        const element = document.createElement("a");
         element.setAttribute(
             "href",
             `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`
