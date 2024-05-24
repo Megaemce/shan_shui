@@ -5,7 +5,10 @@ import Range from "./Range";
 export default class Renderer {
     /** Keeping the frames array with frames ready to be render in current scenne */
     frames: Frame[] = [];
-    /** Making sure that the new render area is at least 1.5x of the current windows width so the user doesn't need to render the scene on every click. */
+    /** Making sure that the new render area is at least 1.5x of the current windows width
+     * so the user doesn't need to render the scene on every click.
+     * This value get populated in App.tsx
+     */
     static forwardCoverage = 0;
     /** Keeping the range that was already covered by renderer */
     static coveredRange = new Range(0, 0);

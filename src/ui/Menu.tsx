@@ -4,6 +4,7 @@ import React from "react";
 import { ChangeEvent } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { IMenu } from "../interfaces/IMenu";
+import Renderer from "../classes/Renderer";
 
 export const Menu: React.FC<IMenu> = ({
     seed,
@@ -22,6 +23,7 @@ export const Menu: React.FC<IMenu> = ({
     toggleAutoLoad,
     darkMode,
 }) => {
+    const maxStep = newPosition + windowWidth + Renderer.forwardCoverage;
     const horizonalScrollLeft = () => horizontalScroll(-step);
     const horizonalScrollRight = () => horizontalScroll(step);
     const downloadSvg = () => {
@@ -40,6 +42,15 @@ export const Menu: React.FC<IMenu> = ({
         onChangeSaveRange(
             new Range(saveRange.start, event.target.valueAsNumber)
         );
+    const onInputSetChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.valueAsNumber > maxStep) {
+            window.alert("Value is too high. Current maximum is " + maxStep);
+            event.target.value = String(maxStep);
+            setStep(maxStep);
+        } else {
+            setStep(event.target.valueAsNumber);
+        }
+    };
 
     return (
         <div id="Menu" className="hidden">
@@ -68,10 +79,10 @@ export const Menu: React.FC<IMenu> = ({
                     type="number"
                     value={step}
                     min={0}
-                    max={10000}
+                    max={maxStep}
                     debounceTimeout={500}
                     step={100}
-                    onChange={(e) => setStep(Number(e.target.value))}
+                    onChange={(e) => onInputSetChange(e)}
                 />
                 <button title="Scroll right" onClick={horizonalScrollRight}>
                     &gt;
