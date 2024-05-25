@@ -60,6 +60,7 @@ export default class Designer {
             return false;
         });
     }
+
     /**
      * Generate new design within given range.
      * @private
@@ -143,6 +144,13 @@ export default class Designer {
      * Sort the layers in the plan by the y coordinate
      */
     private sortPlan(): void {
-        this.plan.sort((a, b) => a.y - b.y);
+        this.plan.sort((a, b) => {
+            // First, compare by y values
+            if (a.y !== b.y) {
+                return a.y - b.y;
+            }
+            // If y values are equal, compare by x values
+            return a.x - b.x;
+        });
     }
 }
