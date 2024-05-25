@@ -1,11 +1,10 @@
 import ILayer from "../interfaces/ILayer";
 import { LayerType } from "../types/LayerType";
-import Layer from "./Layer";
 
 /**
  * Represents a design layer with tag and coordinates.
  */
-export default class SketchLayer extends Layer implements ILayer {
+export default class SketchLayer implements ILayer {
     /**
      * Creates an instance of sketch layer.
      *
@@ -17,7 +16,5 @@ export default class SketchLayer extends Layer implements ILayer {
         public tag: LayerType,
         public x: number = 0,
         public y: number = 0
-    ) {
-        super(tag, x, y);
-    }
+    ) {}
 }
