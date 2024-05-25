@@ -44,7 +44,7 @@ This is the third iteration of this app:
     - Whole code was rewritten and commented using JSDoc,
     - [Fastest way to work with array](https://annoyscript.vercel.app/posts/The%20fastest%20way%20to%20work%20with%20arrays/) was implemented wherever it was reasonable,
     - Invisible objects are removed from the DOM for faster rendering and lower memory consumption,
-    - Designing and rendering is done via [web workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) for parallel computation and [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) for the [main thread blockages reduction](https://web.dev/articles/optimize-long-tasks?utm_source=devtools).
+    - Designing and rendering is done via [web workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) and [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) for parallel computation, preventing [main thread blockages](https://web.dev/articles/optimize-long-tasks?utm_source=devtools).
       <br>
       <br>
 
