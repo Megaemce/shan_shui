@@ -3,10 +3,9 @@
   <source media="(prefers-color-scheme: dark)" srcset="/public/img/shanshui_logo_light.png">
   <img alt="Shan Shui logo" src="/public/img/shanshui_logo_dark.png" width="200" height="200">
 </picture>
-</a>
+<h1>{Shan, Shui}*</h1> 
 </div>
-
-# {Shan, Shui}\*
+<br>
 
 Discover the beauty of an ever-evolving Chinese landscape art. This project combines the elegance of procedural generation with the power of vector graphics to create a mesmerizing, infinite-scrolling journey.
 
