@@ -5,7 +5,7 @@ import Range from "./Range";
 export default class Renderer {
     /** Keeping the frames array with frames ready to be render in current scenne */
     frames: Frame[] = [];
-    /** Making sure that the new render area is at least 1.5x of the current windows width
+    /** Making sure that the new render area is at least 1500px ahead of the current frame range
      * so the user doesn't need to render the scene on every click.
      * This value get populated in App.tsx
      */
@@ -40,7 +40,7 @@ export default class Renderer {
                 newRange.start = Renderer.coveredRange.end;
             }
 
-            // Expand the range so the scene by 0.5 windowWidth so it's not render every time when user clicks forward
+            // Expand the range so the scene it's not render every time when user clicks forward
             if (range.end >= Renderer.coveredRange.end) {
                 newRange.end += Renderer.forwardCoverage;
                 Renderer.coveredRange.end = newRange.end;
@@ -63,7 +63,7 @@ export default class Renderer {
     /**
      * Design and create new frame within given range
      * @private
-     * @param range given range
+     * @param {Range} range - Designer's range
      * @returns {Promise<Frame>} newly created frame as a promise
      */
     private async createNewFrame(range: Range): Promise<Frame> {
@@ -91,12 +91,9 @@ export default class Renderer {
     public async renderFrames(): Promise<string> {
         const frameResults = await Promise.all(
             this.frames
+                .filter((frame) => Renderer.visibleRange.isShowing(frame.range))
                 .sort((a, b) => b.id - a.id)
-                .map((frame) =>
-                    Renderer.visibleRange.isShowing(frame.range)
-                        ? frame.render()
-                        : Promise.resolve("")
-                )
+                .map((frame) => frame.render())
         );
 
         return frameResults.join("\n");
