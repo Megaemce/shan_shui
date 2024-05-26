@@ -1,7 +1,7 @@
 <div align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="/public/img/shanshui_logo_light.png">
-  <img alt="Shan Shui logo" src="/public/img/shanshui_logo_dark.png" width="300" height="300">
+  <img alt="Shan Shui logo" src="/public/img/shanshui_logo_dark.png" width="200" height="200">
 </picture>
 </a>
 </div>
