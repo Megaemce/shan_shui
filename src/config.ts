@@ -1,9 +1,7 @@
 export const config = {
     layers: {
         boat: {
-            defaultScale: 1,
             defaultFlip: false,
-            defaultLength: 120,
             man: {
                 hasStick: true,
                 hatNumber: 2,
@@ -21,8 +19,6 @@ export const config = {
         },
         backgroundMountain: {
             defaultSeed: 0,
-            defaultHeight: 150,
-            defaultWidth: 2000,
             segments: 5,
             span: 10,
             strokeWidth: 1,
@@ -30,15 +26,7 @@ export const config = {
         },
         bottomMountain: {
             defaultSeed: 0,
-            defaultHeight: {
-                min: 40,
-                max: 440,
-            },
             defaultFlatness: 0.5,
-            defaultWidth: {
-                min: 400,
-                max: 600,
-            },
             background: {
                 fillColor: "rgba(255, 255, 255, 1)",
                 color: "none",
@@ -66,14 +54,6 @@ export const config = {
         },
         middleMountain: {
             defaultSeed: 0,
-            defaultHeight: {
-                min: 100,
-                max: 500,
-            },
-            defaultWidth: {
-                min: 400,
-                max: 600,
-            },
             defaultMiddleVegetation: true,
             texture: {
                 size: 200,
@@ -103,8 +83,6 @@ export const config = {
             },
         },
         water: {
-            defaultHeight: 2, // Height of the waves.
-            defaultWidth: 800, // Width of the waves
             defaultWaveClusters: 10, // Number of clusters of waves.
             colorNoAlfa: "rgba(100, 100, 100,", // color without the alpha. Need to add alfa value and closing bracket
         },
@@ -115,28 +93,61 @@ export const config = {
     designer: {
         radius: 10, // The threshold radius for considering layers to be the same
         xStep: 50, // Step size along the x-axis for generating terrain.
-        noiseSample: 0.03, // Sample value for the noise function.
         boatY: {
             min: 300,
             max: 690,
         },
         boat: {
             probability: 0.2, // Probability of generating a boat chunk.
+            width: 120, // The width of the boat
             y: {
                 min: 300,
                 max: 690,
             },
-            radiusThreshold: 400,
         },
         middleMountain: {
-            coverThreshold: 0.2, // Threshold value for determining mountain coverage in the design.
-            radius: 2, // Radius of the circular area used to check for local maxima.
+            probability: 0.05, // Probability of generating a middle mountain chunk.
+            height: {
+                min: 100,
+                max: 500,
+            },
+            width: {
+                min: 400,
+                max: 600,
+            },
+            xOffset: {
+                min: 0,
+                max: 500,
+            },
+            yOffset: 400,
         },
         bottomMountain: {
             probability: 0.1, // Probability of generating a flat mountain chunk.
+            height: {
+                min: 40,
+                max: 440,
+            },
+            width: {
+                min: 400,
+                max: 600,
+            },
+            xOffset: {
+                min: 0,
+                max: 700,
+            },
         },
         backgroundMountain: {
             interval: 1000, // Interval at which distant mountains are generated.
+            yLocation: {
+                min: 230,
+                max: 280,
+            },
+            height: 150,
+            width: [500, 1000, 1500],
+        },
+        water: {
+            height: 2, // Height of the waves.
+            width: 800, // Width of the waves
         },
     },
     perlin: {

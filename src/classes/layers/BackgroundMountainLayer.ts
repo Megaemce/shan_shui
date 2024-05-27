@@ -5,9 +5,7 @@ import Element from "../Element";
 import { config } from "../../config";
 import { midPoint, triangulate } from "../../utils/polytools";
 
-const DEFAULT_HEIGHT = config.layers.backgroundMountain.defaultHeight;
 const DEFAULT_SEED = config.layers.backgroundMountain.defaultSeed;
-const DEFAULT_WIDTH = config.layers.backgroundMountain.defaultWidth;
 const SEGMENTS = config.layers.backgroundMountain.segments;
 const SPAN = config.layers.backgroundMountain.span;
 const STROKE_COLOR = config.layers.backgroundMountain.color;
@@ -24,15 +22,15 @@ export default class BackgroundMountainLayer extends Layer {
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
      * @param {number} [seed=DEFAULT_SEED] - The seed for the noise function.
-     * @param {number} [width=DEFAULT_WIDTH] - The width of the mountain.
-     * @param {number} [height=DEFAULT_HEIGHT] - The overall height of the mountain.
+     * @param {number} [width] - The width of the mountain.
+     * @param {number} [height] - The overall height of the mountain.
      */
     constructor(
         xOffset: number,
         yOffset: number,
         seed: number = DEFAULT_SEED,
-        width: number = DEFAULT_WIDTH,
-        height: number = DEFAULT_HEIGHT
+        width: number,
+        height: number
     ) {
         super("backgroundMountain", xOffset, yOffset);
 

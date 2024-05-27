@@ -1,10 +1,10 @@
-import Layer from "../Layer";
 import BottomMountainDecoration from "../structures/BottomMountainDecoration";
+import Element from "../Element";
+import Layer from "../Layer";
 import PRNG from "../PRNG";
 import Perlin from "../Perlin";
 import Point from "../Point";
 import Stroke from "../elements/Stroke";
-import Element from "../Element";
 import Texture from "../structures/Texture";
 import { calculateBoundingBox } from "../../utils/polytools";
 import { config } from "../../config";
@@ -13,11 +13,7 @@ import { lineDivider } from "../../utils/polytools";
 const BACKGROUND_FILL_COLOR = config.layers.bottomMountain.background.fillColor;
 const BACKGROUND_STROKE_COLOR = config.layers.bottomMountain.background.color;
 const DEFAULT_FLATNESS = config.layers.bottomMountain.defaultFlatness;
-const DEFAULT_HEIGHT_MAX = config.layers.bottomMountain.defaultHeight.max;
-const DEFAULT_HEIGHT_MIN = config.layers.bottomMountain.defaultHeight.min;
 const DEFAULT_SEED = config.layers.bottomMountain.defaultSeed;
-const DEFAULT_WIDTH_MAX = config.layers.bottomMountain.defaultWidth.max;
-const DEFAULT_WIDTH_MIN = config.layers.bottomMountain.defaultWidth.min;
 const OUTLINE_FILL_COLOR = config.layers.bottomMountain.outline.fillColor;
 const OUTLINE_STROKE_COLOR = config.layers.bottomMountain.outline.color;
 const OUTLINE_STROKE_NOISE = config.layers.bottomMountain.outline.strokeNoise;
@@ -42,16 +38,16 @@ export default class BottomMountainLayer extends Layer {
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
      * @param {number} [seed=DEFAULT_SEED] - The seed value for noise functions.
-     * @param {number} [width=PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX)] - The width of the mountain.
-     * @param {number} [height=PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX)] - The height of the mountain.
+     * @param {number} [width] - The width of the mountain.
+     * @param {number} [height] - The height of the mountain.
      * @param {number} [flatness=DEFAULT_FLATNESS] - Parameter controlling the flatness of the mountain.
      */
     constructor(
         xOffset: number,
         yOffset: number,
         seed: number = DEFAULT_SEED,
-        width: number = PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX),
-        height: number = PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX),
+        width: number,
+        height: number,
         flatness: number = DEFAULT_FLATNESS
     ) {
         super("bottomMountain", xOffset, yOffset);

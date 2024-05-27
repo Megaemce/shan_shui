@@ -1,13 +1,13 @@
-import Layer from "./Layer";
-import PRNG from "./PRNG";
-import Range from "./Range";
-import SketchLayer from "./SketchLayer";
 import BackgroundMountainLayer from "./layers/BackgroundMountainLayer";
 import BoatLayer from "./layers/BoatLayer";
 import BottomMountainLayer from "./layers/BottomMountainLayer";
+import Layer from "./Layer";
 import MiddleMountainLayer from "./layers/MiddleMountainLayer";
+import PRNG from "./PRNG";
+import Range from "./Range";
+import SketchLayer from "./SketchLayer";
+import WaterLayer from "./layers/WaterLayer";
 import workerBlobURL from "../utils/layerWorker";
-import { chunkVisibleLayers } from "../utils/utils";
 
 /**
  * Class representing a frame used for generating and managing layer of terrain.
@@ -19,36 +19,45 @@ export default class Frame {
      */
     layers: Layer[] = [];
 
+    /**
+     * @param {number} id - Unique identifier of the frame
+     * This field makes sure that the new layer won't exceed the original frame's range
+     */
     constructor(public id: number) {}
 
     /**
      * Create active layers based on the given plan and adds it to Frame.layers
      * @param {SketchLayer} - plan created by the designer
      */
-    public addSketchToLayers({ tag, x, y }: SketchLayer): void {
+    public addSketchToLayers({ tag, x, y, width, height }: SketchLayer): void {
         let layer: Layer;
-        if (tag === "middleMountain") {
-            layer = new MiddleMountainLayer(x, y, PRNG.random(0, 2 * this.id));
-        } else if (tag === "bottomMountain") {
-            layer = new BottomMountainLayer(x, y, PRNG.random(0, 2 * Math.PI));
-        } else if (tag === "backgroundMountain") {
-            layer = new BackgroundMountainLayer(
-                x,
-                y,
-                PRNG.random(0, 100),
-                PRNG.randomChoice([500, 1000, 1500])
-            );
-        } else if (tag === "boat") {
-            layer = new BoatLayer(
-                x,
-                y,
-                y / 800,
-                PRNG.randomChoice([true, false])
-            );
-        } else {
-            console.warn("Layer tag is outside nominal type!");
-            return;
+        let seed: number;
+
+        switch (tag) {
+            case "middleMountain":
+                seed = PRNG.random(0, 2 * this.id);
+                layer = new MiddleMountainLayer(x, y, seed, width, height);
+                break;
+            case "water":
+                layer = new WaterLayer(x, y, width, height);
+                break;
+            case "bottomMountain":
+                seed = PRNG.random(0, 2 * Math.PI);
+                layer = new BottomMountainLayer(x, y, seed, width, height);
+                break;
+            case "backgroundMountain":
+                seed = PRNG.random(0, 100);
+                layer = new BackgroundMountainLayer(x, y, seed, width, height);
+                break;
+            case "boat":
+                const flip = PRNG.randomChoice([true, false]);
+                layer = new BoatLayer(x, y, width, y / 800, flip);
+                break;
+            default:
+                console.warn("Layer tag is outside nominal type!");
+                return;
         }
+        // make sure that the new elements won't exceed the original frame's range
         this.layers.push(layer);
     }
 
@@ -69,44 +78,34 @@ export default class Frame {
      *                           representation of the rendered frame.
      */
     public async render(): Promise<string> {
-        const chunks = chunkVisibleLayers(this.layers);
+        const layerPromises = this.layers.map((layer, index) => {
+            return new Promise<string>((resolve, reject) => {
+                const worker = new Worker(workerBlobURL);
 
-        const framePromises = chunks.map((layers) => {
-            const chunkPromises = layers.map((layer, index) => {
-                return new Promise<string>((resolve, reject) => {
-                    const worker = new Worker(workerBlobURL);
+                worker.onmessage = (e: MessageEvent) => {
+                    worker.terminate();
+                    resolve(e.data.stringify);
+                };
 
-                    worker.onmessage = (e: MessageEvent) => {
-                        worker.terminate();
-                        resolve(e.data.stringify);
-                    };
+                worker.onerror = (e) => {
+                    worker.terminate();
+                    reject(
+                        new Error(
+                            `Worker failed while rendering layer ${layer.tag} from frame${this.id} with error: ${e.message}`
+                        )
+                    );
+                };
 
-                    worker.onerror = (e) => {
-                        worker.terminate();
-                        reject(
-                            new Error(
-                                `Worker failed while rendering layer ${layer.tag} from frame${this.id} with error: ${e.message}`
-                            )
-                        );
-                    };
-
-                    worker.postMessage({
-                        frameNum: this.id,
-                        elements: layer.elements,
-                        layerTag: layer.tag,
-                        index: index,
-                    });
+                worker.postMessage({
+                    frameNum: this.id,
+                    elements: layer.elements,
+                    layerTag: layer.tag,
+                    index: index,
                 });
             });
-
-            // Wait for all layer rendering promises to resolve for this chunk
-            return Promise.all(chunkPromises);
         });
 
-        // Wait for all chunk rendering promises to resolve
-        const frameRenders = await Promise.all(framePromises);
-
-        // Join the results of each chunk
+        const frameRenders = await Promise.all(layerPromises);
         return `<g id="frame${this.id}">${frameRenders.join("\n")}</g>`;
     }
 

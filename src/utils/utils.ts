@@ -90,27 +90,6 @@ export function expand(
 }
 
 /**
- * Checks if a point is a local maximum within a circular area.
- * @param {number} x - The x-coord of the point to check.
- * @param {Function} noiseFunction - The noise function. Operate only on x-coord.
- * @param {number} radius - The radius of the circular area.
- * @returns {boolean} True if the center point is a local maximum, false otherwise.
- */
-export function isLocalMaximum(
-    x: number,
-    noiseFunction: Function,
-    radius: number
-): boolean {
-    for (let i = x - radius; i <= x + radius; i++) {
-        if (noiseFunction(x) < noiseFunction(i)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-/**
  * Loop through a noise list, adjusting values and normalizing them.
  * @param {number[]} noiseArray - The noise list.
  * @returns {void}
@@ -176,29 +155,4 @@ export function generateBezierCurve(controlPoints: Point[]): Point[] {
     }
 
     return curvePoints;
-}
-
-/**
- * Splits visible layers into chunks of a specified size.
- *
- * @param {Layer[]} layers - An array of layers.
- * @param {number} [size=navigator.hardwareConcurrency] - The size of each chunk. Defaults to the number of hardware concurrency.
- * @return {Array<Array<Layer>>} - An array of chunks, where each chunk contains visible layers.
- */
-export function chunkVisibleLayers(
-    layers: Layer[],
-    size: number = navigator.hardwareConcurrency
-): Array<Array<Layer>> {
-    // Filter layers by visibility
-    const visibleLayers: Array<Layer> = layers.filter((layer) =>
-        Renderer.visibleRange.isShowing(layer.range)
-    );
-
-    // Split visible layers into chunks
-    const result: Array<Array<Layer>> = [];
-    for (let i = 0; i < visibleLayers.length; i += size) {
-        result.push(visibleLayers.slice(i, i + size));
-    }
-
-    return result;
 }

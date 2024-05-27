@@ -2,7 +2,6 @@ import Element from "../Element";
 import House from "../structures/House";
 import Layer from "../Layer";
 import MiddleMountainFoot from "../structures/MiddleMountainFoot";
-import MiddleMountainWater from "../structures/MiddleMountainWater";
 import PRNG from "../PRNG";
 import Pagoda from "../structures/Pagoda";
 import Perlin from "../Perlin";
@@ -24,13 +23,9 @@ const BACKGROUND_FILL_COLOR = config.layers.middleMountain.background.fillColor;
 const BACKGROUND_STROKE_COLOR =
     config.layers.middleMountain.background.strokeColor;
 const BOTTOM_COLORNOALFA = config.layers.middleMountain.bottom.colorNoAlfa;
-const DEFAULT_HEIGHT_MAX = config.layers.middleMountain.defaultHeight.max;
-const DEFAULT_HEIGHT_MIN = config.layers.middleMountain.defaultHeight.min;
 const DEFAULT_MIDDLE_VEGETATION =
     config.layers.middleMountain.defaultMiddleVegetation;
 const DEFAULT_SEED = config.layers.middleMountain.defaultSeed;
-const DEFAULT_WIDTH_MAX = config.layers.middleMountain.defaultWidth.max;
-const DEFAULT_WIDTH_MIN = config.layers.middleMountain.defaultWidth.min;
 const MIDDLE_COLORNOALFA = config.layers.middleMountain.middle.colorNoAlfa;
 const OUTLINE_COLOR = config.layers.middleMountain.outline.color;
 const OUTLINE_FILL_COLOR = config.layers.middleMountain.outline.fillColor;
@@ -53,15 +48,15 @@ export default class MiddleMountainLayer extends Layer {
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
      * @param {number} [seed=DEFAULT_SEED] - The seed for noise functions.
-     * @param {number} [width=PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX)] - The width of the mountain.
-     * @param {number} [height=PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX)] - The height of the mountain.
+     * @param {number} [width] - The width of the mountain.
+     * @param {number} [height] - The height of the mountain.
      */
     constructor(
         xOffset: number,
         yOffset: number,
         seed: number = DEFAULT_SEED,
-        width: number = PRNG.random(DEFAULT_WIDTH_MIN, DEFAULT_WIDTH_MAX),
-        height: number = PRNG.random(DEFAULT_HEIGHT_MIN, DEFAULT_HEIGHT_MAX)
+        width: number,
+        height: number
     ) {
         super("middleMountain", xOffset, yOffset);
 
@@ -88,11 +83,7 @@ export default class MiddleMountainLayer extends Layer {
             }
         }
 
-        // Water
-        this.addAtStart(new MiddleMountainWater(xOffset, yOffset + 10));
-
         // RIM_
-
         generateVegetate(
             elementArray,
             function (x, y) {

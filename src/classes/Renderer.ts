@@ -92,7 +92,6 @@ export default class Renderer {
         const frameResults = await Promise.all(
             this.frames
                 .filter((frame) => Renderer.visibleRange.isShowing(frame.range))
-                .sort((a, b) => b.id - a.id)
                 .map((frame) => frame.render())
         );
 

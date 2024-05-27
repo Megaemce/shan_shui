@@ -31,13 +31,13 @@ export default class Range implements IRange {
     }
 
     /**
-     * Check if the given range is contained in this range
+     * Check if the given range is contained in this range.
      * @param {Range} range - range to check
-     * @returns {boolean}
+     * @returns {boolean} true if the range is contained, false otherwise
      */
     public contains(range: Range): boolean {
         // range.end < this.end to render before "on the edge" situation eg. [0,1500], [700,1500]
-        if (this.start <= range.start && range.end < this.end) {
+        if (this.start <= range.start && this.end > range.end) {
             return true;
         }
         return false;
