@@ -1,6 +1,4 @@
-import Layer from "../classes/Layer";
 import Point from "../classes/Point";
-import Renderer from "../classes/Renderer";
 import { config } from "../config";
 import { midPoint } from "./polytools";
 
