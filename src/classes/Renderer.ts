@@ -27,7 +27,7 @@ export default class Renderer {
      * @param range - The new range of the canvas
      * @return {Promise<string | undefined>} The svg content or undefined if no new frame is created
      */
-    public async renderPicture(range: Range): Promise<string | undefined> {
+    public async render(range: Range): Promise<string> {
         // Set the new range as a visible range before adjusting it
         const newRange = new Range(range.start, range.end);
 
@@ -57,7 +57,15 @@ export default class Renderer {
         }
 
         // render all the visible elements of the frames' layers
-        return this.renderFrames();
+        return (
+            await Promise.all(
+                this.frames
+                    .filter((frame) =>
+                        Renderer.visibleRange.isShowing(frame.range)
+                    )
+                    .map(async (frame) => await frame.render())
+            )
+        ).join("\n");
     }
 
     /**
@@ -84,19 +92,6 @@ export default class Renderer {
 
         return newFrame;
     }
-    /**
-     * Render all frames visible within Renderer.visibleRange
-     * @returns {Promise<string>} string representation of SVG image
-     */
-    public async renderFrames(): Promise<string> {
-        const frameResults = await Promise.all(
-            this.frames
-                .filter((frame) => Renderer.visibleRange.isShowing(frame.range))
-                .map((frame) => frame.render())
-        );
-
-        return frameResults.join("\n");
-    }
 
     /**
      * Downloads the terrain SVG based on the given parameters.
@@ -113,7 +108,7 @@ export default class Renderer {
         const filename: string = `${seed}-[${range.start}, ${range.end}].svg`;
         const viewbox = `${range.start} 0 ${range.length} ${windowHeight}`;
         const element = document.createElement("a");
-        const svg = await this.renderPicture(range);
+        const svg = await this.render(range);
         const content: string = `
         <svg 
             id="SVG" 

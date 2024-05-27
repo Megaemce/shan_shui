@@ -23,8 +23,8 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
 
         loader.classList.remove("hidden");
         (async () => {
-            const newSvgContent = await renderer.renderPicture(newRange);
-            if (newSvgContent) setSvgContent(newSvgContent);
+            const newSvgContent = await renderer.render(newRange);
+            setSvgContent(newSvgContent);
         })().then(() => loader.classList.add("hidden"));
     }, [renderer, newPosition, windowWidth]);
 
