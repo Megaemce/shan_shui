@@ -22,10 +22,12 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
         const loader = document.getElementById("Loader") as HTMLElement;
 
         loader.classList.remove("hidden");
-        (async () => {
-            const newSvgContent = await renderer.render(newRange);
-            setSvgContent(newSvgContent);
-        })().then(() => loader.classList.add("hidden"));
+        renderer
+            .render(newRange)
+            .then((newSvgContent) => {
+                setSvgContent(newSvgContent);
+            })
+            .then(() => loader.classList.add("hidden"));
     }, [renderer, newPosition, windowWidth]);
 
     return (
