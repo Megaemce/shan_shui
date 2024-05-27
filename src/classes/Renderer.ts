@@ -83,11 +83,11 @@ export default class Renderer {
 
         framePlan.forEach((sketch) => {
             setTimeout(() => {
-                newFrame.addSketchToLayers(sketch);
+                newFrame.sketchToLayer(sketch);
             }, 0);
         });
 
-        // wait for the addSketchToLayers to finish
+        // wait for the sketchToLayer to finish
         await new Promise((resolve) => setTimeout(resolve, 0));
 
         return newFrame;

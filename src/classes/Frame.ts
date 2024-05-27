@@ -29,42 +29,32 @@ export default class Frame {
      * Create active layers based on the given plan and adds it to Frame.layers
      * @param {SketchLayer} - plan created by the designer
      */
-    public addSketchToLayers({ tag, x, y, width, height }: SketchLayer): void {
-        let layer: Layer;
+    public sketchToLayer({ tag, x, y, width, height }: SketchLayer): void {
+        let layer = undefined;
         let seed: number;
 
-        switch (tag) {
-            case "middleMountain":
-                seed = PRNG.random(0, 2 * this.id);
-                layer = new MiddleMountainLayer(x, y, seed, width, height);
-                break;
-            case "water":
-                layer = new WaterLayer(x, y, width, height);
-                break;
-            case "bottomMountain":
-                seed = PRNG.random(0, 2 * Math.PI);
-                layer = new BottomMountainLayer(x, y, seed, width, height);
-                break;
-            case "backgroundMountain":
-                seed = PRNG.random(0, 100);
-                layer = new BackgroundMountainLayer(x, y, seed, width, height);
-                break;
-            case "boat":
-                const flip = PRNG.randomChoice([true, false]);
-                layer = new BoatLayer(x, y, width, y / 800, flip);
-                break;
-            default:
-                console.warn("Layer tag is outside nominal type!");
-                return;
+        if (tag === "middleMountain") {
+            seed = PRNG.random(0, 2 * this.id);
+            layer = new MiddleMountainLayer(x, y, seed, width, height);
+        }
+        if (tag === "water") {
+            layer = new WaterLayer(x, y, width, height);
+        }
+        if (tag === "bottomMountain") {
+            seed = PRNG.random(0, 2 * Math.PI);
+            layer = new BottomMountainLayer(x, y, seed, width, height);
+        }
+        if (tag === "backgroundMountain") {
+            seed = PRNG.random(0, 100);
+            layer = new BackgroundMountainLayer(x, y, seed, width, height);
+        }
+        if (tag === "boat") {
+            const flip = PRNG.randomChoice([true, false]);
+            layer = new BoatLayer(x, y, width, y / 800, flip);
         }
         // make sure that the new elements won't exceed the original frame's range
-        this.layers.push(layer);
+        layer && this.layers.push(layer);
     }
-
-    /**
-     * Renders the frame into an SVG string using web workers.
-     * @returns {Promise<string>}
-     */
 
     /**
      * Renders the frame into an SVG string using web workers.
