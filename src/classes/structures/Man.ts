@@ -1,12 +1,12 @@
 import Cloth from "./Cloth";
-import Structure from "../Structure";
+import Element from "../Element";
 import Hat01 from "./Hat01";
 import Hat02 from "./Hat02";
 import IPoint from "../../interfaces/IPoint";
 import PRNG from "../PRNG";
 import Point from "../Point";
 import Stick from "./Stick";
-import Element from "../Element";
+import Structure from "../Structure";
 import { expand, generateBezierCurve } from "../../utils/utils";
 
 /**
@@ -20,7 +20,7 @@ export default class Man extends Structure {
      * @param {boolean} [horizontalFlip=true] - Indicates whether the man is flipped horizontally.
      * @param {number} [scaling=0.5] - Scaling factor for the man.
      * @param {number[]} [bodyPartLengths=[0, 30, 20, 30, 30, 30, 30, 30, 30]] - Array representing the lengths of different body parts.
-     * @param {boolean} hasStick - Indicates whether the man has a stick.
+     * @param {boolean} [hasStick=false] - Indicates whether the man has a stick.
      * @param {number} [hatNumber=1] - Indicates whether the man has a hat and the hat version. 0 is no hat
      */
     constructor(

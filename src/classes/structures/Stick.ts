@@ -27,7 +27,7 @@ export default class Stick extends Structure {
                         0.1 *
                         Math.sin((i / length) * Math.PI) *
                         5,
-                    0 + i * 0.3
+                    i * 0.3
                 )
             );
         }
