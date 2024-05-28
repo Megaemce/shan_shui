@@ -1,6 +1,9 @@
 import Designer from "./Designer";
 import Frame from "./Frame";
 import Range from "./Range";
+import { config } from "../config";
+
+const TAG_ORDER = config.renderer.tagOrder;
 
 export default class Renderer {
     /** Keeping the frames array with frames ready to be render in current scenne */
@@ -17,10 +20,6 @@ export default class Renderer {
      *  ScrollableCanvas's newPosition parameter
      */
     static visibleRange = new Range(0, 0);
-
-    get visibleRange(): Range {
-        return Renderer.visibleRange;
-    }
 
     /**
      * Render picture based on the given range.
@@ -56,16 +55,39 @@ export default class Renderer {
             this.frames.push(newFrame);
         }
 
-        // render all the visible elements of the frames' layers
-        return (
-            await Promise.all(
-                this.frames
-                    .filter((frame) =>
-                        Renderer.visibleRange.isShowing(frame.range)
+        // Collect of visible layers
+        const visibleLayers = this.frames
+            .filter((frame) => Renderer.visibleRange.isShowing(frame.range))
+            .flatMap((frame, frameNum) => {
+                return frame.layers
+                    .filter((layer) =>
+                        Renderer.visibleRange.isShowing(layer.range)
                     )
-                    .map(async (frame) => await frame.render())
+                    .map((layer, layerNum) => {
+                        return { layer, frameNum, layerNum };
+                    });
+            });
+
+        // Sort them in according to the order of TAG_ORDER from config file
+        visibleLayers.sort(({ layer: a }, { layer: b }) => {
+            if (TAG_ORDER[a.tag] !== TAG_ORDER[b.tag]) {
+                return TAG_ORDER[a.tag] - TAG_ORDER[b.tag];
+            } else if (a.y !== b.y) {
+                return a.y - b.y;
+            } else {
+                return a.x - b.x;
+            }
+        });
+
+        // Render all of the visible layers
+        const results = await Promise.all(
+            visibleLayers.map(({ layer, frameNum, layerNum }) =>
+                layer.render(frameNum, layerNum)
             )
-        ).join("\n");
+        );
+
+        // Return SVG string
+        return results.join("\n");
     }
 
     /**

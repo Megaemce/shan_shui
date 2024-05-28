@@ -7,7 +7,6 @@ import PRNG from "./PRNG";
 import Range from "./Range";
 import SketchLayer from "./SketchLayer";
 import WaterLayer from "./layers/WaterLayer";
-import workerBlobURL from "../utils/layerWorker";
 
 /**
  * Class representing a frame used for generating and managing layer of terrain.
@@ -54,49 +53,6 @@ export default class Frame {
         }
         // make sure that the new elements won't exceed the original frame's range
         layer && this.layers.push(layer);
-    }
-
-    /**
-     * Renders the frame into an SVG string using web workers.
-     *
-     * This function chunks the visible layers of the frame into smaller groups,
-     * and then renders each group using a web worker. The rendering process
-     * is done asynchronously, and the results are collected and joined into
-     * a single string.
-     *
-     * @returns {Promise<string>} A promise that resolves to the SVG string
-     *                           representation of the rendered frame.
-     */
-    public async render(): Promise<string> {
-        const layerPromises = this.layers.map((layer, index) => {
-            return new Promise<string>((resolve, reject) => {
-                const worker = new Worker(workerBlobURL);
-
-                worker.onmessage = (e: MessageEvent) => {
-                    worker.terminate();
-                    resolve(e.data.stringify);
-                };
-
-                worker.onerror = (e) => {
-                    worker.terminate();
-                    reject(
-                        new Error(
-                            `Worker failed while rendering layer ${layer.tag} from frame${this.id} with error: ${e.message}`
-                        )
-                    );
-                };
-
-                worker.postMessage({
-                    frameNum: this.id,
-                    elements: layer.elements,
-                    layerTag: layer.tag,
-                    index: index,
-                });
-            });
-        });
-
-        const frameRenders = await Promise.all(layerPromises);
-        return `<g id="frame${this.id}">${frameRenders.join("\n")}</g>`;
     }
 
     /**

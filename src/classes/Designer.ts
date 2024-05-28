@@ -49,7 +49,6 @@ export default class Designer {
      */
     constructor(public range: Range) {
         this.generateDesign(range);
-        this.sortPlan();
     }
 
     /**
@@ -240,28 +239,5 @@ export default class Designer {
                 }
             }
         }
-    }
-
-    /**
-     * Sort the layers in the plan by the tags, y and x coordinates
-     */
-    private sortPlan(): void {
-        const tagOrder = {
-            backgroundMountain: 1,
-            boat: 2,
-            water: 3,
-            middleMountain: 4,
-            bottomMountain: 5,
-        };
-
-        this.plan.sort((a, b) => {
-            if (tagOrder[a.tag] !== tagOrder[b.tag]) {
-                return tagOrder[a.tag] - tagOrder[b.tag];
-            } else if (a.y !== b.y) {
-                return a.y - b.y;
-            } else {
-                return a.x - b.x;
-            }
-        });
     }
 }
