@@ -90,6 +90,16 @@ export const config = {
     utils: {
         bezierCurvePoints: 20,
     },
+    renderer: {
+        /** order in which the layers should be render */
+        tagOrder: {
+            backgroundMountain: 1,
+            boat: 2,
+            water: 3,
+            middleMountain: 4,
+            bottomMountain: 5,
+        },
+    },
     designer: {
         radius: 10, // The threshold radius for considering layers to be the same
         xStep: 50, // Step size along the x-axis for generating terrain.
