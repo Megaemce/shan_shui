@@ -83,6 +83,12 @@ svg#SVG.darkmode {
     position: fixed;
     width: 100%;
     height: 200px;
+
+    & #InfinityLoop {
+        stroke-dasharray: 2.4px, 242.7;
+        stroke-dashoffset: 0;
+        animation: infinityLoop 1.6s linear infinite;
+    }
 }
 
 #Loader.hidden {
@@ -215,4 +221,19 @@ div#Menu.darkmode {
 
 #ScrollableCanvas button#RightScroll.darkmode {
     filter: invert(1) sepia(1);
+}
+
+@keyframes infinityLoop {
+    12.5% {
+        stroke-dasharray: 34px, 242.7px;
+        stroke-dashoffset: -26.7px;
+    }
+    43.75% {
+        stroke-dasharray: 85px, 242.7px;
+        stroke-dashoffset: -85px;
+    }
+    100% {
+        stroke-dasharray: 2.4px, 242.7px;
+        stroke-dashoffset: -240px;
+    }
 }
