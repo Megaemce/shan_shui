@@ -38,13 +38,6 @@ export interface ISettingPanel {
     setStep: (step: number) => void;
 
     /**
-     * Reloads the current URL with the new seed
-     *
-     * @function
-     */
-    reloadWindowSeed: () => void;
-
-    /**
      * Scrolls the panel horizontally.
      *
      * @function
