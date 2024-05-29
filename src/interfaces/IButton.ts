@@ -26,9 +26,9 @@ export interface IButton {
     onClick: () => void;
 
     /**
-     * The icon to be displayed in the Button.
+     * The text to be displayed in the Button.
      *
      * @type {string}
      */
-    icon: string;
+    text: string;
 }
