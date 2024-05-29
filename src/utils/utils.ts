@@ -155,34 +155,22 @@ export function generateBezierCurve(controlPoints: Point[]): Point[] {
     return curvePoints;
 }
 
-type AnyFunction = (...args: any[]) => any;
-
 /**
  * Debounce function to delay the execution of a function.
  * @param {Function} func - The function to debounce.
- * @param {number} wait - The delay in milliseconds.
+ * @param {number} delay - The delay in milliseconds.
  * @returns {Function} The debounced function.
  */
-export function debounce<F extends AnyFunction>(
+export const debounce = <F extends (...args: any[]) => void>(
     func: F,
-    wait: number
-): (...args: Parameters<F>) => void {
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    delay: number
+): ((...args: Parameters<F>) => void) => {
+    let timerId: ReturnType<typeof setTimeout>;
 
-    return function debounced(
-        this: ThisParameterType<F>,
-        ...args: Parameters<F>
-    ): void {
-        const context = this;
-
-        const later = () => {
-            timeoutId = null;
-            func.apply(context, args);
-        };
-
-        if (timeoutId !== null) {
-            clearTimeout(timeoutId);
-        }
-        timeoutId = setTimeout(later, wait) as any;
+    return function (this: any, ...args: Parameters<F>) {
+        clearTimeout(timerId);
+        timerId = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
     };
-}
+};

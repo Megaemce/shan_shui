@@ -1,5 +1,4 @@
 import React, { ChangeEvent } from "react";
-import { DebounceInput } from "react-debounce-input";
 import Range from "../classes/Range";
 import Renderer from "../classes/Renderer";
 import { Button } from "./Button";
@@ -135,14 +134,13 @@ export const Menu: React.FC<IMenu> = ({
                     onClick={horizonalScrollLeft}
                     text="&lt;"
                 />
-                <DebounceInput
+                <input
                     className="InputStep"
                     title="Increment step"
                     type="number"
                     value={step}
                     min={0}
                     max={maxStep}
-                    debounceTimeout={500}
                     step={100}
                     onChange={onInputSetChange}
                 />
@@ -164,18 +162,20 @@ export const Menu: React.FC<IMenu> = ({
             </div>
             <div id="SaveView">
                 <h4>Save view</h4>
-                <DebounceInput
+                <input
+                    min={0}
+                    max={maxStep}
                     className="InputNumber"
                     type="number"
-                    debounceTimeout={500}
                     value={saveRange.start}
                     onChange={onChangeSaveRangeL}
                 />
                 to
-                <DebounceInput
+                <input
+                    min={0}
+                    max={maxStep}
                     className="InputNumber"
                     type="number"
-                    debounceTimeout={500}
                     value={saveRange.end}
                     onChange={onChangeSaveRangeR}
                 />
