@@ -115,12 +115,6 @@ export const Menu: React.FC<IMenu> = ({
                 <h4>Current seed:</h4>
                 <p>{seed}</p>
                 <Button
-                    id="Share"
-                    title="Share the link"
-                    onClick={share}
-                    text="Share"
-                />
-                <Button
                     id="Reload"
                     title="Reload the view with new seed"
                     onClick={reload}
@@ -206,6 +200,12 @@ export const Menu: React.FC<IMenu> = ({
                     title="Download"
                     text="Download"
                     onClick={downloadSvg}
+                />
+                <Button
+                    id="Share"
+                    title="Share the link"
+                    onClick={share}
+                    text="Share"
                 />
             </div>
         </div>
