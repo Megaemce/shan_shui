@@ -38,13 +38,6 @@ export interface IMenu {
     setStep: (step: number) => void;
 
     /**
-     * Reloads the window based on the current seed value.
-     *
-     * @function
-     */
-    reloadWindowSeed: () => void;
-
-    /**
      * Scrolls the menu horizontally.
      *
      * @function

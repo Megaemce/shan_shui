@@ -1,17 +1,35 @@
-import "./styles.css";
-import Range from "../classes/Range";
-import React from "react";
-import { ChangeEvent } from "react";
+import React, { ChangeEvent } from "react";
 import { DebounceInput } from "react-debounce-input";
-import { IMenu } from "../interfaces/IMenu";
+import Range from "../classes/Range";
 import Renderer from "../classes/Renderer";
+import { Button } from "./Button";
+import { IMenu } from "../interfaces/IMenu";
 
+/**
+ * Menu component that provides various controls and settings for the application.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.seed - The current seed value.
+ * @param {Function} props.setSeed - Function to set the seed value.
+ * @param {number} props.step - The step value for horizontal scrolling.
+ * @param {Function} props.setStep - Function to set the step value.
+ * @param {Function} props.horizontalScroll - Function to handle horizontal scrolling.
+ * @param {Function} props.toggleAutoScroll - Function to toggle auto-scroll.
+ * @param {number} props.newPosition - The new position for rendering.
+ * @param {number} props.windowWidth - The width of the window.
+ * @param {number} props.windowHeight - The height of the window.
+ * @param {Object} props.renderer - The renderer instance.
+ * @param {Object} props.saveRange - The range of saved elements.
+ * @param {Function} props.onChangeSaveRange - Function to change the save range.
+ * @param {Function} props.toggleAutoLoad - Function to toggle auto-load.
+ * @param {boolean} props.darkMode - The dark mode state.
+ * @returns {JSX.Element} The Menu component.
+ */
 export const Menu: React.FC<IMenu> = ({
     seed,
     setSeed,
     step,
     setStep,
-    reloadWindowSeed,
     horizontalScroll,
     toggleAutoScroll,
     newPosition,
@@ -23,9 +41,14 @@ export const Menu: React.FC<IMenu> = ({
     toggleAutoLoad,
     darkMode,
 }) => {
+    // Maximum step value calculation
     const maxStep = newPosition + windowWidth + Renderer.forwardCoverage;
+
+    // Handlers for horizontal scrolling
     const horizonalScrollLeft = () => horizontalScroll(-step);
     const horizonalScrollRight = () => horizontalScroll(step);
+
+    // Handler for downloading SVG
     const downloadSvg = () => {
         if (saveRange.length > 0) {
             renderer.download(seed, saveRange, windowHeight, darkMode);
@@ -33,15 +56,22 @@ export const Menu: React.FC<IMenu> = ({
             alert("Range length must be above zero");
         }
     };
+
+    // Handler for loading the current range
     const loadCurrentRange = () => {
         onChangeSaveRange(new Range(newPosition, newPosition + windowWidth));
     };
+
+    // Handlers for changing the save range
     const onChangeSaveRangeL = (event: ChangeEvent<HTMLInputElement>) =>
         onChangeSaveRange(new Range(event.target.valueAsNumber, saveRange.end));
+
     const onChangeSaveRangeR = (event: ChangeEvent<HTMLInputElement>) =>
         onChangeSaveRange(
             new Range(saveRange.start, event.target.valueAsNumber)
         );
+
+    // Handler for changing the step value
     const onInputSetChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.valueAsNumber > maxStep) {
             window.alert("Value is too high. Current maximum is " + maxStep);
@@ -56,27 +86,55 @@ export const Menu: React.FC<IMenu> = ({
         }
     };
 
+    // Handler for reloading with a new seed
+    const reload = () => {
+        const userChoice = window.confirm(
+            "This action will redesigner the whole picture!"
+        );
+        if (userChoice) {
+            const currentDate = new Date().getTime().toString();
+            setSeed(currentDate);
+        }
+    };
+
+    // Handler for sharing the current seed URL
+    const share = () => {
+        const url = window.location.href.split("?")[0];
+        const seedUrl = `${url}?seed=${seed}`;
+        navigator.clipboard.writeText(seedUrl).then(() => {
+            window.alert(`URL copied to clipboard.\n${seedUrl}`);
+        });
+    };
+
     return (
         <div id="Menu" className="hidden">
             <div id="CurrentSeed">
                 <h4>Current seed:</h4>
-                <DebounceInput
-                    className="InputSeed"
-                    title="random seed"
-                    value={seed}
-                    debounceTimeout={500}
-                    onChange={(e) => setSeed(e.target.value)}
+                <p>{seed}</p>
+                <Button
+                    id="Share"
+                    title="Share the link"
+                    onClick={share}
+                    text="Share"
                 />
-                <button onClick={reloadWindowSeed}>Generate</button>
+                <Button
+                    id="Reload"
+                    title="Reload the view with new seed"
+                    onClick={reload}
+                    text="Reload"
+                />
             </div>
             <div id="CurrentView">
                 <h4>Current view:</h4>
                 <p>
                     [{newPosition}, {newPosition + windowWidth}]
                 </p>
-                <button title="Scroll left" onClick={horizonalScrollLeft}>
-                    &lt;
-                </button>
+                <Button
+                    id="ScrollLeft"
+                    title="Scroll left"
+                    onClick={horizonalScrollLeft}
+                    text="&lt;"
+                />
                 <DebounceInput
                     className="InputStep"
                     title="Increment step"
@@ -86,11 +144,14 @@ export const Menu: React.FC<IMenu> = ({
                     max={maxStep}
                     debounceTimeout={500}
                     step={100}
-                    onChange={(e) => onInputSetChange(e)}
+                    onChange={onInputSetChange}
                 />
-                <button title="Scroll right" onClick={horizonalScrollRight}>
-                    &gt;
-                </button>
+                <Button
+                    id="ScrollRight"
+                    title="Scroll right"
+                    onClick={horizonalScrollRight}
+                    text="&gt;"
+                />
             </div>
             <div id="AutoScroll">
                 <input
@@ -103,7 +164,6 @@ export const Menu: React.FC<IMenu> = ({
             </div>
             <div id="SaveView">
                 <h4>Save view</h4>
-                from
                 <DebounceInput
                     className="InputNumber"
                     type="number"
@@ -129,26 +189,20 @@ export const Menu: React.FC<IMenu> = ({
                 <label htmlFor="InputAutoLoad">Auto-load</label>
             </div>
             <div id="ImportCurrentRange">
-                <button
-                    title="Import current range"
-                    type="button"
+                <Button
                     id="ButtonLoadRange"
-                    value="Import current range"
+                    title="Import current range"
+                    text="Import current range"
                     onClick={loadCurrentRange}
-                >
-                    Import current range
-                </button>
+                />
             </div>
             <div id="Download">
-                <button
-                    title="Download"
-                    type="button"
+                <Button
                     id="ButtonDownload"
-                    value="Download"
+                    title="Download"
+                    text="Download"
                     onClick={downloadSvg}
-                >
-                    Download
-                </button>
+                />
             </div>
         </div>
     );
