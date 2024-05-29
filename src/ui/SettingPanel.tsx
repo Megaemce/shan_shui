@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ISettingPanel } from "../interfaces/ISettingPanel";
 import { Menu } from "./Menu";
 import { Button } from "./Button";
@@ -44,6 +44,18 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     // Icons for menu visibility and dark mode toggle
     const icon: string = menuVisible ? "X" : "III";
     const darkModeIcon: string = darkMode ? "☀" : "☾";
+
+    useEffect(() => {
+        const darkModeMediaQuery = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        );
+        const isDarkMode = darkModeMediaQuery.matches;
+
+        if (isDarkMode) {
+            toggleDarkmode();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Function to handle GitHub button click
     const handleGitHubClick = () => {
