@@ -7,11 +7,17 @@ import { SettingPanel } from "./ui/SettingPanel";
 
 type AnyFunction = (...args: any[]) => any;
 
+/**
+ * Debounce function to delay the execution of a function.
+ * @param {Function} func - The function to debounce.
+ * @param {number} wait - The delay in milliseconds.
+ * @returns {Function} The debounced function.
+ */
 function debounce<F extends AnyFunction>(
     func: F,
     wait: number
 ): (...args: Parameters<F>) => void {
-    let timeoutId: ReturnType<typeof setTimeout> | null;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     return function debounced(
         this: ThisParameterType<F>,
@@ -24,7 +30,9 @@ function debounce<F extends AnyFunction>(
             func.apply(context, args);
         };
 
-        clearTimeout(timeoutId!);
+        if (timeoutId !== null) {
+            clearTimeout(timeoutId);
+        }
         timeoutId = setTimeout(later, wait) as any;
     };
 }
@@ -35,7 +43,7 @@ function debounce<F extends AnyFunction>(
  * @returns {JSX.Element} The main application component.
  */
 export const App: React.FC = (): JSX.Element => {
-    // Initialize seed based on previous value or current time
+    // Initialize seed based on URL parameter or current time
     const urlSeed = new URLSearchParams(window.location.search).get("seed");
     const currentDate = new Date().getTime().toString();
     const currentSeed = urlSeed || currentDate;
@@ -57,8 +65,10 @@ export const App: React.FC = (): JSX.Element => {
         new Range(0, window.innerWidth)
     );
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
+    const [svgContent, setSvgContent] = useState("");
 
-    PRNG.seed = currentSeed;
+    // Set initial seed for PRNG and forward coverage for renderer
+    PRNG.seed = seed;
     Renderer.forwardCoverage = window.innerWidth / 2;
 
     // Callback function to handle changes in the save range
@@ -66,18 +76,18 @@ export const App: React.FC = (): JSX.Element => {
         setSaveRange(newRange);
     };
 
-    // Callback function when Auto-scrolling button is clicked
+    // Toggle auto-scrolling state
     const toggleAutoScroll = () => {
         setAutoScroll((current) => !current);
     };
 
-    // Callback function when Auto-loading button is clicked
+    // Toggle auto-loading state and set the save range
     const toggleAutoLoad = () => {
         setAutoLoad((current) => !current);
         setSaveRange(new Range(newPosition, newPosition + windowWidth));
     };
 
-    // Add hooks for window resize events with debounce
+    // Handle window resize events with debounce
     useEffect(() => {
         const handleResize = debounce(() => {
             setWindowWidth(window.innerWidth);
@@ -93,7 +103,7 @@ export const App: React.FC = (): JSX.Element => {
         };
     }, []);
 
-    // Callback function to handle horizontal scrolling
+    // Handle horizontal scrolling
     const horizontalScroll = useCallback(
         (value: number) => {
             let newValue = newPosition + value;
@@ -113,7 +123,7 @@ export const App: React.FC = (): JSX.Element => {
         [newPosition, autoLoad, windowWidth]
     );
 
-    // Effect to initiate horizontal auto-scrolling
+    // Effect to handle auto-scrolling and arrow key events
     useEffect(() => {
         const autoScrollCallback = () => {
             if (autoScroll) {
@@ -126,17 +136,48 @@ export const App: React.FC = (): JSX.Element => {
             timeoutRef.current = setTimeout(autoScrollCallback, 1000);
         }
 
-        // Clean up the timeout when component unmounts
+        const handleArrowsDown = debounce((event: KeyboardEvent) => {
+            if (event.key === "ArrowLeft") {
+                horizontalScroll(-step);
+            } else if (event.key === "ArrowRight") {
+                horizontalScroll(step);
+            }
+        }, 200);
+
+        document.addEventListener("keydown", handleArrowsDown);
+
         return () => {
+            document.removeEventListener("keydown", handleArrowsDown);
             clearTimeout(timeoutRef.current);
         };
     }, [autoScroll, step, horizontalScroll]);
 
-    // Callback function to reload the page with a new seed
-    const reloadWindowSeed = () => {
-        const url = window.location.href.split("?")[0];
-        window.location.href = `${url}?seed=${seed}`;
-    };
+    // Effect to render the new picture when the reload button is clicked
+    useEffect(() => {
+        const newRange = new Range(newPosition, newPosition + windowWidth);
+        const loader = document.getElementById("Loader") as HTMLElement;
+        const loaderText = document.getElementById("LoaderText") as HTMLElement;
+        const renderer = rendererRef.current;
+
+        PRNG.seed = seed;
+        // Reset the renderer
+        Renderer.coveredRange = new Range(0, 0);
+        Renderer.visibleRange = new Range(0, 0);
+        renderer.frames = [];
+
+        loader.classList.remove("hidden");
+        loaderText.innerText = "Creating elements...";
+        renderer
+            .render(newRange)
+            .then(async (newSvgContent) => {
+                loaderText.innerText = "Rendering layers...";
+                setSvgContent(newSvgContent);
+                await new Promise((resolve) => setTimeout(resolve, 0));
+            })
+            .then(() => loader.classList.add("hidden"));
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [seed]);
 
     return (
         <>
@@ -145,7 +186,6 @@ export const App: React.FC = (): JSX.Element => {
                 setSeed={setSeed}
                 step={step}
                 setStep={setStep}
-                reloadWindowSeed={reloadWindowSeed}
                 horizontalScroll={horizontalScroll}
                 toggleAutoScroll={toggleAutoScroll}
                 newPosition={newPosition}
@@ -157,12 +197,12 @@ export const App: React.FC = (): JSX.Element => {
                 toggleAutoLoad={toggleAutoLoad}
             />
             <ScrollableCanvas
-                step={step}
-                horizontalScroll={horizontalScroll}
                 windowHeight={windowHeight}
                 newPosition={newPosition}
                 windowWidth={windowWidth}
                 renderer={rendererRef.current}
+                svgContent={svgContent}
+                setSvgContent={setSvgContent}
             />
         </>
     );
