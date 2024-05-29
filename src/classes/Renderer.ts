@@ -97,8 +97,6 @@ export default class Renderer {
      * @returns {Promise<Frame>} newly created frame as a promise
      */
     private async createNewFrame(range: Range): Promise<Frame> {
-        console.log("░░░ creating new frame ░░░");
-
         const frameID = this.frames.length + 1;
         const framePlan = new Designer(range).plan;
         const newFrame = new Frame(frameID);
