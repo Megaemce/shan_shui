@@ -1,6 +1,6 @@
 {
   "short_name": "shan_shui",
-  "name": "{Shan, Shuie}*",
+  "name": "{Shan, Shui}*",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "./img/shanshui_logo_light.png",
+      "src": "./img/shanshui_logo_dark.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "./img/shanshui_logo_light.png",
+      "src": "./img/shanshui_logo_dark.png",
       "type": "image/png",
       "sizes": "512x512"
     }
