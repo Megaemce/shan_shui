@@ -52,7 +52,9 @@ export const Menu: React.FC<IMenu> = ({
         if (saveRange.length > 0) {
             renderer.download(seed, saveRange, windowHeight, darkMode);
         } else {
-            alert("Range length must be above zero");
+            alert(
+                `Range length must be above zero.\nYour current range is: [${saveRange.start} - ${saveRange.end}].`
+            );
         }
     };
 
@@ -73,7 +75,9 @@ export const Menu: React.FC<IMenu> = ({
     // Handler for changing the step value
     const onInputSetChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.valueAsNumber > maxStep) {
-            window.alert("Value is too high. Current maximum is " + maxStep);
+            window.alert(
+                `Value is too damn high!\nCurrent maximum is ${maxStep} which is a sum of current position and 1.5x window width.`
+            );
             event.target.value = String(maxStep);
             setStep(maxStep);
         } else if (event.target.valueAsNumber < 0) {

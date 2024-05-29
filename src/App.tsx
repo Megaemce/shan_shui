@@ -67,6 +67,12 @@ export const App: React.FC = (): JSX.Element => {
 
         Renderer.forwardCoverage = window.innerWidth / 2;
 
+        if (window.innerWidth < 400) {
+            window.alert(
+                "Some mountains need space to grow.\nYour device's port view is too small for the full experience."
+            );
+        }
+
         return () => {
             window.removeEventListener("resize", handleResize);
         };
