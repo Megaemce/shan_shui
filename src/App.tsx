@@ -4,38 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Renderer from "./classes/Renderer";
 import { ScrollableCanvas } from "./ui/ScrollableCanvas";
 import { SettingPanel } from "./ui/SettingPanel";
-
-type AnyFunction = (...args: any[]) => any;
-
-/**
- * Debounce function to delay the execution of a function.
- * @param {Function} func - The function to debounce.
- * @param {number} wait - The delay in milliseconds.
- * @returns {Function} The debounced function.
- */
-function debounce<F extends AnyFunction>(
-    func: F,
-    wait: number
-): (...args: Parameters<F>) => void {
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
-
-    return function debounced(
-        this: ThisParameterType<F>,
-        ...args: Parameters<F>
-    ): void {
-        const context = this;
-
-        const later = () => {
-            timeoutId = null;
-            func.apply(context, args);
-        };
-
-        if (timeoutId !== null) {
-            clearTimeout(timeoutId);
-        }
-        timeoutId = setTimeout(later, wait) as any;
-    };
-}
+import { debounce } from "./utils/utils";
 
 /**
  * Main application component.
