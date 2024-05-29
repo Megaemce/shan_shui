@@ -1,28 +1,38 @@
-import "./styles.css";
 import Range from "../classes/Range";
-import React, { useEffect, useRef, useState } from "react";
-import { Button } from "./Button";
+import React, { useEffect } from "react";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
 
+/**
+ * ScrollableCanvas component that displays SVG content and handles rendering logic.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {number} props.windowHeight - The height of the window.
+ * @param {number} props.newPosition - The new position for rendering.
+ * @param {number} props.windowWidth - The width of the window.
+ * @param {Object} props.renderer - The renderer instance.
+ * @param {string} props.svgContent - The SVG content to be displayed.
+ * @param {Function} props.setSvgContent - Function to set the SVG content.
+ * @returns {JSX.Element} The ScrollableCanvas component.
+ */
 export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
-    step,
-    horizontalScroll,
     windowHeight,
     newPosition,
     windowWidth,
     renderer,
+    svgContent,
+    setSvgContent,
 }) => {
-    const [svgContent, setSvgContent] = useState("");
-    const svgRef = useRef<SVGSVGElement | null>(null);
-
-    // Create frames within new range
+    // Effect to render frames within the new range whenever newPosition or windowWidth changes
     useEffect(() => {
         const newRange = new Range(newPosition, newPosition + windowWidth);
         const loader = document.getElementById("Loader") as HTMLElement;
         const loaderText = document.getElementById("LoaderText") as HTMLElement;
 
+        // Show loader and update loader text
         loader.classList.remove("hidden");
         loaderText.innerText = "Creating elements...";
+
+        // Render the new range and update SVG content
         renderer
             .render(newRange)
             .then(async (newSvgContent) => {
@@ -30,21 +40,13 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                 setSvgContent(newSvgContent);
                 await new Promise((resolve) => setTimeout(resolve, 0));
             })
-            .then(() => loader.classList.add("hidden"));
-    }, [renderer, newPosition, windowWidth]);
+            .then(() => loader.classList.add("hidden")); // Hide loader after rendering
+    }, [renderer, newPosition, windowWidth, setSvgContent]);
 
     return (
         <div id="ScrollableCanvas">
-            <Button
-                id="LeftScroll"
-                title="Scroll left"
-                icon="⟨"
-                onClick={() => horizontalScroll(-step)}
-            />
-
             <svg
                 id="SVG"
-                ref={svgRef}
                 viewBox={`${newPosition} 0 ${windowWidth} ${windowHeight}`}
             >
                 <defs>
@@ -95,10 +97,10 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                         data-testid="infinity-spin-path-1"
                         stroke="rgba(0, 0, 0, 0.4)"
                         fill="none"
-                        stroke-width="4"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-miterlimit="10"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeMiterlimit="10"
                         d="M93.9,46.4c9.3,9.5,13.8,17.9,23.5,17.9s17.5-7.8,17.5-17.5s-7.8-17.6-17.5-17.5c-9.7,0.1-13.3,7.2-22.1,17.1 c-8.9,8.8-15.7,17.9-25.4,17.9s-17.5-7.8-17.5-17.5s7.8-17.5,17.5-17.5S86.2,38.6,93.9,46.4z"
                         id="InfinityLoop"
                     ></path>
@@ -107,22 +109,15 @@ export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
                         opacity="0.07"
                         fill="none"
                         stroke="rgba(0, 0, 0, 0.4)"
-                        stroke-width="4"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-miterlimit="10"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeMiterlimit="10"
                         d="M93.9,46.4c9.3,9.5,13.8,17.9,23.5,17.9s17.5-7.8,17.5-17.5s-7.8-17.6-17.5-17.5c-9.7,0.1-13.3,7.2-22.1,17.1 c-8.9,8.8-15.7,17.9-25.4,17.9s-17.5-7.8-17.5-17.5s7.8-17.5,17.5-17.5S86.2,38.6,93.9,46.4z"
                     ></path>
                 </svg>
                 <p id="LoaderText"></p>
             </div>
-
-            <Button
-                id="RightScroll"
-                title="Scroll right"
-                icon="⟩"
-                onClick={() => horizontalScroll(step)}
-            />
         </div>
     );
 };

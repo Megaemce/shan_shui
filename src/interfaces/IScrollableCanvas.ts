@@ -7,21 +7,6 @@ import Renderer from "../classes/Renderer";
  */
 export interface IScrollableCanvas {
     /**
-     * The step value used in the settings.
-     *
-     * @type {number}
-     */
-    step: number;
-
-    /**
-     * Function to scroll the canvas horizontally by a specified value.
-     *
-     * @function
-     * @param {number} value - The amount to scroll horizontally.
-     */
-    horizontalScroll: (value: number) => void;
-
-    /**
      * The height of the canvas.
      *
      * @type {number}
@@ -48,4 +33,14 @@ export interface IScrollableCanvas {
      * @type {Renderer}
      */
     renderer: Renderer;
+
+    /**
+     * SVG string of the main picture
+     */
+    svgContent: string;
+    /**
+     * Set SVG context of the main picture with the new value
+     *
+     */
+    setSvgContent: (svg: string) => void;
 }
