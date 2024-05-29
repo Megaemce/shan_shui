@@ -3,15 +3,6 @@ import { config } from "../config";
 import { midPoint } from "./polytools";
 
 /**
- * Computes the scaled cosine of the given value.
- * @param i - The input value.
- * @returns The scaled cosine value.
- */
-export function scaledCosine(i: number): number {
-    return 0.5 * (1.0 - Math.cos(i * Math.PI));
-}
-
-/**
  * Expands a given array of points using a width function.
  * @param {Point[]} pointArray - The array of points to be expanded.
  * @param {(v: number) => number} scalingFunction - The scaling function
