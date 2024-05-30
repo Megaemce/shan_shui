@@ -93,13 +93,13 @@ export default class Renderer {
 
         // Render all of the visible layers
         const results = await Promise.all(
-            chunkedLayers.map((layers) => {
-                return Promise.all(
-                    layers.map(({ layer, frameNum, layerNum }) => {
-                        return layer.render(frameNum, layerNum);
-                    })
-                );
-            })
+            chunkedLayers.map((layers) =>
+                Promise.all(
+                    layers.map(({ layer, frameNum, layerNum }) =>
+                        layer.render(frameNum, layerNum)
+                    )
+                )
+            )
         );
 
         // Return SVG string
