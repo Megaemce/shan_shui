@@ -40,7 +40,8 @@ export interface IScrollableCanvas {
     svgContent: string;
     /**
      * Set SVG context of the main picture with the new value
-     *
+     * @function
+     * @param {string} svg - The SVG content.
      */
     setSvgContent: (svg: string) => void;
 }

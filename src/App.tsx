@@ -1,4 +1,3 @@
-import PRNG from "./classes/PRNG";
 import Range from "./classes/Range";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Renderer from "./classes/Renderer";
@@ -12,17 +11,11 @@ import { debounce } from "./utils/utils";
  * @returns {JSX.Element} The main application component.
  */
 export const App: React.FC = (): JSX.Element => {
-    // Initialize seed based on URL parameter or current time
-    const urlSeed = new URLSearchParams(window.location.search).get("seed");
-    const currentDate = new Date().getTime().toString();
-    const currentSeed = urlSeed || currentDate;
-
     // Refs
     const rendererRef = useRef(new Renderer());
     const timeoutRef = useRef<number | NodeJS.Timeout>(0);
 
     // State variables
-    const [seed, setSeed] = useState<string>(currentSeed);
     const [step, setStep] = useState(100);
     const [newPosition, setNewPosition] = useState<number>(0);
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
@@ -125,38 +118,9 @@ export const App: React.FC = (): JSX.Element => {
         };
     }, [autoScroll, step, horizontalScroll]);
 
-    // Effect to render the new picture when the reload button is clicked
-    useEffect(() => {
-        const newRange = new Range(newPosition, newPosition + windowWidth);
-        const loader = document.getElementById("Loader") as HTMLElement;
-        const loaderText = document.getElementById("LoaderText") as HTMLElement;
-        const renderer = rendererRef.current;
-
-        PRNG.seed = seed;
-        // Reset the renderer
-        Renderer.coveredRange = new Range(0, 0);
-        Renderer.visibleRange = new Range(0, 0);
-        renderer.frames = [];
-
-        loader.classList.remove("hidden");
-        loaderText.innerText = "Creating elements...";
-        renderer
-            .render(newRange)
-            .then(async (newSvgContent) => {
-                loaderText.innerText = "Rendering layers...";
-                setSvgContent(newSvgContent);
-                await new Promise((resolve) => setTimeout(resolve, 0));
-            })
-            .then(() => loader.classList.add("hidden"));
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [seed]);
-
     return (
         <>
             <SettingPanel
-                seed={seed}
-                setSeed={setSeed}
                 step={step}
                 setStep={setStep}
                 horizontalScroll={horizontalScroll}
@@ -168,6 +132,7 @@ export const App: React.FC = (): JSX.Element => {
                 saveRange={saveRange}
                 onChangeSaveRange={onChangeSaveRange}
                 toggleAutoLoad={toggleAutoLoad}
+                setSvgContent={setSvgContent}
             />
             <ScrollableCanvas
                 windowHeight={windowHeight}

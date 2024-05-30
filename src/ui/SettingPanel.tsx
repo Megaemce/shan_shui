@@ -7,8 +7,6 @@ import { Button } from "./Button";
  * SettingPanel component that provides various controls and settings for the application.
  * @component
  * @param {Object} props - The component props.
- * @param {string} props.seed - The current seed value.
- * @param {Function} props.setSeed - Function to set the seed value.
  * @param {number} props.step - The step value for horizontal scrolling.
  * @param {Function} props.setStep - Function to set the step value.
  * @param {Function} props.horizontalScroll - Function to handle horizontal scrolling.
@@ -20,11 +18,10 @@ import { Button } from "./Button";
  * @param {Object} props.saveRange - The range of saved elements.
  * @param {Function} props.onChangeSaveRange - Function to change the save range.
  * @param {Function} props.toggleAutoLoad - Function to toggle auto-load.
+ * @param {Function} props.setSvgContent - Function to set the SVG content.
  * @returns {JSX.Element} The SettingPanel component.
  */
 export const SettingPanel: React.FC<ISettingPanel> = ({
-    seed,
-    setSeed,
     step,
     setStep,
     horizontalScroll,
@@ -36,6 +33,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     saveRange,
     onChangeSaveRange,
     toggleAutoLoad,
+    setSvgContent,
 }) => {
     // State variables
     const [menuVisible, setMenuVisible] = useState(false);
@@ -156,8 +154,6 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                 </div>
             </div>
             <Menu
-                seed={seed}
-                setSeed={setSeed}
                 step={step}
                 setStep={setStep}
                 horizontalScroll={horizontalScroll}
@@ -170,6 +166,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                 onChangeSaveRange={onChangeSaveRange}
                 toggleAutoLoad={toggleAutoLoad}
                 darkMode={darkMode}
+                setSvgContent={setSvgContent}
             />
         </>
     );

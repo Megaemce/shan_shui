@@ -8,21 +8,6 @@ import Renderer from "../classes/Renderer";
  */
 export interface IMenu {
     /**
-     * The seed value for the menu.
-     *
-     * @type {string}
-     */
-    seed: string;
-
-    /**
-     * Changes the seed value of the menu.
-     *
-     * @function
-     * @param {string} seed - The new seed value.
-     */
-    setSeed: (seed: string) => void;
-
-    /**
      * The step value used in the settings.
      *
      * @type {number}
@@ -108,4 +93,10 @@ export interface IMenu {
      * @type {boolean}
      */
     darkMode: boolean;
+    /**
+     * Set SVG context of the main picture with the new value
+     * @function
+     * @param {string} svg - The SVG content.
+     */
+    setSvgContent: (svg: string) => void;
 }

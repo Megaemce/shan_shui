@@ -1,15 +1,14 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useState } from "react";
 import Range from "../classes/Range";
 import Renderer from "../classes/Renderer";
 import { Button } from "./Button";
 import { IMenu } from "../interfaces/IMenu";
+import PRNG from "../classes/PRNG";
 
 /**
  * Menu component that provides various controls and settings for the application.
  * @component
  * @param {Object} props - The component props.
- * @param {string} props.seed - The current seed value.
- * @param {Function} props.setSeed - Function to set the seed value.
  * @param {number} props.step - The step value for horizontal scrolling.
  * @param {Function} props.setStep - Function to set the step value.
  * @param {Function} props.horizontalScroll - Function to handle horizontal scrolling.
@@ -22,11 +21,10 @@ import { IMenu } from "../interfaces/IMenu";
  * @param {Function} props.onChangeSaveRange - Function to change the save range.
  * @param {Function} props.toggleAutoLoad - Function to toggle auto-load.
  * @param {boolean} props.darkMode - The dark mode state.
+ * @param {Function} props.setSvgContent - Function to set the SVG content.
  * @returns {JSX.Element} The Menu component.
  */
 export const Menu: React.FC<IMenu> = ({
-    seed,
-    setSeed,
     step,
     setStep,
     horizontalScroll,
@@ -39,13 +37,20 @@ export const Menu: React.FC<IMenu> = ({
     onChangeSaveRange,
     toggleAutoLoad,
     darkMode,
+    setSvgContent,
 }) => {
+    // Initialize seed based on URL parameter or current time
+    const urlSeed = new URLSearchParams(window.location.search).get("seed");
+    const currentDate = new Date().getTime().toString();
+    const currentSeed = urlSeed || currentDate;
+
     // Maximum step value calculation
     const maxStep = newPosition + windowWidth + Renderer.forwardCoverage;
+    const [seed, setSeed] = useState<string>(currentSeed);
 
     // Handlers for horizontal scrolling
-    const horizonalScrollLeft = () => horizontalScroll(-step);
-    const horizonalScrollRight = () => horizontalScroll(step);
+    const horizontalScrollLeft = () => horizontalScroll(-step);
+    const horizontalScrollRight = () => horizontalScroll(step);
 
     // Handler for downloading SVG
     const downloadSvg = () => {
@@ -96,7 +101,30 @@ export const Menu: React.FC<IMenu> = ({
         );
         if (userChoice) {
             const currentDate = new Date().getTime().toString();
+            const newRange = new Range(newPosition, newPosition + windowWidth);
+            const loader = document.getElementById("Loader") as HTMLElement;
+            const loaderText = document.getElementById(
+                "LoaderText"
+            ) as HTMLElement;
+
             setSeed(currentDate);
+
+            PRNG.seed = seed;
+            // Reset the renderer's static properties
+            Renderer.coveredRange = new Range(0, 0);
+            Renderer.visibleRange = new Range(0, 0);
+            renderer.frames = [];
+
+            loader.classList.remove("hidden");
+            loaderText.innerText = "Creating elements...";
+            renderer
+                .render(newRange)
+                .then(async (newSvgContent) => {
+                    loaderText.innerText = "Rendering layers...";
+                    setSvgContent(newSvgContent);
+                    await new Promise((resolve) => setTimeout(resolve, 0));
+                })
+                .then(() => loader.classList.add("hidden"));
         }
     };
 
@@ -129,7 +157,7 @@ export const Menu: React.FC<IMenu> = ({
                 <Button
                     id="ScrollLeft"
                     title="Scroll left"
-                    onClick={horizonalScrollLeft}
+                    onClick={horizontalScrollLeft}
                     text="&lt;"
                 />
                 <input
@@ -145,7 +173,7 @@ export const Menu: React.FC<IMenu> = ({
                 <Button
                     id="ScrollRight"
                     title="Scroll right"
-                    onClick={horizonalScrollRight}
+                    onClick={horizontalScrollRight}
                     text="&gt;"
                 />
             </div>

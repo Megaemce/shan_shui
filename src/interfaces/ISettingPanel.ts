@@ -8,21 +8,6 @@ import Renderer from "../classes/Renderer";
  */
 export interface ISettingPanel {
     /**
-     * The seed value used in the settings.
-     *
-     * @type {string}
-     */
-    seed: string;
-
-    /**
-     * Function to change the seed value.
-     *
-     * @function
-     * @param {string} seed - The new seed value.
-     */
-    setSeed: (seed: string) => void;
-
-    /**
      * The step value used in the settings.
      *
      * @type {number}
@@ -100,4 +85,11 @@ export interface ISettingPanel {
      * @function
      */
     toggleAutoLoad: () => void;
+
+    /**
+     * Set SVG context of the main picture with the new value
+     * @function
+     * @param {string} svg - The SVG content.
+     */
+    setSvgContent: (svg: string) => void;
 }
