@@ -92,4 +92,11 @@ export interface ISettingPanel {
      * @param {string} svg - The SVG content.
      */
     setSvgContent: (svg: string) => void;
+
+    /**
+     * The inital seed taken when the page is loaded
+     *
+     * @type {string}
+     */
+    initalSeed: string;
 }

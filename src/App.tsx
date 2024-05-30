@@ -4,6 +4,7 @@ import Renderer from "./classes/Renderer";
 import { ScrollableCanvas } from "./ui/ScrollableCanvas";
 import { SettingPanel } from "./ui/SettingPanel";
 import { debounce } from "./utils/utils";
+import PRNG from "./classes/PRNG";
 
 /**
  * Main application component.
@@ -11,6 +12,10 @@ import { debounce } from "./utils/utils";
  * @returns {JSX.Element} The main application component.
  */
 export const App: React.FC = (): JSX.Element => {
+    const urlSeed = new URLSearchParams(window.location.search).get("seed");
+    const currentDate = new Date().getTime().toString();
+    const initalSeed = urlSeed || currentDate;
+
     // Refs
     const rendererRef = useRef(new Renderer());
     const timeoutRef = useRef<number | NodeJS.Timeout>(0);
@@ -29,6 +34,8 @@ export const App: React.FC = (): JSX.Element => {
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
     const [svgContent, setSvgContent] = useState("");
 
+    // Cannot be done via setSeed as it will rerender the scene. Look at Menu.tsx
+    PRNG.seed = initalSeed;
     Renderer.forwardCoverage = window.innerWidth / 2;
 
     // Callback function to handle changes in the save range
@@ -133,6 +140,7 @@ export const App: React.FC = (): JSX.Element => {
                 onChangeSaveRange={onChangeSaveRange}
                 toggleAutoLoad={toggleAutoLoad}
                 setSvgContent={setSvgContent}
+                initalSeed={initalSeed}
             />
             <ScrollableCanvas
                 windowHeight={windowHeight}

@@ -22,6 +22,7 @@ import PRNG from "../classes/PRNG";
  * @param {Function} props.toggleAutoLoad - Function to toggle auto-load.
  * @param {boolean} props.darkMode - The dark mode state.
  * @param {Function} props.setSvgContent - Function to set the SVG content.
+ * @param {string} props.initalSeed - The initial seed taken when the page is loaded.
  * @returns {JSX.Element} The Menu component.
  */
 export const Menu: React.FC<IMenu> = ({
@@ -38,15 +39,13 @@ export const Menu: React.FC<IMenu> = ({
     toggleAutoLoad,
     darkMode,
     setSvgContent,
+    initalSeed,
 }) => {
     // Initialize seed based on URL parameter or current time
-    const urlSeed = new URLSearchParams(window.location.search).get("seed");
-    const currentDate = new Date().getTime().toString();
-    const currentSeed = urlSeed || currentDate;
 
     // Maximum step value calculation
     const maxStep = newPosition + windowWidth + Renderer.forwardCoverage;
-    const [seed, setSeed] = useState<string>(currentSeed);
+    const [seed, setSeed] = useState<string>(initalSeed);
 
     // Handlers for horizontal scrolling
     const horizontalScrollLeft = () => horizontalScroll(-step);
@@ -108,8 +107,8 @@ export const Menu: React.FC<IMenu> = ({
             ) as HTMLElement;
 
             setSeed(currentDate);
-
             PRNG.seed = seed;
+
             // Reset the renderer's static properties
             Renderer.coveredRange = new Range(0, 0);
             Renderer.visibleRange = new Range(0, 0);

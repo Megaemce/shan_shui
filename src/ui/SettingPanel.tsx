@@ -19,6 +19,7 @@ import { Button } from "./Button";
  * @param {Function} props.onChangeSaveRange - Function to change the save range.
  * @param {Function} props.toggleAutoLoad - Function to toggle auto-load.
  * @param {Function} props.setSvgContent - Function to set the SVG content.
+ * @param {string} props.initalSeed - The initial seed taken when the page is loaded.
  * @returns {JSX.Element} The SettingPanel component.
  */
 export const SettingPanel: React.FC<ISettingPanel> = ({
@@ -34,6 +35,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     onChangeSaveRange,
     toggleAutoLoad,
     setSvgContent,
+    initalSeed,
 }) => {
     // State variables
     const [menuVisible, setMenuVisible] = useState(false);
@@ -167,6 +169,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
                 toggleAutoLoad={toggleAutoLoad}
                 darkMode={darkMode}
                 setSvgContent={setSvgContent}
+                initalSeed={initalSeed}
             />
         </>
     );
