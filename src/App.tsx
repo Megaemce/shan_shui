@@ -36,8 +36,6 @@ export const App: React.FC = (): JSX.Element => {
     const [autoScroll, setAutoScroll] = useState<boolean>(false);
     const [svgContent, setSvgContent] = useState("");
 
-    // Set initial seed for PRNG and forward coverage for renderer
-    PRNG.seed = seed;
     Renderer.forwardCoverage = window.innerWidth / 2;
 
     // Callback function to handle changes in the save range
