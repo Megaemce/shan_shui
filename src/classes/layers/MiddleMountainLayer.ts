@@ -14,7 +14,7 @@ import TransmissionTower from "../structures/TransmissionTower";
 import Tree01 from "../structures/Tree01";
 import Tree02 from "../structures/Tree02";
 import Tree03 from "../structures/Tree03";
-import generateTower from "../structures/Tower";
+import Tower from "../structures/Tower";
 import { config } from "../../config";
 import { distance } from "../../utils/polytools";
 import { generateVegetate } from "../../utils/generateVegetate";
@@ -258,7 +258,7 @@ export default class MiddleMountainLayer extends Layer {
                         PRNG.randomChoice([true, false])
                     );
                 } else if (treeType === 2) {
-                    return new generateTower(
+                    return new Tower(
                         x + xOffset,
                         y + yOffset,
                         PRNG.randomChoice([1, 1, 1, 2, 2])
