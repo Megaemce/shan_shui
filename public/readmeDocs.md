@@ -52,6 +52,14 @@ On your current screen, multiple frames may intersect with each other, comprisin
 
 </details>
 <br>
+
+<details>
+<summary>WaterLayer</summary>
+
+![water](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/water.png)
+
+</details>
+<br>
 <br>
 
 ### Structures
@@ -136,16 +144,6 @@ Made out of `Hat` (optional), `Man` and `Stick` (optional)
 <summary>MiddleMountainFoot</summary>
 
 Made out of `Stroke`.
-
-</details>
-<br>
-
-<details>
-<summary>MiddleMountainWater</summary>
-
-Made out of `Stroke`.
-
-![water](https://raw.githubusercontent.com/Megaemce/shan_shui/main/public/img/water.png)
 
 </details>
 <br>

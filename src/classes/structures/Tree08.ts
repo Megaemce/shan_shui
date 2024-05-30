@@ -13,9 +13,9 @@ import { lineDivider } from "../../utils/polytools";
 export default class Tree08 extends Structure {
     /**
      * Constructor for the Tree08 class.
-     * @param xOffset - X-coordinate offset of tree08.
-     * @param yOffset - Y-coordinate offset of tree08.
-     * @param height - Height of the tree.
+     * @param {number} xOffset - X-coordinate offset of tree08.
+     * @param {number} yOffset - Y-coordinate offset of tree08.
+     * @param {number} height - Height of the tree.
      */
     constructor(xOffset: number, yOffset: number, height: number = 80) {
         super();

@@ -11,12 +11,17 @@ import { normalizeNoise } from "../../utils/utils";
 export default class Bark extends Structure {
     /**
      * Constructor for the BarkGenerator class.
-     * @param x - X-coordinate of the bark.
-     * @param y - Y-coordinate of the bark.
-     * @param strokeWidth - Width of the bark.
-     * @param angle - Angle of the bark.
+     * @param {number} xOffset - X-coordinate of the bark.
+     * @param {number} yOffset - Y-coordinate of the bark.
+     * @param {number} strokeWidth - Width of the bark.
+     * @param {number} angle - Angle of the bark.
      */
-    constructor(x: number, y: number, strokeWidth: number, angle: number) {
+    constructor(
+        xOffset: number,
+        yOffset: number,
+        strokeWidth: number,
+        angle: number
+    ) {
         super();
 
         const fun = function (x: number) {
@@ -47,8 +52,8 @@ export default class Bark extends Structure {
 
         const barkArray = lengthAngleArray.map(([l, a], i) => {
             const localNoise = noiseArray[i] * noise + (1 - noise);
-            const newX = x + Math.cos(a + angle) * l * localNoise;
-            const newY = y + Math.sin(a + angle) * l * localNoise;
+            const newX = xOffset + Math.cos(a + angle) * l * localNoise;
+            const newY = yOffset + Math.sin(a + angle) * l * localNoise;
 
             return new Point(newX, newY);
         });

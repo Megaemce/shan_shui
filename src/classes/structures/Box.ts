@@ -10,6 +10,8 @@ import boxDecoration from "../../utils/boxDecoration";
  */
 export default class Box extends Structure {
     /**
+     * Constructs a Box object with the specified parameters.
+     *
      * @param {number} xOffset - The x-coordinate offset for the box.
      * @param {number} yOffset - The y-coordinate offset for the box.
      * @param {number} [height=20] - The height of the box.
@@ -19,7 +21,9 @@ export default class Box extends Structure {
      * @param {boolean} [hasTransparency=true] - Indicates whether the box has transparency.
      * @param {boolean} [hasBottom=true] - Indicates whether the box has a bottom.
      * @param {number} [strokeWidth=3] - The stroke width of the box.
-     * @param {(upperLeftPoint: Point, upperRightPoint: Point, bottomLeftPoint: Point, bottomRightPoint: Point) => Point[][]} [decorator=() => []] - The decorator function for additional features.
+     * @param {number} [style=666] - The style of the box (no style at all).
+     * @param {number} [horizontalSubPoints=3] - The number of horizontal sub-points.
+     * @param {number} [verticalSubPoints=2] - The number of vertical sub-points.
      */
     constructor(
         xOffset: number,

@@ -13,8 +13,8 @@ import Branch from "../elements/Branch";
 export default class Tree04 extends Structure {
     /**
      * Constructor for the Tree04Generator class.
-     * @param xOffset - X-coordinate offset.
-     * @param yOffset - Y-coordinate offset.
+     * @param {number} xOffset - X-coordinate offset.
+     * @param {number} yOffset - Y-coordinate offset.
      */
     constructor(xOffset: number, yOffset: number) {
         super();

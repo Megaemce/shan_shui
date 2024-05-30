@@ -11,9 +11,9 @@ import { midPoint, triangulate } from "../../utils/polytools";
 export default class Tree07 extends Structure {
     /**
      * Generates a tree structure with a specific pattern.
-     * @param xOffset - X-coordinate offset.
-     * @param yOffset - Y-coordinate offset.
-     * @param height - Height of the tree.
+     * @param {number} xOffset - X-coordinate offset.
+     * @param {number} yOffset - Y-coordinate offset.
+     * @param {number} height - Height of the tree.
      */
     constructor(xOffset: number, yOffset: number, height: number = 60) {
         super();

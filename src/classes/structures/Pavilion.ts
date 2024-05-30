@@ -6,6 +6,16 @@ import PRNG from "../PRNG";
 import Rail from "./Rail";
 
 export default class Pavilion extends Structure {
+    /**
+     * Initializes a new instance of the Pavilion class with the specified parameters.
+     *
+     * @param {number} xOffset - The x-coordinate offset for the pavilion.
+     * @param {number} yOffset - The y-coordinate offset for the pavilion.
+     * @param {number} [seed=0] - The seed value for random number generation.
+     * @param {number} [height=70] - The height of the pavilion.
+     * @param {number} [strokeWidth=180] - The stroke width for the pavilion.
+     * @param {number} [perspective=5] - The perspective value for the pavilion.
+     */
     constructor(
         xOffset: number,
         yOffset: number,

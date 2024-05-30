@@ -8,10 +8,10 @@ import PRNG from "../PRNG";
 export default class Tree02 extends Structure {
     /**
      * Constructor for the Tree02 class.
-     * @param xOffset - X-coordinate offset of the tree base.
-     * @param yOffset - Y-coordinate offset of the tree base.
-     * @param color - Color of the tree.
-     * @param clusters - Number of blob-like clusters.
+     * @param {number} xOffset - X-coordinate offset of the tree base.
+     * @param {number} yOffset - Y-coordinate offset of the tree base.
+     * @param {string} color - Color of the tree.
+     * @param {number} clusters - Number of blob-like clusters.
      */
     constructor(
         xOffset: number,

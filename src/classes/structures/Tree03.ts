@@ -10,19 +10,20 @@ import Element from "../Element";
  */
 export default class Tree03 extends Structure {
     /**
-     * Constructor for the Tree03Generator class.
-     * @param xOffset - X-coordinate offset of the tree base.
-     * @param yOffset - Y-coordinate offset  of the tree base.
-     * @param height - Height of the tree.
-     * @param color - Color of the tree.
-     * @param bendingAngle - Custom bending function.
+     * Initializes a new instance of the Tree03 class.
+     *
+     * @param {number} xOffset - The x-coordinate offset of the tree.
+     * @param {number} yOffset - The y-coordinate offset of the tree.
+     * @param {number} [height=16] - The height of the tree.
+     * @param {string} [color="rgba(100,100,100,0.5)"] - The color of the tree.
+     * @param {(x: number) => number} bendingAngle - The bending angle function.
      */
     constructor(
         xOffset: number,
         yOffset: number,
         height: number = 16,
         color: string = "rgba(100,100,100,0.5)",
-        bendingAngle: (x: number) => number = (_) => 0
+        bendingAngle: (x: number) => number
     ) {
         super();
 

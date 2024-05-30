@@ -10,12 +10,12 @@ import Element from "../Element";
  */
 export default class Tree01 extends Structure {
     /**
-     * Constructor for the TreeGenerator class.
-     * @param xOffset - X-coordinate offset of the tree base.
-     * @param yOffset - Y-coordinate offset of the tree base.
-     * @param height - Height of the tree.
-     * @param strokeWidth - Width of the tree branches.
-     * @param color - Color of the tree.
+     * Constructor for the Tree01 class.
+     * @param {number} xOffset - X-coordinate offset of the tree base.
+     * @param {number} yOffset - Y-coordinate offset of the tree base.
+     * @param {number} height - Height of the tree. Default is 50.
+     * @param {number} strokeWidth - Width of the tree branches. Default is 3.
+     * @param {string} color - Color of the tree. Default is "rgba(100,100,100,0.5)".
      */
     constructor(
         xOffset: number,

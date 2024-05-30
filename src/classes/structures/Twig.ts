@@ -11,18 +11,18 @@ export default class Twig extends Structure {
     /**
      * Generates a twig with branches and leaves.
      *
-     * @param x - X-coordinate of the twig base.
-     * @param y - Y-coordinate of the twig base.
-     * @param depth - Depth of the twig branches.
-     * @param angle - Initial angle of the twig.
-     * @param scale - Scale factor of the twig.
-     * @param direction - Direction of the twig branches.
-     * @param strokeWidth - Width of the twig branches.
-     * @param leaves - Tuple representing whether leaves should be generated and their number.
+     * @param {number} xOffset - X-coordinate of the twig base.
+     * @param {number} yOffset - Y-coordinate of the twig base.
+     * @param {number} depth - Depth of the twig branches.
+     * @param {number} [angle=0] - Initial angle of the twig.
+     * @param {number} [scale=1] - Scale factor of the twig.
+     * @param {number} [direction=1] - Direction of the twig branches.
+     * @param {number} [strokeWidth=1] - Width of the twig branches.
+     * @param {number} [leaves=12] - Number of the leaves.
      */
     constructor(
-        x: number,
-        y: number,
+        xOffset: number,
+        yOffset: number,
         depth: number,
         angle: number = 0,
         scale: number = 1,
@@ -42,8 +42,8 @@ export default class Twig extends Structure {
             const my = -i * 5 * scale;
             const a = Math.atan2(my, mx);
             const distance = Math.sqrt(mx * mx + my * my);
-            const newX = Math.cos(a + startAngle) * distance + x;
-            const newY = Math.sin(a + startAngle) * distance + y;
+            const newX = Math.cos(a + startAngle) * distance + xOffset;
+            const newY = Math.sin(a + startAngle) * distance + yOffset;
 
             pointArray[i] = new Point(newX, newY);
 

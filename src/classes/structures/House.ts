@@ -17,6 +17,17 @@ const HEIGHT = config.structure.house.height;
 const PERSPECTIVE = config.structure.house.perspective;
 
 export default class House extends Structure {
+    /**
+     * Constructs a House object with specified parameters.
+     *
+     * @param {number} xOffset - The x-coordinate offset of the house.
+     * @param {number} yOffset - The y-coordinate offset of the house.
+     * @param {number} [strokeWidth=DEFAULT_STROKE_WIDTH] - The stroke width of the house.
+     * @param {number} [stories=DEFAULT_STORIES] - The number of stories in the house.
+     * @param {number} [rotation=DEFAULT_ROTATION] - The rotation of the house.
+     * @param {number} [style=DEFAULT_STYLE] - The style of the house.
+     * @param {boolean} [hasRail=DEFAULT_HAS_RAIL] - Whether the house has a rail.
+     */
     constructor(
         xOffset: number,
         yOffset: number,

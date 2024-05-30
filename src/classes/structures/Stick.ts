@@ -13,7 +13,7 @@ export default class Stick extends Structure {
      * Generates a stick SVG polyline.
      * @param {Point} p0 - The start point.
      * @param {Point} p1 - The end point.
-     * @param {boolean} [horizontalFlip=false] - Whether to horizontally flip the stick.
+     * @param {boolean} [horizontalFlip=false] - Horizontally flip the stick or not.
      */
     constructor(p0: Point, p1: Point, horizontalFlip: boolean = false) {
         super();
