@@ -11,6 +11,8 @@ Discover the beauty of an ever-evolving Chinese landscape art. This project comb
 
 <img alt="Shan Shui example" src="./public/img/example.png" width="100%">
 
+You can move the canvas with the left and right arrow keys or by using the buttons. In the menu section, you can find an option to download the whole or part of your art as an SVG or to share it with your friends.
+
 ## 🏗️ Tech stack
 
 React, TypeScript and SVG. Nothing more! ✨

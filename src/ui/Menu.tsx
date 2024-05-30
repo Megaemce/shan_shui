@@ -96,7 +96,7 @@ export const Menu: React.FC<IMenu> = ({
     // Handler for reloading with a new seed
     const reload = () => {
         const userChoice = window.confirm(
-            "This action will redesigner the whole picture!"
+            "This action will redesign the whole picture!"
         );
         if (userChoice) {
             const currentDate = new Date().getTime().toString();
