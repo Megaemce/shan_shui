@@ -56,19 +56,19 @@ export default class Renderer {
         }
 
         // Collect of visible layers
-        const visibleLayers = this.frames
-            .filter((frame) => Renderer.visibleRange.isShowing(frame.range))
-            .flatMap((frame, frameNum) => {
-                return frame.layers
-                    .filter((layer) =>
-                        Renderer.visibleRange.isShowing(layer.range)
-                    )
-                    .map((layer, layerNum) => {
-                        return { layer, frameNum, layerNum };
-                    });
-            });
+        const visibleLayers = [];
+        for (let i = 0; i < this.frames.length; i++) {
+            const frame = this.frames[i];
+            if (!Renderer.visibleRange.isShowing(frame.range)) continue;
+            for (let j = 0; j < frame.layers.length; j++) {
+                const layer = frame.layers[j];
+                if (Renderer.visibleRange.isShowing(layer.range)) {
+                    visibleLayers.push({ layer, frameNum: i, layerNum: j });
+                }
+            }
+        }
 
-        // Sort them in according to the order of TAG_ORDER from config file
+        // Sort them by the tag order so they will be rendered in the right order
         visibleLayers.sort(({ layer: a }, { layer: b }) => {
             if (TAG_ORDER[a.tag] !== TAG_ORDER[b.tag]) {
                 return TAG_ORDER[a.tag] - TAG_ORDER[b.tag];
@@ -79,11 +79,27 @@ export default class Renderer {
             }
         });
 
+        // Chunk layers by number of logical processors
+        const chunkedLayers = [];
+        for (
+            let i = 0;
+            i < visibleLayers.length;
+            i += navigator.hardwareConcurrency
+        ) {
+            chunkedLayers.push(
+                visibleLayers.slice(i, i + navigator.hardwareConcurrency)
+            );
+        }
+
         // Render all of the visible layers
         const results = await Promise.all(
-            visibleLayers.map(({ layer, frameNum, layerNum }) =>
-                layer.render(frameNum, layerNum)
-            )
+            chunkedLayers.map((layers) => {
+                return Promise.all(
+                    layers.map(({ layer, frameNum, layerNum }) => {
+                        return layer.render(frameNum, layerNum);
+                    })
+                );
+            })
         );
 
         // Return SVG string
