@@ -44,7 +44,9 @@ export default class Element {
 
             if (xMin > x) xMin = x;
             if (xMax < x) xMax = x;
-            points += `${x.toFixed(1)},${y.toFixed(1)} `;
+            points += `${x.toFixed(1)},${y.toFixed(1)}${
+                i < pointArray.length - 1 ? " " : ""
+            }`;
         }
 
         this.range = new Range(xMin, xMax);
