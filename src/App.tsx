@@ -16,6 +16,23 @@ export const App: React.FC = (): JSX.Element => {
     const currentDate = new Date().getTime().toString();
     const initalSeed = urlSeed || currentDate;
 
+    console.log("Current PRNG seed", PRNG.seed);
+    console.log("#############################");
+
+    // When there is no seed in the URL, update the URL with the current date
+    if (!urlSeed) {
+        const state = { info: "Updated URL with new seed" };
+        const title = `{Shan, Shui}* - ${currentDate}`;
+        const url = `/?seed=${currentDate}`;
+
+        // Use pushState to add to the history stack
+        window.history.pushState(state, title, url);
+
+        // Use replaceState to replace the current history entry
+        window.history.replaceState(state, title, url);
+    } else {
+    }
+
     // Refs
     const rendererRef = useRef(new Renderer());
     const timeoutRef = useRef<number | NodeJS.Timeout>(0);
@@ -35,7 +52,6 @@ export const App: React.FC = (): JSX.Element => {
     const [svgContent, setSvgContent] = useState("");
 
     // Cannot be done via setSeed as it will rerender the scene. Look at Menu.tsx
-    PRNG.seed = initalSeed;
     Renderer.forwardCoverage = window.innerWidth / 2;
 
     // Callback function to handle changes in the save range
@@ -133,6 +149,7 @@ export const App: React.FC = (): JSX.Element => {
                 horizontalScroll={horizontalScroll}
                 toggleAutoScroll={toggleAutoScroll}
                 newPosition={newPosition}
+                setNewPosition={setNewPosition}
                 renderer={rendererRef.current}
                 windowWidth={windowWidth}
                 windowHeight={windowHeight}

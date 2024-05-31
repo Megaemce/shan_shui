@@ -45,6 +45,12 @@ export interface IMenu {
     newPosition: number;
 
     /**
+     * Sets the new x-coordinate of the canvas.
+     * @param {number} value - The new x-coordinate.
+     */
+    setNewPosition: (value: number) => void;
+
+    /**
      * The width of the menu window.
      *
      * @type {number}

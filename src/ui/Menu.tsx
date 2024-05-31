@@ -31,6 +31,7 @@ export const Menu: React.FC<IMenu> = ({
     horizontalScroll,
     toggleAutoScroll,
     newPosition,
+    setNewPosition,
     windowWidth,
     windowHeight,
     renderer,
@@ -100,19 +101,34 @@ export const Menu: React.FC<IMenu> = ({
         );
         if (userChoice) {
             const currentDate = new Date().getTime().toString();
-            const newRange = new Range(newPosition, newPosition + windowWidth);
+            const newRange = new Range(0, windowWidth);
             const loader = document.getElementById("Loader") as HTMLElement;
             const loaderText = document.getElementById(
                 "LoaderText"
             ) as HTMLElement;
+            const state = { info: "Updated URL with new seed" };
+            const title = `{Shan, Shui}* - ${currentDate}`;
+            const url = `/?seed=${currentDate}`;
 
+            // Use pushState to add to the history stack
+            window.history.pushState(state, title, url);
+
+            // Use replaceState to replace the current history entry
+            window.history.replaceState(state, title, url);
+
+            // Bring new seed to life
             setSeed(currentDate);
             PRNG.seed = seed;
 
             // Reset the renderer's static properties
             Renderer.coveredRange = new Range(0, 0);
             Renderer.visibleRange = new Range(0, 0);
+
+            // Remove old frames
             renderer.frames = [];
+
+            // Reset canvas position to 0,windowWidth
+            setNewPosition(0);
 
             loader.classList.remove("hidden");
             loaderText.innerText = "Creating elements...";

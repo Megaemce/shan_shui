@@ -66,6 +66,10 @@ export default class PRNG {
         }
     }
 
+    static get seed(): number {
+        return this._seed;
+    }
+
     /**
      * Generates the next pseudo-random number in the sequence.
      * @returns The next pseudo-random number (float) in the sequence.
