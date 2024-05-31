@@ -80,7 +80,8 @@ export default class Hut extends Structure {
                 xOffset,
                 yOffset,
                 textureCount,
-                2,
+                1,
+                undefined,
                 () => PRNG.weightedRandom((a) => a * a),
                 (x) => 5,
                 0.25

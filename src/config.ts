@@ -39,7 +39,7 @@ export const config = {
             },
             texture: {
                 size: 80,
-                shadow: 0,
+                width: 1,
             },
             polyline: {
                 fillColor: "rgba(255, 255, 255, 1)",

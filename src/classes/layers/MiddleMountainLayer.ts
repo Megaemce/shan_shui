@@ -141,7 +141,8 @@ export default class MiddleMountainLayer extends Layer {
                 xOffset,
                 yOffset,
                 TEXTURE_SIZE,
-                PRNG.randomChoice([2, 1, 3])
+                1,
+                PRNG.randomChoice([1, 2, 3])
             )
         );
 

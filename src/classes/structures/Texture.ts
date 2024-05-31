@@ -12,16 +12,18 @@ export default class Texture extends Structure {
      * @param {number} [xOffset=0] - X-offset for the texture.
      * @param {number} [yOffset=0] - Y-offset for the texture.
      * @param {number} [textureCount=400] - Number of textures to generate.
+     * @param {number} [width=1.5] - Width of the textures.
      * @param {number} [shadow=0] - Shade factor for additional shading.
      * @param {() => number} [displacementFunction] - Function to determine the displacement of each texture.
      * @param {(x: number) => number} [noise] - Function to determine the noise of each texture.
-     * @param {number} [length=0.2] - Length factor for the textures.
+     * @param {number} [length=0.2] - Length of the textures.
      */
     constructor(
         elements: Point[][],
         xOffset: number = 0,
         yOffset: number = 0,
         textureCount: number = 400,
+        width: number = 1.5,
         shadow: number = 0,
         displacementFunction: () => number = () =>
             0.5 + (PRNG.random() > 0.5 ? -1 : 1) * PRNG.random(1 / 6, 0.5),
@@ -76,7 +78,6 @@ export default class Texture extends Structure {
         }
 
         // SHADE
-
         for (let index = 0; index < textureArray.length; index++) {
             if (index % step === 0 && textureArray[index].length > 0) {
                 this.add(
@@ -85,6 +86,24 @@ export default class Texture extends Structure {
                         "rgba(100,100,100,0.1)",
                         "rgba(100,100,100,0.1)",
                         shadow
+                    )
+                );
+            }
+        }
+
+        // TEXTURE
+        for (
+            let index = 0 + shadow;
+            index < textureArray.length;
+            index += 1 + shadow
+        ) {
+            if (textureArray[index].length > 0) {
+                this.add(
+                    new Stroke(
+                        textureArray[index],
+                        undefined,
+                        `rgba(100,100,100,${(PRNG.random() * 0.3).toFixed(3)})`,
+                        width
                     )
                 );
             }

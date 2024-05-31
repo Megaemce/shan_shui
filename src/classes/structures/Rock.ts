@@ -101,6 +101,7 @@ export default class Rock extends Structure {
                 this.xOffset,
                 this.yOffset,
                 textureCount,
+                3,
                 this.shadow,
                 () => 0.5 + PRNG.randomSign() * PRNG.random(0.2, 0.35)
             )

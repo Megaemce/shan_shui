@@ -24,8 +24,8 @@ const POLYLINE_STROKE_WIDTH = config.layers.bottomMountain.polyline.strokeWidth;
 const STROKE_COLOR = config.layers.bottomMountain.stroke.color;
 const STROKE_FILL_COLOR = config.layers.bottomMountain.stroke.fillColor;
 const STROKE_WIDTH = config.layers.bottomMountain.stroke.strokeWidth;
-const TEXTURE_SHADOW = config.layers.bottomMountain.texture.shadow;
 const TEXTURE_SIZE = config.layers.bottomMountain.texture.size;
+const TEXTURE_WIDTH = config.layers.bottomMountain.texture.width;
 
 /**
  * Represents a flat mountain chunk with optional vegetation and textures.
@@ -123,7 +123,8 @@ export default class BottomMountainLayer extends Layer {
                 xOffset,
                 yOffset,
                 TEXTURE_SIZE,
-                TEXTURE_SHADOW,
+                TEXTURE_WIDTH,
+                PRNG.randomChoice([1, 2, 3]),
                 () => {
                     if (PRNG.random() > 0.5) {
                         return 0.1 + 0.4 * PRNG.random();
@@ -182,6 +183,7 @@ export default class BottomMountainLayer extends Layer {
             point.x *= 1 - v + Perlin.noise(point.y * 0.5) * v;
         });
 
+        // Top platform
         this.add(
             new Element(
                 grlist,
@@ -192,6 +194,8 @@ export default class BottomMountainLayer extends Layer {
                 POLYLINE_STROKE_WIDTH
             )
         );
+
+        // Top platform stroke
         this.add(
             new Stroke(
                 grlist.map((p) => new Point(p.x + xOffset, p.y + yOffset)),
