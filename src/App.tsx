@@ -16,6 +16,22 @@ export const App: React.FC = (): JSX.Element => {
     const currentDate = new Date().getTime().toString();
     const initalSeed = urlSeed || currentDate;
 
+    if (!PRNG.alreadyPopulated) {
+        if (urlSeed) {
+            PRNG.seed = urlSeed;
+        } else {
+            const state = { info: "Updated URL with new seed" };
+            const title = `{Shan, Shui}* - ${currentDate}`;
+            const url = `/?seed=${currentDate}`;
+            // Use pushState to add to the history stack
+            window.history.pushState(state, title, url);
+            // Use replaceState to replace the current history entry
+            window.history.replaceState(state, title, url);
+
+            PRNG.seed = currentDate;
+        }
+    }
+
     // Refs
     const rendererRef = useRef(new Renderer());
     const timeoutRef = useRef<number | NodeJS.Timeout>(0);
@@ -73,26 +89,9 @@ export const App: React.FC = (): JSX.Element => {
             );
         }
 
-        // Set the seed based on URL or current date
-        if (urlSeed) {
-            PRNG.seed = urlSeed;
-        } else {
-            const state = { info: "Updated URL with new seed" };
-            const title = `{Shan, Shui}* - ${currentDate}`;
-            const url = `/?seed=${currentDate}`;
-            // Use pushState to add to the history stack
-            window.history.pushState(state, title, url);
-            // Use replaceState to replace the current history entry
-            window.history.replaceState(state, title, url);
-
-            PRNG.seed = currentDate;
-        }
-
         return () => {
             window.removeEventListener("resize", handleResize);
         };
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Handle horizontal scrolling

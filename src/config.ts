@@ -168,7 +168,6 @@ export const config = {
         ampFalloff: 0.5, // Amplitude falloff factor for each octave in the Perlin noise.
     },
     prng: {
-        defaultSeed: 1234,
         primeOne: 999979,
         primeTwo: 999983,
     },

@@ -1,6 +1,5 @@
 import { config } from "../config";
 
-const DEFAULT_SEED = config.prng.defaultSeed;
 const PRIM_EONE = config.prng.primeOne;
 const PRIM_ETWO = config.prng.primeTwo;
 const SEMIPRIM_E = PRIM_EONE * PRIM_ETWO;
@@ -9,7 +8,9 @@ const SEMIPRIM_E = PRIM_EONE * PRIM_ETWO;
  * Pseudo-Random Number Generator (PRNG) class.
  */
 export default class PRNG {
-    static _seed: number = DEFAULT_SEED;
+    /** Making sure that the PRNG is only seeded once while the App is render, as the get seed code is in the main App */
+    static alreadyPopulated: boolean = false;
+    static _seed: number;
 
     /**
      * Hashes the input value for use in seeding.
@@ -34,10 +35,6 @@ export default class PRNG {
      * @param {string | number} value - The value to use for seeding.
      */
     static set seed(value: string | number) {
-        if (value === undefined) {
-            value = new Date().getTime();
-        }
-
         let newSeed = 0;
         let z = 0;
 
@@ -59,6 +56,7 @@ export default class PRNG {
         }
 
         this._seed = newSeed;
+        this.alreadyPopulated = true;
 
         // Skip the first few numbers after seeding
         for (let i = 0; i < 10; i++) {
