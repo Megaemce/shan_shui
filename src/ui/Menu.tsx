@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent } from "react";
 import Range from "../classes/Range";
 import Renderer from "../classes/Renderer";
 import { Button } from "./Button";
@@ -42,11 +42,8 @@ export const Menu: React.FC<IMenu> = ({
     setSvgContent,
     initalSeed,
 }) => {
-    // Initialize seed based on URL parameter or current time
-
     // Maximum step value calculation
     const maxStep = newPosition + windowWidth + Renderer.forwardCoverage;
-    const [seed, setSeed] = useState<string>(initalSeed);
 
     // Handlers for horizontal scrolling
     const horizontalScrollLeft = () => horizontalScroll(-step);
@@ -55,7 +52,7 @@ export const Menu: React.FC<IMenu> = ({
     // Handler for downloading SVG
     const downloadSvg = () => {
         if (saveRange.length > 0) {
-            renderer.download(seed, saveRange, windowHeight, darkMode);
+            renderer.download(initalSeed, saveRange, windowHeight, darkMode);
         } else {
             alert(
                 `Range length must be above zero.\nYour current range is: [${saveRange.start} - ${saveRange.end}].`
@@ -117,8 +114,7 @@ export const Menu: React.FC<IMenu> = ({
             window.history.replaceState(state, title, url);
 
             // Bring new seed to life
-            setSeed(currentDate);
-            PRNG.seed = seed;
+            PRNG.seed = currentDate;
 
             // Reset the renderer's static properties
             Renderer.coveredRange = new Range(0, 0);
@@ -145,10 +141,9 @@ export const Menu: React.FC<IMenu> = ({
 
     // Handler for sharing the current seed URL
     const share = () => {
-        const url = window.location.href.split("?")[0];
-        const seedUrl = `${url}?seed=${seed}`;
-        navigator.clipboard.writeText(seedUrl).then(() => {
-            window.alert(`URL copied to clipboard.\n${seedUrl}`);
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+            window.alert(`URL copied to clipboard.\n${url}`);
         });
     };
 
@@ -156,7 +151,7 @@ export const Menu: React.FC<IMenu> = ({
         <div id="Menu" className="hidden">
             <div id="CurrentSeed">
                 <h4>Current seed:</h4>
-                <p>{seed}</p>
+                <p>{initalSeed}</p>
                 <Button
                     id="Reload"
                     title="Reload the view with new seed"

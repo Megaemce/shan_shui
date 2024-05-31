@@ -16,21 +16,18 @@ export const App: React.FC = (): JSX.Element => {
     const currentDate = new Date().getTime().toString();
     const initalSeed = urlSeed || currentDate;
 
-    console.log("Current PRNG seed", PRNG.seed);
-    console.log("#############################");
-
-    // When there is no seed in the URL, update the URL with the current date
-    if (!urlSeed) {
+    if (urlSeed) {
+        PRNG.seed = urlSeed;
+    } else {
         const state = { info: "Updated URL with new seed" };
         const title = `{Shan, Shui}* - ${currentDate}`;
         const url = `/?seed=${currentDate}`;
-
         // Use pushState to add to the history stack
         window.history.pushState(state, title, url);
-
         // Use replaceState to replace the current history entry
         window.history.replaceState(state, title, url);
-    } else {
+
+        PRNG.seed = currentDate;
     }
 
     // Refs
