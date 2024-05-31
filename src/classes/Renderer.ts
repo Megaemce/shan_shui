@@ -102,8 +102,11 @@ export default class Renderer {
             )
         );
 
+        // Flatten the results array before joining
+        const flattenedResults = results.flat();
+
         // Return SVG string
-        return results.join("\n");
+        return flattenedResults.join("\n");
     }
 
     /**
