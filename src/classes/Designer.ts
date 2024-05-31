@@ -199,12 +199,7 @@ export default class Designer {
                         height
                     );
 
-                    if (
-                        this.canFit(bottomMountain, 10, -100, [
-                            "bottomMountain",
-                            "middleMountain",
-                        ])
-                    ) {
+                    if (this.canFit(bottomMountain, 10, -100)) {
                         this.plan.push(bottomMountain);
                     }
                 }
