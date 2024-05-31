@@ -55,7 +55,7 @@ export const Menu: React.FC<IMenu> = ({
             renderer.download(initalSeed, saveRange, windowHeight, darkMode);
         } else {
             alert(
-                `Range length must be above zero.\nYour current range is: [${saveRange.start} - ${saveRange.end}].`
+                "Range length must be above zero.\nYour current start position is lower than the end position."
             );
         }
     };
@@ -172,7 +172,7 @@ export const Menu: React.FC<IMenu> = ({
                 />
                 <input
                     className="InputStep"
-                    title="Increment step"
+                    title={`Increment step. Value must be between 0 and ${maxStep}.`}
                     type="number"
                     value={step}
                     min={0}
@@ -199,6 +199,7 @@ export const Menu: React.FC<IMenu> = ({
             <div id="SaveView">
                 <h4>Save view</h4>
                 <input
+                    title={`Start position of a picture. Value must be between 0 and ${maxStep}. Must be also lower than the end position.`}
                     min={0}
                     max={maxStep}
                     className="InputNumber"
@@ -208,6 +209,7 @@ export const Menu: React.FC<IMenu> = ({
                 />
                 to
                 <input
+                    title={`End position of a picture. Value must be between 0 and ${maxStep}. Must be also higher than the start position.`}
                     min={0}
                     max={maxStep}
                     className="InputNumber"

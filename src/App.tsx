@@ -16,20 +16,6 @@ export const App: React.FC = (): JSX.Element => {
     const currentDate = new Date().getTime().toString();
     const initalSeed = urlSeed || currentDate;
 
-    if (urlSeed) {
-        PRNG.seed = urlSeed;
-    } else {
-        const state = { info: "Updated URL with new seed" };
-        const title = `{Shan, Shui}* - ${currentDate}`;
-        const url = `/?seed=${currentDate}`;
-        // Use pushState to add to the history stack
-        window.history.pushState(state, title, url);
-        // Use replaceState to replace the current history entry
-        window.history.replaceState(state, title, url);
-
-        PRNG.seed = currentDate;
-    }
-
     // Refs
     const rendererRef = useRef(new Renderer());
     const timeoutRef = useRef<number | NodeJS.Timeout>(0);
@@ -67,8 +53,9 @@ export const App: React.FC = (): JSX.Element => {
         setSaveRange(new Range(newPosition, newPosition + windowWidth));
     };
 
-    // Handle window resize events with debounce
+    // Perform only on mount
     useEffect(() => {
+        // Handle window resize events with debounce
         const handleResize = debounce(() => {
             setWindowWidth(window.innerWidth);
             setWindowHeight(window.innerHeight);
@@ -76,17 +63,38 @@ export const App: React.FC = (): JSX.Element => {
 
         window.addEventListener("resize", handleResize);
 
+        // Set forwardCoverage
         Renderer.forwardCoverage = window.innerWidth / 2;
 
+        // Popup alert if window is too small
         if (window.innerWidth < 400) {
             window.alert(
                 "Some mountains need space to grow.\nYour device's port view is too small for the full experience."
             );
         }
 
+        // Set the seed based on URL or current date
+        if (urlSeed) {
+            console.log("Setting seed from URL", urlSeed);
+            PRNG.seed = urlSeed;
+        } else {
+            const state = { info: "Updated URL with new seed" };
+            const title = `{Shan, Shui}* - ${currentDate}`;
+            const url = `/?seed=${currentDate}`;
+            // Use pushState to add to the history stack
+            window.history.pushState(state, title, url);
+            // Use replaceState to replace the current history entry
+            window.history.replaceState(state, title, url);
+
+            console.log("Setting seed from data", currentDate);
+            PRNG.seed = currentDate;
+        }
+
         return () => {
             window.removeEventListener("resize", handleResize);
         };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Handle horizontal scrolling

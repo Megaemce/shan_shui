@@ -56,3 +56,7 @@ This is the third iteration of this app:
     | Old  | 4.92s | 4.92s | 6.18s | 2.02s |
     | New  |  0.19s | 0.25s | 0.25s | 0.23s |
     | Diff | ⏬25x | ⏬19x | ⏬25x | ⏬8x |
+
+## 🐛 Known bugs
+
+* When the page is reloaded using `Reload` button and then the link is shared the page render different picture than original. 
