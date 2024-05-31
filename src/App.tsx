@@ -75,7 +75,6 @@ export const App: React.FC = (): JSX.Element => {
 
         // Set the seed based on URL or current date
         if (urlSeed) {
-            console.log("Setting seed from URL", urlSeed);
             PRNG.seed = urlSeed;
         } else {
             const state = { info: "Updated URL with new seed" };
@@ -86,7 +85,6 @@ export const App: React.FC = (): JSX.Element => {
             // Use replaceState to replace the current history entry
             window.history.replaceState(state, title, url);
 
-            console.log("Setting seed from data", currentDate);
             PRNG.seed = currentDate;
         }
 
