@@ -76,12 +76,12 @@ export const Menu: React.FC<IMenu> = ({
 
     // Handler for changing the step value
     const onInputSetChange = (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.valueAsNumber > maxStep) {
+        if (event.target.valueAsNumber > Renderer.forwardCoverage) {
             window.alert(
-                `Value is too damn high!\nCurrent maximum is ${maxStep} which is a sum of current position and 1.5x window width.`
+                `Value is too damn high!\n Maximum step is ${Renderer.forwardCoverage}.`
             );
-            event.target.value = String(maxStep);
-            setStep(maxStep);
+            event.target.value = String(Renderer.forwardCoverage);
+            setStep(Renderer.forwardCoverage);
         } else if (event.target.valueAsNumber < 0) {
             window.alert("Value cannot be negative. Setting to 100");
             event.target.value = String(100);
