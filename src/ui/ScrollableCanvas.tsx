@@ -2,26 +2,14 @@ import Range from "../classes/Range";
 import React, { useEffect } from "react";
 import { IScrollableCanvas } from "../interfaces/IScrollableCanvas";
 
-/**
- * ScrollableCanvas component that displays SVG content and handles rendering logic.
- * @component
- * @param {Object} props - The component props.
- * @param {number} props.windowHeight - The height of the window.
- * @param {number} props.newPosition - The new position for rendering.
- * @param {number} props.windowWidth - The width of the window.
- * @param {Object} props.renderer - The renderer instance.
- * @param {string} props.svgContent - The SVG content to be displayed.
- * @param {Function} props.setSvgContent - Function to set the SVG content.
- * @returns {JSX.Element} The ScrollableCanvas component.
- */
-export const ScrollableCanvas: React.FC<IScrollableCanvas> = ({
+export const ScrollableCanvas = ({
     windowHeight,
     newPosition,
     windowWidth,
     renderer,
     svgContent,
     setSvgContent,
-}) => {
+}: IScrollableCanvas) => {
     // Effect to render frames within the new range whenever newPosition or windowWidth changes
     useEffect(() => {
         const newRange = new Range(newPosition, newPosition + windowWidth);

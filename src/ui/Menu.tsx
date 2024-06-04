@@ -5,27 +5,7 @@ import { Button } from "./Button";
 import { IMenu } from "../interfaces/IMenu";
 import PRNG from "../classes/PRNG";
 
-/**
- * Menu component that provides various controls and settings for the application.
- * @component
- * @param {Object} props - The component props.
- * @param {number} props.step - The step value for horizontal scrolling.
- * @param {Function} props.setStep - Function to set the step value.
- * @param {Function} props.horizontalScroll - Function to handle horizontal scrolling.
- * @param {Function} props.toggleAutoScroll - Function to toggle auto-scroll.
- * @param {number} props.newPosition - The new position for rendering.
- * @param {number} props.windowWidth - The width of the window.
- * @param {number} props.windowHeight - The height of the window.
- * @param {Object} props.renderer - The renderer instance.
- * @param {Object} props.saveRange - The range of saved elements.
- * @param {Function} props.onChangeSaveRange - Function to change the save range.
- * @param {Function} props.toggleAutoLoad - Function to toggle auto-load.
- * @param {boolean} props.darkMode - The dark mode state.
- * @param {Function} props.setSvgContent - Function to set the SVG content.
- * @param {string} props.initalSeed - The initial seed taken when the page is loaded.
- * @returns {JSX.Element} The Menu component.
- */
-export const Menu: React.FC<IMenu> = ({
+export const Menu = ({
     step,
     setStep,
     horizontalScroll,
@@ -41,7 +21,7 @@ export const Menu: React.FC<IMenu> = ({
     darkMode,
     setSvgContent,
     initalSeed,
-}) => {
+}: IMenu) => {
     // Maximum step value calculation
     const maxStep = newPosition + windowWidth + Renderer.forwardCoverage;
 

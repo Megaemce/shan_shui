@@ -11,7 +11,7 @@ import PRNG from "./classes/PRNG";
  * @component
  * @returns {JSX.Element} The main application component.
  */
-export const App: React.FC = (): JSX.Element => {
+export const App = (): JSX.Element => {
     const urlSeed = new URLSearchParams(window.location.search).get("seed");
     const currentDate = new Date().getTime().toString();
     const initalSeed = urlSeed || currentDate;

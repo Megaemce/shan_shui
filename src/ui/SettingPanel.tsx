@@ -3,26 +3,7 @@ import { ISettingPanel } from "../interfaces/ISettingPanel";
 import { Menu } from "./Menu";
 import { Button } from "./Button";
 
-/**
- * SettingPanel component that provides various controls and settings for the application.
- * @component
- * @param {Object} props - The component props.
- * @param {number} props.step - The step value for horizontal scrolling.
- * @param {Function} props.setStep - Function to set the step value.
- * @param {Function} props.horizontalScroll - Function to handle horizontal scrolling.
- * @param {Function} props.toggleAutoScroll - Function to toggle auto-scroll.
- * @param {number} props.newPosition - The new position for rendering.
- * @param {Object} props.renderer - The renderer instance.
- * @param {number} props.windowWidth - The width of the window.
- * @param {number} props.windowHeight - The height of the window.
- * @param {Object} props.saveRange - The range of saved elements.
- * @param {Function} props.onChangeSaveRange - Function to change the save range.
- * @param {Function} props.toggleAutoLoad - Function to toggle auto-load.
- * @param {Function} props.setSvgContent - Function to set the SVG content.
- * @param {string} props.initalSeed - The initial seed taken when the page is loaded.
- * @returns {JSX.Element} The SettingPanel component.
- */
-export const SettingPanel: React.FC<ISettingPanel> = ({
+export const SettingPanel = ({
     step,
     setStep,
     horizontalScroll,
@@ -37,7 +18,7 @@ export const SettingPanel: React.FC<ISettingPanel> = ({
     toggleAutoLoad,
     setSvgContent,
     initalSeed,
-}) => {
+}: ISettingPanel) => {
     // State variables
     const [menuVisible, setMenuVisible] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
