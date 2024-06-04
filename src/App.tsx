@@ -1,10 +1,10 @@
+import PRNG from "./classes/PRNG";
 import Range from "./classes/Range";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Renderer from "./classes/Renderer";
 import { ScrollableCanvas } from "./ui/ScrollableCanvas";
 import { SettingPanel } from "./ui/SettingPanel";
 import { debounce } from "./utils/utils";
-import PRNG from "./classes/PRNG";
 
 /**
  * Main application component.

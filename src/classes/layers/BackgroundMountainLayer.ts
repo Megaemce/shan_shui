@@ -21,7 +21,7 @@ export default class BackgroundMountainLayer extends Layer {
      * Constructor for generating a distant mountain chunk with varying heights and colors.
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
-     * @param {number} [seed=DEFAULT_SEED] - The seed for the noise function.
+     * @param {number} [seed=DEFAULT_SEED] - The seed for the noise function that effects the y-coordinates of the noise.
      * @param {number} [width] - The width of the mountain.
      * @param {number} [height] - The overall height of the mountain.
      */

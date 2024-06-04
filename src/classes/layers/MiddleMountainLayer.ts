@@ -47,7 +47,7 @@ export default class MiddleMountainLayer extends Layer {
      *
      * @param {number} xOffset - The x-axis offset.
      * @param {number} yOffset - The y-axis offset.
-     * @param {number} [seed=DEFAULT_SEED] - The seed for noise functions.
+     * @param {number} [seed=DEFAULT_SEED] - The seed for noise functions that effects the y-coordinates of the noise.
      * @param {number} [width] - The width of the mountain.
      * @param {number} [height] - The height of the mountain.
      */
