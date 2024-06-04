@@ -12,10 +12,12 @@ import { debounce } from "./utils/utils";
  * @returns {JSX.Element} The main application component.
  */
 export const App = (): JSX.Element => {
+    // ? RAFAŁ:  Does that need to be here if this value should be received only on inital render?
     const urlSeed = new URLSearchParams(window.location.search).get("seed");
     const currentDate = new Date().getTime().toString();
     const initalSeed = urlSeed || currentDate;
 
+    // ? RAFAŁ: Forget about useRef, I endorse the power of statics! Should I be decapitated?
     if (!PRNG.alreadyPopulated) {
         if (urlSeed) {
             PRNG.seed = urlSeed;
@@ -32,7 +34,7 @@ export const App = (): JSX.Element => {
         }
     }
 
-    // Refs
+    // ? RAFAŁ: I use this ref only to execute Renderer.render() but I also use static properties of this Class, is that approach ok?
     const rendererRef = useRef(new Renderer());
     const timeoutRef = useRef<number | NodeJS.Timeout>(0);
 

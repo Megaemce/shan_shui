@@ -23,6 +23,7 @@ export const Menu = ({
     initalSeed,
 }: IMenu) => {
     // Maximum step value calculation
+    // ? RAFAŁ: Even tho I can use renderer here, I just ignore it and use static values. Maybe that should be an app state?
     const maxStep = newPosition + windowWidth + Renderer.forwardCoverage;
 
     // Handlers for horizontal scrolling

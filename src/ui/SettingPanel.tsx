@@ -36,6 +36,7 @@ export const SettingPanel = ({
         if (isDarkMode) {
             toggleDarkmode();
         }
+        // ? RAFAŁ: Is there a way to do it without eslint-disabled? I want that function to only run once
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -45,6 +46,7 @@ export const SettingPanel = ({
     };
 
     // Function to toggle the visibility of the settings menu
+    // ? RAFAŁ: Is that correct name convention? Should it be onToggleVisible?
     const toggleVisible = () => {
         const menu = document.getElementById("Menu") as HTMLElement;
         const settingButton = document.getElementById(
@@ -64,6 +66,7 @@ export const SettingPanel = ({
 
     // Function to toggle dark mode
     const toggleDarkmode = () => {
+        // ? RAFAŁ: Can I use useRef here, is there any value for that, or is that ok?
         const buttons = document.getElementById("Buttons") as HTMLElement;
         const darkModeButton = document.getElementById(
             "Darkmode"
